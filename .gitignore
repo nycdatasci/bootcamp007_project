@@ -1,0 +1,10 @@
+
+*.swp
+*.cache/
+*.Rhistory
+
+*.ipynb_checkpoints/
+*.Rapp.history
+*.DS_Store
+*.csv
+.Rproj.user
