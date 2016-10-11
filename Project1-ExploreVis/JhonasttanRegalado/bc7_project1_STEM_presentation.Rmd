@@ -57,6 +57,12 @@ stem.filtered.investments.totals <- stem.filtered.investments.melt %>% group_by(
 stem.filtered.investments.totals$variable <- year(as.Date(str_replace(stem.filtered.investments.totals$variable,'FY',""),'%Y'))
 stem.filtered.investments.totals <- mutate(stem.filtered.investments.totals, pct = round(Delt(total) * 100,2))
 
+top5.agencies <- stem.filtered.investments.melt %>% group_by(Agency)  %>% summarise(Investment.Dollars = sum(value,na.rm=TRUE), Median = median(value,na.rm=TRUE), Mean = mean(value,na.rm=TRUE), SD = sd(value,na.rm=TRUE) ) %>% arrange(desc(Investment.Dollars)) %>% head(5)
+
+top5.investments <- stem.filtered.investments.melt %>% group_by(Agency,Investment.Name)  %>% summarise(Investment.Dollars = sum(value,na.rm=TRUE), Median = median(value,na.rm=TRUE), Mean = mean(value,na.rm=TRUE), SD = sd(value,na.rm=TRUE) ) %>% arrange(desc(Investment.Dollars)) %>% head(5)
+
+
+
 #Color Format
 colFmt = function(x,color){
   outputFormat = opts_knit$get("rmarkdown.pandoc.to")
@@ -82,9 +88,14 @@ colFmt = function(x,color){
 
 </div>
 
-## `r colFmt("US GOV & STEM Investments",'black')`
+## `r colFmt("The Question",'black')`
 
-The US Government deems STEM (Science, Technology, Engineering, Math) investments crucial for the development of the next generation of people working in STEM related fields. As a recent member of the STEM Alliance of Larchmont's advisory board, one of the unaswered questions raised was, 'is attaining government based sponsorship / funding an option for the budding organization?' This led me to think / investigate how to identify federal agencies that invest at the community level.
+### How can budding nonprofit organizations attain government based sponsorship / funding?
+
+
+<div class='notes'>
+This led me to think / investigate how to identify federal agencies that invest at the community level.
+</div>
 
 ## Purpose of the Analysis is to Identify
 
@@ -165,19 +176,11 @@ ggplotly(boxp_median)
 
 ```
 
-## Summary On Top Five Agencies
 
-Agency  Count Average Investment In $ Range Standard Deviation
-------- ----- ----------------------- ----- ------------------
-???     ???     ???                   ???   ????
+## Top 5 Invesments Between 2008 - 2010
 
+<img src="top5Investments.png" alt="Top 5 Investments" height="350" width="950">
 
-<div class="notes">
-2010 Federal STEM Education Inventory Data Set, http://catalog.data.gov/dataset/2010-federal-stem-education-inventory-data-set 
-
-
-Data set summary: OSTP (Office of Science and Technology Policy), Executive Office of the President — The data set provides information for STEM education (pre-kindergarten through graduate) investments funded by Federal agencies at the level of $300,000 or above.
-</div>
 
 ## Conclusion
 
@@ -202,3 +205,12 @@ MOOC (Self-paced programs)
  - [EdX](https://www.edx.org)
  - [Khan Academy](https://www.khanacademy.org) 
  - [Code.org](https://code.org)
+ 
+## Follow Ups {.smaller}
+ 
+- Link the organization names to websites providing contact info, etc
+- Engage US GOV representation for Survey project to determine if data from 2011 to current date is attainable
+- Investigate NSF data set used by alltuition.com
+- Map STEM investments to STEM related job openings in NYC
+- Use word cloud to identify common words in survey
+
