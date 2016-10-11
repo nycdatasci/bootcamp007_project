@@ -1,0 +1,204 @@
+
+---
+title: "An Exploratory Analysis on US Government STEM Funding"
+author: "Jhonasttan Regalado"
+date: "10/6/2016"
+output: ioslides_presentation
+widescreen: smaller
+smaller: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(ggplot2)
+library(xlsx)
+library(tidyr)
+library(lubridate)
+library(stringr)
+library(dplyr)
+library(reshape2)
+library("gridExtra")
+library(forcats)
+library(plotly)
+library(ggthemes)
+library(quantmod)
+library(knitr)
+
+load(file ="~/Documents/DataScience/bootcamp7/project1/STEM_xls.Rda")
+
+stem.tidy <- xls.file
+stem.tidy <- tbl_df(stem.tidy)
+stem.filtered <- stem.tidy[,1:12] # select first twelve columns
+
+names(stem.filtered) <- names(stem.filtered) %>% str_replace('^\\w\\d?.\\.', '')
+names(stem.filtered) <- names(stem.filtered) %>% str_replace('\\.$', '')
+
+stem.filtered$Index.Number  <- as.character(stem.filtered$Index.Number)
+stem.filtered$Investment.Name  <- as.character(stem.filtered$Investment.Name)
+stem.filtered$Agency  <- as.character(stem.filtered$Agency)
+stem.filtered$Subagency  <- as.character(stem.filtered$Subagency)
+stem.filtered$Brief.Description  <- as.character(stem.filtered$Brief.Description)
+stem.filtered$Year.Established  <- year(as.Date(as.character(stem.filtered$Year.Established),'%Y'))
+stem.filtered$Mission.specific.or.General.STEM  <- as.character(stem.filtered$Mission.specific.or.General.STEM)
+stem.filtered$Agency.or.Mission.Related.Workforce.Needs  <- as.character(stem.filtered$Agency.or.Mission.Related.Workforce.Needs)
+stem.filtered$Primary.Investment.Objective  <- as.character(stem.filtered$Primary.Investment.Objective)
+
+stem.filtered.totals <- stem.filtered[dim(stem.filtered)[1],c(7,8,9)]
+stem.filtered <-  stem.filtered[1:(dim(stem.filtered)[1]-1),]
+
+funding_by_agency <- stem.filtered %>% group_by(Agency) %>% summarise(Funding.FYI2008 = sum(Funding.FY2008,na.rm=TRUE), Funding.FYI2009 = sum(Funding.FY2009,na.rm=TRUE), Funding.FYI2010 = sum(Funding.FY2010,na.rm=TRUE), Investments = n()) %>% arrange(desc(Funding.FYI2008, Funding.FYI2009, Funding.FYI2010))
+
+funding_by_agency_melt <- as.data.frame(select(funding_by_agency,-Investments)) %>% melt(id="Agency")
+
+stem.filtered.investments <- select(stem.filtered,Index.Number,Investment.Name,Agency,Subagency,FY2008 = Funding.FY2008,FY2009 = Funding.FY2009, FY2010 = Funding.FY2010)
+stem.filtered.investments.melt <- as.data.frame(stem.filtered.investments) %>% melt(.,id=c('Index.Number','Investment.Name','Agency','Subagency'))
+
+stem.filtered.investments.totals <- stem.filtered.investments.melt %>% group_by(variable) %>% summarise(total = sum(value,na.rm=TRUE))
+stem.filtered.investments.totals$variable <- year(as.Date(str_replace(stem.filtered.investments.totals$variable,'FY',""),'%Y'))
+stem.filtered.investments.totals <- mutate(stem.filtered.investments.totals, pct = round(Delt(total) * 100,2))
+
+#Color Format
+colFmt = function(x,color){
+  outputFormat = opts_knit$get("rmarkdown.pandoc.to")
+  if(outputFormat == 'latex')
+    paste("\\textcolor{",color,"}{",x,"}",sep="")
+  else if(outputFormat == 'html')
+    paste("<font color='",color,"'>",x,"</font>",sep="")
+  else
+    x
+}
+
+```
+
+## Who Am I?
+
+<img src="JhonasttanResumeBrainMap.png" alt="" height="350" width="950">
+
+  - Technologist with Domain Expertise in Production Management
+  - Active Member of the Project Management Institute NYC Chapter
+  - Provide IT Pro Bono Work to Nonprofits
+
+<div class="columns-2">
+
+</div>
+
+## `r colFmt("US GOV & STEM Investments",'black')`
+
+The US Government deems STEM (Science, Technology, Engineering, Math) investments crucial for the development of the next generation of people working in STEM related fields. As a recent member of the STEM Alliance of Larchmont's advisory board, one of the unaswered questions raised was, 'is attaining government based sponsorship / funding an option for the budding organization?' This led me to think / investigate how to identify federal agencies that invest at the community level.
+
+## Purpose of the Analysis is to Identify
+
+<div class="columns-2">
+  ![](gears-1359436_640.png)
+
+  - Who are the Top Five Federal Agencies by Investment Dollars?
+  - What types of Investments are Made?
+  - Which Organizations Receive the Bulk of Investment Dollars?
+</div>
+
+
+<div class="notes">
+The purpose of this exploratory analysis is to identify the top federal agencies investing into STEM programs and the types of institutions they invest in, so that organizations can direct their grant requests to these agencies / institutions to attain funds for STEM aligned projects.  
+</div>
+
+## US GOV STEM Survey
+
+### A Visual View of Word Frequency Count 
+
+<img src="wordcloudstemsurvey.png" alt="" height="400" width="900">
+
+
+
+## Total Investment Dollars
+
+```{r line graph, fig.width=8, fig.height=3}
+
+#stem.filtered.investments.totals$pct <- Delt(stem.filtered.investments.totals$total)
+
+gl <- ggplot((stem.filtered.investments.totals),aes(variable,total)) + 
+  geom_line() +
+  ylab("Dollars in millions") + 
+  xlab("Years") + 
+  scale_x_continuous( labels = c(2008,2009,2010), breaks = c(2008,2009,2010) )
+ggplotly(gl)
+```
+
+### Percent change from:
+
+### <b>
+
+- 2008 to 2009 was `r colFmt(stem.filtered.investments.totals$pct[[2]],'red')`%
+- 2009 to 2010 was `r colFmt(stem.filtered.investments.totals$pct[[3]],'red')`%
+
+### </b>
+
+## STEM Investments Made by US Federal Agencies
+
+```{r barplot}
+
+
+ggplot(funding_by_agency,aes(x=reorder(Agency,Investments),y=Investments)) + 
+  geom_bar(stat = "identity") + 
+  xlab("") +
+  ylab("") +
+  ggtitle("Number of STEM investments between 2008 - 2010") +
+  coord_flip()
+```
+
+## Investments by Dollars
+
+```{r barplot funding}
+p1 <- ggplot(funding_by_agency_melt,aes(fct_reorder(Agency,value),value)) + geom_bar(stat = "identity",aes(fill=variable)) + ylab("Cumulative Dollars in Millions") + xlab("") + coord_flip() + scale_fill_discrete(name = "Fiscal Year:", labels = c(2008, 2009, 2010)) +
+  guides(fill = guide_legend(title.theme = element_text(size=10, angle = 0))) +
+  theme(legend.position = "top")
+
+#ggplotly(p1)
+p1
+```
+
+##  Investment Distribution and Outliers
+
+```{r boxplot, warning=FALSE}
+boxp_median <- ggplot(stem.filtered.investments.melt,aes(fct_reorder(Agency,value),value)) + geom_boxplot(aes(middle = median(value))) + ylab("Dollars in Millions") + xlab("")  + coord_flip()
+
+ggplotly(boxp_median)
+
+```
+
+## Summary On Top Five Agencies
+
+Agency  Count Average Investment In $ Range Standard Deviation
+------- ----- ----------------------- ----- ------------------
+???     ???     ???                   ???   ????
+
+
+<div class="notes">
+2010 Federal STEM Education Inventory Data Set, http://catalog.data.gov/dataset/2010-federal-stem-education-inventory-data-set 
+
+
+Data set summary: OSTP (Office of Science and Technology Policy), Executive Office of the President — The data set provides information for STEM education (pre-kindergarten through graduate) investments funded by Federal agencies at the level of $300,000 or above.
+</div>
+
+## Conclusion
+
+The US GOV continues to fund STEM programs through federal agencies such as NSF and is working with other organizations to build tomorrow's STEM workforce.
+
+ - [US GOV Tech Hire initiative](https://www.whitehouse.gov/issues/technology/techhire)
+ - [President Obama Launches Techhire](https://www.whitehouse.gov/blog/2015/03/10/president-obama-launches-techhire)
+
+
+
+## STEM Workforce Development - Alternateive Options {.smaller}
+
+Boot camp model (Average 12 week programs):
+
+ - [NYC Data Science Academy](http://nycdatascience.com)
+ - [LaunchCode](https://www.launchcode.org/learn)
+
+MOOC (Self-paced programs)
+
+ - [Udacity](https://www.udacity.com)
+ - [Coursera](https://www.coursera.org)
+ - [EdX](https://www.edx.org)
+ - [Khan Academy](https://www.khanacademy.org) 
+ - [Code.org](https://code.org)
