@@ -1,0 +1,7 @@
+name: Publish Document
+account: rpubs
+server: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/217045/32ef5371ba524d59b67b3c9d1e7b1abb
+bundleId: https://api.rpubs.com/api/v1/document/217045/32ef5371ba524d59b67b3c9d1e7b1abb
+url: http://rpubs.com/jhonasttan/217045
+when: 1476154543.35828
