@@ -82,7 +82,7 @@ colFmt = function(x,color){
 
   - Technologist with Domain Expertise in Production Management
   - Active Member of the Project Management Institute NYC Chapter
-  - Provide IT Pro Bono Work to Nonprofits
+  - Provide Pro Bono IT Work for Nonprofits
 
 <div class="columns-2">
 
@@ -97,7 +97,7 @@ colFmt = function(x,color){
 This led me to think / investigate how to identify federal agencies that invest at the community level.
 </div>
 
-## Purpose of the Analysis is to Identify
+## Purpose of Analysis is to Identify
 
 <div class="columns-2">
   ![](gears-1359436_640.png)
@@ -184,7 +184,7 @@ ggplotly(boxp_median)
 
 ## Conclusion
 
-The US GOV continues to fund STEM programs through federal agencies such as NSF and is working with other organizations to build tomorrow's STEM workforce.
+The US GOV continues to fund STEM programs through federal agencies such as NSF, and is working with other organizations to build the workforce of tomorrow.
 
  - [US GOV Tech Hire initiative](https://www.whitehouse.gov/issues/technology/techhire)
  - [President Obama Launches Techhire](https://www.whitehouse.gov/blog/2015/03/10/president-obama-launches-techhire)
