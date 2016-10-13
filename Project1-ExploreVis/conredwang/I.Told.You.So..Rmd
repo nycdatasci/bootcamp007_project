@@ -134,7 +134,7 @@ levels(adult$workclass)
 ---
 
 - I add numeric "Ed Level" based on factor "Education":
-```{r, echo=TRUE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 adult = mutate(adult, ed_level = 0)
 obs = nrow(adult)
 for (i in 1:obs) {
@@ -148,6 +148,34 @@ for (i in 1:obs) {
       "11th" = { adult$ed_level[i] = 4 },
       "12th" = { adult$ed_level[i] = 4 },
       "HS-grad"  = { adult$ed_level[i] = 4 },
+      "Some-college" = { adult$ed_level[i] = 4 },
+      "Assoc-acdm"  = { adult$ed_level[i] = 5 },
+      "Assoc-voc" = { adult$ed_level[i] = 5 },
+      "Prof-school" = { adult$ed_level[i] = 5 },
+      "Bachelors"  = { adult$ed_level[i] = 6 },
+      "Masters" = { adult$ed_level[i] = 7 },
+      "Doctorate" = { adult$ed_level[i] = 8 })}
+```
+
+```{r, echo=TRUE, eval=FALSE}
+adult = mutate(adult, ed_level = 0)
+obs = nrow(adult)
+for (i in 1:obs) {
+	switch(adult$education[i],
+      "Preschool" = { adult$ed_level[i] = 1 },
+      "1st-4th" = { adult$ed_level[i] = 2 },
+      "5th-6th" = { adult$ed_level[i] = 3 },
+      "7th-8th"= { adult$ed_level[i] = 3 },
+      "9th" = { adult$ed_level[i] = 4 },
+      "10th" = { adult$ed_level[i] = 4 },
+      "11th" = { adult$ed_level[i] = 4 },
+      "12th" = { adult$ed_level[i] = 4 },
+      "HS-grad"  = { adult$ed_level[i] = 4 },
+```
+
+---
+
+```{r, echo=TRUE, eval=FALSE}
       "Some-college" = { adult$ed_level[i] = 4 },
       "Assoc-acdm"  = { adult$ed_level[i] = 5 },
       "Assoc-voc" = { adult$ed_level[i] = 5 },
