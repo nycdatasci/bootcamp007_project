@@ -96,7 +96,8 @@ ggplot(subset(l, Trm.issue_Y==2016 |Trm.issue_Y==2007),aes(x=Trm.grade, y=Prof.f
   xlab("Loan Grade") +
   ylab("FICO Score") +
   ggtitle("") + 
-  scale_color_manual(name="", labels=c("Not Outlier", "Outlier"), values=(c(muted("blue"),muted("red")))) 
+  scale_color_manual(name="", labels=c("Not Outlier", "Outlier"), values=(c(muted("blue"),muted("red")))) +
+  geom_boxplot(data=subset(l, (Trm.issue_Y==2016 |Trm.issue_Y==2007)), fill=NA, color="black", outlier.color=NA)
 ```
 Breaking the FICO mould:  
 - Borrowers with lower FICO scores paying low interest rates  
