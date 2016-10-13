@@ -17,7 +17,7 @@ library(knitr)
 ```
 
 ```{r, echo=FALSE}
-logo<-"path_to_logo_wp.png"
+logo <- "assets/img/i.told.you.so.jpg"
 ```
 
 ## Most asian parents tell their children :
