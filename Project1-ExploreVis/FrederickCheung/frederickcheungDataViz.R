@@ -27,22 +27,15 @@ MergedNews$category[MergedNews$category == "e" ] <- "entertainment"
 MergedNews$category[MergedNews$category == "m" ] <- "health"
 MergedNews$category[MergedNews$category == "t" ] <- "technology"
 
-#Create copy of MergedNews to clean
-MergedNewsClean <- MergedNews
-
-#Adjusted Timestamp to readable format
-# http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
-MergedNewsClean$timestamp <- as.POSIXct(MergedNewsClean$timestamp/1000, origin="1970-01-01")
-
-#Plot graph category, number of publications
-newsplot <- ggplot(data = MergedNewsClean,aes(x=category))
-newsplot + geom_bar(aes(fill=category)) #is it possible to change the category labels directly in ggplot2?
-
 #Set each category equal to a variable
-BusinessCluster <- MergedNewsClean %>% filter(., category == "business")
-EntertainmentCluster <- MergedNewsClean %>% filter(., category == "entertainment")
-HealthCluster <- MergedNewsClean %>% filter(., category == "health")
-TechnologyCluster <- MergedNewsClean %>% filter(., category == "technology")
+BusinessCluster <- MergedNews %>% filter(., category == "business")
+EntertainmentCluster <- MergedNews %>% filter(., category == "entertainment")
+HealthCluster <- MergedNews %>% filter(., category == "health")
+TechnologyCluster <- MergedNews %>% filter(., category == "technology")
+
+#Sort cluster
+#Select distinct, n=5
+#what are the top 5 stories about?
 
 #Find top stories in each category
 BusinessDf <- as.data.frame(table(BusinessCluster$clusterid))
@@ -58,20 +51,30 @@ TechnologyDf <- as.data.frame(table(TechnologyCluster$clusterid))
 TopFrqTechnology <- TechnologyDf[which.max(TechnologyDf$Freq),]
 
 #filter Cluster variables based on Top clusterid
-TopStoryBusinessCluster <- MergedNewsClean %>% filter(., clusterid == "d2OyTeAXDFQpb3M9Cr_Ftde6Ig0aM")
-TopStoryEntertainmentCluster <- MergedNewsClean %>% filter(., clusterid == "d--MozT4MsoFfIMgKu5_N58OF_f9M")
-TopStoryHealthCluster <- MergedNewsClean %>% filter(., clusterid == "dRL3APAAYdKPwuMnih--zAQtflluM")
-TopStoryTechnologyCluster <- MergedNewsClean %>% filter(., clusterid == "dubwcJArLL_qAKML5LGPLiunKzNLM")
+TopStoryBusinessCluster <- MergedNews %>% filter(., clusterid == "d2OyTeAXDFQpb3M9Cr_Ftde6Ig0aM")
+TopStoryEntertainmentCluster <- MergedNews %>% filter(., clusterid == "d--MozT4MsoFfIMgKu5_N58OF_f9M")
+TopStoryHealthCluster <- MergedNews %>% filter(., clusterid == "dRL3APAAYdKPwuMnih--zAQtflluM")
+TopStoryTechnologyCluster <- MergedNews %>% filter(., clusterid == "dubwcJArLL_qAKML5LGPLiunKzNLM")
 
 # return min and max on time stamps for
-FirstTopStoryBusinessCluster <- TopStoryBusinessCluster %>% max(., timestamp, na.rm = FALSE)
-LastTopStoryBusinessCluster <- TopStoryBusinessCluster %>% min(., timestamp, na.rm = FALSE)
-FirstTopStoryEntertainmentCluster <- TopStoryEntertainmentCluster %>% max(., timestamp, na.rm = FALSE)
-LastTopStoryEntertainmentCluster <- TopStoryEntertainmentCluster %>% max(., timestamp, na.rm = FALSE)
-FirstTopStoryHealthCluster <- TopStoryHealthCluster %>% max(., timestamp, na.rm = FALSE)
-LastTopStoryHealthCluster <- TopStoryHealthCluster %>% max(., timestamp, na.rm = FALSE)
-FirstTopStoryTechnologyCluster <- TopStoryTechnologyCluster %>% max(., timestamp, na.rm = FALSE)
-LastTopStoryTechnologyCluster <- TopStoryTechnologyCluster %>% max(., timestamp, na.rm = FALSE)
+FirstTopStoryBusinessCluster <- TopStoryBusinessCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryBusinessCluster <- TopStoryBusinessCluster$timestamp %>% min(., na.rm = FALSE)
+FirstTopStoryEntertainmentCluster <- TopStoryEntertainmentCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryEntertainmentCluster <- TopStoryEntertainmentCluster$timestamp %>% max(., na.rm = FALSE)
+FirstTopStoryHealthCluster <- TopStoryHealthCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryHealthCluster <- TopStoryHealthCluster$timestamp %>% max(., na.rm = FALSE)
+FirstTopStoryTechnologyCluster <- TopStoryTechnologyCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryTechnologyCluster <- TopStoryTechnologyCluster$timestamp %>% max(., na.rm = FALSE)
+
+#Adjusted Timestamp to readable format
+# http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
+MergedNewsClean$timestamp <- as.POSIXct(MergedNewsClean$timestamp/1000, origin="1970-01-01")
+
+
+
+#Plot graph category, number of publications
+newsplot <- ggplot(data = MergedNews,aes(x=category))
+newsplot + geom_bar(aes(fill=category)) #is it possible to change the category labels directly in ggplot2?
 
 #Sum categories
 #CategoryCount <- data.frame(table(MergedNews$category))
