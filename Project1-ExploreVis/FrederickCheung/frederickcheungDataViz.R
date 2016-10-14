@@ -6,7 +6,7 @@
 
 
 #set working directory and load packages
-setwd("Projects_NYCDSA7/DataViz")
+setwd("~/Dropbox/Projects_NYCDSA7/DataViz")
 library(dplyr)
 library(ggplot2)
 
@@ -27,29 +27,62 @@ MergedNews$category[MergedNews$category == "e" ] <- "entertainment"
 MergedNews$category[MergedNews$category == "m" ] <- "health"
 MergedNews$category[MergedNews$category == "t" ] <- "technology"
 
-#Create copy of MergedNews to clean
-MergedNewsClean <- MergedNews
+#Set each category equal to a variable
+BusinessCluster <- MergedNews %>% filter(., category == "business")
+EntertainmentCluster <- MergedNews %>% filter(., category == "entertainment")
+HealthCluster <- MergedNews %>% filter(., category == "health")
+TechnologyCluster <- MergedNews %>% filter(., category == "technology")
+
+#Sort cluster
+#Select distinct, n=5
+#what are the top 5 stories about?
+
+#Find top stories in each category
+BusinessDf <- as.data.frame(table(BusinessCluster$clusterid))
+TopFrqBusiness <- BusinessDf[which.max(BusinessDf$Freq),]
+
+EntertainmentDf <- as.data.frame(table(EntertainmentCluster$clusterid))
+TopFrqEntertainment <- EntertainmentDf[which.max(EntertainmentDf$Freq),]
+
+HealthDf <- as.data.frame(table(HealthCluster$clusterid))
+TopFrqHealth <- HealthDf[which.max(HealthDf$Freq),]
+
+TechnologyDf <- as.data.frame(table(TechnologyCluster$clusterid))
+TopFrqTechnology <- TechnologyDf[which.max(TechnologyDf$Freq),]
+
+#filter Cluster variables based on Top clusterid
+TopStoryBusinessCluster <- MergedNews %>% filter(., clusterid == "d2OyTeAXDFQpb3M9Cr_Ftde6Ig0aM")
+TopStoryEntertainmentCluster <- MergedNews %>% filter(., clusterid == "d--MozT4MsoFfIMgKu5_N58OF_f9M")
+TopStoryHealthCluster <- MergedNews %>% filter(., clusterid == "dRL3APAAYdKPwuMnih--zAQtflluM")
+TopStoryTechnologyCluster <- MergedNews %>% filter(., clusterid == "dubwcJArLL_qAKML5LGPLiunKzNLM")
+
+# return min and max on time stamps for
+FirstTopStoryBusinessCluster <- TopStoryBusinessCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryBusinessCluster <- TopStoryBusinessCluster$timestamp %>% min(., na.rm = FALSE)
+FirstTopStoryEntertainmentCluster <- TopStoryEntertainmentCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryEntertainmentCluster <- TopStoryEntertainmentCluster$timestamp %>% max(., na.rm = FALSE)
+FirstTopStoryHealthCluster <- TopStoryHealthCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryHealthCluster <- TopStoryHealthCluster$timestamp %>% max(., na.rm = FALSE)
+FirstTopStoryTechnologyCluster <- TopStoryTechnologyCluster$timestamp %>% max(., na.rm = FALSE)
+LastTopStoryTechnologyCluster <- TopStoryTechnologyCluster$timestamp %>% max(., na.rm = FALSE)
 
 #Adjusted Timestamp to readable format
 # http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
 MergedNewsClean$timestamp <- as.POSIXct(MergedNewsClean$timestamp/1000, origin="1970-01-01")
 
+
+
 #Plot graph category, number of publications
-newsplot <- ggplot(data = MergedNewsClean,aes(x=category))
+newsplot <- ggplot(data = MergedNews,aes(x=category))
 newsplot + geom_bar(aes(fill=category)) #is it possible to change the category labels directly in ggplot2?
-
-#Set each category equal to a variable
-#arrange, then return top cluster id 
-
-#Find difftime for max and min of the top story for each category
 
 #Sum categories
 #CategoryCount <- data.frame(table(MergedNews$category))
 
 #Top clusterid
-TopStories <- head(unique(MergedNews$clusterid))
+#TopStories <- head(unique(MergedNews$clusterid))
 
 #Top hdline via clusterid
 
 #Top 10 publishers
-Top10Publishers <- head(MergedNews$publisher, n=10)                                
+# Top10Publishers <- head(MergedNews$publisher, n=10)                                
