@@ -23,8 +23,9 @@ library(plotly)
 library(ggthemes)
 library(quantmod)
 library(knitr)
+library(GGally)
 
-load(file ="~/Documents/DataScience/bootcamp7/project1/STEM_xls.Rda")
+load(file ="./data/STEM_xls.Rda")
 
 stem.tidy <- xls.file
 stem.tidy <- tbl_df(stem.tidy)
@@ -61,9 +62,7 @@ top5.agencies <- stem.filtered.investments.melt %>% group_by(Agency)  %>% summar
 
 top5.investments <- stem.filtered.investments.melt %>% group_by(Agency,Investment.Name)  %>% summarise(Investment.Dollars = sum(value,na.rm=TRUE), Median = median(value,na.rm=TRUE), Mean = mean(value,na.rm=TRUE), SD = sd(value,na.rm=TRUE) ) %>% arrange(desc(Investment.Dollars)) %>% head(5)
 
-
-
-#Color Format
+#Color Format function
 colFmt = function(x,color){
   outputFormat = opts_knit$get("rmarkdown.pandoc.to")
   if(outputFormat == 'latex')
@@ -78,7 +77,7 @@ colFmt = function(x,color){
 
 ## Who Am I?
 
-<img src="JhonasttanResumeBrainMap.png" alt="" height="350" width="950">
+<img src="images/JhonasttanResumeBrainMap.png" alt="" height="350" width="950">
 
   - Technologist with Domain Expertise in Production Management
   - Active Member of the Project Management Institute NYC Chapter
@@ -100,7 +99,7 @@ This led me to think / investigate how to identify federal agencies that invest 
 ## Purpose of Analysis is to Identify
 
 <div class="columns-2">
-  ![](gears-1359436_640.png)
+  ![](images/gears-1359436_640.png)
 
   - Who are the Top Five Federal Agencies by Investment Dollars?
   - What types of Investments are Made?
@@ -116,9 +115,7 @@ The purpose of this exploratory analysis is to identify the top federal agencies
 
 ### A Visual View of Word Frequency Count 
 
-<img src="wordcloudstemsurvey.png" alt="" height="400" width="900">
-
-
+<img src="./images/wordCloud2.png" alt="" height="400" width="900">
 
 ## Total Investment Dollars
 
@@ -146,8 +143,6 @@ ggplotly(gl)
 ## STEM Investments Made by US Federal Agencies
 
 ```{r barplot}
-
-
 ggplot(funding_by_agency,aes(x=reorder(Agency,Investments),y=Investments)) + 
   geom_bar(stat = "identity") + 
   xlab("") +
@@ -179,7 +174,7 @@ ggplotly(boxp_median)
 
 ## Top 5 Invesments Between 2008 - 2010
 
-<img src="top5Investments.png" alt="Top 5 Investments" height="350" width="950">
+<img src="./images/top5Investments.png" alt="Top 5 Investments" height="350" width="950">
 
 
 ## Conclusion
@@ -191,10 +186,10 @@ The US GOV continues to fund STEM programs through federal agencies such as NSF,
 
 
 
-## STEM Workforce Development - Alternateive Options {.smaller}
+## STEM Workforce Development - Alternative Options {.smaller}
 
 Boot camp model (Average 12 week programs):
-
+<div class='columns-2'>
  - [NYC Data Science Academy](http://nycdatascience.com)
  - [LaunchCode](https://www.launchcode.org/learn)
 
@@ -214,3 +209,10 @@ MOOC (Self-paced programs)
 - Map STEM investments to STEM related job openings in NYC
 - Use word cloud to identify common words in survey
 
+![Caption](images/computer-science-503599_640.jpg)
+
+```{r eval = FALSE, fig.height=200}
+< img src="./images/computer-science-503599_640.jpg" alt="CSI" height="350" width="950">
+
+</div>
+```
