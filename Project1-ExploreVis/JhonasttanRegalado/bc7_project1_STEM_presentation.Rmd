@@ -24,6 +24,10 @@ library(ggthemes)
 library(quantmod)
 library(knitr)
 library(GGally)
+library(SnowballC)
+library(wordcloud)
+library(tm)
+library(tmap)
 
 load(file ="./data/STEM_xls.Rda")
 
@@ -73,6 +77,23 @@ colFmt = function(x,color){
     x
 }
 
+#Create wordcloud
+wCloud <- read.csv('./data/stemSurvey.csv', stringsAsFactors = FALSE)
+
+wCloud <- Corpus(VectorSource(wCloud))
+
+wCloud <- tm_map(wCloud, PlainTextDocument)
+wCloud <- tm_map(wCloud, content_transformer(tolower))
+wCloud <- tm_map(wCloud, PlainTextDocument)
+
+#cleanup
+wCloud <- tm_map(wCloud, removePunctuation)
+wCloud <- tm_map(wCloud, removeNumbers)
+wCloud <- tm_map(wCloud, removeWords, stopwords('english'))
+wCloud <- tm_map(wCloud, stemDocument)
+#generate word cloud
+#wordcloud(wCloud, max.words = 100, random.order = FALSE)
+
 ```
 
 ## Who Am I?
@@ -111,11 +132,13 @@ This led me to think / investigate how to identify federal agencies that invest 
 The purpose of this exploratory analysis is to identify the top federal agencies investing into STEM programs and the types of institutions they invest in, so that organizations can direct their grant requests to these agencies / institutions to attain funds for STEM aligned projects.  
 </div>
 
-## US GOV STEM Survey
+## US GOV STEM Survey Word Frequency 
 
-### A Visual View of Word Frequency Count 
+```{r}
+wordcloud(wCloud,max.words = 100, random.order = FALSE, color = sample(1:length(colors()),100,replace = FALSE))
+ 
+```
 
-<img src="./images/wordCloud2.png" alt="" height="400" width="900">
 
 ## Total Investment Dollars
 
@@ -207,12 +230,11 @@ MOOC (Self-paced programs)
 - Engage US GOV representation for Survey project to determine if data from 2011 to current date is attainable
 - Investigate NSF data set used by alltuition.com
 - Map STEM investments to STEM related job openings in NYC
-- Use word cloud to identify common words in survey
 
-![Caption](images/computer-science-503599_640.jpg)
 
-```{r eval = FALSE, fig.height=200}
-< img src="./images/computer-science-503599_640.jpg" alt="CSI" height="350" width="950">
-
-</div>
+```{r fig.width=10, fig.height=10,echo=FALSE}
+library(jpeg)
+library(grid)
+img <- readJPEG("./images/computer-science-503599_640.jpg")
+ grid.raster(img)
 ```
