@@ -76,7 +76,7 @@ BusinessCorpus <- tm_map(BusinessCorpus, removeWords, stopwords("english"))
 BusinessCorpus <- tm_map(BusinessCorpus, removeWords, c("breaking","news"))
 BusinessCorpus <- tm_map(BusinessCorpus, stripWhitespace)
 
-wordcloud(BusinessCorpus, max.words = 100, random.order = FALSE,)
+wordcloud(BusinessCorpus, max.words = 20, random.order = FALSE)
 
 #Adjusted Timestamp to readable format
 # http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
