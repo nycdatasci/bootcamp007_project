@@ -1,41 +1,20 @@
-#This is my DataViz project
-
-#This is where I obtained my dataset http://archive.ics.uci.edu/ml/datasets/News+Aggregator#
-
-#If you put the data files in the working directory the code should work
-
-
 #set working directory and load packages
 setwd("~/Dropbox/Projects_NYCDSA7/DataViz")
 library(dplyr)
 library(ggplot2)
+library(NLP)
+library(tm)
+library(SnowballC)
+library(RColorBrewer)
+library(wordcloud)
 
-##read data
-data1 <- read.csv("newsCorpora.csv", header = FALSE, sep = "\t") 
-data2 <- read.csv("2pageSessions.csv", header = FALSE, sep = "\t") 
-
-#rename header
-colnames(data1) <- c("id", "hdline", "url", "publisher", "category", "clusterid", "hostname", "timestamp")
-colnames(data2) <- c("clusterid", "hostname", "category", "url")
-
-#Inner Join based on clusterid
-MergedNews <- full_join(data2, data1, by=c("clusterid", "category"))
-
-#MergedNews change category name
-MergedNews$category[MergedNews$category == "b" ] <- "business"
-MergedNews$category[MergedNews$category == "e" ] <- "entertainment"
-MergedNews$category[MergedNews$category == "m" ] <- "health"
-MergedNews$category[MergedNews$category == "t" ] <- "technology"
+MergedNews <- readRDS("MergedNews")
 
 #Set each category equal to a variable
 BusinessCluster <- MergedNews %>% filter(., category == "business")
 EntertainmentCluster <- MergedNews %>% filter(., category == "entertainment")
 HealthCluster <- MergedNews %>% filter(., category == "health")
 TechnologyCluster <- MergedNews %>% filter(., category == "technology")
-
-#Sort cluster
-#Select distinct, n=5
-#what are the top 5 stories about?
 
 #Find top stories in each category
 BusinessDf <- as.data.frame(table(BusinessCluster$clusterid))
@@ -66,23 +45,46 @@ LastTopStoryHealthCluster <- TopStoryHealthCluster$timestamp %>% max(., na.rm = 
 FirstTopStoryTechnologyCluster <- TopStoryTechnologyCluster$timestamp %>% max(., na.rm = FALSE)
 LastTopStoryTechnologyCluster <- TopStoryTechnologyCluster$timestamp %>% max(., na.rm = FALSE)
 
-#Adjusted Timestamp to readable format
-# http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
-MergedNewsClean$timestamp <- as.POSIXct(MergedNewsClean$timestamp/1000, origin="1970-01-01")
-
-
-
 #Plot graph category, number of publications
 newsplot <- ggplot(data = MergedNews,aes(x=category))
 newsplot + geom_bar(aes(fill=category)) #is it possible to change the category labels directly in ggplot2?
 
+#find Top 5 stories in each cluster
+Top5Business <- (count(BusinessCluster, clusterid)) %>% top_n(., 5, n)
+Top5Entertainment <- (count(EntertainmentCluster, clusterid)) %>% top_n(., 5, n)
+Top5Health <- (count(HealthCluster, clusterid)) %>% top_n(., 5, n)
+Top5Technology <- (count(TechnologyCluster, clusterid)) %>% top_n(., 5, n)
+
+#Assign Top 5 cluster id headlines
+Top5BusinessHeadlines <- filter(BusinessCluster, clusterid %in% Top5Business$clusterid) %>% select(hdline)
+Top5EntertainmentHeadlines <- filter(EntertainmentCluster, clusterid %in% Top5Entertainment$clusterid) %>% select(hdline)
+Top5HealthHeadlines <- filter(HealthCluster, clusterid %in% Top5Health$clusterid) %>% select(hdline)
+Top5TechnologyHeadlines <- filter(TechnologyCluster, clusterid %in% Top5Technology$clusterid) %>% select(hdline)
+
+#Write headlines to text files
+write.table(Top5BusinessHeadlines, paste("Top5BusinessHeadlinesText"), row.names=F, append=F, sep=" ")
+write.table(Top5EntertainmentHeadlines, paste("Top5EntertainmentHeadlinesText"), row.names=F, append=F, sep=" ")
+write.table(Top5HealthHeadlines, paste("Top5HealthHeadlinesText"), row.names=F, append=F, sep=" ")
+write.table(Top5TechnologyHeadlines, paste("Top5TechnologyHeadlinesText"), row.names=F, append=F, sep=" ")
+
+#Word Cloud for each
+BusinessText = readLines("Top5BusinessHeadlinesText")
+BusinessCorpus <- Corpus(VectorSource(BusinessText))
+BusinessCorpus <- tm_map(BusinessCorpus, removePunctuation)
+BusinessCorpus <- tm_map(BusinessCorpus, content_transformer(tolower))
+BusinessCorpus <- tm_map(BusinessCorpus, removeWords, stopwords("english"))
+BusinessCorpus <- tm_map(BusinessCorpus, removeWords, c("breaking","news"))
+BusinessCorpus <- tm_map(BusinessCorpus, stripWhitespace)
+
+wordcloud(BusinessCorpus, max.words = 100, random.order = FALSE,)
+
+#Adjusted Timestamp to readable format
+# http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
+MergedNewsClean <- MergedNews
+MergedNewsClean$timestamp <- as.POSIXct(MergedNewsClean$timestamp/1000, origin="1970-01-01")
+
 #Sum categories
 #CategoryCount <- data.frame(table(MergedNews$category))
 
-#Top clusterid
-#TopStories <- head(unique(MergedNews$clusterid))
-
-#Top hdline via clusterid
-
 #Top 10 publishers
-# Top10Publishers <- head(MergedNews$publisher, n=10)                                
+# Top10Publishers <- head(MergedNews$publisher, n=10)  
