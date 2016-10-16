@@ -67,7 +67,7 @@ write.table(Top5EntertainmentHeadlines, paste("Top5EntertainmentHeadlinesText"),
 write.table(Top5HealthHeadlines, paste("Top5HealthHeadlinesText"), row.names=F, append=F, sep=" ")
 write.table(Top5TechnologyHeadlines, paste("Top5TechnologyHeadlinesText"), row.names=F, append=F, sep=" ")
 
-#Word Cloud for each
+#Word Cloud Business
 BusinessText = readLines("Top5BusinessHeadlinesText")
 BusinessCorpus <- Corpus(VectorSource(BusinessText))
 BusinessCorpus <- tm_map(BusinessCorpus, removePunctuation)
@@ -75,8 +75,44 @@ BusinessCorpus <- tm_map(BusinessCorpus, content_transformer(tolower))
 BusinessCorpus <- tm_map(BusinessCorpus, removeWords, stopwords("english"))
 BusinessCorpus <- tm_map(BusinessCorpus, removeWords, c("breaking","news"))
 BusinessCorpus <- tm_map(BusinessCorpus, stripWhitespace)
+pal2 <- brewer.pal(8,"Greens")
+wordcloud(BusinessCorpus, max.words = 100, random.order = FALSE, colors=pal2)
 
-wordcloud(BusinessCorpus, max.words = 20, random.order = FALSE)
+#Word Cloud for Entertainment
+EntertainmentText = readLines("Top5EntertainmentHeadlinesText")
+EntertainmentCorpus <- Corpus(VectorSource(EntertainmentText))
+EntertainmentCorpus <- tm_map(EntertainmentCorpus, removePunctuation)
+EntertainmentCorpus <- tm_map(EntertainmentCorpus, content_transformer(tolower))
+EntertainmentCorpus <- tm_map(EntertainmentCorpus, removeWords, stopwords("english"))
+EntertainmentCorpus <- tm_map(EntertainmentCorpus, removeWords, c("breaking","news"))
+EntertainmentCorpus <- tm_map(EntertainmentCorpus, stripWhitespace)
+pal2 <- brewer.pal(8,"Reds")
+png("Entertainmentwordcloud.png", width=2560,height=1600)
+wordcloud(EntertainmentCorpus, max.words = 100, random.order = FALSE, colors=pal2)
+
+#Word Cloud for Health
+HealthText = readLines("Top5HealthHeadlinesText")
+HealthCorpus <- Corpus(VectorSource(HealthText))
+HealthCorpus <- tm_map(HealthCorpus, removePunctuation)
+HealthCorpus <- tm_map(HealthCorpus, content_transformer(tolower))
+HealthCorpus <- tm_map(HealthCorpus, removeWords, stopwords("english"))
+HealthCorpus <- tm_map(HealthCorpus, removeWords, c("breaking","news"))
+HealthCorpus <- tm_map(HealthCorpus, stripWhitespace)
+pal2 <- brewer.pal(8,"Blues")
+png("Healthwordcloud.png", width=2560,height=1600)
+wordcloud(HealthCorpus, max.words = 100, random.order = FALSE, colors=pal2)
+
+#Word Cloud for Technology
+TechnologyText = readLines("Top5TechnologyHeadlinesText")
+TechnologyCorpus <- Corpus(VectorSource(TechnologyText))
+TechnologyCorpus <- tm_map(TechnologyCorpus, removePunctuation)
+TechnologyCorpus <- tm_map(TechnologyCorpus, content_transformer(tolower))
+TechnologyCorpus <- tm_map(TechnologyCorpus, removeWords, stopwords("english"))
+TechnologyCorpus <- tm_map(TechnologyCorpus, removeWords, c("breaking","news"))
+TechnologyCorpus <- tm_map(TechnologyCorpus, stripWhitespace)
+pal2 <- brewer.pal(8,"Purples")
+png("Technologywordcloud.png", width=2560,height=1600)
+wordcloud(TechnologyCorpus, max.words = 100, random.order = FALSE, colors=pal2)
 
 #Adjusted Timestamp to readable format
 # http://stackoverflow.com/questions/13456241/convert-unix-epoch-to-date-object-in-r
