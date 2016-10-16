@@ -1,0 +1,76 @@
+---
+title: "An analysis of NYC Public School SAT scores"
+## author: "Joseph van Bemmelen"
+## date: "October 15, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(openxlsx)
+library(dplyr)
+library(ggplot2)
+
+
+school_quality5 <- read.xlsx("2014_2015_HS_SQR_Results_2016_01_07.xlsx", sheet = 5, startRow = 2, colNames = TRUE)
+SAT_2015 = 
+  school_quality5 %>%
+  select(
+    DBN,
+    School.Name,
+    Avg.Math = Average.Score.SAT.Math,
+    Avg.Reading = Average.Score.SAT.Critical.Reading,
+    Avg.Writing = Average.Score.SAT.Writing
+  ) %>%
+  mutate (
+    Avg.Total = Avg.Math + Avg.Reading + Avg.Writing  # add a new column for average total SAT score
+  )
+
+school_quality1 <- read.xlsx("2014_2015_HS_SQR_Results_2016_01_07.xlsx", sheet = 1, startRow = 2, colNames = TRUE)
+summary_2015 = school_quality1 %>%
+  select(1,2,4, 12:17, 26:40)
+
+SAT_summary_2015 = inner_join(SAT_2015, summary_2015, by = "DBN")
+
+
+
+
+```
+
+### Introduction
+
+This project will explore data that New York City publishes on its public school system. NYC provides a very large amount of open data on its website, including 245 datasets that are categorized within the [education](https://nycopendata.socrata.com/data?cat=education) section. This project will focus on several data sets:
+
+* [2014-2015 School Quality Reports Results For High Schools](https://data.cityofnewyork.us/Education/2014-2015-School-Quality-Reports-Results-For-High-/vrfr-9k4d) (includes SAT scores for each school and extensive data on the learning environment)
+
++ SAT locations?
+
+## SAT Data
+
+First, let's see how the SAT data looks:
+
+
+```{r}
+library(ggplot2)
+ggplot(SAT_summary_2015, aes(x=Avg.Total)) + 
+  geom_histogram(binwidth = 100, 
+                 col="white", 
+                 fill="steelblue") + 
+  labs(title="NYC Public Schools SAT Score Histogram") +
+  labs(x="Average Score for School", y="Count") +
+  geom_vline(aes(xintercept=mean(Avg.Total, na.rm=T)),   # Ignore NA values for mean
+             color="darkgreen", linetype="dashed", size=1) +
+  geom_text(mapping=aes(x2,y2,label = text2), data=data.frame(x2=1350, y2=110, text2="mean[score]==1273"), color=I("darkgreen"), parse=TRUE) 
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
