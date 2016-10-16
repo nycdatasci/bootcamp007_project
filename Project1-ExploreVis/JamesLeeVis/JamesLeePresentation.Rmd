@@ -426,6 +426,7 @@ gbcapYUpper
 - Analyze mortality rate on different age groups
 - Analyze Economic Conditions by Sex
 - Analyze Economic Conditions by Population Density (City, Rural Areas)
+- Big Mac Index
 
 
 
