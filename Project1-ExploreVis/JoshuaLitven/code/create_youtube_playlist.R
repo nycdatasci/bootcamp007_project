@@ -52,7 +52,7 @@ create_playlist = function(artist_by_country){
 ---
   
 Country | Artist | Country Pop. | World Pop. | Net Pop.
--|-|-|-|-\n"
+---|---|---|---|---|\n"
   
   output_file = "playlist.Rmd"
   cat(header, file=output_file)

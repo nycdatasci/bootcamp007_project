@@ -6,7 +6,7 @@
 ---
   
 Country | Artist | Country Pop. | World Pop. | Net Pop.
--|-|-|-|-
+---|---|---|---|---|
 Antarctica | [jean michel jarre](https://www.youtube.com/watch?v=ul1M5SEnfkg) |0.18181818|0.0047397997|0.17707838
 Argentina | [babasónicos](https://www.youtube.com/watch?v=wgShyPxlFXQ) |0.16438356|0.0061568532|0.15822671
 Australia | [the presets](https://www.youtube.com/watch?v=4M43RoFxSqw) |0.15945946|0.0116296115|0.14782985
