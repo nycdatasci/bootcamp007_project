@@ -1,7 +1,5 @@
 ---
 title: "An Analysis of NYC Public School SAT scores"
-## author: "Joseph van Bemmelen"
-## date: "October 15, 2016"
 output: html_document
 ---
 
@@ -12,6 +10,7 @@ library(openxlsx)
 library(dplyr)
 library(ggplot2)
 library(GGally)
+library(grid)
 
 school_quality5 <- read.xlsx("2014_2015_HS_SQR_Results_2016_01_07.xlsx", sheet = 5, startRow = 2, colNames = TRUE)
 SAT_2015 = 
@@ -34,8 +33,6 @@ summary_2015 = school_quality1 %>%
 SAT_summary_2015 = inner_join(SAT_2015, summary_2015, by = "DBN")
 
 
-
-
 ```
 
 ## Introduction
@@ -53,7 +50,7 @@ This project will explore data that New York City publishes on its public school
 First, let's see how the SAT data looks:
 
 
-```{r}
+```{r, echo = F, warning = F, message = F}
 
 ggplot(SAT_summary_2015, aes(x=Avg.Total)) + 
   geom_histogram(binwidth = 100, 
@@ -99,7 +96,7 @@ summary_stats
 
 In total, there are 491 public schools in the dataset. Of the school, 82 (or 16.7%) are missing data for average SAT score. Each SAT score is comprised of results from three section: Math, Reading, and Writing. The scores for these subsections have similar distributions, as seen in the violin plots below: 
 
-```{r, echo=F}
+```{r, echo = F, warning = F, message = F}
 
 section_scores = select(SAT_summary_2015, Avg.Math, Avg.Reading, Avg.Writing)
 section_scores2 <- reshape2::melt(section_scores, id.vars = NULL)
@@ -123,7 +120,8 @@ The boxplots show that the average for the Math section is the highest (432), fo
 
 If we run a correlation, we can see that the three scores are highly correlated with each other so a school that has a high average score on one section will very likely have a similar score on the other sections. As we might expect, the Reading and Writing sections are more correlated with each other than with the Math section. Reading and Writing test similar skills, so a school that does well on one could be expected to do well on the other.
 
-```{r, echo=FALSE}
+```{r, echo = F, warning = F, message = F}
+
 cor(SAT_summary_2015[complete.cases(SAT_summary_2015), c("Avg.Math", "Avg.Reading", "Avg.Writing")],)
 
 #pair plot
@@ -145,7 +143,8 @@ ggpairs(
 
 Let's take a closer look at the schools that have SAT score in the top ten 10% for NYC:
 
-```{r pressure, echo=FALSE}
+```{r, echo = F, warning = F, message = F}
+
 top =
   SAT_summary_2015 %>%
   select(School.Name.x, Avg.Total, Avg.Math, Avg.Reading, Avg.Writing) %>%
@@ -176,7 +175,7 @@ ggplot(top, aes(x = reorder(School.Name.x, Avg.Total), y = Avg.Writing)) +
 
 Similarly, we can look at schools in the bottom 10%. Note that there is a small but significant number of schools that have "NA" for the SAT score (16.7%), so this graphic only shows the schools that have an SAT score listed:
 
-```{r, echo=FALSE}
+```{r, echo = F, warning = F, message = F}
 
 bottom =
   SAT_summary_2015 %>%
@@ -214,7 +213,50 @@ What causes schools to be in the top 10% or bottom 10%? Are there similarities b
 
 The dataset also includes many data points on different characteristics of each school. Let's take a look at some of these data.
 
-```{r, echo=FALSE}
+```{r, echo = F, warning = F, message = F}
+
+colnames(SAT_summary_2015)[8:29]
+
+```
+
+
+One charachteristic that I thought might be important was a value called "Rigorous.Instruction.Percent.Positive".
+
+```{r, echo = F, warning = F, message = F}
+
+#first adjust name of column to call
+names(SAT_summary_2015)[names(SAT_summary_2015) == "Rigorous.Instruction.-.Percent.Positive"] <- 'Rigorous.Instruction.Percent.Positive' 
+
+ggplot(SAT_summary_2015, aes(x = Rigorous.Instruction.Percent.Positive, y = Avg.Total)) +
+  geom_point(color="steelblue") +
+  geom_smooth(method = "lm", color = "darkgreen")
+
+```
+
+Although there is a slightly correlation, it is not nearly as correlated as student attendance rate.
+
+```{r, echo = F, warning = F, message = F}
+
+ggplot(SAT_summary_2015, aes(x = Student.Attendance.Rate, y = Avg.Total)) +
+  geom_point(color="steelblue") +
+  geom_smooth(method = "lm", color = "darkgreen")
+
+```
+
+A strongly negatively correlated characteristic is the economic need index of a school's students.
+
+```{r, echo = F, warning = F, message = F}
+
+ggplot(SAT_summary_2015, aes(x = Economic.Need.Index, y = Avg.Total)) +
+  geom_point(color="steelblue") +
+  geom_smooth(method = "lm", color = "darkgreen")
+
+```
+
+Below are the relative correlations of all the characteristics with a school's average SAT score.
+
+
+```{r, echo = F, warning = F, message = F}
 
 correlation_tot = sapply(SAT_summary_2015[complete.cases(SAT_summary_2015), -c(1:7)], function(x)
   cor(x, SAT_summary_2015[complete.cases(SAT_summary_2015), "Avg.Total"]))
@@ -271,6 +313,43 @@ Essentially, student? poverty is the most negatively correlared charachteristic,
 
 If we look at the top 
 
+## Race
+
+```{r, echo = F, warning = F, message = F}
+
+correlation_race = sapply(SAT_summary_2015[complete.cases(SAT_summary_2015), c(21:24)], function(x)
+  cor(x, SAT_summary_2015[complete.cases(SAT_summary_2015), "Avg.Total"]))
+correlation_race = data.frame(labels(correlation_race), unname(correlation_race))
+colnames(correlation_race) = c("race", "Avg.Total")
+correlation_race
+
+
+
+correlationdf = data.frame(factor = correlation_tot$factor,
+                      Avg.Total = correlation_tot$Avg.Total,
+                      Avg.Math = correlation_math$Avg.Math,
+                      Avg.Reading = correlation_reading$Avg.Reading,
+                      Avg.Writing = correlation_writing$Avg.Writing) 
+
+
+correlationdfsorted <- reshape2::melt(correlationdf[,c("factor","Avg.Total","Avg.Math", "Avg.Reading", "Avg.Writing")],id.vars = 1)
+
+
+ggplot(correlationdf, aes(reorder(factor, Avg.Total), Avg.Total)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  labs(title = "Correlation of School Characteristics To School's Average SAT Score",
+       x = "", y = "Correlation") +
+  coord_flip(ylim = c(-0.75, 0.75)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  
+ggplot(correlationdfsorted, aes(reorder(factor, value), value)) +
+  geom_bar(stat = "identity", aes(fill = variable), position = "dodge") +
+  labs(title = "Correlation of School Characteristics To School's Average SAT Score",
+       x = "", y = "Correlation") +
+  coord_flip(ylim = c(-0.75, 0.75)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
 
 
 
@@ -278,7 +357,7 @@ If we look at the top
 
 We can see the average school results by borough, as well:
 
-```{r, echo=F}
+```{r, echo = F, warning = F, message = F}
 
 #create the location df
 directory = read.csv("HS_directory.csv")
@@ -292,6 +371,8 @@ locations$lat <- unlist(lapply(strsplit(as.character(locations$coord), ", "), "[
 locations$lon <- as.numeric(locations$lon)
 locations$lat <- as.numeric(locations$lat)
 
+# (can map more in future using the exact coordinates extracted above)
+
 SAT_locations = inner_join(SAT_summary_2015, locations, by = "DBN")
 
 boros =
@@ -300,10 +381,18 @@ boros =
   summarize(average = mean(Avg.Total, na.rm = TRUE), count = n()) %>%
   arrange(desc(count))
 
-ggplot(boros, mapping = aes(x=boro, y=average)) +
+avg = ggplot(boros, mapping = aes(x=boro, y=average)) +
 geom_bar(stat = "identity", col = "white", fill = "steelblue") +
   coord_flip(ylim=c(1000, 1500)) +
-  labs(title = "Top 10% NYC Public Schools SAT Scores", x = "", y = "Average SAT Score for School")
+  labs(title = "Public Schools SAT Scores By Borough", x = "", y = "Average SAT Score for School")
+
+count = ggplot(boros, mapping = aes(x=boro, , y=count)) +
+geom_bar(stat = "identity", col = "white", fill = "steelblue") +
+  coord_flip(ylim=c(0, 200)) +
+  labs(title = "Number of Public Schools SAT Scores In Borough", x = "", y = "Average SAT Score for School")
+
+grid.newpage()
+grid.draw(rbind(ggplotGrob(avg), ggplotGrob(count), size = "last"))
 
 ```
 
