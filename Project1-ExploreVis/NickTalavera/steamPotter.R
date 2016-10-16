@@ -164,7 +164,7 @@ getPalette = colorRampPalette(brewer.pal(9, "PiYG"))
 platteNew = rev(getPalette(colourCount))
 labelsYears = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
 g = ggplot(data = steamScoresVSIncreaseThumbs, aes(x = Increase)) + ggtitle(title)
-g + geom_histogram(aes(fill = Review_Score_Steam_Users), position = "fill", binwidth = 90) + guides(color = "colorbar") + scale_fill_manual(values =platteNew, guide = guide_legend(title = "Steam User Review Score"), labels = labelsYears) + xlab('Increase of Owners')  + scale_y_continuous(labels=percent) + ylab('Percentage of Increase')
+g + geom_histogram(aes(fill = Review_Score_Steam_Users), position = "fill", binwidth = 90) + guides(color = "colorbar") + scale_fill_manual(values =platteNew, guide = guide_legend(title = "Steam User Percent Positive Reviews"), labels = labelsYears) + xlab('Increase of Owners')  + scale_y_continuous(labels=percent) + ylab('Percentage of Increase')
 ggsave(file=paste0(removeSymbols(title), ".eps"))
 #END
 # #
