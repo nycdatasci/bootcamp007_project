@@ -125,7 +125,7 @@ metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[me
 metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic[as.numeric(metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic) >= reviewScore] = reviewScore
 metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic[as.numeric(metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic) < reviewScore] = 0
 metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic = cut_interval(metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic, n = 2, rm.na = TRUE)
-colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic))*0+8
+colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$Review_Score_Metacritic))
 getPalette = colorRampPalette(brewer.pal(8, "Accent"))
 platteNew = rev(getPalette(colourCount))
 g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = Increase)) + ggtitle(title)
@@ -135,35 +135,38 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 }
 #END
 
-# # FIGURE OUT BARS
-# #Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD SHIT
-# # steamScoresVSIncreaseThumbs = steam
-# # steamScoresVSIncreaseThumbs = filter(steamScoresVSIncreaseThumbs, steamScoresVSIncreaseThumbs$Review_Score_Steam_Users > -1000)
-# # steamScoresVSIncreaseThumbs$Review_Score_Steam_Users[as.numeric(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) >= reviewScore] = reviewScore
-# # steamScoresVSIncreaseThumbs$Review_Score_Steam_Users[as.numeric(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) < reviewScore] = 0
-# # # steamScoresVSIncreaseThumbs$Review_Score_Steam_Users = cut_interval(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users, n = 2, rm.na = TRUE)
-# # steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[steamScoresVSIncreaseThumbs$Increase < 750,]
-# # # labelsYears = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
-# # title = paste('Sales Increases Comparing an Ideal Review Score of', reviewScore)
-# # g = ggplot(data = steamScoresVSIncreaseThumbs, aes(factor(Review_Score_Steam_Users))) + ggtitle(title)
-# # g + geom_bar() + guides(color = "colorbar") + scale_fill_brewer(palette ="Blues",direction = 1, labels = c(paste(c('Less than',"Greater than"), reviewScore)), guide = guide_legend(title = "Metacritic Score"))
-# # ggsave(file=paste0(removeSymbols(title), ".eps"))
-#
-#
-# # #READY TO GO
-# #Histogram of Metacritic scores versus increase in sales based on thumbs up middle or down
+# FIGURE OUT BARS
+#Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD SHIT
 # steamScoresVSIncreaseThumbs = steam
 # steamScoresVSIncreaseThumbs = filter(steamScoresVSIncreaseThumbs, steamScoresVSIncreaseThumbs$Review_Score_Steam_Users > -1000)
-# steamScoresVSIncreaseThumbs$Review_Score_Steam_Users = cut(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users, breaks = seq(0, 100, by=10))
-# steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[is.na(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) == FALSE,]
-# steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[is.na(steamScoresVSIncreaseThumbs$Increase) == FALSE,]
+# steamScoresVSIncreaseThumbs$Review_Score_Steam_Users[as.numeric(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) >= reviewScore] = reviewScore
+# steamScoresVSIncreaseThumbs$Review_Score_Steam_Users[as.numeric(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) < reviewScore] = 0
+# # steamScoresVSIncreaseThumbs$Review_Score_Steam_Users = cut_interval(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users, n = 2, rm.na = TRUE)
 # steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[steamScoresVSIncreaseThumbs$Increase < 750,]
-# title = 'Steam User Reviews\' Impact on the Increase of Sales'
-# labelsYears = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
-# g = ggplot(data = steamScoresVSIncreaseThumbs, aes(x = Increase)) + ggtitle(title)
-# g + geom_histogram(aes(fill = Review_Score_Steam_Users), position = "fill", binwidth = 90) + guides(color = "colorbar") + scale_fill_brewer(palette ="Greens",direction = 1, guide = guide_legend(title = "Steam User Review Score"), labels = labelsYears) + xlab('Increase of Owners')  + scale_y_continuous(labels=percent) + ylab('Percentage of Increase')
+# # labelsYears = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
+# title = paste('Sales Increases Comparing an Ideal Review Score of', reviewScore)
+# g = ggplot(data = steamScoresVSIncreaseThumbs, aes(factor(Review_Score_Steam_Users))) + ggtitle(title)
+# g + geom_bar() + guides(color = "colorbar") + scale_fill_brewer(palette ="Blues",direction = 1, labels = c(paste(c('Less than',"Greater than"), reviewScore)), guide = guide_legend(title = "Metacritic Score"))
 # ggsave(file=paste0(removeSymbols(title), ".eps"))
-# # #END
+
+
+#READY TO GO
+#Steam User Reviews' Impact on the Increase of Sales'
+title = 'Steam User Reviews\' Impact on the Increase of Sales'
+steamScoresVSIncreaseThumbs = steam
+steamScoresVSIncreaseThumbs = filter(steamScoresVSIncreaseThumbs, steamScoresVSIncreaseThumbs$Review_Score_Steam_Users > -1000)
+steamScoresVSIncreaseThumbs$Review_Score_Steam_Users = cut(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users, breaks = seq(0, 100, by=10))
+steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[is.na(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) == FALSE,]
+steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[is.na(steamScoresVSIncreaseThumbs$Increase) == FALSE,]
+steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[steamScoresVSIncreaseThumbs$Increase < 750,]
+colourCount = length(unique(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users))
+getPalette = colorRampPalette(brewer.pal(9, "PiYG"))
+platteNew = rev(getPalette(colourCount))
+labelsYears = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
+g = ggplot(data = steamScoresVSIncreaseThumbs, aes(x = Increase)) + ggtitle(title)
+g + geom_histogram(aes(fill = Review_Score_Steam_Users), position = "fill", binwidth = 90) + guides(color = "colorbar") + scale_fill_manual(values =platteNew, guide = guide_legend(title = "Steam User Review Score"), labels = labelsYears) + xlab('Increase of Owners')  + scale_y_continuous(labels=percent) + ylab('Percentage of Increase')
+ggsave(file=paste0(removeSymbols(title), ".eps"))
+#END
 # #
 # # #READY TO GO
 # # Game's age affecting the sale? If over ten, rounded up
@@ -204,7 +207,7 @@ MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,6
 MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,12,17)] = 17
 MetacriticVSCampaign$hoursRange[MetacriticVSCampaign$main_story_length >= 17] = 40
 colourCount = length(unique(MetacriticVSCampaign$hoursRange))
-getPalette = colorRampPalette(brewer.pal(13, "Spectral"))
+getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
 platteNew = getPalette(colourCount)
 g = ggplot(MetacriticVSCampaign, aes(x = main_story_length , y = Review_Score_Metacritic)) + ggtitle(title)
 g + geom_point(aes(color=factor(hoursRange))) + geom_hline(yintercept = metacriticReview, color="red") + ylab('Metacritic Score') + xlab("Game Campaign Length (hours)") + scale_color_manual(values = platteNew, name ="Typical Game Type",
@@ -232,7 +235,7 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 labelsGameType = c('Indie Games','Action Games', 'Adventure Games',"Role Playing Games")
 title = 'Game Type Approximated by Campaign Length Compared to the Increase of Owners'
 colourCount = length(unique(MetacriticVSCampaign$hoursRange))
-getPalette = colorRampPalette(brewer.pal(13, "Spectral"))
+getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
 platteNew = getPalette(colourCount)
 g = ggplot(data = MetacriticVSCampaign, aes(x = Increase)) + ggtitle(title)
 g + geom_histogram(aes(fill = factor(hoursRange)), position = "fill", binwidth = 20) + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_manual(values = platteNew, labels = labelsGameType, guide = guide_legend(title = "Typical Game Type"))
