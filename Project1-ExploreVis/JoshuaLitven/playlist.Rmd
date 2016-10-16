@@ -1,0 +1,78 @@
+---
+  title: "Popular Artists Around the World"
+  author: "Joshua Litven"
+  date: "10/15/2016"
+  output: html_document
+---
+  
+Country | Artist | Country Pop. | World Pop. | Net Pop.
+-|-|-|-|-
+Antarctica | [jean michel jarre](https://www.youtube.com/watch?v=ul1M5SEnfkg) |0.18181818|0.0047397997|0.17707838
+Argentina | [babasónicos](https://www.youtube.com/watch?v=wgShyPxlFXQ) |0.16438356|0.0061568532|0.15822671
+Australia | [the presets](https://www.youtube.com/watch?v=4M43RoFxSqw) |0.15945946|0.0116296115|0.14782985
+Austria | [die Ärzte](https://www.youtube.com/watch?v=K-Kg-Gc7UNM) |0.20625000|0.0234546787|0.18279532
+Belarus | [Ляпис Трубецкой](https://www.youtube.com/watch?v=zMCV3hkdPwU) |0.15254237|0.0018568287|0.15068554
+Belgium | [deus](https://www.youtube.com/watch?v=h3r7Oo0Fs-8) |0.15121951|0.0085511849|0.14266833
+Bosnia and Herzegovina | [ekv](https://www.youtube.com/watch?v=oupKPtZstuY) |0.21052632|0.0008306865|0.20969563
+Brazil | [los hermanos](https://www.youtube.com/watch?v=7IKuvHVeQy0) |0.24500000|0.0111409724|0.23385903
+Bulgaria | [disturbed](https://www.youtube.com/watch?v=rxujAPhxlo0) |0.21341463|0.0464695822|0.16694505
+Canada | [stars](https://www.youtube.com/watch?v=r5Or6-HOveg) |0.10196078|0.0230637674|0.07889702
+Chile | [babasónicos](https://www.youtube.com/watch?v=wgShyPxlFXQ) |0.11515152|0.0061568532|0.10899466
+China | [mc hotdog](https://www.youtube.com/watch?v=758LcPZB6Wo) |0.12000000|0.0004886391|0.11951136
+Colombia | [soda stereo](https://www.youtube.com/watch?v=WSUU_iB9iH8) |0.28301887|0.0081114097|0.27490746
+Costa Rica | [los fabulosos cadillacs](https://www.youtube.com/watch?v=x797k1j7DOU) |0.31578947|0.0060102614|0.30977921
+Croatia | [hladno pivo](https://www.youtube.com/watch?v=JVo2vlcK364) |0.31578947|0.0025409235|0.31324855
+Czech Republic | [daniel landa](https://www.youtube.com/watch?v=dAzqa4qSpAs) |0.14748201|0.0027363792|0.14474564
+Denmark | [kashmir](https://www.youtube.com/watch?v=nujXVk8-Ogo) |0.22758621|0.0043977523|0.22318845
+Egypt | [camel](https://www.youtube.com/watch?v=Oi5Q-_t1YN8) |0.30769231|0.0083557293|0.29933658
+Estonia | [vennaskond](https://www.youtube.com/watch?v=RJkLgO5MTuc) |0.20967742|0.0007818226|0.20889560
+Finland | [apulanta](https://www.youtube.com/watch?v=r8XUEqfrd0M) |0.18361153|0.0066454923|0.17696604
+France | [serge gainsbourg](https://www.youtube.com/watch?v=8A8MfZ2UB5g) |0.12183908|0.0121671146|0.10967197
+Georgia | [the doors](https://www.youtube.com/watch?v=PAK5blgfKWM) |0.46666667|0.0743708771|0.39229579
+Germany | [die Ärzte](https://www.youtube.com/watch?v=K-Kg-Gc7UNM) |0.20685779|0.0234546787|0.18340311
+Greece | [madrugada](https://www.youtube.com/watch?v=LE9AuZ35_AY) |0.11926606|0.0055216223|0.11374443
+Hong Kong | [james blunt](https://www.youtube.com/watch?v=tNt6XuLhhTc) |0.22727273|0.0299047154|0.19736801
+Hungary | [quimby](https://www.youtube.com/watch?v=onwpJeMWuqY) |0.16822430|0.0009772783|0.16724702
+Iceland | [sigur rós](https://www.youtube.com/watch?v=8LeQN249Jqw) |0.46153846|0.0826288786|0.37890958
+India | [a.r. rahman](https://www.youtube.com/watch?v=uq8NuyE-4Po) |0.34000000|0.0051795749|0.33482043
+Indonesia | [jason mraz](https://www.youtube.com/watch?v=6PH7LGi1RcQ) |0.37142857|0.0343024676|0.33712610
+Iran, Islamic Republic of | [anathema](https://www.youtube.com/watch?v=aJT4y0Oa180) |0.38888889|0.0239433179|0.36494557
+Ireland | [boards of canada](https://www.youtube.com/watch?v=dQEmaj9C6ko) |0.21276596|0.0519912045|0.16077475
+Israel | [infected mushroom](https://www.youtube.com/watch?v=Bgbl0IHLNys) |0.18571429|0.0279012949|0.15781299
+Italy | [fabrizio de andré](https://www.youtube.com/watch?v=XjigLrIiRvk) |0.21184510|0.0051795749|0.20666553
+Japan | [perfume](https://www.youtube.com/watch?v=vhfYis6VuXY) |0.17258883|0.0052284388|0.16736039
+Kazakhstan | [krec](https://www.youtube.com/watch?v=vr3Fxj091Ao) |0.25000000|0.0039579770|0.24604202
+Korea, Republic of | [mika](https://www.youtube.com/watch?v=ITCBOhTUdEU) |0.25000000|0.0327388224|0.21726118
+Latvia | [prāta vētra](https://www.youtube.com/watch?v=fIr-m0jhEVY) |0.23711340|0.0011727339|0.23594067
+Lithuania | [andrius mamontovas](https://www.youtube.com/watch?v=8FDYIZHqXsA) |0.24074074|0.0015147813|0.23922596
+Macedonia | [foltin](https://www.youtube.com/watch?v=G0-I7dG8byQ) |0.28571429|0.0001954557|0.28551883
+Malaysia | [jason mraz](https://www.youtube.com/watch?v=6PH7LGi1RcQ) |0.20833333|0.0343024676|0.17403087
+Mexico | [café tacuba](https://www.youtube.com/watch?v=bKjn26agAEs) |0.28093645|0.0088443684|0.27209209
+Moldova | [leon bolier](https://www.youtube.com/watch?v=tcs_4GayKzg) |0.17647059|0.0011238700|0.17534672
+Netherlands | [anouk](https://www.youtube.com/watch?v=iAStNeh7_J8) |0.12290503|0.0067920840|0.11611294
+New Zealand | [foo fighters](https://www.youtube.com/watch?v=0nDGwp7MChU) |0.30882353|0.0858538969|0.22296963
+Norway | [kaizers orchestra](https://www.youtube.com/watch?v=8ZkFXnm-RNQ) |0.12280702|0.0050818471|0.11772517
+Peru | [the cure](https://www.youtube.com/watch?v=8Dhn_iIQXDE) |0.37037037|0.0937698510|0.27660052
+Philippines | [eraserheads](https://www.youtube.com/watch?v=lR98Q5KPc4M) |0.42424242|0.0007329587|0.42350947
+Poland | [o.s.t.r.](https://www.youtube.com/watch?v=uJS9FFJxfXU) |0.16804636|0.0107500611|0.15729630
+Portugal | [pearl jam](https://www.youtube.com/watch?v=NU2gr0NR5As) |0.17741935|0.0572196433|0.12019971
+Puerto Rico | [calle 13](https://www.youtube.com/watch?v=se-AYWWIh64) |0.33333333|0.0033716101|0.32996172
+Romania | [vama veche](https://www.youtube.com/watch?v=NfpYItjsxhE) |0.14379085|0.0011238700|0.14266698
+Russian Federation | [lumen](https://www.youtube.com/watch?v=N4_InqrpM-k) |0.08458150|0.0067920840|0.07778941
+Serbia | [depeche mode](https://www.youtube.com/watch?v=3MTqWPRld38) |0.25000000|0.0903493770|0.15965062
+Singapore | [britney spears](https://www.youtube.com/watch?v=lEKKk7Tbt7Y) |0.29629630|0.0578060103|0.23849029
+Slovakia | [daniel landa](https://www.youtube.com/watch?v=dAzqa4qSpAs) |0.15189873|0.0027363792|0.14916235
+Slovenia | [big foot mama](https://www.youtube.com/watch?v=qlu2n49kZDQ) |0.20000000|0.0004886391|0.19951136
+South Africa | [depeche mode](https://www.youtube.com/watch?v=3MTqWPRld38) |0.28205128|0.0903493770|0.19170191
+Spain | [extremoduro](https://www.youtube.com/watch?v=hd3tPZ3Djg4) |0.14323259|0.0062545810|0.13697801
+Sweden | [kent](https://www.youtube.com/watch?v=bubOcI11sps) |0.26640927|0.0182262399|0.24818303
+Switzerland | [die Ärzte](https://www.youtube.com/watch?v=K-Kg-Gc7UNM) |0.14906832|0.0234546787|0.12561364
+Taiwan | [travis](https://www.youtube.com/watch?v=eYO1-gGWJyo) |0.23809524|0.0306376741|0.20745756
+Thailand | [groove riders](https://www.youtube.com/watch?v=EQ5WLCOxJSg) |0.32142857|0.0004397752|0.32098880
+Thailand | [tattoo colour](https://www.youtube.com/watch?v=H6-R2xPfcyc) |0.32142857|0.0004397752|0.32098880
+Turkey | [duman](https://www.youtube.com/watch?v=V47nffPavWI) |0.25132275|0.0054727584|0.24584999
+Ukraine | [flёur](https://www.youtube.com/watch?v=XbaP-mnJvFE) |0.08178439|0.0042511605|0.07753323
+United Kingdom | [kings of leon](https://www.youtube.com/watch?v=uizXeJB1G0s) |0.17423807|0.0726117762|0.10162629
+United States | [death cab for cutie](https://www.youtube.com/watch?v=be2LvYXOcSI) |0.19810076|0.0909357440|0.10716502
+Uruguay | [el cuarteto de nos](https://www.youtube.com/watch?v=BTnkWtVUFK4) |0.35294118|0.0015636452|0.35137753
+Venezuela | [aerosmith](https://www.youtube.com/watch?v=W4LIVJGGnmk) |0.24390244|0.0443684339|0.19953401
