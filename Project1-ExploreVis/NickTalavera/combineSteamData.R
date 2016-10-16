@@ -1,6 +1,7 @@
 library(jsonlite)
 library(stringr)
 library(dplyr)
+library(qdapRegex)
 
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 steamCSVFinder <- function() {
@@ -146,6 +147,7 @@ removeSymbols = function(namesArray) {
   newNames = str_replace_all(newNames,"[[:punct:]]","")
   newNames = str_replace_all(newNames, "[^[:alnum:]]", " ")
   newNames = trim(newNames)
+  newNames = rm_white(newNames)
   return(newNames)
 }
 
@@ -200,7 +202,7 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
   return(ignMetacritcMerged)
 }
 rm(list = setdiff(ls(), lsf.str()))
-setwd('/Users/nicktalavera/Coding/NYC_Data_Science_Academy/NYCDSA-Project-1/Steam')
+setwd('/Users/nicktalavera/Coding/bootcamp007_project/Project1-ExploreVis/NickTalavera/Steam')
 steamSummerSaleFirstDay = as.Date('20160704', "%Y%m%d")
 steamSummerSaleLastDay = as.Date('20160623', "%Y%m%d")
 metacriticReviews = metacriticCSVPreparer(read.csv('metacritic-20151227.csv',sep=';'))

@@ -26,7 +26,7 @@ removeSymbols = function(namesArray) {
   newNames = trim(newNames)
   return(newNames)
 }
-setwd('/Users/nicktalavera/Coding/NYC_Data_Science_Academy/NYCDSA-Project-1/Steam')
+setwd('/Users/nicktalavera/Coding/bootcamp007_project/Project1-ExploreVis/NickTalavera/Steam')
 steam = read.csv('steamDatabaseAllCombined.csv')
 head(steam)
 
@@ -148,8 +148,8 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 # # g = ggplot(data = steamScoresVSIncreaseThumbs, aes(factor(Review_Score_Steam_Users))) + ggtitle(title)
 # # g + geom_bar() + guides(color = "colorbar") + scale_fill_brewer(palette ="Blues",direction = 1, labels = c(paste(c('Less than',"Greater than"), reviewScore)), guide = guide_legend(title = "Metacritic Score"))
 # # ggsave(file=paste0(removeSymbols(title), ".eps"))
-# 
-# 
+#
+#
 # # #READY TO GO
 # #Histogram of Metacritic scores versus increase in sales based on thumbs up middle or down
 # steamScoresVSIncreaseThumbs = steam
@@ -182,7 +182,7 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 # ggsave(file=paste0(removeSymbols(title), ".eps"))
 ggsave(file=paste0(removeSymbols(title), ".eps"))
 # # #END
-# 
+#
 # # How many games go unplayed?
 # unplayed = steam
 # unplayed$Unplayed = unplayed$Players_Forever_As_Of_Today <= unplayed$Owners_As_Of_Today
@@ -190,59 +190,68 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 # sumUnplayed = c(sum(unplayed$Players_Forever_As_Of_Today), sum(unplayed$Owners_As_Of_Today ))
 # g <- ggplot(data = sumUnplayed, aes(x = sumUnplayed))
 # g + geom_bar()
-# 
-# #Scatter Metacritic vs How long to beat
-# title = 'Metacritic Scores Compared to Campaign Length'
-# labelsGameType = c('Indie Games','Action Games', 'Adventure Games',"Role Playing Games")
-# MetacriticVSCampaign = select(steam, main_story_length, Review_Score_Metacritic, Increase)
-# maxLength = 75
-# metacriticReview = 70
-# MetacriticVSCampaign = MetacriticVSCampaign[!is.na(MetacriticVSCampaign$main_story_length) & !is.na(MetacriticVSCampaign$Review_Score_Metacritic),]
-# MetacriticVSCampaign = MetacriticVSCampaign[MetacriticVSCampaign$main_story_length < maxLength,]
-# MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,0,6)] = 6
-# MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,6,12)] = 12
-# MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,12,17)] = 17
-# MetacriticVSCampaign$hoursRange[MetacriticVSCampaign$main_story_length >= 17] = 40
-# g = ggplot(MetacriticVSCampaign, aes(x = main_story_length , y = Review_Score_Metacritic)) + ggtitle(title)
-# g + geom_point(aes(color=factor(hoursRange))) + geom_hline(yintercept = metacriticReview, color="red") + ylab('Metacritic Score') + xlab("Game Campaign Length (hours)") + scale_color_discrete(name ="Typical Game Type",
-#                                                                                                                                                                                                                                      labels=labelsGameType) + geom_smooth(method = "lm", color = "black") + geom_smooth(aes(group= hoursRange)) +
-#   scale_x_continuous(breaks = pretty(MetacriticVSCampaign$main_story_length, n = 20))
-# ggsave(file=paste0(removeSymbols(title), ".eps"))
-# 
-# # Campaign Length Compared to the Increase of Owners
-# difference = 5
-# maxHours = 40
-# labelsScores = c(paste(seq(0, maxHours, by=difference), "to", seq(difference, maxHours+difference, by=difference), "hours"))
-# labelsScores = replace(labelsScores, length(labelsScores), paste0(">",40," hours"))
-# title = 'Campaign Length Compared to the Increase of Owners'
-# MetacriticVSCampaign$Rounded = round(MetacriticVSCampaign$main_story_length/difference)*difference
-# MetacriticVSCampaign$Rounded[MetacriticVSCampaign$Rounded > maxHours] = maxHours
-# g = ggplot(data = MetacriticVSCampaign, aes(x = Increase)) + ggtitle(title)
-# g + geom_histogram(aes(fill = factor(Rounded)), position = "fill", binwidth = 20) + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_brewer(palette = "Blues", labels = labelsScores, guide = guide_legend(title = "Campaign Length"))
-# ggsave(file=paste0(removeSymbols(title), ".eps"))
-# 
-# 
-# # Game Type Approximated by Campaign Length Compared to the Increase of Owners
-# labelsGameType = c('Indie Games','Action Games', 'Adventure Games',"Role Playing Games")
-# title = 'Game Type Approximated by Campaign Length Compared to the Increase of Owners'
-# g = ggplot(data = MetacriticVSCampaign, aes(x = Increase)) + ggtitle(title)
-# g + geom_histogram(aes(fill = factor(hoursRange)), position = "fill", binwidth = 20) + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_brewer(palette = "Blues", labels = labelsGameType, guide = guide_legend(title = "Typical Game Type"))
-# ggsave(file=paste0(removeSymbols(title), ".eps"))
-# 
-# 
-# # Release date relation to the start of the Summer sale?
-# title = 'Release Date Relation to the Start of the Summer Sale For Games Released in the Past Year?'
-# gameAge = steam
-# gameAge$GameAgeWeeks = floor(gameAge$GameAge/7)
-# # gameAge$GameAge[as.numeric(gameAge$GameAge) >= 9] = 10
-# gameAge = gameAge[gameAge$GameAge <= 365,]
-# gameAge = gameAge[!is.na(gameAge$GameAge) & !is.na(gameAge$Increase),]
-# # gameAge = filter(gameAge, gameAge$GameAge > -1000)
-# gameAge$GameAge = cut_interval(gameAge$GameAge, length = 1, rm.na = FALSE)
-# labelsYears = c(c('<1 year'), paste(as.character(1:100), "to", as.character(2:101), "years"))
-# g = ggplot(data = gameAge, aes(x = GameAgeWeeks)) + ggtitle(title)
-# g + geom_density() + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Age of Game (weeks)')
-# ggsave(file=paste0(removeSymbols(title), ".eps"))
+#
+#Scatter Metacritic vs How long to beat
+title = 'Metacritic Scores Compared to Campaign Length'
+labelsGameType = c('Indie Games','Action Games', 'Adventure Games',"Role Playing Games")
+MetacriticVSCampaign = select(steam, main_story_length, Review_Score_Metacritic, Increase)
+maxLength = 75
+metacriticReview = 70
+MetacriticVSCampaign = MetacriticVSCampaign[!is.na(MetacriticVSCampaign$main_story_length) & !is.na(MetacriticVSCampaign$Review_Score_Metacritic),]
+MetacriticVSCampaign = MetacriticVSCampaign[MetacriticVSCampaign$main_story_length < maxLength,]
+MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,0,6)] = 6
+MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,6,12)] = 12
+MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,12,17)] = 17
+MetacriticVSCampaign$hoursRange[MetacriticVSCampaign$main_story_length >= 17] = 40
+colourCount = length(unique(MetacriticVSCampaign$hoursRange))
+getPalette = colorRampPalette(brewer.pal(13, "Spectral"))
+platteNew = getPalette(colourCount)
+g = ggplot(MetacriticVSCampaign, aes(x = main_story_length , y = Review_Score_Metacritic)) + ggtitle(title)
+g + geom_point(aes(color=factor(hoursRange))) + geom_hline(yintercept = metacriticReview, color="red") + ylab('Metacritic Score') + xlab("Game Campaign Length (hours)") + scale_color_manual(values = platteNew, name ="Typical Game Type",
+                                                                                                                                                                                                                                     labels=labelsGameType) + geom_smooth(method = "lm", color = "black") + geom_smooth(aes(group= hoursRange)) +
+  scale_x_continuous(breaks = pretty(MetacriticVSCampaign$main_story_length, n = 20))
+ggsave(file=paste0(removeSymbols(title), ".eps"))
+
+# Campaign Length Compared to the Increase of Owners
+difference = 5
+maxHours = 40
+labelsScores = c(paste(seq(0, maxHours, by=difference), "to", seq(difference, maxHours+difference, by=difference), "hours"))
+labelsScores = replace(labelsScores, length(labelsScores), paste0(">",40," hours"))
+title = 'Campaign Length Compared to the Increase of Owners'
+MetacriticVSCampaign$Rounded = round(MetacriticVSCampaign$main_story_length/difference)*difference
+MetacriticVSCampaign$Rounded[MetacriticVSCampaign$Rounded > maxHours] = maxHours
+colourCount = length(unique(MetacriticVSCampaign$Rounded))
+getPalette = colorRampPalette(brewer.pal(9, "PuBuGn"))
+platteNew = getPalette(colourCount)
+g = ggplot(data = MetacriticVSCampaign, aes(x = Increase)) + ggtitle(title)
+g + geom_histogram(aes(fill = factor(Rounded)), position = "fill", binwidth = 20) + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_manual(values = platteNew, labels = labelsScores, guide = guide_legend(title = "Campaign Length"))
+ggsave(file=paste0(removeSymbols(title), ".eps"))
+
+
+# Game Type Approximated by Campaign Length Compared to the Increase of Owners
+labelsGameType = c('Indie Games','Action Games', 'Adventure Games',"Role Playing Games")
+title = 'Game Type Approximated by Campaign Length Compared to the Increase of Owners'
+colourCount = length(unique(MetacriticVSCampaign$hoursRange))
+getPalette = colorRampPalette(brewer.pal(13, "Spectral"))
+platteNew = getPalette(colourCount)
+g = ggplot(data = MetacriticVSCampaign, aes(x = Increase)) + ggtitle(title)
+g + geom_histogram(aes(fill = factor(hoursRange)), position = "fill", binwidth = 20) + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_manual(values = platteNew, labels = labelsGameType, guide = guide_legend(title = "Typical Game Type"))
+ggsave(file=paste0(removeSymbols(title), ".eps"))
+
+
+# Release date relation to the start of the Summer sale?
+title = 'Release Date Relation to the Start of the Summer Sale For Games Released in the Past Year?'
+gameAge = steam
+gameAge$GameAgeWeeks = floor(gameAge$GameAge/7)
+# gameAge$GameAge[as.numeric(gameAge$GameAge) >= 9] = 10
+gameAge = gameAge[gameAge$GameAge <= 365,]
+gameAge = gameAge[!is.na(gameAge$GameAge) & !is.na(gameAge$Increase),]
+# gameAge = filter(gameAge, gameAge$GameAge > -1000)
+gameAge$GameAge = cut_interval(gameAge$GameAge, length = 1, rm.na = FALSE)
+labelsYears = c(c('<1 year'), paste(as.character(1:100), "to", as.character(2:101), "years"))
+g = ggplot(data = gameAge, aes(x = GameAgeWeeks)) + ggtitle(title)
+g + geom_density() + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Age of Game (weeks)')
+ggsave(file=paste0(removeSymbols(title), ".eps"))
 
 
 # + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_brewer(palette = "Blues", labels = labelsScores, guide = guide_legend(title = "Typical Game Type"))
