@@ -1,0 +1,266 @@
+---
+title: "Extramarital Affairs"
+author: 'Project I : Visualisation with ggplot2'
+output: ioslides_presentation
+---
+
+
+```{r,comment="",echo=FALSE,message=FALSE, warning=FALSE}
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library("gridExtra")
+library(knitr)
+library("RColorBrewer")
+library(reshape2)
+
+file1= "C:\\Users\\KB\\Downloads\\Datasets\\Project_ggplot2\\affairs.csv"
+affairs = read.csv(file1,stringsAsFactors = FALSE)
+affairs$Gender=affairs$sex
+
+```
+
+
+
+## Introduction {.smaller}
+
+ - At least once in their lives... <br />
+  
+   <center>   **27.2%** of Men and **22.9%** of Women had an extramarital affair according to the 2012 Infidelity Study in the USA ". </center> <br />
+   
+
+-  What are the responsible factors for extramarital affairs ? <br />
+
+<center>![](C:\Users\KB\Downloads\Datasets\Project_ggplot2\images_1.jpg)</center>
+
+<br />
+
+
+
+## The Data {.smaller}
+
+> Survey based on the paper *"Theory of Extramarital Affairs"* published in the *Journal of Political Economy* in 1978.
+
+
+```{r,comment=""}
+head(affairs,3)
+str(affairs)
+```
+
+## The Participants  {.smaller}
+
+```{r, fig.height=3, fig.width=6}
+g = ggplot(data =affairs,aes(nbaffairs))
+g + geom_histogram(binwidth = 0.2)+
+  xlab("Nb of Affairs")+ylab("Participants")+
+  coord_cartesian(xlim=c(0,12.5))
+
+```
+
+=> Choose only people with at leat 1 extramarital affair
+
+```{r,comment=""}
+affairs2=filter(affairs,nbaffairs>=1)
+```
+
+## The factors - Spouse {.smaller}
+
+```{r,comment="",fig.height=4, fig.width=8, fig.align='center'}
+g = ggplot(data = affairs2, aes(x = Gender, y = rate))
+g + geom_boxplot(aes(fill=Gender))+xlab("Gender")+ 
+  ylab("Marriage Rating") +ggtitle("Marriage rating vs Gender")
+
+```
+
+## The factors - Children {.smaller}
+
+```{r,comment="",fig.height=4, fig.width=8,fig.align='center'}
+g = ggplot(data = affairs2, aes(x = child, y = rate))
+g + geom_boxplot(aes(fill=Gender))+xlab("Children")+
+  ylab("Marriage Rating") +ggtitle("Marriage rating vs Children")
+```
+
+## The factors- Children {.smaller}
+
+```{r,echo=FALSE}
+
+options(warn=-1)
+```
+
+
+```{r,comment="",fig.height=4, fig.width=8, fig.align='center'}
+
+g= ggplot(data = affairs2, aes(child,nbaffairs,fill=child))
+
+  g+geom_bar(stat = 'identity')+ylim(0,12.5)+
+  xlab("Children") +ylab('Nb affairs')+facet_grid(.~sex)
+
+```
+
+
+##  The factors - Years of marriage {.smaller}
+
+```{r,echo=FALSE}
+
+affairs2$Years_marriage=affairs2$ym
+affairs2$Nb_affairs=affairs2$nbaffairs
+
+female=filter(affairs2,sex=='female')
+male=filter(affairs2,sex=='male')
+
+aux=affairs2
+aux$Years_marriage=cut(aux$Years_marriage, breaks = c(0,seq(0.125,16,5)))
+
+
+
+aux$Years_marriage=revalue(aux$Years_marriage, c("(0,0.125]"='< 1 year', "(0.125,5.12]"="[1-5] years", "(5.12,10.1]"="[5-10] years", "(10.1,15.1]"="[10-15] years" ))
+
+```
+
+```{r,comment="",fig.height=4, fig.width=8,fig.align='center'}
+g= ggplot(data =aux,aes(Years_marriage,Nb_affairs, fill=Years_marriage))
+g+geom_bar(stat="identity")+facet_grid(~Gender)+
+  theme(axis.text.x = element_blank(),axis.title.x = element_blank(),
+        axis.ticks.x = element_blank())+
+  ylim(0,12.5)+
+  ylab("Nb of affairs")+ ggtitle("Number of Affairs vs Years of Marriage")
+
+```
+
+
+
+## What about middle life crisis? {.smaller}
+
+```{r echo=FALSE}
+
+aux=affairs2
+
+aux$age=cut(aux$age, breaks = c(18,seq(17,62,3)))
+
+auxm=filter(aux,sex == 'male')
+
+auxm$age=revalue(auxm$age, c("(20,23]"='[20-23]', "(23,26]"="[23-26]", "(26,29]"="[26-29] ", "(29,32]"="[29-32] ", '(32,35]'='[32-35]', '(35,38]'='[35-38]', '(41,44]'= '[41-44]', '(44,47]'='[44-47]', '(50,53]'='[50-53]', '(56,59]'='[56-59]'))
+
+
+auxm$Age=auxm$age
+
+g = ggplot(data = auxm, aes(Age,nbaffairs,fill=Age))
+
+g.male = g+geom_bar(stat="identity")+ ggtitle("Male") + theme(axis.title.y = element_blank(),plot.margin=unit(c(0.1,0.2,0.1,-.1),"cm"))+
+  coord_flip()+ylim(0,12.5)+ylab("Nb of Affairs")
+ 
+#-------Female
+aux=affairs2
+
+auxf= filter(aux,sex == 'female',age>=20)
+
+auxf$age=cut(auxf$age, breaks = c(18,seq(17,62,3)))
+
+
+set.seed(12.5)
+g = ggplot(data = auxf, aes(age,nbaffairs,fill=age))
+
+g.female = g+geom_bar(stat="identity")+theme(legend.position = 'none',
+                                             axis.text.y = element_blank(),
+                                              axis.title.y = element_blank(),                              plot.margin=unit(c(0.1,0.2,0.1,-.1),"cm"),axis.ticks.y = element_blank())+ ggtitle("Female")+ 
+  coord_flip()+ ylab("Nb of Affairs")+
+  scale_y_reverse(limits=c(12.5,0))
+
+```
+
+```{r,comment="",fig.height=4, fig.width=8, fig.align='center'}
+
+grid.arrange(g.female,g.male,widths=c(0.45,0.6),ncol=2)
+
+```
+
+
+
+## The factors- Level of Education {.smaller}
+
+
+```{r echo=FALSE}
+
+affairs3=affairs2
+affairs3$Education=affairs3$education
+
+# Create ten segments to be colored in
+affairs3$Education = cut(affairs2$education, 3)
+affairs3$Education=revalue(affairs3$Education, c("(8.99,12.7]"='High School', "(12.7,16.3]"="College", "(16.3,20]"="Advanced Degree"))
+```
+
+```{r,comment="",fig.height=4, fig.width=8, fig.align='center'}
+ggplot() +geom_tile(data = affairs3, aes(Gender,nbaffairs, fill = Education),
+                    width=0.1)+
+  geom_contour(color = 'white', alpha = 0.5) +
+  xlab("Gender") +ylab('Nb of Affairs')+ggtitle("Number of Affairs vs Education")
+```
+
+## Conclusion- All Factors{.smaller}
+
+```{r echo=FALSE}
+
+
+
+# auxf$Gender=as.factor(auxf$Gender) 
+# # % male 2 female 1
+# auxf$Gender=as.numeric(auxf$Gender)
+auxf$education=as.factor(auxf$education) 
+auxf$education=as.numeric(auxf$education) 
+auxf$child=as.factor(auxf$child) 
+auxf$child=as.numeric(auxf$child)
+
+affairs_f=select(auxf,-occupation,-religious,-nbaffairs,-ym)
+
+affairs_f %>% select_if(is.numeric) %>% cor->cor_tab_f 
+
+
+cor_tab_f=abs(cor_tab_f)
+aux=melt(cor_tab_f)
+aux$Var1=as.character(aux$Var1)
+aux$Var2=as.character(aux$Var2)
+
+
+gf=ggplot(aux,aes(Var1,Var2))+geom_tile(data=aux,aes(fill=value))+
+  coord_equal()+scale_fill_distiller(limits = c(1,0),palette = 'PuRd')+
+  scale_x_discrete("")+ scale_y_discrete("")+ggtitle("Female")
+
+
+# auxf$Gender=as.factor(auxf$Gender) 
+# # % male 2 female 1
+# auxf$Gender=as.numeric(auxf$Gender)
+auxm$education=as.factor(auxm$education) 
+auxm$education=as.numeric(auxm$education) 
+auxm$child=as.factor(auxm$child) 
+auxm$child=as.numeric(auxm$child)
+
+affairs_m=select(auxm,-occupation,-religious,-nbaffairs,-ym)
+
+affairs_m %>% select_if(is.numeric) %>% cor->cor_tab_m 
+
+
+cor_tab_m=abs(cor_tab_m)
+aux=melt(cor_tab_m)
+aux$Var1=as.character(aux$Var1)
+aux$Var2=as.character(aux$Var2)
+
+
+gm=ggplot(aux,aes(Var1,Var2))+geom_tile(data=aux,aes(fill=value))+
+  coord_equal()+scale_fill_distiller(limits = c(1,0),palette = 'PuRd')+
+  scale_x_discrete("")+ scale_y_discrete("")+ggtitle(" Male")
+
+
+
+
+
+
+```
+
+```{r,fig.height=4, fig.width=8, fig.align='center'}
+
+grid.arrange(gf,gm,widths=c(0.4,0.4),ncol=2)
+
+```
+
+
+

@@ -1,0 +1,83 @@
+---
+title: 'News Headlines: A Visual Exploration'
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Data Visualization Project
+
+Goals: Do an exploration of a dataset
+
+*The absence of an insight is an insight -CPM-*
+
+## Choosing the Dataset
+
+**Thought Process**
+
+- UCI Repository
+- Rationale for my dataset
+- Moving forward with the dataset
+
+## Merging the two datasets {.columns-2}
+
+```html
+**Important**
+- clusterid
+- category
+- timestamp
+```
+```
+**Less important**
+- Publisher
+- hostname
+- URL
+```
+
+## Initial Mapping
+
+<img src="images/BarGraph.png" alt="md_quick_ref" height="500" width="900" align="middle">
+
+##Time Difference from First to Last Occurence
+-goal: to see the effects of virality regarding certain news
+
+-result:
+
+
+```html
+Last Occurence - First Occurence = Time Difference of 0!!!
+```
+
+<img src="images/freakout.jpg" alt="md_quick_ref" height="250" width="250" align="right">
+
+## Wordcloud!
+
+```
+insert magical code and 24 hours of life here
+```
+
+## Business Wordcloud 
+
+<img src="images/Businesswordcloud2.png" alt="md_quick_ref" height="500" width="900" align="middle">
+
+## Entertainment Wordcloud 
+
+<img src="images/Entertainmentwordcloud2.png" alt="md_quick_ref" height="500" width="900" align="middle">
+
+## Technology Wordcloud 
+
+<img src="images/Technologywordcloud2.png" alt="md_quick_ref" height="500" width="900" align="middle">
+
+## Health Wordcloud 
+
+<img src="images/Healthwordcloud2.png" alt="md_quick_ref" height="500" width="900" align="middle">
+
+## Future Questions
+
+- Is there a reason Entertainment is so high?
+- Which Publishers post substatial news?
+- Political Divide due to echo chamber?
+
+
