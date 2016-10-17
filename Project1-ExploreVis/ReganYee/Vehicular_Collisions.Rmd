@@ -7,7 +7,7 @@ output: ioslides_presentation
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
-setwd("~/Documents/bootcamp007_project/Project1-ExploreVis/ReganYee")
+setwd("~/Documents/Project/")
 vehc = read.csv("NYPD_Motor_Vehicle_Collisions.csv")
 library(RgoogleMaps)
 library(dplyr)
@@ -106,6 +106,9 @@ diff2014 = zip_choropleth(df20142013,
                           num_colors = 1,
                           legend="Difference in Accidents")
 
+# Fatalities by Borough
+people_killed_by_borough = vehc %>% group_by(year,BOROUGH) %>% summarize(total=sum(NUMBER.OF.PERSONS.KILLED))
+
 ```
 
 ## Dataset Summary
@@ -186,6 +189,11 @@ Year | Count of Fatalities
 2014 | 262
 2015 | 243
 
+## Fatalities by Borough
+``` {r by_borough, echo = FALSE}
+ggplot(people_killed_by_borough %>% filter(BOROUGH != "") %>% filter(year %in% c(2013,2014,2015))) + geom_bar(aes(x=year,y=total),stat="identity") + facet_wrap( ~ BOROUGH)
+```
+
 ## Vehicular Crashes by Hour of Day
 
 ```{r hours, cache = TRUE, echo = FALSE, fig.height=3, fig.ext='png'}
@@ -215,6 +223,15 @@ Number | Reason | Count
 20 - Aggressive Driving/Road Rage  
 42 - Cell Phone (hands-free)  
 43 - Cell Phone (hand-held)
+
+## Top 5 Contributing Factors - Fatal Collisions
+Number | Reason | Count
+------------- | ------------- | -------------
+1|Unspecified|536
+2|Traffic Control Disregarded|124
+3|Driver Inattention/Distraction|95
+4|Failure to Yield Right-of-Way|75
+5|Passenger Distraction|52
 
 ## Conclusions
 - Vehicular collisions are on the rise, but fatalities have been decreasing since 2013.
