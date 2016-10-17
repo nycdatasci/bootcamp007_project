@@ -1,9 +1,0 @@
-
-*.swp
-*.cache/
-*.Rhistory
-
-*.ipynb_checkpoints/
-*.Rapp.history
-*.DS_Store
-.Rproj.user
