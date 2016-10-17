@@ -1,4 +1,5 @@
 getwd()
+setwd("/Users/chris")
 setwd("./Documents/Dataset")
 
 install.packages("openxlsx")
@@ -39,7 +40,7 @@ bubbleBrand + scale_y_continuous(breaks = seq(1, 200, 5)) +
   theme(legend.position="bottom", legend.direction="horizontal",
                        legend.box = "horizontal",
                        legend.key.size = unit(1, "cm")) +
-  labs(x = "Age", y = "Brand Value in $ billion")
+  labs(x = "Brand Value in $ billion", y = "Age")
   
 
 # IDEA #2:starbucks globally on geographic map
