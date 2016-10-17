@@ -80,19 +80,18 @@ title = paste("Overall Ownership and Game Age Compared to Percent Discounts")
 metacriticScoresVSIncreaseSeventyPlus$GameAge = floor(metacriticScoresVSIncreaseSeventyPlus$GameAge/365)
 metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$GameAge),]
 metacriticScoresVSIncreaseSeventyPlus$GameAge = cut_interval(metacriticScoresVSIncreaseSeventyPlus$GameAge, length = 3, rm.na = FALSE)
-factosokaf = 1500000
+factosokaf = 1500
 metacriticScoresVSIncreaseSeventyPlus$Owners_Before = round(metacriticScoresVSIncreaseSeventyPlus$Owners_Before/factosokaf)*factosokaf
-metacriticScoresVSIncreaseSeventyPlus = summarise(group_by(metacriticScoresVSIncreaseSeventyPlus, Owners_Before), meanSalePercent = mean(Sale_Percent), meanGameAge =  mean(GameAge))
+metacriticScoresVSIncreaseSeventyPlus = summarise(group_by(metacriticScoresVSIncreaseSeventyPlus, Owners_Before), meanSalePercent = mean(Sale_Percent), meanGameAge =  mean(GameAge), meanIncrease = mean(Increase))
 metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$meanSalePercent),]
+metacriticScoresVSIncreaseSeventyPlus$meanSalePercent = metacriticScoresVSIncreaseSeventyPlus$meanSalePercent/100
 head(metacriticScoresVSIncreaseSeventyPlus)
 colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$GameAge))
 getPalette = colorRampPalette(brewer.pal(8, "Accent"))
 platteNew = rev(getPalette(colourCount))
 g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = Owners_Before, y = meanSalePercent)) + ggtitle(title)
-g + geom_point() + ylab('Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') # + scale_fill_manual(values = platteNew, labels = labelsYears, guide = guide_legend(title = "Metacritic Score")) + expand_limits(x = 0, y = 0)
+g + geom_point(aes(color=meanIncrease)) + ylab('Mean Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') # + scale_fill_manual(values = platteNew, labels = labelsYears, guide = guide_legend(title = "Metacritic Score")) + expand_limits(x = 0, y = 0)
 
-g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = Owners_Before, y = meanSalePercent)) + ggtitle(title)
-g + geom_bar() + ylab('Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') # + scale_fill_manual(values = platteNew, labels = labelsYears, guide = guide_legend(title = "Metacritic Score")) + expand_limits(x = 0, y = 0)
 
 ggsave(file=paste0(removeSymbols(title), ".eps"))
 # 
