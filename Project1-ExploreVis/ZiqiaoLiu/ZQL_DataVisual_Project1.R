@@ -1,12 +1,6 @@
----
-title: "Explore House Sale Data"
-author: "Ziqiao (Cheryl) Liu"
-date: "10/16/2016"
-output: ioslides_presentation
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+rm(list = ls())
+
 library(dplyr)
 library(ggplot2)
 library(scales)
@@ -22,43 +16,7 @@ names = c("MSZoning",
           "MoSold", "YrSold", "SalePrice")
 
 house_data = house_1[, names]
-```
 
-## A Data Visualization Analysis Based on House Data from Ames, Iowa
-
-- Background of data
-- Insights explored from data
-- reference: <https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data>.
-
-## Background of Data
-
-- The data set describing the sale of individual residential property in Ames, Iowa from 2006 to 2010.
-
-- Data information includes potentional homebuyer would like to know about a potential porterty.
-
-- The data selected for this visualization project includes Nominal, Discrete, Continuous, Ordinal.
-
-## Background of Data
-
-- 8 attritubes selected, 1456 observations
-- SalePrice (Continuous, in $)
-- Year Built (Discrete) : original construction date
-- Year Sold (Discrete)
-- Month Sold (Discrete)
-- House Style (Nominal): style of dwelling
-- Zoning Classification (Nominal) : identifies the general zoning classification of the sale. 
-- Foundation (Nominal): type of foundation
-- Overall Quality (Ordinal, from 1 to 10)
-
-## Background of Data
-
-```{r house_data, echo = TRUE}
-summary(house_data)
-```
-
-## House Prices Trend with Built Year
-
-```{r , echo = F}
 g1 = ggplot(data= house_data, aes(x= YearBuilt, y =SalePrice))
 plot1 = g1 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.8)+
   geom_smooth(method='lm',size = 0.5, se = T) + 
@@ -72,10 +30,6 @@ plot1 = g1 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.8
                                                     "Split Foyer", "Split Level"))
 plot1 
 
-```
-
-## House Prices Trends with Built Year and House Styles
-```{r, echo=F}
 g2 = ggplot(data= house_data, aes(x= YearBuilt, y =SalePrice, color = HouseStyle))
 plot2 = g2 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.3)+
   geom_smooth(method='lm',size = 1.0, se = FALSE)+ 
@@ -86,11 +40,6 @@ plot2 = g2 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.3
                                                     "2.5-Story", "2.5-Story(U)","2-Story",
                                                     "Split Foyer", "Split Level"))
 plot2
-
-```
-
-## House Prices Trends with Sold Years
-```{r, echo = F}
 
 house_yrsold= house_data%>%select(.,YrSold, SalePrice)%>%
   group_by(.,YrSold)%>%summarise(.,total = n(), median_p=median(SalePrice))
@@ -103,10 +52,6 @@ plot3 = g3 + geom_bar(aes(fill=median_p), stat = "identity") +
   ggtitle(" House Sale vs. Year")
 plot3
 
-```
-
-## Houses Price Trends with Months 
-```{r, echo= F}
 house_mosold= house_data%>%select(.,YrSold, MoSold,SalePrice)%>%
   group_by(.,MoSold)%>%summarise(.,total = n(), median_p=median(SalePrice))
 house_mosold$MoSold <- factor(house_mosold$MoSold, levels=reorder(house_mosold$MoSold, -house_mosold$total))
@@ -118,10 +63,7 @@ plot4 = g4 + geom_bar(aes(fill=median_p), stat = "identity") +
   scale_x_discrete(labels=c("Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec"))+
   ggtitle("Houses Sale vs. Month")
 plot4
-```
 
-## House Prices with Different Zonings
-```{r, echo= F}
 plot5_violin = ggplot(data = house_data, aes(x= reorder(MSZoning,SalePrice, median), y =SalePrice)) +
   geom_violin(aes(fill = MSZoning)) + scale_y_continuous(labels = comma) +
   xlab("Zone Classification")+ 
@@ -130,16 +72,12 @@ plot5_violin = ggplot(data = house_data, aes(x= reorder(MSZoning,SalePrice, medi
   ggtitle("General Zonning Classification vs. Sale Price")+
   scale_fill_manual(values = c('#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854'),
                     name = " ", labels=c("Others", "Floating Village(FV)", "Residential High Density(RH)",
-                                                  "Residential Low Density(RL)", "Residential Medium Density(RM)"))+
+                                         "Residential Low Density(RL)", "Residential Medium Density(RM)"))+
   scale_x_discrete(labels=c("Others", "RM", "RH","RL", "FV")) +
   theme(legend.position ="bottom")
 
 plot5_violin
 
-```
-
-## Foundations Matters House Overall Quality
-```{r, echo=F}
 house_data$OverallQual = as.factor(house_data$OverallQual)
 house_overqual= house_data%>%select(.,OverallQual, SalePrice, Foundation)%>%
   group_by(.,OverallQual)
@@ -147,22 +85,11 @@ g6 = ggplot(data=house_overqual, aes(x = OverallQual))
 plot6=g6+geom_bar(aes(fill= Foundation), position = "fill") + 
   theme(legend.position ="bottom") + 
   scale_fill_manual(values = c('#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f'),
-                     name = "Foundation", labels=c("Poured Contrete", "Cinder Block", "Brik&Tile",
-                                                    "Slab", "Stone","Wood"))+
+                    name = "Foundation", labels=c("Poured Contrete", "Cinder Block", "Brik&Tile",
+                                                  "Slab", "Stone","Wood"))+
   xlab("Overall Quality") +
   ylab("Percent")+
   ggtitle("House Foundation VS. Overall House Quality ")
 
 plot6
-
-```
-
-## Conclusion
-
-* Popular house style changes with time (Some house style no longer popular and disappear in the market).
-* It is possible to get a deal in off peak house market season.
-* 
-* House sale peak time and off peak time varies beteen months with price varies
-* 
-
 
