@@ -318,6 +318,16 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 # g + geom_density() + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Age of Game (weeks)')
 # ggsave(file=paste0(removeSymbols(title), ".eps"))
 
+#Do players actually play the games they buy?
+steamPlayed = select(steam,appid,Owners_As_Of_Today,Players_Forever_As_Of_Today)
+steamPlayed$Unopened = steamPlayed$Owners_As_Of_Today - steamPlayed$Players_Forever_As_Of_Today
+sum(numeric(steamPlayed$Players_Forever_As_Of_Today))
+sum(steamPlayed$Players_Forever_As_Of_Today) 
+sum(steamPlayed$Owners_As_Of_Today)
+# steamPlayed$Unopened
+g = ggplot(steamPlayed, aes(Unopened))
+g + geom_density()
+
 
 # + scale_y_continuous(labels=percent) + ylab('Percentage of Sales') + xlab('Increase of Owners') + guides(color = "colorbar") + scale_fill_brewer(palette = "Blues", labels = labelsScores, guide = guide_legend(title = "Typical Game Type"))
 # How many games go unbeaten?

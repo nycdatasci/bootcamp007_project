@@ -216,6 +216,7 @@ ignMetacritcHLTBMerged = ignMetacritcHLTBMerged(ignReviews,metacriticReviews,ste
 steamMerged = merge(x = steamSummerSale, y = steamSpyAll, by = "Name", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = steamDatabaseHistory[[length(steamDatabaseHistory)]], by = "appid", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMerged, by = "Name", all.x = TRUE)
+# steamMerged$Players_Forever_As_Of_Today = numeric(Players_Forever_As_Of_Today)
 steamMerged$median_forever = NULL
 steamMerged$average_forever = NULL
 steamMerged$X = NULL
