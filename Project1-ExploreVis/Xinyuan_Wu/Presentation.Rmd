@@ -1,0 +1,311 @@
+---
+title: "Visualizing 14/15 Season NBA Shot-Log"
+author: "Xinyuan Wu (Andrew)"
+date: "Monday October 17, 2016"
+output: ioslides_presentation
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction {.build}
+
+NBA shot-log data summarizes the information of every shot during 14-15 regular season. From this data, we can gain information about the shooting selection, performance and play style of every player. This data set can be found at <https://www.kaggle.com/dansbecker/nba-shot-logs>.
+
+In this work, we are going to visualize this data based on shot distribution and shot accuracy.
+
+Players under study:
+<img src="images/Players.png" alt="output_option" width="643" height="200">
+
+
+## Contents
+
+- Summary of NBA shot-log data
+- Visualization of shot number 
+- Visualization of shot accuracy 
+    + Hot hand Phenomenon
+
+
+
+## Data Summary {.smaller}
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+setwd("G:/Dropbox/Dropbox/NYC DS Academy/Project 1")
+source("Xinyuan_Wu/data cleaning.R")
+```
+
+- NAs and bad observations were removed due to lacking of specific pattern.
+- Match Variable was splitted and necessary data type conversion were performed. 
+- Functions were created for subsetting data in order to visualize hot hand phenomenon.
+
+Variables:
+
+player name | match date | home team | away team | location | match result | shot number | 
+------------|------------|-----------|-----------|----------|--------------|-------------|
+factor      | date       | chr       | chr       | factor   | factor       | int         | 
+
+dribbles | touch time | shot dist | pts type | shot result | close def dist | 
+---------|------------|-----------|----------|-------------|----------------|
+int      | num        | num       | factor   | factor      | factor         |
+
+Number of observations after subsetting data:
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+dim(data)
+```
+
+## Visualization of shot number
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+# graph 1
+data1 <- data
+data1$dist_cut <- cut(data1$shot_dist, 42)
+levels(data1$dist_cut) <- 0.6:41.6
+data1$dist_cut <- as.numeric(as.character(data1$dist_cut))
+
+g <- ggplot(data = data1, aes(x = dist_cut))
+g <- g + geom_density(aes(fill = player_name))
+g <- g + facet_grid(player_name ~ .)
+g <- g + theme_gdocs() + theme(axis.text.y = element_blank())
+g <- g + xlab("Shot Distance") + ylab("Shot Density") + ggtitle("Shot Density vs. Distance")
+g <- g + scale_fill_manual("Players", values = c("#FFCC33", "#FF3300", "#990000", "#0066FF"))
+g
+```
+
+## Visualization of shot number
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+# graph 7
+data7 <- data %>%
+         group_by(player_name, date) %>%
+         summarize(num_shots = n())
+
+g <- ggplot(data7, aes(x = date, y = num_shots))
+g <- g + geom_point(aes(color = player_name), alpha = 0.3)
+g <- g + geom_smooth(aes(color = player_name), se = FALSE, size = 2)
+#g <- g + facet_grid(player_name ~ .)
+g <- g + theme_gdocs()
+g <- g + xlab("Date") + ylab("Number of Shots") + ggtitle("Number of Shots vs. Date")
+g <- g + scale_colour_manual("Players", values = c("#FFCC33", "#FF3300", "#990000", "#0066FF"))
+g
+```
+
+## Visualization of shot number
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+# graph 11
+data$touch_cut <- cut(data$touch_time, 47, include.lowest = TRUE)
+levels(data$touch_cut) <- seq(0.25, 23.25, by = 0.5)
+data11 <- data %>%
+          group_by(player_name, touch_cut) %>%
+          summarize(num_shots = n()) %>%
+          mutate(touch_time = as.numeric(as.character(touch_cut)))
+g <- ggplot(data11, aes(x = touch_time, y = num_shots))
+g <- g + geom_point(aes(color = player_name), size = 4, alpha = 0.2)
+g <- g + geom_line(aes(color = player_name), size = 2)
+#g <- g + facet_grid(player_name ~ .)
+g <- g + theme_gdocs() + xlim(0, 15)
+g <- g + xlab("Touch Time (s)") + ylab("Number of Shots") + ggtitle("Number of Shots vs. Touch Time")
+g <- g + scale_color_manual("Players", values = c("#FFCC33", "#FF3300", "#990000", "#0066FF"))
+g
+```
+
+## Visualization of shot number
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+# graph 17
+data17.1 <- data[data$player_name == "Curry", ]
+data17.2 <- data %>% filter(player_name == "Westbrook")
+data17.3 <- data %>% filter(player_name == "Harden")
+data17.4 <- data %>% filter(player_name == "LBJ")
+
+
+g <- ggplot(rbind(data17.2, data17.1), aes(x = shot_dist, y = close_def_dist))
+g <- g + stat_density2d(geom = "density2d", aes(color = player_name, alpha = ..level..), size = 2, contour = TRUE)
+g <- g + scale_color_manual("Players", values = c("#FF3300", "#0099CC"))
+g <- g + coord_cartesian(xlim = c(0, 30), ylim = c(0, 12))
+g <- g + xlab("Shot Distance") + ylab("Defender Distance") + ggtitle("Shot Distribution")
+g <- g + theme_gdocs()
+g
+```
+
+## Visualization of shot number
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+# graph 17.1
+g <- ggplot(rbind(data17.2, data17.4), aes(x = shot_dist, y = close_def_dist))
+g <- g + stat_density2d(geom = "density2d", aes(color = player_name, alpha = ..level..), size = 2, contour = TRUE)
+g <- g + scale_color_manual("Players", values = c("#FF3300", "#0099CC"))
+g <- g + coord_cartesian(xlim = c(0, 30), ylim = c(0, 10))
+g <- g + xlab("Shot Distance") + ylab("Defender Distance") + ggtitle("Shot Distribution")
+g <- g + theme_gdocs()
+g
+```
+
+## Visualization of shot number
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+# graph 18
+data18 <- data
+data18$opp <- ifelse(data18$location == "Away", data18$home_team, data18$away_team)
+data18$opp <- as.factor(data18$opp)
+
+data18.1 <- data18 %>%
+            group_by(player_name, opp) %>%
+            summarize(shot_number = n())
+
+g1 <- ggplot(data18.1, aes(x = player_name, y = opp))
+g1 <- g1 + geom_tile(aes(fill = shot_number), color = "white")
+g1 <- g1 + scale_fill_gradient(name = "Shot Numbers", low = "#66CCFF", high = "#FF3300")
+g1 <- g1 + xlab("Players") + ylab("Opponent") + ggtitle("Shot Attempt vs. opponents")
+g1 <- g1 + theme_gdocs() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
+g1
+```
+
+## Visualization of Shot Accuracy
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+data5 <- data %>%
+         group_by(player_name, date, pts_type) %>%
+         summarize(accuracy = sum(result)/n())
+
+g <- ggplot(data5, aes(x = player_name, y = accuracy))
+g <- g + geom_violin(aes(fill = player_name), alpha = 0.8)
+#g <- g + geom_dotplot(aes(fill = player_name), binaxis = "y", stackdir = "center")
+g <- g + xlab("Player") + ylab("Shot Accuracy") + ggtitle("Summary of Shot Accuracy")
+g <- g + theme_gdocs()
+g <- g + scale_fill_manual("Players", values = c("#FFCC33", "#FF3300", "#990000", "#0066FF"))
+g
+```
+
+## Visualization of Shot Accuracy
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+data14 <- data
+data14$dist_cut <- cut(data$shot_dist, 42)
+levels(data14$dist_cut) <- 0.6:41.6
+data14$dist_cut <- as.numeric(as.character(data14$dist_cut))
+data14 <- data14 %>%
+          group_by(player_name, dist_cut) %>%
+          summarize(accuracy = sum(result)/n())
+g <- ggplot(data14, aes(x = dist_cut, y = accuracy))
+g <- g + geom_point(aes(color = player_name), alpha = 0.2)
+g <- g + geom_smooth(aes(color = player_name), size = 2, se = FALSE)
+g <- g + xlim(-1, 30)
+g <- g + theme_gdocs()
+g <- g + scale_color_manual("Players", values = c("#FFCC33", "#FF3300", "#990000", "#0066FF"))
+g <- g + xlab("Shot Distance") + ylab("Accuracy") + ggtitle("Accuracy vs. Shot Distance")
+g
+```
+
+## Visualization of Shot Accuracy
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+data3 <- data
+data3list <- split(data3, data3$player_name)
+graph4list <- list()
+name <- c("Curry", "Harden", "LBJ", "Westbrook")
+for (i in 1:4) {graph4list[[i]] <- data3list[[i]] %>%
+    group_by(date, match_result) %>% 
+    summarize(accuracy = sum(result)/n()) %>%
+    mutate(player = name[i])
+}
+graph4data <- rbind(graph4list[[1]], graph4list[[2]], graph4list[[3]], graph4list[[4]])
+
+g <- ggplot(graph4data, aes(x = player, y = accuracy))
+g <- g + geom_boxplot(aes(color = match_result), position = "dodge")
+g <- g + xlab("Player") + ylab("Shot Accuracy") + ggtitle("Shot Accuracy vs. Match Result")
+g <- g + theme_gdocs()
+g <- g + scale_colour_manual("Match Result", values = c("#FF3333", "#0099CC"))
+g
+```
+
+## Visualization of Shot Accuracy
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+data6 <- data
+data6 <- data6 %>%
+         group_by(player_name, date) %>%
+         summarize(accuracy = sum(result)/n())
+
+g <- ggplot(data6, aes(x = date, y = accuracy))
+g <- g + geom_point(aes(color = player_name), alpha = 0.3)
+g <- g + geom_smooth(aes(color = player_name), se = FALSE, size = 2)
+#g <- g + facet_grid(player_name ~ .)
+g <- g + theme_gdocs()
+g <- g + xlab("Date") + ylab("Shot Accuracy") + ggtitle("Shot Accuracy vs. Date")
+g <- g + scale_colour_manual("Players", values = c("#FFCC33", "#FF3300", "#990000", "#0066FF"))
+g
+```
+
+## Visualization of Shot Accuracy
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+data19 <- data18 %>%
+          group_by(player_name, opp) %>%
+          summarize(accuracy = sum(result)/n())
+
+g2 <- ggplot(data19, aes(x = player_name, y = opp))
+g2 <- g2 + geom_tile(aes(fill = accuracy), color = "white")
+g2 <- g2 + scale_fill_gradient(name = "Shot Accuracy", low = "#3366CC", high = "#FF3300")
+g2 <- g2 + xlab("Players") + ylab("Opponent") + ggtitle("Shot Accuracy vs. opponents")
+g2 <- g2 + theme_gdocs() + theme(axis.text.x = element_text(angle = 30, hjust = 1))
+g2
+```
+
+## Hot Hand Phenomenon
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE, fig.height = 2.5}
+data21.0 <- find_hot_hand_0()
+data21.1 <- find_hot_hand_1()
+data21.2 <- find_hot_hand_2()
+data21.3 <- find_hot_hand_3()
+
+data21.01 <- data21.0 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "(after missed a shot)")
+data21.11 <- data21.1 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "after 1 shot made")
+data21.21 <- data21.2 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "after 2 shot made")
+data21.31 <- data21.3 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "after 3 shot made")
+
+data21 <- rbind(data21.01, data21.11, data21.21, data21.31)
+
+g <- ggplot(data21, aes(x = player_name, y = accuracy))
+g <- g + geom_bar(aes(fill = hothand), stat = "identity", position = "dodge")
+g <- g + xlab("Players") + ylab("Accuracy") + ggtitle("All Shots")
+g <- g + theme_gdocs()
+g <- g + scale_fill_hue(name = "Situation")
+g
+```
+
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE, fig.height = 2.5}
+data22.0 <- find_hot_hand_three0()
+data22.1 <- find_hot_hand_three1()
+data22.2 <- find_hot_hand_three2()
+
+data22.01 <- data22.0 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "(after missed a three)")
+data22.11 <- data22.1 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "after 1 three made")
+data22.21 <- data22.2 %>% group_by(player_name) %>% summarize(accuracy = sum(result)/n()) %>% mutate(hothand = "after 2 three made")
+
+data22 <- rbind(data22.01, data22.11, data22.21)
+
+g <- ggplot(data22, aes(x = player_name, y = accuracy))
+g <- g + geom_bar(aes(fill = hothand), stat = "identity", position = "dodge")
+g <- g + xlab("Players") + ylab("Accuracy") + ggtitle("Three-Points")
+g <- g + theme_gdocs()
+g <- g + scale_fill_hue(name = "Situation")
+g
+```
+
+## Conclusion {.smaller}
+
+- From the graphs, we can see:
+    * Four stars have dramatically different play style. Steph Curry tends to perform catch and quick release, while Russell Westbrook prefers to attack the rim with ball in hand.
+    * Steph Curry and Lebron James have a more stable shot accuracy than Harden and Westbrook.
+    * Hitting one shot tends to have negative effect on the next shot.
+
+- An extension of this work can be:
+    * Focus on defender side of the data.
+    * Perform hypothesis test to the shot accuracy and hot hand data.
+    * Prediction the probability of hitting a shot based on machine learning algorithms. 

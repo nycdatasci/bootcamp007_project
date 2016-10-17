@@ -1,0 +1,158 @@
+Region,Causes, Both sexes (2012), Female (2012), Male (2012), Both sexes (2000), Female (2000), Male (2000),Group
+Upper-middle-income, Communicable &amp; other Group I,1736464,796685,939779,2199363,982624,1216739,LargeSubgroup
+Upper-middle-income, Infectious and parasitic diseases,778893,335085,443808,948265,390003,558262,Subgroup
+Upper-middle-income, Tuberculosis,116108,38509,77599,196927,65408,131519,Inf.Para
+Upper-middle-income, STDs excluding HIV,8469,4769,3700,12704,6685,6019,Inf.Para
+Upper-middle-income, Syphilis,6932,3236,3696,10872,4854,6018,Inf.Para
+Upper-middle-income, Chlamydia,294,290,4,359,359,0,Inf.Para
+Upper-middle-income, Gonorrhoea,216,215,1,267,266,1,Inf.Para
+Upper-middle-income, Trichomoniasis,0,0,0,0,0,0,Inf.Para
+Upper-middle-income, Other STDs,1030,1030,0,1205,1205,0,Inf.Para
+Upper-middle-income, HIV/AIDS,336649,145383,191266,293320,120151,173169,Inf.Para
+Upper-middle-income, Diarrhoeal diseases,90121,44866,45255,166168,77124,89044,Inf.Para
+Upper-middle-income, Childhood-cluster diseases,12077,4735,7342,24731,9714,15017,Inf.Para
+Upper-middle-income, Whooping cough,4830,1453,3377,4944,1503,3441,Inf.Para
+Upper-middle-income, Diphtheria,104,46,58,325,154,171,Inf.Para
+Upper-middle-income, Measles,3660,1826,1834,10220,4427,5793,Inf.Para
+Upper-middle-income, Tetanus,3489,1414,2075,9240,3631,5609,Inf.Para
+Upper-middle-income, Meningitis,38479,17564,20915,56024,23942,32082,Inf.Para
+Upper-middle-income, Encephalitis,4182,1848,2334,8579,3634,4945,Inf.Para
+Upper-middle-income, Acute hepatitis B,41571,16243,25328,44309,16109,28200,Inf.Para
+Upper-middle-income, Acute hepatitis C,5860,2861,2999,2563,1200,1363,Inf.Para
+Upper-middle-income, Parasitic and vector diseases,44820,21640,23180,62390,29608,32782,Inf.Para
+Upper-middle-income, Malaria,22111,11287,10824,24087,12702,11385,Inf.Para
+Upper-middle-income, Trypanosomiasis,198,102,96,14152,6657,7495,Inf.Para
+Upper-middle-income, Chagas disease,7651,3338,4313,8666,3601,5065,Inf.Para
+Upper-middle-income, Schistosomiasis,3282,1717,1565,6653,3180,3473,Inf.Para
+Upper-middle-income, Leishmaniasis,2700,1162,1538,5042,1923,3119,Inf.Para
+Upper-middle-income, Lymphatic filariasis,0,0,0,1,1,0,Inf.Para
+Upper-middle-income, Onchocerciasis,0,0,0,2,0,2,Inf.Para
+Upper-middle-income, Leprosy,1448,576,872,384,123,261,Inf.Para
+Upper-middle-income, Dengue,3870,1632,2238,1073,367,706,Inf.Para
+Upper-middle-income, Trachoma,0,0,0,0,0,0,Inf.Para
+Upper-middle-income, Rabies,3565,1828,1737,2336,1055,1281,Inf.Para
+Upper-middle-income, Intestinal nematode infections,431,220,211,694,339,355,Inf.Para
+Upper-middle-income, Ascariasis,430,219,211,687,336,351,Inf.Para
+Upper-middle-income, Trichuriasis,0,0,0,0,0,0,Inf.Para
+Upper-middle-income, Hookworm disease,1,1,0,6,1,5,Inf.Para
+Upper-middle-income, Other infectious diseases,80125,36445,43680,79869,36098,43771,Inf.Para
+Upper-middle-income, Respiratory infections,560588,270389,290199,620295,293619,326676,Inf.Para
+Upper-middle-income, Lower respiratory infections,557851,269079,288772,616565,291703,324862,Inf.Para
+Upper-middle-income, Upper respiratory infections,2323,1163,1160,3334,1704,1630,Inf.Para
+Upper-middle-income, Otitis media,416,148,268,397,212,185,Inf.Para
+Upper-middle-income, Maternal conditions,22074,22074,0,32703,32703,0,Maternal
+Upper-middle-income, Neonatal conditions,302092,130708,171384,516815,224734,292081,Subgroup
+Upper-middle-income, Preterm birth complications,128578,58414,70164,224236,100045,124191,Neonatal
+Upper-middle-income, Birth asphyxia and birth trauma,88425,37206,51219,177002,76063,100939,Neonatal
+Upper-middle-income, Neonatal sepsis and infections,35634,14640,20994,58503,24235,34268,Neonatal
+Upper-middle-income, Other neonatal conditions,49457,20449,29008,57076,24392,32684,Neonatal
+Upper-middle-income, Nutritional deficiencies,72819,38430,34389,81288,41564,39724,Subgroup
+Upper-middle-income, Protein-energy malnutrition,47698,24919,22779,56456,28212,28244,NutritionalDeficiency
+Upper-middle-income, Iodine deficiency,400,188,212,303,138,165,NutritionalDeficiency
+Upper-middle-income, Vitamin A deficiency,120,118,2,1,0,1,NutritionalDeficiency
+Upper-middle-income, Iron-deficiency anaemia,20205,10833,9372,20924,11297,9627,NutritionalDeficiency
+Upper-middle-income, Other nutritional deficiencies,4395,2371,2024,3611,1921,1690,NutritionalDeficiency
+Upper-middle-income, Noncommunicable diseases,13648239,6425904,7222335,10925908,5094637,5831271,LargeSubgroup
+Upper-middle-income, Malignant neoplasms,3264664,1263230,2001434,2333446,885195,1448251,Subgroup
+Upper-middle-income, Mouth and oropharynx cancers,67151,18774,48377,49484,13062,36422,Cancer
+Upper-middle-income, Oesophagus cancer,231859,68183,163676,191000,63357,127643,Cancer
+Upper-middle-income, Stomach cancer,407887,136361,271526,349666,115356,234310,Cancer
+Upper-middle-income, Colon and rectum cancers,233831,105373,128458,155906,66680,89226,Cancer
+Upper-middle-income, Liver cancer,442412,125339,317073,324001,78667,245334,Cancer
+Upper-middle-income, Pancreas cancer,107469,47258,60211,66285,28047,38238,Cancer
+Upper-middle-income," Trachea, bronchus, lung cancers",762323,224355,537968,470432,130541,339891,Cancer
+Upper-middle-income, Melanoma and other skin cancers,28136,12591,15545,17581,7877,9704,Cancer
+Upper-middle-income, Breast cancer,128113,128113,0,87763,87763,0,Cancer
+Upper-middle-income, Cervix uteri cancer,70547,70547,0,57274,57274,0,Cancer
+Upper-middle-income, Corpus uteri cancer,26628,26628,0,18531,18531,0,Cancer
+Upper-middle-income, Ovary cancer,35959,35959,0,26116,26116,0,Cancer
+Upper-middle-income, Prostate cancer,90678,0,90678,52747,0,52747,Cancer
+Upper-middle-income, Bladder cancer,53061,12940,40121,36861,9182,27679,Cancer
+Upper-middle-income," Lymphomas, multiple myeloma",82919,34813,48106,61433,24709,36724,Cancer
+Upper-middle-income, Leukaemia,96441,41261,55180,86619,36242,50377,Cancer
+Upper-middle-income, Other malignant neoplasms,399266,174746,224520,281750,121793,159957,Cancer
+Upper-middle-income, Other neoplasms,68093,31772,36321,44654,20539,24115,Cancer
+Upper-middle-income, Diabetes mellitus,558785,322423,236362,335902,195478,140424,Diabetes
+Upper-middle-income," Endocrine, blood, immune disorders",94954,50392,44562,62685,34718,27967,Endocrine.blood.immunedisorders
+Upper-middle-income, Mental and behavioral disorders,72938,23040,49898,64402,21385,43017,Subgroup
+Upper-middle-income, Unipolar depressive disorders,1061,622,439,158,88,70,Men.Behav
+Upper-middle-income, Bipolar disorder,94,53,41,37,25,12,Men.Behav
+Upper-middle-income, Schizophrenia,11626,6250,5376,16756,8164,8592,Men.Behav
+Upper-middle-income, Alcohol use disorders,28892,3415,25477,25941,3248,22693,Men.Behav
+Upper-middle-income, Drug use disorders,21172,7894,13278,14587,6767,7820,Men.Behav
+Upper-middle-income, Anxiety disorders,14,6,8,5,2,3,Men.Behav
+Upper-middle-income, Eating disorders,3040,1803,1237,2332,1293,1039,Men.Behav
+Upper-middle-income, Pervasive developmental disorders,0,0,0,0,0,0,Men.Behav
+Upper-middle-income, Childhood behavioural disorders,0,0,0,0,0,0,Men.Behav
+Upper-middle-income, Idiopathic intellectual disability,434,199,235,147,75,72,Men.Behav
+Upper-middle-income, Other mental and behavioural disorders,6606,2798,3808,4440,1722,2718,Men.Behav
+Upper-middle-income, Neurological conditions,236390,127099,109291,157434,81284,76150,Subgroup
+Upper-middle-income, Alzheimer's disease and other dementias,124346,74003,50343,66925,39719,27206,Neurological
+Upper-middle-income, Parkinson's disease,23577,10517,13060,14795,7170,7625,Neurological
+Upper-middle-income, Epilepsy,33046,13835,19211,36970,14610,22360,Neurological
+Upper-middle-income, Multiple sclerosis,4173,2167,2006,4104,1907,2197,Neurological
+Upper-middle-income, Migraine,3,3,0,1,0,1,Neurological
+Upper-middle-income, Non-migraine headache,0,0,0,0,0,0,Neurological
+Upper-middle-income, Other neurological conditions,51250,26579,24671,34639,17879,16760,Neurological
+Upper-middle-income, Sense organ diseases,64,40,24,1077,635,442,Neurological
+Upper-middle-income, Glaucoma,10,6,4,133,95,38,Neurological
+Upper-middle-income, Cataracts,8,5,3,238,139,99,Neurological
+Upper-middle-income, Refractive errors,0,0,0,0,0,0,Neurological
+Upper-middle-income, Macular degeneration,0,0,0,0,0,0,Neurological
+Upper-middle-income, Other vision loss,0,0,0,0,0,0,Neurological
+Upper-middle-income, Other hearing loss,0,0,0,0,0,0,Neurological
+Upper-middle-income, other sense organ disorders,42,27,15,707,401,306,Neurological
+Upper-middle-income, Cardiovascular diseases,6854769,3460606,3394163,5163039,2566906,2596133,Subgroup
+Upper-middle-income, Rheumatic heart disease,107715,66170,41545,117889,69117,48772,Cardiovascular
+Upper-middle-income, Hypertensive heart disease,483828,264009,219819,395444,205802,189642,Cardiovascular
+Upper-middle-income, Ischaemic heart disease,2595196,1279664,1315532,1521103,720994,800109,Cardiovascular
+Upper-middle-income, Stroke,3053518,1544441,1509077,2311422,1147938,1163484,Cardiovascular
+Upper-middle-income," Cardiomyopathy, myocarditis, endocarditis",144642,68040,76602,128234,57530,70704,Cardiovascular
+Upper-middle-income, Other circulatory diseases,469875,238283,231592,688949,365528,323421,Cardiovascular
+Upper-middle-income, Respiratory diseases,1458585,668897,789688,1778202,858368,919834,Subgroup
+Upper-middle-income, Chronic obstructive pulmonary disease,1222134,560554,661580,1528293,740223,788070,Respiratory
+Upper-middle-income, Asthma,63950,31473,32477,68952,33332,35620,Respiratory
+Upper-middle-income, Other respiratory diseases,172502,76872,95630,180961,84815,96146,Respiratory
+Upper-middle-income, Digestive diseases,539899,223867,316032,552468,219753,332715,Subgroup
+Upper-middle-income, Peptic ulcer disease,51195,21814,29381,75397,29841,45556,Digestive
+Upper-middle-income, Cirrhosis of the liver,228102,75032,153070,253056,81007,172049,Digestive
+Upper-middle-income, Appendicitis,7529,3675,3854,8714,4098,4616,Digestive
+Upper-middle-income, Other digestive diseases,253077,123349,129728,215304,104810,110494,Digestive
+Upper-middle-income, Genitourinary diseases,282840,139332,143508,227268,107893,119375,Subgroup
+Upper-middle-income, Kidney diseases,196867,96578,100289,170991,83615,87376,Genitourinary
+Upper-middle-income, Hyperplasia of prostate,3595,18,3577,5892,0,5892,Genitourinary
+Upper-middle-income, Urolithiasis,6611,2773,3838,7179,2680,4499,Genitourinary
+Upper-middle-income, Other genitourinary diseases,71553,35750,35803,39513,17903,21610,Genitourinary
+Upper-middle-income, Infertility,0,0,0,0,0,0,Infertility
+Upper-middle-income, Gynecological diseases,4214,4214,0,3696,3696,0,
+Upper-middle-income, Skin diseases,20352,11772,8580,13077,7691,5386,
+Upper-middle-income, Musculoskeletal diseases,58381,38333,20048,34068,22287,11781,Subgroup
+Upper-middle-income, Rheumatoid arthritis,16653,11601,5052,11390,7233,4157,musc.skelet
+Upper-middle-income, Osteoarthritis,1142,722,420,523,334,189,musc.skelet
+Upper-middle-income, Gout,177,11,166,85,6,79,musc.skelet
+Upper-middle-income, Back and neck pain,444,189,255,159,70,89,musc.skelet
+Upper-middle-income, Other musculoskeletal disorders,39967,25811,14156,21908,14643,7265,musc.skelet
+Upper-middle-income, Congenital anomalies,137325,65005,72320,158041,72442,85599,Subgroup
+Upper-middle-income, Neural tube defects,9856,4473,5383,16929,7295,9634,Congenital
+Upper-middle-income, Cleft lip and cleft palate,897,281,616,1395,388,1007,Congenital
+Upper-middle-income, Down's syndrome,3863,2016,1847,4453,2317,2136,Congenital
+Upper-middle-income, Congenital heart anomalies,75491,36106,39385,83645,38409,45236,Congenital
+Upper-middle-income, Other chromosomal anomalies,6399,3623,2776,7208,3817,3391,Congenital
+Upper-middle-income, Other congenital anomalies,40824,18506,22318,44414,20217,24197,Congenital
+Upper-middle-income, Oral conditions,200,95,105,154,67,87,Subgroup
+Upper-middle-income, Dental caries,188,90,98,135,60,75,Oral
+Upper-middle-income, Periodontal disease,14,6,8,18,7,11,Oral
+Upper-middle-income, Edentulism,0,0,0,0,0,0,Oral
+Upper-middle-income, Injuries,1477540,475782,1001758,1532817,505959,1026858,LargeSubgroup
+Upper-middle-income, Unintentional injuries,1078014,363313,714701,1013979,320932,693047,Subgroup
+Upper-middle-income, Road injury,511511,147637,363874,365540,97165,268375,Accident
+Upper-middle-income, Poisonings,52332,21302,31030,69953,27653,42300,Accident
+Upper-middle-income, Falls,161934,69537,92397,111422,44317,67105,Accident
+Upper-middle-income," Fire, heat and hot substances",32541,14578,17963,36526,16644,19882,Accident
+Upper-middle-income, Drowning,94118,33677,60441,156402,52848,103554,Accident
+Upper-middle-income, Exposure to forces of nature,698,280,418,14,6,8,Accident
+Upper-middle-income, Other unintentional injuries,224887,76307,148580,274134,82305,191829,Accident
+Upper-middle-income, Intentional injuries,399527,112470,287057,518839,185027,333812,Subgroup
+Upper-middle-income, Self-harm,191570,84144,107426,309833,152297,157536,Intentional
+Upper-middle-income, Interpersonal violence,190766,26078,164688,195982,31055,164927,Intentional
+Upper-middle-income, Collective violence and legal intervention,17189,2246,14943,13025,1677,11348,Intentional

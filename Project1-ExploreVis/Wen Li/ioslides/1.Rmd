@@ -1,0 +1,94 @@
+---
+title: "U.S. Health Insurance Rates and Benefits"
+author: "Wen Li"
+date: "10/16/2016"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(googleVis)
+AvgGroup = read.csv("./data/AvgGroup.csv", header = T)
+```
+
+
+## Outline
+
+- HHS Standard Rate Curve
+- Age and Plan Length vs. Plan Rate
+- Age and Tobacco Policy vs. Plan Rate
+- Plan Rate across States
+- Benefits vs. Plan Type
+- Which Plan Type?
+
+
+## Human Health Services Rate Curve
+
+<img class="center" src="./img/10.png" height=400>
+
+
+## Age and Plan Length vs. Plan Rate
+
+<img class="center" src="./img/21.png" height=400>
+
+
+## Age and Plan Length vs. Plan Rate
+
+<img class="center" src="./img/22.png" height=400>
+
+
+## Age and Tobacco Policy vs. Plan Rate
+
+<img class="center" src="./img/30.png" height=400>
+
+
+## Plan Rate across States
+
+```{r, results='asis'}
+plot(gvisGeoChart(AvgGroup, 'StateCode', 'Avg', 
+                        options = list(region = "US", 
+                                       displayMode = "regions", 
+                                       resolution = "provinces",
+                                       colorAxis = "{colors: ['#e0f3db', '#a8ddb5', '#43a2ca']}",
+                                       datalessRegionColor = '#ffffff')), "chart")
+```
+
+
+## Benefits vs. Plan Type
+
+<img class="center" src="./img/51.png" height=400>
+
+
+## Not Covered/Covered Ratio vs. Plan Type
+
+<img class="center" src="./img/52.png" height=400>
+
+
+## Benefit Variety vs. Plan Type
+
+<img class="center" src="./img/53.png" height=400>
+
+
+## Which Plan Type? - HMO
+
+<img class="center" src="./img/70hmo.png" width=800>
+
+
+## Which Plan Type? - PPO
+
+<img class="center" src="./img/71ppo.png" width=800>
+
+
+## Which Plan Type? - POS
+
+<img class="center" src="./img/72pos.png" width=800>
+
+
+## Which Plan Type? - EPO
+
+<img class="center" src="./img/73epo.png" width=800>
+
+
+## Which Plan Type? - INDEMNITY
+
+<img class="center" src="./img/74indemnity.png" width=800>

@@ -1,0 +1,397 @@
+---
+title: "NetworkGraph"
+author: "Oamar Gianan"
+date: "October 15, 2016"
+output: html_document
+---
+
+## Network Graph
+
+Creating the network object of the whole twitter stream involves creating a list of all the nodes and edges present between the nodes.
+
+The edges are derived from the retweet and mention data. Links between the same users are aggregated and is listed as an edge attribute.
+
+```{r edges, eval=FALSE}
+#edges are links from one user to another user. They can be retweets or mentions.
+
+#filtering retweets and mentions
+
+library(stringr)
+library(tidyr)
+
+
+edges <- stream %>% filter(is.na(`User Mentions`) == F) %>% 
+       select(Nickname, `Is a RT`, `User Mentions`)
+
+#tagging retweets and mentions
+
+edges <- edges %>% 
+       dplyr::mutate( type = ifelse(edges$`Is a RT` == TRUE, 
+                                    "retweet", "mention")) %>%
+       select(-`Is a RT`)
+
+#finding maximum length of User Mentions
+menMax <- max(str_count(edges$`User Mentions`, "@"))
+
+edges <- edges %>% 
+       separate(`User Mentions`, c(as.character(1:menMax)),
+                ",", extra = "merge", fill = "left")
+
+#gathering all users mentioned into one column
+edges <- edges %>% gather(from_col, to, 2:13 )
+
+#cleaning NAs and removing from_col
+edges <- edges %>% filter(is.na(to) == FALSE) %>% select(from = Nickname, to, type)
+
+#remove @ signs
+
+edges$to <- gsub('@','', edges$to)
+
+#solve: count unique rows based on multiple columns???
+links <- aggregate(rep(1, nrow(edges)), by = list(from = edges$from, to = edges$to, type = edges$type), sum)
+
+links <- links[order(links$from, links$to),]
+
+colnames(links)[4] <- "weight"
+rownames(links) <- NULL
+
+```
+
+The nodes are simply the list of all Nicknames. The number of followers of each Nickname is a weight attribute of the node.
+
+```{r nodes, eval=FALSE}
+
+nodes <- indegRanked
+
+```
+
+Creating the network object needs the igraph library.
+
+```{r network graph, eval=FALSE, include=FALSE}
+
+#drop to links not on nodes list 
+dropNodes <- setdiff(links$to, nodes$Nickname)
+links <-links[!(links$to %in% dropNodes),]
+
+library(igraph)
+
+#build network object
+twnet <- graph_from_data_frame(d=links, vertices=nodes, directed=T) 
+
+head(V(twnet))
+head(E(twnet))
+head(degree(twnet))
+
+twnet
+
+```
+
+## Network attributes
+
+A closer look at the resulting network shows the following attributes.
+
+```{r igraph attibutes, eval=FALSE, include=FALSE}
+
+#The edges 
+E(twnet)
+
+#The vertices
+V(twnet)
+
+#Edge attributes
+edge_attr(twnet)
+
+#Vertices attributes
+vertex_attr(twnet)
+
+```
+
+Network is too big, but I'll save it for later use.
+
+```{r save igraph object, eval=FALSE, include=FALSE}
+
+saveRDS(twnet, file = "twnet.RDS")
+
+```
+
+```{r read igraph object, eval=FALSE, include=FALSE}
+
+twnet <- readRDS("twnet.RDS")
+
+```
+
+
+***
+
+## Creating a smaller network
+
+To create a smaller network, the twitter stream of a single company is read and loaded.
+
+```{r read company csv, eval=FALSE, include=FALSE}
+
+compStream <- read_csv("csv/filename.csv")
+
+#Discard duplicate tweets
+
+compStream <- compStream %>% filter(duplicated(`Tweet Id`) == FALSE) 
+
+#Adding timestamp
+compStream$Timestamp <- as.POSIXct((compStream$Date +               seconds_to_period(compStream$Hour)), tz = "America/New_York")
+
+```
+
+```{r load company stream, include=FALSE}
+
+#saveRDS(compStream, file = "filename.RDS")
+library(igraph)
+library(stringr)
+library(tidyr)
+library(dplyr)
+
+compStream <- readRDS("pyplStream.RDS")
+
+```
+
+The nodes and edges are again derived from the stream data.
+
+```{r company node, echo=TRUE}
+
+compNode <- compStream %>% 
+       filter(duplicated(Nickname) == FALSE) %>% 
+       select(Nickname, Followers)
+
+```
+
+```{r company links}
+#filtering retweets and mentions
+
+compEdges <- compStream %>% filter(is.na(`User Mentions`) == F) %>% 
+       select(Nickname, `User Mentions`)
+
+#finding maximum length of User Mentions
+menMax <- max(str_count(compEdges$`User Mentions`, "@"))
+
+compEdges <- compEdges %>% 
+       separate(`User Mentions`, c(as.character(1:menMax)),
+                ",", extra = "merge", fill = "left")
+
+#gathering all users mentioned into one column
+
+compEdges <- compEdges %>% gather(from_col, to, 2:menMax+1 )
+
+#cleaning NAs and removing from_col
+compEdges <- compEdges %>% filter(is.na(to) == FALSE) %>% select(from = Nickname, to)
+
+#remove @ signs
+
+compEdges$to <- gsub('@','', compEdges$to)
+
+#aggregating to column
+compEdges <- aggregate(rep(1, nrow(compEdges)), by = list(from = compEdges$from, to = compEdges$to), sum)
+
+compEdges <- compEdges[order(compEdges$from, compEdges$to),]
+
+colnames(compEdges)[3] <- "weight"
+rownames(compEdges) <- NULL
+
+```
+
+Creating the network object.
+
+```{r smallNet}
+
+dropNodes <- setdiff(compEdges$to, compNode$Nickname)
+compEdges <-compEdges[!(compEdges$to %in% dropNodes),]
+
+#drop links with weight less than 100.
+#links_short <- links %>% filter(weight > 100)
+#mode(links$weight)
+#CUT CAN BE USED HERE
+
+library(igraph)
+
+#build network object
+compNet <- graph_from_data_frame(d=compEdges, vertices=compNode, directed=T) 
+
+compNet
+
+```
+
+```{r save network}
+#saveRDS(compNet, file = "hsiccompNet.RDS")
+```
+
+Reviewing the smaller network
+
+```{r comp igraph attibutes}
+
+#The edges 
+head(E(compNet))
+
+#The vertices
+head(V(compNet))
+
+```
+
+##Network Analysis
+
+### Density
+The proportion of present edges from all possible edges in the network.
+```{r density}
+
+edge_density(compNet, loops=F)
+
+#or
+
+ecount(compNet)/(vcount(compNet)*(vcount(compNet)-1)) #for a directed network
+
+```
+
+### Reciprocity
+The proportion of reciprocated ties (for a directed network).
+```{r reciprocity}
+
+reciprocity(compNet)
+
+```
+
+
+### Diameter
+The diameter of a graph is the length of the longest geodesic.
+
+```{r diameter}
+diameter(compNet, directed=F, weights=NA)
+get_diameter(compNet, directed=F, weights=NA)
+
+```
+
+```{r coloring the diameter path, include=FALSE}
+
+diam <- get_diameter(compNet, directed=F, weights=NA)
+
+vcol <- rep("gray40", vcount(compNet))
+
+vcol[diam] <- "gold"
+
+ecol <- rep("gray80", ecount(compNet))
+
+```
+
+```{r plotting the graph}
+png(filename = "network_diam.png", width = 2000, height = 2000, units = "px")
+plot(compNet, 
+     vertex.color=vcol, 
+     edge.color=ecol,
+     main = "Network Graph Showing Diameter",
+#            layout=layout.fruchterman.reingold,
+            edge.arrow.size=1, 
+            edge.curved=0,
+            vertex.frame.color="#555555",
+            vertex.size=2, 
+            vertex.label.color="black",
+            vertex.label.cex = .7
+     )
+dev.off()
+
+```
+
+### Degree distribution
+
+```{r degree dist, eval=FALSE, include=FALSE}
+
+deg <- degree(compNet, mode="all")
+
+hist(deg, breaks=1:vcount(compNet)-1, main="Histogram of node degree")
+
+deg.dist <- degree_distribution(compNet, cumulative=T, mode="all")
+
+plot( x=0:max(deg), y=1-deg.dist, pch=19, cex=1.2, col="orange", 
+
+      xlab="Degree", ylab="Cumulative Frequency")
+
+```
+
+
+### Hubs and authorities
+The hubs and authorities algorithm developed by Jon Kleinberg was initially used to examine web pages. Hubs were expected to contain catalogs with a large number of outgoing links; while authorities would get many incoming links from hubs, presumably because of their high-quality relevant information.
+
+```{r HandA}
+hs <- hub_score(compNet, weights=NA)$vector
+
+as <- authority_score(compNet, weights=NA)$vector
+
+par(mfrow=c(1,2))
+
+png(filename = "network_hubs.png", width = 2000, height = 2000, units = "px")
+ plot(compNet, 
+      vertex.size=hs*10, 
+      main="Hubs",
+#            layout=layout.fruchterman.reingold,
+            edge.arrow.size=0.5, 
+            edge.curved=0,
+            vertex.frame.color="#555555",
+            vertex.size=2, 
+            vertex.label.color="black",
+            vertex.label.cex = .7
+      )#, vertex.label = NA)
+dev.off()
+
+png(filename = "network_auth.png", width = 2000, height = 2000, units = "px") 
+ plot(compNet, 
+      vertex.size=as*10, 
+      main="Authorities",
+#            layout=layout.fruchterman.reingold,
+            edge.arrow.size=0.5, 
+            edge.curved=0,
+            vertex.frame.color="#555555",
+            vertex.size=2, 
+            vertex.label.color="black",
+            vertex.label.cex = .7
+      )
+ dev.off()
+
+
+```
+
+<!-- ## Eliminating Edges and Nodes -->
+
+<!-- ```{r} -->
+<!-- #removing weak edges -->
+
+<!-- cut.off <- mean(compEdges$weight)  -->
+
+<!-- compNet.se <- delete_edges(compNet, E(compNet)[weight<cut.off]) -->
+
+<!-- png(filename = "lessEdge_network.png", width = 2000, height = 2000, units = "px") -->
+<!-- plot(compNet.se,  -->
+<!--             layout=layout.fruchterman.reingold, -->
+<!--             edge.arrow.size=0.5,  -->
+<!--             edge.curved=0, -->
+<!--             vertex.frame.color="#555555", -->
+<!--             vertex.size=2,  -->
+<!--             vertex.label.color="black", -->
+<!--             vertex.label.cex = .7 -->
+<!--      )  -->
+<!-- dev.off() -->
+
+<!-- #exclude people who are in the network only tangentially (participate in one or two relationships only) -->
+
+<!-- low.off<-V(compNet.se)[degree(compNet.se)<1]  -->
+<!-- compNet.sen<-delete.vertices(compNet.se, low.off) #exclude them from the graph -->
+
+<!-- # Plot the data.Some details about the graph can be specified in advance. -->
+<!-- # For example we can separate some vertices (people) by color: -->
+<!-- png(filename = "lessEdgeNodes_network.png", width = 2000, height = 2000, units = "px") -->
+<!-- plot(compNet.sen, -->
+<!--      main='Sparsified Network', -->
+<!--             layout=layout.fruchterman.reingold, -->
+<!--             edge.arrow.size=0.5,  -->
+<!--             edge.curved=0, -->
+<!--             vertex.frame.color="#555555", -->
+<!--             vertex.size=2,  -->
+<!--             vertex.label.color="black", -->
+<!--             vertex.label.cex = .7 -->
+<!-- ) -->
+<!-- dev.off() -->
+
+<!-- ``` -->
