@@ -91,7 +91,8 @@ colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$meanIncrease))
 getPalette = colorRampPalette(brewer.pal(8, "Accent"))
 platteNew = rev(getPalette(colourCount))
 g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = Owners_Before, y = meanSalePercent)) + ggtitle(title)
-g + geom_point(aes(color=meanIncrease,size=meanSales)) + ylab('Mean Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') + scale_color_gradient(trans = "sqrt", low="blue", high="red", guide = guide_legend(title = "Mean Increase (%)")) + expand_limits(x = 0, y = 0)
+g + geom_point(aes(color=meanIncrease,size=meanSales)) + ylab('Mean Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') + scale_color_gradient(trans = "sqrt", low="blue", high="red") + expand_limits(x = 0, y = 0) +
+  labs(size="Mean Sales", color="Mean Increase (%)")
 ggsave(file=paste0(removeSymbols(title), ".eps"))
 
 
