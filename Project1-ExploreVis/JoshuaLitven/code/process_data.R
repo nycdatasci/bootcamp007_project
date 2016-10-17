@@ -10,11 +10,11 @@ library(dplyr)
 # Parameters --------------------------------------------------------------
 
 # Set the working directory to where the files are stored
-setwd('~/Courses/nyc_data_science_academy/projects/exploratory_visualization/')
+setwd('~/Courses/nyc_data_science_academy/bootcamp007_project/Project1-ExploreVis/JoshuaLitven/')
 
 RAW_PATH = file.path('data', 'raw_data')
 PROCESSED_PATH = file.path('data', 'processed_data')
-SUBSET_FLAG = TRUE
+SUBSET_FLAG = FALSE
 SUBSET_SIZE = 1000000 # number of rows to import for testing
 
 
