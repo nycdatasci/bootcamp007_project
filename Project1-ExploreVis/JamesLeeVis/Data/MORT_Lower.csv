@@ -1,0 +1,158 @@
+Region,Causes, Both sexes (2012), Female (2012), Male (2012), Both sexes (2000), Female (2000), Male (2000),Group
+Low-income, Communicable &amp; other Group I,3949946,1933806,2016140,5268810,2617370,2651440,LargeSubgroup
+Low-income, Infectious and parasitic diseases,2097700,1002270,1095430,3146472,1538578,1607894,Subgroup
+Low-income, Tuberculosis,262737,91614,171123,304255,110344,193911,Inf.Para
+Low-income, STDs excluding HIV,35724,18201,17523,48313,24667,23646,Inf.Para
+Low-income, Syphilis,34331,16808,17523,47008,23362,23646,Inf.Para
+Low-income, Chlamydia,327,327,0,306,306,0,Inf.Para
+Low-income, Gonorrhoea,242,242,0,226,226,0,Inf.Para
+Low-income, Trichomoniasis,0,0,0,0,0,0,Inf.Para
+Low-income, Other STDs,824,824,0,774,774,0,Inf.Para
+Low-income, HIV/AIDS,548649,284508,264141,878147,471105,407042,Inf.Para
+Low-income, Diarrhoeal diseases,445921,223294,222627,689425,344910,344515,Inf.Para
+Low-income, Childhood-cluster diseases,103028,50904,52124,319347,155728,163619,Inf.Para
+Low-income, Whooping cough,26748,12723,14025,26543,12527,14016,Inf.Para
+Low-income, Diphtheria,959,467,492,2016,996,1020,Inf.Para
+Low-income, Measles,56271,29135,27136,239578,119926,119652,Inf.Para
+Low-income, Tetanus,19051,8578,10473,51213,22280,28933,Inf.Para
+Low-income, Meningitis,150486,70040,80446,203855,96186,107669,Inf.Para
+Low-income, Encephalitis,16846,7668,9178,23841,10879,12962,Inf.Para
+Low-income, Acute hepatitis B,16685,7508,9177,11217,4749,6468,Inf.Para
+Low-income, Acute hepatitis C,1760,1042,718,1215,656,559,Inf.Para
+Low-income, Parasitic and vector diseases,356190,174271,181919,528739,256388,272351,Inf.Para
+Low-income, Malaria,296286,147880,148406,440167,217561,222606,Inf.Para
+Low-income, Trypanosomiasis,17186,7925,9261,34345,14940,19405,Inf.Para
+Low-income, Chagas disease,0,0,0,0,0,0,Inf.Para
+Low-income, Schistosomiasis,11749,5970,5779,10174,4857,5317,Inf.Para
+Low-income, Leishmaniasis,14425,4231,10194,16781,4899,11882,Inf.Para
+Low-income, Lymphatic filariasis,0,0,0,0,0,0,Inf.Para
+Low-income, Onchocerciasis,0,0,0,0,0,0,Inf.Para
+Low-income, Leprosy,0,0,0,0,0,0,Inf.Para
+Low-income, Dengue,2519,1206,1313,2890,1473,1417,Inf.Para
+Low-income, Trachoma,0,0,0,0,0,0,Inf.Para
+Low-income, Rabies,14030,7064,6966,24386,12661,11725,Inf.Para
+Low-income, Intestinal nematode infections,559,263,296,607,287,320,Inf.Para
+Low-income, Ascariasis,559,263,296,607,287,320,Inf.Para
+Low-income, Trichuriasis,0,0,0,0,0,0,Inf.Para
+Low-income, Hookworm disease,0,0,0,0,0,0,Inf.Para
+Low-income, Other infectious diseases,159124,72961,86163,137514,62681,74833,Inf.Para
+Low-income, Respiratory infections,775740,365591,410149,882049,410810,471239,Inf.Para
+Low-income, Lower respiratory infections,773698,364616,409082,879762,409716,470046,Inf.Para
+Low-income, Upper respiratory infections,1060,490,570,1202,564,638,Inf.Para
+Low-income, Otitis media,982,485,497,1087,531,556,Inf.Para
+Low-income, Maternal conditions,127294,127294,0,177687,177687,0,Maternal
+Low-income, Neonatal conditions,692091,302962,389129,789546,350533,439013,Subgroup
+Low-income, Preterm birth complications,279146,126641,152505,324362,147458,176904,Neonatal
+Low-income, Birth asphyxia and birth trauma,244567,101763,142804,278707,118440,160267,Neonatal
+Low-income, Neonatal sepsis and infections,138034,60503,77531,149394,67773,81621,Neonatal
+Low-income, Other neonatal conditions,30345,14056,16289,37083,16862,20221,Neonatal
+Low-income, Nutritional deficiencies,257118,135688,121430,273056,139763,133293,Subgroup
+Low-income, Protein-energy malnutrition,224686,118354,106332,250113,127993,122120,NutritionalDeficiency
+Low-income, Iodine deficiency,1795,889,906,496,222,274,NutritionalDeficiency
+Low-income, Vitamin A deficiency,0,0,0,0,0,0,NutritionalDeficiency
+Low-income, Iron-deficiency anaemia,29795,15984,13811,22089,11363,10726,NutritionalDeficiency
+Low-income, Other nutritional deficiencies,845,465,380,360,186,174,NutritionalDeficiency
+Low-income, Noncommunicable diseases,2745548,1350559,1394989,2155328,1056069,1099259,LargeSubgroup
+Low-income, Malignant neoplasms,479393,252067,227326,365084,196664,168420,Subgroup
+Low-income, Mouth and oropharynx cancers,33237,10150,23087,25069,8528,16541,Cancer
+Low-income, Oesophagus cancer,37004,14504,22500,30667,13326,17341,Cancer
+Low-income, Stomach cancer,30358,12529,17829,26278,10945,15333,Cancer
+Low-income, Colon and rectum cancers,24466,11808,12658,17171,8088,9083,Cancer
+Low-income, Liver cancer,33015,12125,20890,26250,9387,16863,Cancer
+Low-income, Pancreas cancer,7482,3765,3717,5158,2563,2595,Cancer
+Low-income," Trachea, bronchus, lung cancers",40523,15361,25162,28814,11546,17268,Cancer
+Low-income, Melanoma and other skin cancers,4918,2550,2368,3600,1894,1706,Cancer
+Low-income, Breast cancer,38987,38987,0,24962,24962,0,Cancer
+Low-income, Cervix uteri cancer,50362,50362,0,44999,44999,0,Cancer
+Low-income, Corpus uteri cancer,3355,3355,0,2682,2682,0,Cancer
+Low-income, Ovary cancer,10824,10824,0,7557,7557,0,Cancer
+Low-income, Prostate cancer,23442,0,23442,15971,0,15971,Cancer
+Low-income, Bladder cancer,7291,2597,4694,5826,2216,3610,Cancer
+Low-income," Lymphomas, multiple myeloma",19020,8013,11007,13731,5757,7974,Cancer
+Low-income, Leukaemia,16709,7410,9299,12455,5457,6998,Cancer
+Low-income, Other malignant neoplasms,98415,47736,50679,73899,36760,37139,Cancer
+Low-income, Other neoplasms,13346,6255,7091,9294,4381,4913,Cancer
+Low-income, Diabetes mellitus,135132,71680,63452,94428,49203,45225,Diabetes
+Low-income," Endocrine, blood, immune disorders",68617,37190,31427,46137,25722,20415,Endocrine.blood.immunedisorders
+Low-income, Mental and behavioral disorders,15012,5012,10000,9516,3161,6355,Subgroup
+Low-income, Unipolar depressive disorders,2,1,1,0,0,0,Men.Behav
+Low-income, Bipolar disorder,0,0,0,0,0,0,Men.Behav
+Low-income, Schizophrenia,2512,1011,1501,2270,852,1418,Men.Behav
+Low-income, Alcohol use disorders,2204,636,1568,1637,457,1180,Men.Behav
+Low-income, Drug use disorders,7998,2539,5459,3794,1234,2560,Men.Behav
+Low-income, Anxiety disorders,0,0,0,0,0,0,Men.Behav
+Low-income, Eating disorders,806,394,412,622,287,335,Men.Behav
+Low-income, Pervasive developmental disorders,0,0,0,0,0,0,Men.Behav
+Low-income, Childhood behavioural disorders,0,0,0,0,0,0,Men.Behav
+Low-income, Idiopathic intellectual disability,26,17,9,27,20,7,Men.Behav
+Low-income, Other mental and behavioural disorders,1470,415,1055,1171,313,858,Men.Behav
+Low-income, Neurological conditions,124133,62209,61924,88528,42551,45977,Subgroup
+Low-income, Alzheimer's disease and other dementias,8071,4783,3288,5270,3021,2249,Neurological
+Low-income, Parkinson's disease,6887,3213,3674,4892,2302,2590,Neurological
+Low-income, Epilepsy,55862,24888,30974,42659,18975,23684,Neurological
+Low-income, Multiple sclerosis,1016,581,435,774,427,347,Neurological
+Low-income, Migraine,0,0,0,0,0,0,Neurological
+Low-income, Non-migraine headache,0,0,0,0,0,0,Neurological
+Low-income, Other neurological conditions,52296,28744,23552,34936,17826,17110,Neurological
+Low-income, Sense organ diseases,0,0,0,0,0,0,Neurological
+Low-income, Glaucoma,0,0,0,0,0,0,Neurological
+Low-income, Cataracts,0,0,0,0,0,0,Neurological
+Low-income, Refractive errors,0,0,0,0,0,0,Neurological
+Low-income, Macular degeneration,0,0,0,0,0,0,Neurological
+Low-income, Other vision loss,0,0,0,0,0,0,Neurological
+Low-income, Other hearing loss,0,0,0,0,0,0,Neurological
+Low-income, other sense organ disorders,0,0,0,0,0,0,Neurological
+Low-income, Cardiovascular diseases,998672,510651,488021,774540,401160,373380,Subgroup
+Low-income, Rheumatic heart disease,39538,22258,17280,39754,21631,18123,Cardiovascular
+Low-income, Hypertensive heart disease,77213,51865,25348,55720,37955,17765,Cardiovascular
+Low-income, Ischaemic heart disease,326350,156112,170238,235020,114185,120835,Cardiovascular
+Low-income, Stroke,438050,226691,211359,357509,187396,170113,Cardiovascular
+Low-income," Cardiomyopathy, myocarditis, endocarditis",44658,19146,25512,33190,14399,18791,Cardiovascular
+Low-income, Other circulatory diseases,72865,34581,38284,53350,25594,27756,Cardiovascular
+Low-income, Respiratory diseases,308912,135285,173627,272048,122596,149452,Subgroup
+Low-income, Chronic obstructive pulmonary disease,185993,84184,101809,155730,73380,82350,Respiratory
+Low-income, Asthma,61944,26724,35220,56040,24328,31712,Respiratory
+Low-income, Other respiratory diseases,60977,24380,36597,60277,24886,35391,Respiratory
+Low-income, Digestive diseases,279040,112268,166772,240620,93290,147330,Subgroup
+Low-income, Peptic ulcer disease,42946,17527,25419,46563,17114,29449,Digestive
+Low-income, Cirrhosis of the liver,122672,43583,79089,98289,34537,63752,Digestive
+Low-income, Appendicitis,10756,4946,5810,10713,4588,6125,Digestive
+Low-income, Other digestive diseases,102667,46213,56454,85055,37051,48004,Digestive
+Low-income, Genitourinary diseases,139257,67184,72073,109252,47656,61596,Subgroup
+Low-income, Kidney diseases,99093,47778,51315,84712,37321,47391,Genitourinary
+Low-income, Hyperplasia of prostate,3,0,3,10,0,10,Genitourinary
+Low-income, Urolithiasis,4729,2247,2482,3481,1563,1918,Genitourinary
+Low-income, Other genitourinary diseases,34648,16375,18273,20558,8281,12277,Genitourinary
+Low-income, Infertility,0,0,0,0,0,0,Infertility
+Low-income, Gynecological diseases,785,785,0,493,493,0,
+Low-income, Skin diseases,33540,14176,19364,32008,13130,18878,
+Low-income, Musculoskeletal diseases,27513,17431,10082,15585,9652,5933,Subgroup
+Low-income, Rheumatoid arthritis,14550,8828,5722,9380,5485,3895,musc.skelet
+Low-income, Osteoarthritis,2,1,1,0,0,0,musc.skelet
+Low-income, Gout,3,0,3,1,0,1,musc.skelet
+Low-income, Back and neck pain,1,1,0,0,0,0,musc.skelet
+Low-income, Other musculoskeletal disorders,12956,8600,4356,6203,4166,2037,musc.skelet
+Low-income, Congenital anomalies,122993,59154,63839,98298,46910,51388,Subgroup
+Low-income, Neural tube defects,19649,9759,9890,18971,9538,9433,Congenital
+Low-income, Cleft lip and cleft palate,1137,397,740,1023,305,718,Congenital
+Low-income, Down's syndrome,3944,2206,1738,3617,2026,1591,Congenital
+Low-income, Congenital heart anomalies,38752,18127,20625,28288,13030,15258,Congenital
+Low-income, Other chromosomal anomalies,4738,2603,2135,4121,2260,1861,Congenital
+Low-income, Other congenital anomalies,54782,26069,28713,42279,19753,22526,Congenital
+Low-income, Oral conditions,0,0,0,0,0,0,Subgroup
+Low-income, Dental caries,0,0,0,0,0,0,Oral
+Low-income, Periodontal disease,0,0,0,0,0,0,Oral
+Low-income, Edentulism,0,0,0,0,0,0,Oral
+Low-income, Injuries,750469,265014,485455,703059,238770,464289,LargeSubgroup
+Low-income, Unintentional injuries,552687,206390,346297,495094,182960,312134,Subgroup
+Low-income, Road injury,148829,44594,104235,107608,30972,76636,Accident
+Low-income, Poisonings,39663,17158,22505,41407,17508,23899,Accident
+Low-income, Falls,66793,29398,37395,49887,19305,30582,Accident
+Low-income," Fire, heat and hot substances",76281,37083,39198,66500,32133,34367,Accident
+Low-income, Drowning,82220,26952,55268,84514,28703,55811,Accident
+Low-income, Exposure to forces of nature,0,0,0,1084,452,632,Accident
+Low-income, Other unintentional injuries,138901,51207,87694,144101,53891,90210,Accident
+Low-income, Intentional injuries,197783,58624,139159,207963,55808,152155,Subgroup
+Low-income, Self-harm,82351,30548,51803,66179,24907,41272,Intentional
+Low-income, Interpersonal violence,89351,24015,65336,65568,16723,48845,Intentional
+Low-income, Collective violence and legal intervention,26082,4062,22020,76218,14180,62038,Intentional

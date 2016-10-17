@@ -1,0 +1,171 @@
+---
+title: "Lending Club Loan Visualization"
+output:
+  ioslides_presentation:
+    smaller: yes
+  slidy_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+library(ggplot2)
+library(scales) 
+library(dplyr)
+library(tidyr)
+library(tm)
+library(SnowballC)
+library(wordcloud)
+
+wd = '~/R files/lendingClub'
+
+setwd(wd)
+
+l2013 <- read.table("proc_Loans2013.csv", sep=";", quote="\"", header=T, comment.char="", encoding="UTF-8", fill=F)
+
+l <- read.table("proc_Loans40k.csv", sep=";", quote="\"", header=T, comment.char="", encoding="UTF-8", fill=F)
+
+l$Trm.issue_d = as.Date(l$Trm.issue_d)
+```
+
+## Introduction
+### Lending Club is a leading peer-to-peer lender  
+
+###How it works:  
+- Lending Club uses potential borrowers' credit history to estimate credit risk (the risk of not being paid back)  
+- This credit risk estimate is used to set the interest rate -- higher risk, higher return  
+- Lenders (e.g., you and I) then choose which loans to fund at the LC-prescribed rate  
+
+#### Analyzed historical lending data available on the LC website ![](LC_img.tiff)
+
+## Why do people use Lending Club?
+
+```{r}
+c <- sample_frac(l2013, 0.2)
+
+c <- Corpus(VectorSource(tolower(c$Trm.title)))
+
+c <- tm_map(c, PlainTextDocument)
+
+c <- tm_map(c, removePunctuation)
+
+c <- tm_map(c, removeWords, c("borrow", "loan", "will", "payment", stopwords('english')))
+
+wordcloud(c, max.words = 100, random.order = FALSE)
+```
+<div class=centered>
+Most borrowing is used to repay existing debt
+</div>
+## Loan Grade Drives Interest Rate
+```{r fig.height=4}
+ggplot(l, aes(x=Trm.issue_d, col=Trm.grade, y=Trm.int_rate))+
+  geom_point() +
+  theme_minimal() +
+  ggtitle("Interest Rate by Loan Grade") + 
+  scale_color_brewer(palette="Spectral", name="Grade", direction=-1)+
+  scale_x_date(date_labels = "%Y", date_breaks = "1 year", name="Issue Date") +
+  scale_y_continuous(labels=percent_format(), name="Interest Rate") 
+```
+
+- Rates have been stable for high grade loans, but trending higher for others  
+- Getting bumped down a notch or two can mean 5-10% difference in interest rate (~\$750--1500 on a \$10k loan)  
+
+## Credit Profile Trends
+```{r}
+# box plots showing reduced dependence on FICO score and increased number of outliers
+
+ggplot(l,aes(x=Trm.grade, y=Prof.fico_avg)) + 
+  geom_boxplot() + 
+  facet_wrap(~Trm.issue_Y) + 
+  ylim(650,850) + 
+  theme_minimal() +
+  xlab("Loan Grade") +
+  ylab("FICO Score") +
+  ggtitle("Loan Grade by FICO Score Trend")
+```
+
+Less dependence on FICO scores over the years
+
+## Smarter Lending at the Lending Club?
+```{r fig.height=4}
+
+ggplot(subset(l, Trm.issue_Y==2016 |Trm.issue_Y==2007),aes(x=Trm.grade, y=Prof.fico_avg)) + 
+  geom_jitter(shape=1, mapping=aes(color=outlierFlg)) + 
+  facet_wrap(~Trm.issue_Y) + 
+  ylim(650,850) + 
+  theme_minimal() +
+  xlab("Loan Grade") +
+  ylab("FICO Score") +
+  ggtitle("") + 
+  scale_color_manual(name="", labels=c("Not Outlier", "Outlier"), values=(c(muted("blue"),muted("red")))) +
+  geom_boxplot(data=subset(l, (Trm.issue_Y==2016 |Trm.issue_Y==2007)), fill=NA, color="black", outlier.color=NA)
+```
+Breaking the FICO mould:  
+- Borrowers with lower FICO scores paying low interest rates  
+- Borrowers with excellent FICO scores paying high interest rates ("outliers")  
+- Is Lending Club making a mistake?  
+
+## Outliers Belong in their Buckets
+```{r}
+t <- l2013 %>% group_by(outlierFlg,Trm.grade, Stat.ChargeOffFlg) %>% 
+  summarize(Stat.loan_amnt = sum(Stat.loan_amnt)) 
+t <- t %>% group_by(outlierFlg,Trm.grade) %>% 
+  mutate(pctOfNotional=Stat.loan_amnt / sum(Stat.loan_amnt)) %>% ungroup
+
+ggplot(subset(t, Stat.ChargeOffFlg==T), aes(x=Trm.grade, y=pctOfNotional, fill=outlierFlg)) +
+  geom_bar(stat="identity", position="dodge")+
+  theme_minimal() +
+  ggtitle("Default Rates 2013") + 
+  scale_fill_manual(name="Oulier", labels=c("Not Outlier","Outlier"),   values=c(muted("blue"),muted("red")))+
+  scale_y_continuous(labels=percent_format(), name="Percent of Notional Defaulted") +
+  xlab("Loan Grade")
+```
+  
+Default rates for outliers better than their peers, but they can't be bumped up to a higher grade
+
+## What's Bad about the Outliers?
+```{r fig.height=3.5}
+
+# numerics for faceting 
+t <- l2013 %>% select(Trm.issue_Y, 
+                  hypGrade, 
+                  outlierFlg, 
+                  Loan_Amount=Stat.loan_amntpctRank, 
+                  Debt_Inc_ratio=Prof.dtipctRank, 
+                  Erlst_crd_line=Prof.earliest_cr_line_YpctRank,
+                  Mth_snc_rcnt_acct = Prof.mo_sin_rcnt_tlpctRank,
+                  Mortgage_cnt = Prof.mort_accpctRank,
+                  Mth_snc_derog_rpt = Prof.mths_since_last_major_derogpctRank,
+                  Mth_snc_last_rec = Prof.mths_since_last_recordpctRank,
+                  Mths_snc_rcnt_card = Prof.mths_since_recent_bcpctRank,
+                  Mths_snc_card_delinq = Prof.mths_since_recent_bc_dlqpctRank,
+                  Mths_snc_rcnt_inq = Prof.mths_since_recent_inqpctRank,
+                  Mths_snc_revol_delinq=Prof.mths_since_recent_revol_delinqpctRank,
+                  Loan_income_ratio=Prof.LCLoanIncRatiopctRank) %>%
+    gather(., key=attrib_name, value=attrib_value, -Trm.issue_Y, -hypGrade, -outlierFlg)
+
+ggplot(t, aes(x=outlierFlg, y=attrib_value, fill=outlierFlg )) + 
+  geom_violin() +
+  facet_wrap(~attrib_name) +
+  theme_minimal() +
+  ggtitle("Loan Features 2013") +
+  scale_x_discrete(labels=element_blank(), name="") +
+  scale_y_continuous(name="Percentile", labels=percent_format()) +
+  scale_fill_manual(values=c(muted("blue"),muted("red")), name="", labels=c("Not outlier", "Outlier"))
+```
+  
+Slight bias towards:  
+- Higher nominal loan amounts  
+- Higher loan amounts as proportion of income  
+- Increased indicators of economic distress (recently opened a new credit line, recent credit inquiries)
+
+## Conclusion
+
+#### Takeaways
+- FICO still matters --- lend to them instead of lower scored borrowers in the same loan grade
+- Specific driver of getting bumped down a grade not determined
+
+#### Next Steps
+- Bootcamp 6's Kaggle winners used training data that had additional useful information about the borrowers that is not in the publically available data --- what is LC keeping from us?  
+- Multivariate analysis --- possibly a set of themes for getting put in the outlier credit doghouse
+- Integration of denied loan request data
+- Analysis of low FICO, high LC grade loans

@@ -1,0 +1,249 @@
+---
+title: "Vehicular Collisions in NYC"
+author: "Regan Yee"
+date: "October 12, 2016"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
+setwd("~/Documents/Project/")
+vehc = read.csv("NYPD_Motor_Vehicle_Collisions.csv")
+library(RgoogleMaps)
+library(dplyr)
+library(ggplot2)
+library(ggmap)
+library(choroplethrZip)
+
+############### By Time
+# We want to organize the crashes by hours, so let's strip hours from TIME field
+date_hour = strptime(vehc$TIME,"%H")
+hour = as.numeric(format(date_hour, "%H")) +
+  as.numeric(format(date_hour, "%M"))/60
+vehc$hour = hour
+
+# Create a monthDate column
+v = strsplit(as.character(vehc$DATE),"/")
+v1 = matrix(unlist(v), ncol=3, byrow=TRUE)
+v2 = paste(v1[,1],v1[,2],sep="/")
+vehc$monthDate = v2
+
+# Create a month column
+v = strsplit(as.character(vehc$DATE),"/")
+v1 = matrix(unlist(v), ncol=3, byrow=TRUE)
+vehc$month = v1[,1]
+
+# Create a year column
+v = strsplit(as.character(vehc$DATE),"/")
+v1 = matrix(unlist(v), ncol=3, byrow=TRUE)
+vehc$year = v1[,3]
+
+# Organize a df sorted by the number of crashes in an hour slot
+common_times = vehc %>% group_by(hour) %>%
+                        summarize(count=n()) %>% 
+                        arrange(desc(count))
+
+# Organize a df sorted by the number of crashes in an month
+common_months = vehc %>% group_by(month) %>%
+  filter(year %in% c(2013,2014,2015)) %>% 
+  summarize(count=n()) %>% 
+  arrange(desc(count))
+
+############### By Year
+## In a list v, delimit the DATE by "/" and strip out the YEAR
+v = strsplit(as.character(vehc$DATE),"/")
+v1 = matrix(unlist(v), ncol=3, byrow=TRUE)
+
+############### Contributing Factors Summaries
+contributing_factors = vehc %>% select(CONTRIBUTING.FACTOR.VEHICLE.1,CONTRIBUTING.FACTOR.VEHICLE.2,CONTRIBUTING.FACTOR.VEHICLE.3,CONTRIBUTING.FACTOR.VEHICLE.4,CONTRIBUTING.FACTOR.VEHICLE.5)
+distinct(contributing_factors, CONTRIBUTING.FACTOR.VEHICLE.1)
+sum1 = contributing_factors %>% group_by(CONTRIBUTING.FACTOR.VEHICLE.1) %>% summarize(count=n())
+sum2 = contributing_factors %>% group_by(CONTRIBUTING.FACTOR.VEHICLE.2) %>% summarize(count=n())
+sum1 %>% arrange(desc(count))
+sum2 %>% arrange(desc(count))
+
+############### Number of people killed by year sum(Pedestrians, Cyclists, Motorists)
+vehc %>% group_by(year) %>% summarize(total=sum(NUMBER.OF.PERSONS.KILLED))
+colnames(vehc)
+vehc %>% group_by(year) %>% summarize(total=sum(NUMBER.OF.PEDESTRIANS.KILLED))
+
+zip_counts = vehc %>% 
+  group_by(year,ZIP.CODE) %>%
+  summarize(count = n()) %>%
+  select(year, ZIP.CODE, value = count) %>%
+  mutate(region = as.character(ZIP.CODE))
+
+crashes_in_2016 = zip_counts %>% filter(year==2016)
+crashes_in_2015 = zip_counts %>% filter(year==2015)
+crashes_in_2014 = zip_counts %>% filter(year==2014)
+crashes_in_2013 = zip_counts %>% filter(year==2013)
+crashes_in_2012 = zip_counts %>% filter(year==2012)
+
+# New York City is comprised of 5 counties: Bronx, Kings (Brooklyn), New York (Manhattan), 
+# Queens, Richmond (Staten Island). Their numeric FIPS codes are:
+nyc_fips = c(36005, 36047, 36061, 36081, 36085)
+
+g2016 = zip_choropleth(crashes_in_2016,
+               county_zoom=nyc_fips,
+               num_colors = 1)
+## 2015 vs 2014
+y2015.vs.y2014 = left_join(crashes_in_2015,crashes_in_2014,by = 'region')
+df20152014 = as.data.frame(y2015.vs.y2014) %>% select(year.x,region,value.x,value.y)
+df20152014 = df20152014 %>% mutate(value=value.x-value.y)
+
+# Choropleth map of changes from 2014-2015
+diff2015 = zip_choropleth(df20152014,
+                       county_zoom=nyc_fips,
+                       num_colors = 1)
+## 2014 vs 2013
+y2014.vs.y2013 = left_join(crashes_in_2014,crashes_in_2013,by = 'region')
+df20142013 = as.data.frame(y2014.vs.y2013) %>% select(year.x,region,value.x,value.y)
+df20142013 = df20142013 %>% mutate(value=value.x-value.y)
+
+# Choropleth map of changes from 2015-2014
+diff2014 = zip_choropleth(df20142013,
+                          county_zoom=nyc_fips,
+                          num_colors = 1,
+                          legend="Difference in Accidents")
+
+# Fatalities by Borough
+people_killed_by_borough = vehc %>% group_by(year,BOROUGH) %>% summarize(total=sum(NUMBER.OF.PERSONS.KILLED))
+
+```
+
+## Dataset Summary
+[NYPD_Motor_Vehicle_Collisions](https://data.cityofnewyork.us/Public-Safety/NYPD-Motor-Vehicle-Collisions/h9gi-nx95) provided by NYC Open Data
+
+This dataset provides insights into the all vehicular collisions within the NYC area
+
+- 902679 observations with 30 variables
+- Updated on weekdays (Current data is 07/01/2012 - 10/11/2016)
+- Data sourced from the NYPD
+
+## What are we trying to answer?
+
+- Is Vision Zero working? i.e. Is there a decreasing trend?
+- Where are the highest number of collisions?
+- When? (by Month, by Hour of day)
+- Common causes for collisions
+
+## YTD 2016 Vehicular Crashes
+
+```{r 2016crashes, cache = FALSE, echo = FALSE, message=FALSE}
+g2016 + scale_fill_continuous(
+  low = "#FFFFFF",
+  high = "red",
+  space = "Lab",
+  na.value = "grey50",
+  guide = "colourbar",
+  limits = c(0, 3000),
+  name = "Number of Crashes"
+  )
+```
+
+Generated using choroplethrZip library
+
+## Changes from 2013 to 2014
+
+```{r diff2014, cache = FALSE, echo = FALSE, message=FALSE}
+diff2014 + scale_fill_gradient2(
+  low = "#67a9cf",
+  mid= "#f7f7f7",
+  high = "#ef8a62",
+  midpoint = 0,
+  space = "Lab",
+  na.value = "white",
+  name = "Diff",
+  limits = c(-275,200)
+)
+```
+
+2013 n = 203689  
+2014 n = 205929
+
+
+## Changes from 2014 to 2015
+
+```{r diff2015, cache = FALSE, echo = FALSE, message=FALSE}
+diff2015 + scale_fill_gradient2(
+  low = "#67a9cf",
+  mid= "#f7f7f7",
+  high = "#ef8a62",
+  midpoint = 0,
+  space = "Lab",
+  na.value = "white",
+  name = "Diff"
+)
+```
+2014 n = 205929  
+2015 n = 217539
+
+## Number of Fatal Crashes per Year
+``` {r fatal, echo = FALSE, eval = FALSE}
+vehc %>% group_by(year) %>% summarize(total=sum(NUMBER.OF.PERSONS.KILLED))
+```
+
+Year | Count of Fatalities
+------------- | -------------
+2013 | 297
+2014 | 262
+2015 | 243
+
+## Fatalities by Borough
+``` {r by_borough, echo = FALSE}
+ggplot(people_killed_by_borough %>% filter(BOROUGH != "") %>% filter(year %in% c(2013,2014,2015))) + geom_bar(aes(x=year,y=total),stat="identity") + facet_wrap( ~ BOROUGH)
+```
+
+## Vehicular Crashes by Hour of Day
+
+```{r hours, cache = TRUE, echo = FALSE, fig.height=3, fig.ext='png'}
+g_hour=ggplot(data=common_times)
+g_hour+geom_bar(aes(x=hour, y=count),stat="identity") + xlab("Hour of Day") + ylab("Count Crashes")
+```
+
+## Vehicular Crashes by Month
+```{r months, cache = TRUE, echo = FALSE, fig.height=3, fig.ext='png'}
+g_month=ggplot(data=common_months)
+g_month+geom_bar(aes(x=month, y=count),stat="identity") + xlab("Month") + ylab("Count Crashes")
+```
+
+Data from full years of 2013, 2014, 2015
+
+
+## Top 5 Contributing Factors
+Number | Reason | Count
+------------- | ------------- | -------------
+1 | Unspecified | 500826
+2 | Driver Inattention/Distraction | 106757
+3 | Fatigued/Drowsy | 48153
+4 | Failure to Yield Right-of-Way | 36776
+5 | Other Vehicular | 27953
+
+15 - Alcohol Involvement  
+20 - Aggressive Driving/Road Rage  
+42 - Cell Phone (hands-free)  
+43 - Cell Phone (hand-held)
+
+## Top 5 Contributing Factors - Fatal Collisions
+Number | Reason | Count
+------------- | ------------- | -------------
+1|Unspecified|536
+2|Traffic Control Disregarded|124
+3|Driver Inattention/Distraction|95
+4|Failure to Yield Right-of-Way|75
+5|Passenger Distraction|52
+
+## Conclusions
+- Vehicular collisions are on the rise, but fatalities have been decreasing since 2013.
+- The Vision Zero initiative may be benefiting certain neighborhoods more than others.
+- Collisions most commonly occur during the the hours of 4-6PM.
+- Collisions happen most frequently around Manhattan's Midtown, East New York/Carnarsie, and Long Island City.
+
+## Next Steps
+- Compare NYC's stats to other cities
+- Look at other cities who are doing a Vision Zero initiative and benchmark NYC's progress
+- Compare neighborhood median incomes and see if there is a correlation to the improvement from Vision Zero initiatives
+
+
+
+
