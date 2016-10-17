@@ -76,24 +76,47 @@ g + geom_bar(aes(fill = Sale_Percent), stat = 'identity', position = 'dodge')
 #Overall Ownership and Game Age Compared to Percent Discounts
 labelsScores = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
 metacriticScoresVSIncreaseSeventyPlus = steam
-title = paste("Overall Ownership and Game Age Compared to Percent Discounts")
+title = paste("Overall Ownership and Amount Sold Percent Increases Compared to Percent Discounts")
 metacriticScoresVSIncreaseSeventyPlus$GameAge = floor(metacriticScoresVSIncreaseSeventyPlus$GameAge/365)
 metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$GameAge),]
 metacriticScoresVSIncreaseSeventyPlus$GameAge = cut_interval(metacriticScoresVSIncreaseSeventyPlus$GameAge, length = 3, rm.na = FALSE)
-factosokaf = 1500
+factosokaf = 100
 metacriticScoresVSIncreaseSeventyPlus$Owners_Before = round(metacriticScoresVSIncreaseSeventyPlus$Owners_Before/factosokaf)*factosokaf
-metacriticScoresVSIncreaseSeventyPlus = summarise(group_by(metacriticScoresVSIncreaseSeventyPlus, Owners_Before), meanSalePercent = mean(Sale_Percent), meanGameAge =  mean(GameAge), meanIncrease = mean(Increase))
+metacriticScoresVSIncreaseSeventyPlus = summarise(group_by(metacriticScoresVSIncreaseSeventyPlus, Owners_Before), meanSalePercent = mean(Sale_Percent), meanGameAge =  mean(GameAge), meanIncrease = mean(Increase), meanSales = mean(Sales))
 metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$meanSalePercent),]
 metacriticScoresVSIncreaseSeventyPlus$meanSalePercent = metacriticScoresVSIncreaseSeventyPlus$meanSalePercent/100
+metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[metacriticScoresVSIncreaseSeventyPlus$meanIncrease < 300,]
 head(metacriticScoresVSIncreaseSeventyPlus)
-colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$GameAge))
+colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$meanIncrease))
 getPalette = colorRampPalette(brewer.pal(8, "Accent"))
 platteNew = rev(getPalette(colourCount))
 g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = Owners_Before, y = meanSalePercent)) + ggtitle(title)
-g + geom_point(aes(color=meanIncrease)) + ylab('Mean Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') # + scale_fill_manual(values = platteNew, labels = labelsYears, guide = guide_legend(title = "Metacritic Score")) + expand_limits(x = 0, y = 0)
-
-
+g + geom_point(aes(color=meanIncrease,size=meanSales)) + ylab('Mean Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') + scale_color_gradient(trans = "sqrt", low="blue", high="red", guide = guide_legend(title = "Mean Increase (%)")) + expand_limits(x = 0, y = 0)
 ggsave(file=paste0(removeSymbols(title), ".eps"))
+
+
+
+# title = paste("Overall Ownership and Sales Compared to Percent Discounts")
+# #Overall Ownership and Game Age Compared to Percent Discounts
+# labelsScores = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
+# metacriticScoresVSIncreaseSeventyPlus = steam
+# metacriticScoresVSIncreaseSeventyPlus$GameAge = floor(metacriticScoresVSIncreaseSeventyPlus$GameAge/365)
+# metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$GameAge),]
+# metacriticScoresVSIncreaseSeventyPlus$GameAge = cut_interval(metacriticScoresVSIncreaseSeventyPlus$GameAge, length = 3, rm.na = FALSE)
+# factosokaf = 100
+# metacriticScoresVSIncreaseSeventyPlus$Owners_Before = round(metacriticScoresVSIncreaseSeventyPlus$Owners_Before/factosokaf)*factosokaf
+# metacriticScoresVSIncreaseSeventyPlus = summarise(group_by(metacriticScoresVSIncreaseSeventyPlus, Owners_Before), meanSalePercent = mean(Sale_Percent), meanGameAge =  mean(GameAge), meanIncrease = mean(Sales))
+# metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$meanSalePercent),]
+# metacriticScoresVSIncreaseSeventyPlus$meanSalePercent = metacriticScoresVSIncreaseSeventyPlus$meanSalePercent/100
+# head(metacriticScoresVSIncreaseSeventyPlus)
+# colourCount = length(unique(metacriticScoresVSIncreaseSeventyPlus$meanIncrease))
+# getPalette = colorRampPalette(brewer.pal(8, "Accent"))
+# platteNew = rev(getPalette(colourCount))
+# g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = Owners_Before, y = meanSalePercent)) + ggtitle(title)
+# g + geom_point(aes(color=meanIncrease)) + ylab('Mean Sale Percent') + scale_y_continuous(labels=percent) + xlab('Number of Owners Before') + scale_color_gradient( low="blue", high="red", guide = guide_legend(title = "Mean Sales")) + expand_limits(x = 0, y = 0)
+# ggsave(file=paste0(removeSymbols(title), ".eps"))
+
+
 # 
 # 
 # # #IGN scores versus increase in sales
