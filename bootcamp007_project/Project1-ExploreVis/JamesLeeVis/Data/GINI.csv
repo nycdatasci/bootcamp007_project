@@ -1,0 +1,265 @@
+Country Name,Country Code,Indicator Name,Indicator Code,1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,AverageGINI
+Aruba,ABW,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Andorra,AND,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Afghanistan,AFG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Angola,AGO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,51.96,,,,,,,,42.72,,,,,,,,,47.34
+Albania,ALB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,27.01,,,,,,31.74,,,30.6,,,29.98,,,,28.96,,,,,30.32
+Arab World,ARB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+United Arab Emirates,ARE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Argentina,ARG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,42.79,45.28,,,,46.76,45.47,44.86,45.92,48.9,49.52,49.11,50.73,49.79,51.06,53.34,53.79,53.54,50.18,49.27,48.26,47.37,46.27,45.27,44.5,43.57,42.49,42.28,42.67,,,47.59066667
+Armenia,ARM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,44.42,,,36.22,,35.36,34.78,33.03,37.51,35.99,32.49,29.83,30.71,29.58,31.07,31.32,30.48,31.54,31.48,,,32.51214286
+American Samoa,ASM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Antigua and Barbuda,ATG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Australia,AUS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,31.33,,,,32.5,,,,33.15,,,,,,33.72,,,,,,34.14,,34.01,,,,,35.63,,34.94,,,,,,,34.68
+Austria,AUT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,29.87,28.72,29.59,30.58,30.45,31.5,30.25,30.8,30.48,,,,,30.24888889
+Azerbaijan,AZE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,34.65,,,,,,36.45,17.36,18.81,16.23,16.64,,,31.79,,,,,,,,,22.88
+Burundi,BDI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.33,,,,,,42.35,,,,,,,,33.36,,,,,,,,,,,33.36
+Belgium,BEL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30.63,29.88,28.26,29.57,29,28.7,28.53,28.43,27.59,,,,,28.95444444
+Benin,BEN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,38.58,,,,,,,,43.44,,,,,,41.01
+Burkina Faso,BFA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,48.07,,,,49.94,,,,,43.25,,,,,,39.76,,,,,35.3,,,39.43666667
+Bangladesh,BGD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,25.88,,26.92,,,28.85,,,27.57,,,,32.94,,,,,33.41,,,,,33.2,,,,,32.13,,,,,,,32.91333333
+Bulgaria,BGR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,23.43,,,30.71,,24.32,35.4,,26.38,,,,32.68,,28.92,,,35.73,28.14,33.57,33.82,35.65,34.28,36.01,,,,,33.2
+Bahrain,BHR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Bahamas, The",BHS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Bosnia and Herzegovina,BIH,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,29.97,,,34.04,,,33.06,,,,33.83,,,,,,32.725
+Belarus,BLR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,22.76,,,,,21.6,,28.76,,,32.25,32,31.17,30.58,30.34,28.82,26.48,27.55,28.28,29.61,27.83,27.69,28.57,27.15,26.53,26.58,27.18,,,28.29066667
+Belize,BLZ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,60.25,60.91,57.55,56.59,60.43,54.91,53.26,,,,,,,,,,,,,,,,,,#DIV/0!
+Bermuda,BMU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Bolivia,BOL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.04,,49.11,,,,,58.16,,58.1,63,58.88,60.16,,55.01,58.47,56.87,55.44,51.43,49.65,,46.26,46.7,48.06,48.4,,,53.71769231
+Brazil,BRA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,57.93,58.42,58.99,58.38,55.59,58.46,59.69,61.43,63.3,60.49,,53.17,60.12,,59.57,59.89,59.8,59.61,58.99,,59.33,58.62,58.01,56.88,56.64,55.93,55.23,54.37,53.87,,53.09,52.67,52.87,51.48,,,55.30692308
+Barbados,BRB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Brunei Darussalam,BRN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Bhutan,BTN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,46.78,,,,38.09,,,,,38.81,,,,,41.22666667
+Botswana,BWA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,54.21,,,,,,,,60.79,,,,,,,,,64.73,,,,,,,60.46,,,,,,,,62.595
+Central African Republic,CAF,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,61.33,,,,,,,,,,,43.61,,,,,56.24,,,,,,,,,49.925
+Canada,CAN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,32.6,,,,,,31.6,,,,31.15,,,31.39,,,31.77,33.59,,33.65,,,,33.88,,,33.9,,,33.68,,,,,,,33.7775
+Central Europe and the Baltics,CEB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Switzerland,CHE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,34.47,33.96,32.96,32.72,31.83,31.64,,,,,32.93
+Channel Islands,CHI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Chile,CHL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,56.21,,,57.25,,54.81,,56.43,,54.87,,55.52,,55.59,,,54.61,,,51.79,,,52,,50.84,,50.45,,,,52.54666667
+China,CHN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.83,,,,42.16,,,,,42.495
+Cote d'Ivoire,CIV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,45.53,37.97,40.51,36.89,,,,39.39,,,40.56,,,38.96,,,,41.34,,,,,,43.18,,,,,,,,,42.26
+Cameroon,CMR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,44.45,,,,,42.14,,,,,,42.82,,,,,,,46.54,,,43.83333333
+"Congo, Rep.",COG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,47.33,,,,,,48.94,,,,,,48.135
+Colombia,COL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,53.11,53.59,,51.32,51.45,,,,56.93,,,58.74,58.68,57.76,58.25,54.41,56.11,55.04,,,56.04,55.92,55.5,54.18,53.54,53.49,53.5,,,55.57076923
+Comoros,COM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,55.93,,,,,,,,,,,,,55.93
+Cabo Verde,CPV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,52.5,,,,,,47.19,,,,,,,,,,49.845
+Costa Rica,CRI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,47.49,,,,,34.42,,,46.69,45.3,46.65,45.71,46,46.75,45.71,46.54,45.62,45.67,47.67,47.44,51.1,50.89,49.93,48.92,47.77,49.31,49.49,49.14,50.97,48.1,48.6,48.61,49.18,48.53,,,49.19866667
+Caribbean small states,CSS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Cuba,CUB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Curacao,CUW,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Cayman Islands,CYM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Cyprus,CYP,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30.09,30.26,31.13,31.11,31.71,32.11,31.46,32.63,34.31,,,,,31.64555556
+Czech Republic,CZE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,19.4,,,,,26.6,,,25.82,,,,,,,,27.53,26.95,26.74,26,26.29,26.18,26.63,26.39,26.13,,,,,26.53777778
+Germany,DEU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,32.78,32.4,31.29,31.51,31.14,30.13,,,,,,31.54166667
+Djibouti,DJI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,40,,,,,,,,,,45.13,44.13,,,,43.08666667
+Dominica,DMA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Denmark,DNK,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,25.89,25.94,27.08,26.85,28.89,28.84,29.02,29.54,29.08,,,,,27.90333333
+Dominican Republic,DOM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,47.78,,,50.46,,,51.36,,,,47.43,48.92,,,52.01,50.43,50.12,52.09,51.95,49.96,51.9,48.69,49,48.86,47.2,47.4,45.68,47.07,,,,49.45428571
+Algeria,DZA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+East Asia & Pacific (excluding high income),EAP,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Early-demographic dividend,EAR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+East Asia & Pacific,EAS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Europe & Central Asia (excluding high income),ECA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Europe & Central Asia,ECS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Ecuador,ECU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,50.49,,,,,,,53.37,50.97,,,49.66,58.6,56.38,,,54.99,54.12,54.12,53.2,54.33,50.61,49.28,49.25,46.21,46.57,47.29,45.38,,,50.90230769
+"Egypt, Arab Rep.",EGY,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Euro area,EMU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Eritrea,ERI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Spain,ESP,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.38,32.5,32.67,33.86,34.8,35.39,35.79,36.1,35.89,,,,,34.48666667
+Estonia,EST,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,22.97,,,,,39.5,,30.06,,,37.64,,35.78,36.01,35.79,34.91,33.96,33.63,33.75,31.25,32,31.59,32.16,32.69,33.15,,,,,33.59
+Ethiopia,ETH,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,32.42,,,,,,,,,,,,,,44.56,,,,29.98,,,,,29.81,,,,,,33.17,,,,,,,31.49
+European Union,EUU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Fragile and conflict affected situations,FCS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Finland,FIN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,27.92,27.64,28.02,28.29,27.85,27.47,27.74,27.66,27.12,,,,,27.74555556
+Fiji,FJI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,39.62,,,,,,42.78,,,,,,,,,41.2
+France,FRA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30.8,29.93,29.92,32.63,33.08,,33.78,33.35,33.1,,,,,32.07375
+Faroe Islands,FRO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Micronesia, Fed. Sts.",FSM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,63.26,,,,,43.1,,,,,,,,42.46,,,,49.60666667
+Gabon,GAB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.18,,,,,,,,,,,,42.18
+United Kingdom,GBR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,36.22,34.56,34.84,35.93,34.37,34.67,34.81,33.71,32.57,,,,,34.63111111
+Georgia,GEO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,37.13,41.95,41.25,40.15,40.48,39.57,39.63,39.53,39.78,40.34,39.71,40.6,40.57,41.74,42.13,41.58,41.35,40.03,40.09,,,40.47533333
+Ghana,GHA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,35.35,35.99,,,38.44,,,,,,,40.07,,,,,,,42.77,,,,,,,,,,,,42.77
+Gibraltar,GIB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Guinea,GIN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,46.84,,,46.08,,,,,,,,43,,,,,39.36,,,,,33.73,,,,,38.69666667
+"Gambia, The",GMB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,48.52,,,,,47.33,,,,,,,,,,,,,,47.33
+Guinea-Bissau,GNB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,43.61,,,,,,,,,35.57,,,,,,,,50.66,,,,,,,43.115
+Equatorial Guinea,GNQ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Greece,GRC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.97,35.1,35.41,34.61,34.22,33.82,34.48,35.69,36.68,,,,,34.88666667
+Grenada,GRD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Greenland,GRL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Guatemala,GTM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,58.26,,,59.6,,,,,,,,,,,54.84,,,,,,54.89,,,,,52.35,,,48.66,,,52.685
+Guam,GUM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Guyana,GUY,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,44.55,,,,,,,,,,,,,,,,,,,#DIV/0!
+High income,HIC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Hong Kong SAR, China",HKG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Honduras,HND,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,55.09,,,59.49,57.36,51.85,51.83,53.47,55.01,55.49,55.72,52.73,57.43,55.35,,54.08,58.78,58.66,58.41,59.51,57.42,56.16,55.74,51.56,53.39,57.4,57.4,53.67,50.64,,,55.91571429
+Heavily indebted poor countries (HIPC),HPC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Croatia,HRV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,22.78,,,,,,,,,,28.75,27.71,31.33,31.1,,,29.68,,,,33.71,33.18,27.35,32.32,32.51,,,,,31.3975
+Haiti,HTI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,59.48,,,,,,,,,,,60.79,,,,,60.135
+Hungary,HUN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,20.96,,25.05,,,,27.94,,,,,26.38,27.64,27.22,26.92,26.84,30.93,30.02,29.98,,27.94,27.53,26.97,29.37,28.94,30.55,,,,,28.60083333
+IBRD only,IBD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+IDA & IBRD total,IBT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+IDA total,IDA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+IDA blend,IDB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Indonesia,IDN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,39.47,,,,39.47
+IDA only,IDX,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Isle of Man,IMN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+India,IND,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,35.15,,,,,,35.15
+Not classified,INX,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Ireland,IRL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.72,33.76,32.73,31.96,30.91,32.84,32.3,32.33,32.52,,,,,32.56333333
+"Iran, Islamic Rep.",IRN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,47.42,,,,43.6,,,,43,,,,44.1,,,,,,,38.35,,,,42.02,,,,37.35,,,,39.24
+Iraq,IRQ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Iceland,ISL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,28.11,29.38,30.25,29.58,31.89,28.74,26.43,27.03,26.94,,,,,28.70555556
+Israel,ISR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,36.49,,,,,,35.5,,,,,38.1,,,,39.2,,,,41.86,,41.18,,,42.78,,,,,,,41.255
+Italy,ITA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,34.53,34.07,34.26,33.19,33.74,33.66,34.41,34.52,35.16,,,,,34.17111111
+Jamaica,JAM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,43.16,,41.11,,,35.67,,,40.39,,,44.08,,,48.32,,45.46,,,,,,,,,,,,,46.89
+Jordan,JOR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Japan,JPN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,32.11,,,,,,,,,32.11
+Kazakhstan,KAZ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,25.74,,,,,32.67,,,35.38,,,,,35.39,34.05,32.99,31.42,29.65,29.98,28.54,29.07,28.79,28.56,27.42,27.46,26.33,,,,29.97307692
+Kenya,KEN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,57.46,,43.86,,,46.3,,,,,,,,48.51,,,,,,,,,,,,48.51
+Kyrgyz Republic,KGZ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,26.01,,,,,53.7,,,,,46.4,,31.04,30.16,30.3,28.71,34.77,32.56,37.38,33.91,31.45,29.87,30.13,27.84,27.36,28.82,26.82,,,30.74133333
+Cambodia,KHM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,38.15,,,,,,,,,,35.46,,,41.14,35.1,34.65,33.44,31.7,30.76,,,,,34.60714286
+Kiribati,KIR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,37.61,,,,,,,,,,,37.61
+St. Kitts and Nevis,KNA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Korea, Rep.",KOR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Kosovo,KSV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,28.95,,31.24,30.32,,,31.78,33.25,27.83,29.4,26.71,,,,29.935
+Kuwait,KWT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Latin America & Caribbean (excluding high income),LAC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Lao PDR,LAO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,34.31,,,,,34.9,,,,,34.66,,,,,36.64,,,,,37.89,,,,,36.39666667
+Lebanon,LBN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Liberia,LBR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,36.48,,,,,,,,,,36.48
+Libya,LBY,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+St. Lucia,LCA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.58,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Latin America & Caribbean,LCN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Least developed countries: UN classification,LDC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Low income,LIC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Liechtenstein,LIE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Sri Lanka,LKA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,32.47,,,,,32.45,,,,,35.4,,,,,,,40.96,,,,40.25,,,36.39,,,39.16,,,,,39.19
+Lower middle income,LMC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Low & middle income,LMY,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Lesotho,LSO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,56.02,,,,,,,,63.24,,,,,,,,51.57,,,,,,,,54.18,,,,,,,52.875
+Late-demographic dividend,LTE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Lithuania,LTU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,22.48,,,,,33.64,,,32.26,,32.1,32.02,31.67,32.01,31.92,35.46,35.2,35.3,34.44,34.59,35.77,37.38,33.76,32.63,35.15,,,,,34.25230769
+Luxembourg,LUX,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30.25,31.11,30.96,31.28,32.61,31.53,30.9,32.42,34.79,,,,,31.76111111
+Latvia,LVA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,22.49,,,,,26.99,,30.98,31.64,33.26,33.26,,,,35.09,36.53,36.77,39.4,35.6,36.05,37.41,34.83,35.27,36.03,35.48,,,,,36.22363636
+"Macao SAR, China",MAC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+St. Martin (French part),MAF,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Morocco,MAR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,39.19,,,,,,39.2,,,,,,,,39.46,,40.64,,,,,,40.72,,,,,,,,,,,40.68
+Monaco,MCO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Moldova,MDA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,24.14,,,,34.32,,,,,36.94,39.52,42.62,36.43,37.99,35.85,34.9,35.03,36.28,35.4,34.42,34.69,32.91,32.05,30.63,29.16,28.53,26.83,,,33.40666667
+Madagascar,MDG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,45.26,,,,39.47,,38.61,,47.44,,,,38.88,,,,,40.63,,42.65,,,,,42.4
+Maldives,MDV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,41.31,,,,,,,38.37,,,,,,,,39.84
+Middle East & North Africa,MEA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Mexico,MEX,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,48.95,,,,,54.34,,,50.95,,54.3,,48.47,,48.97,,51.67,,49.54,,46.03,,48.01,,48.23,,48.13,,48.07,,48.21,,,48.48625
+Marshall Islands,MHL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Middle income,MIC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Macedonia, FYR",MKD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,28.13,,34.26,,38.51,38.72,38.77,39.31,42.64,,44.05,,,,,,,,,39.46571429
+Mali,MLI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,50.44,,,,,,,39.87,,,,,38.93,,,33.04,,,,,,,,37.28
+Malta,MLT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Myanmar,MMR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Middle East & North Africa (excluding high income),MNA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Montenegro,MNE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30.22,30.04,31.45,30.49,31.01,28.89,30.82,32.18,32.33,31.93,,,30.936
+Mongolia,MNG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.2,,,30.27,,,,32.89,,,,,35.82,,,33.08,33.88,33.75,,32.04,,,33.57666667
+Northern Mariana Islands,MNP,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Mozambique,MOZ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,44.41,,,,,,47.04,,,,,,45.58,,,,,,,,,46.31
+Mauritania,MRT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,43.94,,,,,,50.05,,37.75,,,,,39.03,,,,40.17,,,,35.69,,,,,,32.42,,,36.8275
+Mauritius,MUS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,35.65,,,,,,35.84,,,,,35.745
+Malawi,MWI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,65.76,,,,,,,39.87,,,,,,46.12,,,,,,,42.995
+Malaysia,MYS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,48.62,,,47.04,,46.17,,,47.65,,,48.52,,49.15,,,,,,,46.05,,,46.05,,46.26,,,,,,,,46.12
+North America,NAC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Namibia,NAM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,63.32,,,,,,60.97,,,,,,,,62.145
+New Caledonia,NCL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Niger,NER,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,36.1,,41.53,,,,,,,,,,,44.43,,37.3,,,,31.45,,,33.99,,,36.7925
+Nigeria,NGA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,38.68,,,,,,,44.98,,,,51.92,,,,,,,40.06,,,,,,42.97,,,,,,,,41.515
+Nicaragua,NIC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,50.36,,,,,45.16,,,58.03,,,,40.49,,,,45.73,,,,,47.05,,,47.825
+Netherlands,NLD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,30.74,29.86,30.76,30.35,29.93,28.38,28.73,28.17,27.99,,,,,29.43444444
+Norway,NOR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,31.72,32.27,27.29,28.07,27.14,26.39,25.86,25.54,25.9,,,,,27.79777778
+Nepal,NPL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,30.06,,,,,,,,,,,35.21,,,,,,,,43.77,,,,,,,32.84,,,,,,,38.305
+Nauru,NRU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+New Zealand,NZL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+OECD members,OED,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Oman,OMN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Other small states,OSS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Pakistan,PAK,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.32,,,33.25,,,,,,28.67,,33.12,,,30.37,,,32.51,32.72,,31.84,,,29.8,30.93,,30.69,,,,31.26571429
+Panama,PAN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,58.91,,58.22,,,,57.81,,58.23,57.48,56.46,57.66,57.3,56.59,56.37,55.06,53.99,55.06,52.97,52.63,52.03,51.91,51.83,51.9,51.66,50.7,,,53.844
+Peru,PER,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,45.63,,,,,,,,,44.02,,,53.72,56.14,56.34,50.77,51.83,54.04,53.71,51.2,51.84,51.67,51.35,48.55,47.96,46.21,45.48,45.11,44.73,44.14,,,49.23933333
+Philippines,PHL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,41.04,,,40.75,,,43.82,,,42.89,,,45.96,,,46.17,,,44.04,,,44.2,,,42.91,,,43.04,,,,,44.072
+Palau,PLW,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Papua New Guinea,PNG,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,55.43,,,,,,,,,,,,,43.88,,,,,,,,43.88
+Poland,POL,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,25.16,,25.53,,26.89,,,,26.7,,,32.66,,32.32,32.59,32.97,32.85,34.05,34.91,35.43,34.49,34.71,33.51,33.72,33.58,33.25,32.78,32.39,32.55,32.08,,,33.55133333
+Pre-demographic dividend,PRE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Puerto Rico,PRI,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Korea, Dem. People??s Rep.",PRK,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Portugal,PRT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,38.9,38.47,38.06,36.75,36.63,34.91,35.84,36.34,36.04,,,,,36.88222222
+Paraguay,PRY,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,40.84,,,,,58.16,,54.89,,54.58,,54.83,57.34,55.55,52.59,51.37,53.63,52.09,51.04,49.67,51.83,52.6,48.17,48.3,51.67,,,52.19142857
+Pacific island small states,PSS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Post-demographic dividend,PST,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+French Polynesia,PYF,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Qatar,QAT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Romania,ROU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,23.31,,,25.46,,28.2,,,,31.08,29.42,29.32,29.43,30.23,29.91,30.04,29.82,30.46,,36.93,35.24,35.3,,34.88,27.45,,,,31.58416667
+Russian Federation,RUS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,23.8,,,,,48.38,,,46.1,38.41,38.14,37.44,37.09,39.6,37.28,40.69,40.92,41.37,41.54,42.33,41.42,39.69,40.94,41.04,41.59,,,,,40.42307692
+Rwanda,RWA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,28.9,,,,,,,,,,,,,,,,48.55,,,,,52.04,,,,,51.34,,,50.44,,,,50.5925
+South Asia,SAS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Saudi Arabia,SAU,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Sudan,SDN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,35.39,,,,,,,,35.39
+Senegal,SEN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,54.14,,,41.44,,,,,,,41.23,,,,39.22,,,,,,40.29,,,,,,40.24666667
+Singapore,SGP,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Solomon Islands,SLB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,46.1,,,,,,,,,,,,46.1
+Sierra Leone,SLE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,40.17,,,,,,,,33.99,,,,,,37.08
+El Salvador,SLV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,53.95,,,,49.88,51.39,,54.52,52.2,51.31,51.14,51.54,50.72,47.38,47.88,45.44,45.24,46.65,45.93,44.53,42.43,41.8,43.51,41.84,,,46.48933333
+San Marino,SMR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Somalia,SOM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Serbia,SRB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,31.97,32.83,32.98,33.43,29.67,29.43,28.18,28.67,29.65,,,29.06,,,,30.587
+Sub-Saharan Africa (excluding high income),SSA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+South Sudan,SSD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,46.34,,,,,,,,46.34
+Sub-Saharan Africa,SSF,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Small states,SST,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Sao Tome and Principe,STP,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,32.13,,,,,,,,,,30.82,,,,,,,31.475
+Suriname,SUR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,57.61,,,,,,,,,,,,,,,,,,#DIV/0!
+Slovak Republic,SVK,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,19.54,,,,19.49,,,,25.81,,,,,,,,28.94,29.33,27.71,24.74,26.08,26.02,27.32,26.58,26.12,,,,,26.98222222
+Slovenia,SVN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,23.6,,,,,,29.18,,,,,28.41,,,,29.12,30.87,24.84,24.63,24.48,24.37,23.72,24.83,24.94,24.87,25.59,,,,,25.66
+Sweden,SWE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,26.43,27.1,26.47,26.92,27.13,26.61,26.81,27.24,27.32,,,,,26.89222222
+Swaziland,SWZ,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,60.45,,,,,,53.11,,,,,,,,,51.45,,,,,,,,52.28
+Sint Maarten (Dutch part),SXM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Seychelles,SYC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.78,,,,,,,42.77,,,,,,,46.82,,,,44.795
+Syrian Arab Republic,SYR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Turks and Caicos Islands,TCA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Chad,TCD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,39.82,,,,,,,,43.32,,,,,,41.57
+East Asia & Pacific (IDA & IBRD countries),TEA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Europe & Central Asia (IDA & IBRD countries),TEC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Togo,TGO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.21,,,,,46.02,,,,,,44.115
+Thailand,THA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,45.22,,,,,,,43.84,,45.27,,47.86,,43.47,,42.9,,41.46,43.09,42.83,,41.94,,42.54,,41.82,39.76,40.29,39.75,39.4,37.46,39.26,37.85,,,,40.26363636
+Tajikistan,TJK,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,29.54,,,,32.72,33.6,,,32.19,,30.77,,,30.52,30.41,30.76,,,31.56714286
+Turkmenistan,TKM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,26.39,,,,,35.38,,,,,40.77,,,,,,,,,,,,,,,,,,,#DIV/0!
+Latin America & the Caribbean (IDA & IBRD countries),TLA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Middle East & North Africa (IDA & IBRD countries),TMN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Timor-Leste,TLS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,37.56,,,,,,31.56,,,,,,,,,,34.56
+Tonga,TON,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,37.84,,,,,,,,38.1,,,,,,,,37.97
+South Asia (IDA & IBRD),TSA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Sub-Saharan Africa (IDA & IBRD countries),TSS,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Trinidad and Tobago,TTO,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.6,,,,40.27,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Tunisia,TUN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,43.43,,,,,40.24,,,,,41.66,,,,,40.81,,,,,37.73,,,,,35.81,,,,,,,38.11666667
+Turkey,TUR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,43.48,,,,,,,41.32,,,,,,,,41.4,42.18,41.29,42.61,39.65,38.44,39.02,38.97,38.79,40.04,40.17,40.18,,,,40.22833333
+Tuvalu,TUV,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,41.1,,,,,,,41.1
+Tanzania,TZA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,35.29,,,,,,,,,37.3,,,,,,,40.28,,,,37.78,,,,,,38.45333333
+Uganda,UGA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,44.36,,,41.43,,,,39.04,,,43,,,45.17,,,42.94,,,,44.2,,,41.01,,,,,43.33
+Ukraine,UKR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,23.31,,,,29.71,28.93,,39.29,35.16,,,28.96,,,29.05,28.66,28.93,29.02,29.79,27.01,26.64,25.32,24.82,24.55,24.74,24.55,24.09,,,26.70538462
+Upper middle income,UMC,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Uruguay,URY,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,43.65,,,,,,,,42.37,,,40.2,,,42.11,42.66,42.73,43.81,,44.39,46.17,46.66,46.22,47.13,45.87,47.2,47.63,46.27,46.28,45.32,43.37,41.32,41.87,41.6,,,45.15333333
+United States,USA,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,37.73,,,,,38.36,,,40.35,,,40.86,,,40.46,,,,40.62,,,41.75,,,40.46,,,41.06,,,,40.87
+Uzbekistan,UZB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,24.95,,,,,,,,,,44.67,,36.1,,33.04,35.27,,,,,,,,,,,,,,34.80333333
+St. Vincent and the Grenadines,VCT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+"Venezuela, RB",VEN,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,55.61,,,,,,53.45,,45.3,,,42.51,,,47.82,,,49.8,48.32,,48.22,50.56,50.37,49.82,52.36,46.94,,,,,,,,,,,49.71166667
+British Virgin Islands,VGB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Virgin Islands (U.S.),VIR,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Vietnam,VNM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,35.65,,,,,,35.44,,,,37.32,,37.17,,37.44,,38.15,,42.68,,38.7,,37.59,,,38.43571429
+Vanuatu,VUT,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,37.19,,,,,,,37.19
+West Bank and Gaza,PSE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,33.97,34.72,33.96,35.61,,34.46,,,,,,,,34.544
+World,WLD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+Samoa,WSM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.69,,,,,,,,,42.69
+"Yemen, Rep.",YEM,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#DIV/0!
+South Africa,ZAF,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,59.33,,,60.69,,,,57.77,,,,,,64.79,,63.01,,,63.38,,,,,,62.2375
+"Congo, Dem. Rep.",COD,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,42.16,,,,,,,,42.1,,,,,42.13
+Zambia,ZMB,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,60.51,,52.61,,,48.33,,49.13,,,,42.06,,54.29,,54.62,,,,55.62,,,,,,,51.6475
+Zimbabwe,ZWE,GINI index (World Bank estimate),SI.POV.GINI,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,43.15,,,,,,43.15

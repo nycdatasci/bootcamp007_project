@@ -2,7 +2,7 @@
 title: "311 Service Calls of New York City"
 author: "Yisong Tao"
 date: "10/14/2016"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -267,7 +267,8 @@ Heating_plot <- ggplot(data = Heating) +
     theme_few() + scale_fill_few() + ylab("Number of Complaints") +
     geom_bar(aes(x= Month, fill = Borough), stat = "count") + theme(legend.position = "top") +
     scale_x_discrete(limits = c ("Jan", "Feb", "Mar", "Apr", "May","Jun",
-                                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+                                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+    ggtitle("Heating")
 
 #StreetCondition <- filter(other_complaints, grepl("Street Condition", other_complaints$`Complaint Type`))
 #StreetCondition$Month <- as.factor(StreetCondition$Month)
@@ -279,7 +280,8 @@ StreetCondition_plot <- ggplot(data = StreetCondition) +
     geom_bar(aes(x= Month, fill = Borough), stat = "count") +
     scale_x_discrete(limits = c ("Jan", "Feb", "Mar", "Apr", "May","Jun",
                                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
-    theme(legend.position = "none")
+    theme(legend.position = "none") +
+    ggtitle("Street Condition")
 
 multiplot(Heating_plot, StreetCondition_plot, cols = 2)
 ```

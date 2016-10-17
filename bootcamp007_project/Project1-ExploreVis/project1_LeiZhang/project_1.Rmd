@@ -1,0 +1,103 @@
+---
+title: "US Crime Analysis"
+author: "Lei Zhang"
+date: "October 16, 2016"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(reshape2)
+```
+
+
+
+## Do you feel unsafe or safe?
+- Data Scientist can make you feel safe
+- Also Can make you feel unsafe
+
+## Hillary Champign
+```{r,echo=FALSE}
+Crime_party<-read.csv("Crime_party.csv")
+g1<-ggplot(Crime_party,aes(x=Year.,y=Total))+geom_bar(aes(fill=party),stat = "identity")+theme_bw()+labs(title="Safest Time since 1992",x="Year",y="Total Crime")+scale_fill_manual(values = c("blue","red"))+coord_cartesian(ylim = c(3000000,16000000))
+g1
+```
+
+## Trump Champign
+```{r,echo=FALSE}
+ggplot(Crime_party,aes(x=Year.,y=(Murder.+Forcible.Rape.)))+
+  geom_bar(aes(fill=party),stat = "identity")+
+  coord_cartesian(xlim=c(2005,2016),ylim=c(90000,115000))+
+  theme_bw()+labs(title="US feeling unsafe after 2012",x="Year")+scale_fill_manual(values = c("blue","red"))
+```
+
+## Trump Champign
+```{r,echo=FALSE}
+MRR_Ratio_stack<-read.csv("MRR_Ratio_stack.csv")
+ggplot(MRR_Ratio_stack,aes(x=Year.,y=value))+
+  geom_bar(aes(fill=variable),stat = "identity")+theme_bw()+
+  labs(title="US Crime Segmentation Change",x="Year",y="Percentage",fill="Crime Segmentation")
+```
+
+## Trump Champign
+```{r,echo=FALSE}
+MRR_stack1<-read.csv("MRR_stack1.csv")
+ggplot(MRR_stack1,aes(x=Year.,y=value))+
+geom_bar(aes(fill=variable),stat = "identity")+
+coord_cartesian(xlim=c(1960,2015),ylim=c(0,0.25))+
+labs(title="US Crime Segmentation",x="Year",y="Ratio",fill="Crime Segmentation")+
+theme_bw()+scale_fill_manual(labels = c("Property.Crime", "Violent.Crime"), values = c("green", "red"))
+```
+
+## Trump Champign
+```{r,echo=FALSE}
+MRR_Ratio<-read.csv("MRR_Ratio.csv")
+ggplot(MRR_Ratio,aes(x=Year.,y=Forcible.Rape.Ratio))+
+  geom_bar(aes(fill=party),stat = "identity")+
+  theme_bw()+
+  coord_cartesian(ylim = c(0.004,0.011))+
+  scale_fill_manual(values = c("blue","red"))+
+  labs(title="Violent Crime Against Women",x="Year")
+```
+
+## Trump Champign
+```{r,echo=FALSE}
+shot_party<-read.csv("shot_party.csv")
+ggplot(shot_party,aes(x=Year.,y=officer.))+
+  geom_point(aes(color = party))+
+  coord_cartesian(xlim=c(2005,2016),ylim=c(320,500))+
+  theme_bw()+labs(title="Police,support or punished?",x="Year",y="Death by Law Enforcement Officer")+scale_color_manual(values = c("blue","red"))
+```
+
+## Hillary Champign
+```{r,echo=FALSE}
+ggplot(Crime_party,aes(x=Year.,y=Violent.))+
+geom_bar(aes(fill=party),stat = "identity")+
+theme_bw()+
+labs(title="Who fight against Violent?!",x="Year",y="Violent Crime")+
+scale_fill_manual(values = c("blue","red"))
+```
+
+## Hillary Champign
+```{r,echo=FALSE}
+ggplot(Crime_party,aes(x=Year.,y=Murder.))+
+geom_bar(aes(fill=party),stat = "identity")+
+theme_bw()+
+labs(title="Republican make US safer?",x="Year",y="Murder Crime")+
+scale_fill_manual(values = c("blue","red"))+coord_cartesian(ylim = c(7000,27000))
+```
+
+## Hillary Champign
+```{r,echo=FALSE}
+ggplot(MRR_Ratio,aes(x=Year.,y=Robbery.Ratio))+
+geom_bar(aes(fill=party),stat = "identity")+
+theme_tufte()+
+scale_fill_manual(values = c("blue","red"))+
+coord_cartesian(ylim = c(0.025,0.05))+
+labs(title="Republican=Robbery!?",x="Year")
+```
+
+## THANK YOU
