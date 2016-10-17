@@ -19,8 +19,8 @@ steamCSVFinder <- function() {
     steamDatabase$median_2weeks = NULL
     steamDatabase$average_forever = NULL
     steamDatabase$average_2weeks = NULL
-    steamDatabase$owners = NULL
-    steamDatabase$players = NULL
+    # steamDatabase$owners = NULL
+    # steamDatabase$players = NULL
     steamDatabase$owners_variance = NULL
     steamDatabase$players_forever_variance = NULL
     steamDatabase$players_2weeks_variance = NULL
@@ -40,26 +40,26 @@ steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
   steamDatabase$name = NULL
   colnames(steamDatabase)[colnames(steamDatabase) == 'price'] = "Price_Now"
   steamDatabase[colnames(steamDatabase) == 'Price_Now'] = steamDatabase[colnames(steamDatabase) == 'Price_Now']/100
-  steamDatabase$Recorded_Date = dateRecorded
-  steamDatabase$median_forever = NULL
-  steamDatabase$median_2weeks = NULL
-  steamDatabase$average_forever = NULL
-  steamDatabase$average_2weeks = NULL
-  steamDatabase$players_forever_variance = NULL
-  steamDatabase$owners = NULL
-  steamDatabase$players_forever = NULL
-  steamDatabase$median_2weeks = NULL
-  steamDatabase$players_2weeks = NULL
-  steamDatabase$players_2weeks_variance = NULL
-  steamDatabase$owners = NULL
-  steamDatabase$players = NULL
-  steamDatabase$owners_variance = NULL
-  steamDatabase$players_forever_variance = NULL
-  steamDatabase$players_2weeks_variance = NULL
-  steamDatabase$median_forever = NULL
-  steamDatabase$average_forever = NULL
-  steamDatabase$median_2weeks = NULL
-  steamDatabase$average_2weeks = NULL
+  # steamDatabase$Recorded_Date = dateRecorded
+  # steamDatabase$median_forever = NULL
+  # steamDatabase$median_2weeks = NULL
+  # steamDatabase$average_forever = NULL
+  # steamDatabase$average_2weeks = NULL
+  # steamDatabase$players_forever_variance = NULL
+  # steamDatabase$owners = NULL
+  # steamDatabase$players_forever = NULL
+  # steamDatabase$median_2weeks = NULL
+  # steamDatabase$players_2weeks = NULL
+  # steamDatabase$players_2weeks_variance = NULL
+  # # steamDatabase$owners = NULL
+  # # steamDatabase$players = NULL
+  # steamDatabase$owners_variance = NULL
+  # steamDatabase$players_forever_variance = NULL
+  # steamDatabase$players_2weeks_variance = NULL
+  # steamDatabase$median_forever = NULL
+  # steamDatabase$average_forever = NULL
+  # steamDatabase$median_2weeks = NULL
+  # steamDatabase$average_2weeks = NULL
   return(steamDatabase)
 }
 
@@ -222,4 +222,8 @@ steamMerged$average_forever = NULL
 steamMerged$X = NULL
 steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
 steamMerged$GameAge[steamMerged$GameAge < 0] = NA
+str(steamDatabaseHistory[[length(steamDatabaseHistory)]])
+steamDatabaseHistory[[length(steamDatabaseHistory)]]$Unopened = steamDatabaseHistory[[length(steamDatabaseHistory)]]$owners - steamDatabaseHistory[[length(steamDatabaseHistory)]]$players_forever
+steamDatabaseHistory[[length(steamDatabaseHistory)]]$Unopened
+sum(steamDatabaseHistory[[length(steamDatabaseHistory)]]$Unopened, na.rm = TRUE) / sum(steamDatabaseHistory[[length(steamDatabaseHistory)]]$owners, na.rm = TRUE)
 write.csv(steamMerged, file = 'steamDatabaseAllCombined.csv')

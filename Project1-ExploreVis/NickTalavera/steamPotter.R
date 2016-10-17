@@ -320,10 +320,7 @@ ggsave(file=paste0(removeSymbols(title), ".eps"))
 
 #Do players actually play the games they buy?
 steamPlayed = select(steam,appid,Owners_As_Of_Today,Players_Forever_As_Of_Today)
-steamPlayed$Unopened = steamPlayed$Owners_As_Of_Today - steamPlayed$Players_Forever_As_Of_Today
-sum(numeric(steamPlayed$Players_Forever_As_Of_Today))
-sum(steamPlayed$Players_Forever_As_Of_Today) 
-sum(steamPlayed$Owners_As_Of_Today)
+sum(steamPlayed$Unopened, na.rm = TRUE) / sum(steamPlayed$Owners_As_Of_Today, na.rm = TRUE)
 # steamPlayed$Unopened
 g = ggplot(steamPlayed, aes(Unopened))
 g + geom_density()
