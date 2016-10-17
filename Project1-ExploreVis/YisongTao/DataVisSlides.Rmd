@@ -274,7 +274,7 @@ multiplot(Heating_plot, StreetCondition_plot, cols = 2)
 ```
 
 ## Is Heating issue and noise issue correlated?
-```{r fig. 3_2 Is Heating issue and noise issue correlated?,cached= T, echo=F, dev='png', fig.path='silde_figures/', warning=F, message=F}
+```{r fig. 3_2 Is Heating issue and noise issue correlated,cached= T, echo=F, dev='png', fig.path='silde_figures/', warning=F, message=F}
 nyc_list <- readRDS("nyc_list.RDS") ## load a list of NYC zip codes
 Heating_sum <- Heating %>% filter(`Incident Zip` %in% nyc_list) %>%
     group_by(`Incident Zip`) %>% summarise(Count = n())
