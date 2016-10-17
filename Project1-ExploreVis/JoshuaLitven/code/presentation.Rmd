@@ -11,7 +11,7 @@ output: ioslides_presentation
 </style>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, fig.height=6, fig.align='center', cache=TRUE)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, fig.height=6, fig.align='center')
 library(plyr)
 library(dplyr)
 library(ggplot2)
@@ -26,11 +26,11 @@ AXIS_SIZE = 15
 set.seed(2) # recreate results
 ```
 
-```{r import, cache=TRUE}
+```{r import}
 # Import Data -------------------------------------------------------------
 
 # Set the working directory to where the files are stored
-setwd('~/Courses/nyc_data_science_academy/projects/exploratory_visualization/')
+setwd('~/Courses/nyc_data_science_academy/bootcamp007_project/Project1-ExploreVis/JoshuaLitven/')
 PROCESSED_PATH = file.path('data', 'processed_data')
 
 # Get the artist origins data
@@ -61,7 +61,7 @@ user_artist_plays_dems = tbl_df(user_artist_plays_dems)
 user_artist_plays_full = left_join(user_artist_plays, user_artist_plays_dems, by = "user_id")
 ```
 
-```{r helper_functions, cache=FALSE}
+```{r helper_functions}
 # Helper Functions ---------------------------------------------------------
 
 # Find the most popular artists
@@ -215,7 +215,8 @@ p = ggplot(data=week_listening_history, aes(x=hour)) +
   scale_y_continuous(breaks=c(0,15)) +
   scale_fill_discrete(name="") +
   theme_minimal() +
-  theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE),
+  theme(plot.title = element_text(size=TITLE_SIZE), 
+        text = element_text(size = TEXT_SIZE),
         axis.text=element_text(size=10), strip.text.x = element_blank())
 p
 ```
@@ -543,7 +544,7 @@ create_popularity_plot(artist_popularity_net %>% filter(country=="United States"
 ```
 
 ```{r create_youtube_playlist}
-setwd('~/Courses/nyc_data_science_academy/projects/exploratory_visualization/')
+setwd('~/Courses/nyc_data_science_academy/bootcamp007_project/Project1-ExploreVis/JoshuaLitven/')
 source('code/create_youtube_playlist.R')
 # Get top artist from each country with at least 10 users
 num_users_cut_off = 10

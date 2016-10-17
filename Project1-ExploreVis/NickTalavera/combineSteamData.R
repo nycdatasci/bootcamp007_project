@@ -19,8 +19,8 @@ steamCSVFinder <- function() {
     steamDatabase$median_2weeks = NULL
     steamDatabase$average_forever = NULL
     steamDatabase$average_2weeks = NULL
-    steamDatabase$owners = NULL
-    steamDatabase$players = NULL
+    # steamDatabase$owners = NULL
+    # steamDatabase$players = NULL
     steamDatabase$owners_variance = NULL
     steamDatabase$players_forever_variance = NULL
     steamDatabase$players_2weeks_variance = NULL
@@ -51,8 +51,8 @@ steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
   steamDatabase$median_2weeks = NULL
   steamDatabase$players_2weeks = NULL
   steamDatabase$players_2weeks_variance = NULL
-  steamDatabase$owners = NULL
-  steamDatabase$players = NULL
+  # steamDatabase$owners = NULL
+  # steamDatabase$players = NULL
   steamDatabase$owners_variance = NULL
   steamDatabase$players_forever_variance = NULL
   steamDatabase$players_2weeks_variance = NULL
@@ -216,6 +216,7 @@ ignMetacritcHLTBMerged = ignMetacritcHLTBMerged(ignReviews,metacriticReviews,ste
 steamMerged = merge(x = steamSummerSale, y = steamSpyAll, by = "Name", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = steamDatabaseHistory[[length(steamDatabaseHistory)]], by = "appid", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMerged, by = "Name", all.x = TRUE)
+# steamMerged$Players_Forever_As_Of_Today = numeric(Players_Forever_As_Of_Today)
 steamMerged$median_forever = NULL
 steamMerged$average_forever = NULL
 steamMerged$X = NULL
