@@ -158,8 +158,8 @@ diff2014 + scale_fill_gradient2(
 )
 ```
 
-2013 n = 203689  
-2014 n = 205929
+2013 n = 203689; 2014 n = 205929
+
 
 
 ## Changes from 2014 to 2015
@@ -175,8 +175,8 @@ diff2015 + scale_fill_gradient2(
   name = "Diff"
 )
 ```
-2014 n = 205929  
-2015 n = 217539
+2014 n = 205929; 2015 n = 217539  
+
 
 ## Number of Fatal Crashes per Year
 ``` {r fatal, echo = FALSE, eval = FALSE}
