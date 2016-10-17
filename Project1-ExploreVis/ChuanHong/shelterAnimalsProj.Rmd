@@ -84,6 +84,16 @@ This dataset contains 11134 cats and 15595 dogs
 ggplotly(bar_plot(animal_train, "AnimalType", "OutcomeType"))
 ```
 
+## Cats vs. Dogs (%)
+
+This dataset contains 11134 cats and 15595 dogs
+
+```{r catvsdogpct}
+# table(animal_train$AnimalType) 
+
+ggplotly(bar_plot(animal_train, "AnimalType", "OutcomeType", position = "fill"))
+```
+
 ## Does Name Matter?
 
 Created a new varible "hasName" ("No"= NA, "Yes"= has a name)
