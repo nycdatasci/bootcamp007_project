@@ -245,36 +245,30 @@ multiplot(nyc_noise_map_dogs, nyc_noise_map_alarm, cols=2)
 
 ## Heating and Street Condition Complaints
 ```{r fig. 3_1 Heating and Street Condition,cached= T, echo=F, warning=F, message=F}
-#other_complaints <- all_complaints%>%select(2, 6, 7, 9, 25, 51, 52)
-#other_complaints$`Created Date` <- as.POSIXct(strptime(data_311$`Created Date`, "%m/%d/%Y %I:%M:%S %p"))
-#other_complaints$Month <- format(other_complaints$`Created Date`, "%m")
-#other_complaints$`Incident Zip` <- substring(other_complaints$`Incident Zip`, 1, 5)
-#saveRDS(other_complaints, "other_complaints.RDS")
-#other_complaints <- readRDS("other_complaints.RDS")
-#Heating <- filter(other_complaints, grepl("HEATING", other_complaints$`Complaint Type`))
-#Heating$Month <- as.factor(Heating$Month)
+other_complaints <- readRDS("all_complaints_year_month.RDS")
+Heating <- filter(other_complaints, grepl("HEATING", other_complaints$`Complaint Type`) & Year !="2014")
+Heating$Month <- as.factor(Heating$Month)
 #Heating <- select(Heating, -1)
-#saveRDS(Heating, "Heating1.RDS")
-Heating <- readRDS("Heating1.RDS")
+saveRDS(Heating, "Heating.RDS")
+Heating <- readRDS("Heating.RDS")
 Heating_plot <- ggplot(data = Heating) + 
     theme_few() + scale_fill_few() + ylab("Number of Complaints") +
-    geom_bar(aes(x= Month, fill = Borough), stat = "count") + theme(legend.position = "none") +
-    scale_x_discrete(limits = c ("01", "02", "03", "04", "05","06",
-                                 "07", "08", "09", "10", "11", "12")) +
-    ggtitle("Heating")
+    geom_bar(aes(x= Month), stat = "count") + 
+    scale_x_discrete(limits = c ("Jan", "Feb", "Mar", "Apr", "May","Jun",
+                                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+    ggtitle("Heating Complaints 2010-2013")
 
-#StreetCondition <- filter(other_complaints, grepl("Street Condition", other_complaints$`Complaint Type`))
-#StreetCondition$Month <- as.factor(StreetCondition$Month)
+StreetCondition <- filter(other_complaints, grepl("Street Condition", other_complaints$`Complaint Type`) & Year != "2016")
+StreetCondition$Month <- as.factor(StreetCondition$Month)
 #StreetCondition <- select(StreetCondition, -1)
-#saveRDS(StreetCondition, "StreetCondition1.RDS")
-StreetCondition <- readRDS("StreetCondition1.RDS")
+saveRDS(StreetCondition, "StreetCondition.RDS")
+#StreetCondition <- readRDS("StreetCondition.RDS")
 StreetCondition_plot <- ggplot(data = StreetCondition) + 
     theme_few() + scale_fill_few() + ylab("Number of Complaints") +
-    geom_bar(aes(x= Month, fill = Borough), stat = "count") +
-    scale_x_discrete(limits = c ("01", "02", "03", "04", "05","06",
-                                 "07", "08", "09", "10", "11", "12")) +
-    theme(legend.position = "none") +
-    ggtitle("Street Condition")
+    geom_bar(aes(x= Month), stat = "count") +
+    scale_x_discrete(limits = c ("Jan", "Feb", "Mar", "Apr", "May","Jun",
+                                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) +
+    ggtitle("Street Condition 2010-2015")
 
 multiplot(Heating_plot, StreetCondition_plot, cols = 2)
 ```
