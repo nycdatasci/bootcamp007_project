@@ -46,7 +46,7 @@ data <- readRDS("all_data.RDS")
 
 ## What are the top complaints?
 
-```{r fig. 1 Complained Types, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
+```{r fig. 1 Complained Types, cached= T, echo=F}
 #data_311 <- readRDS("all_data.RDS")
 #åall_complaints <- data_311 %>%select(2, 6, 25) #Select "Complaint Type" and "Borough" columns
 #all_complaints$`Created Date` <- as.POSIXct(strptime(all_complaints$`Created Date`, "%m/%d/%Y %I:%M:%S %p"))
@@ -119,7 +119,7 @@ p_top10_complaints_NY
 
 ## Top 10 Complaints in Manhattan
 
-```{r fig. 1_1, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
+```{r fig. 1_1, cached= T, echo=F}
 p_top10_complaints_Man
 ```
 
@@ -127,7 +127,7 @@ Queens, Bronx, Brooklyn are similar to Manhattan.
 
 
 ## Staten Island
-```{r fig. 1_2, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
+```{r fig. 1_2, cached= T, echo=F}
 p_top10_complaints_SI
 ```
 
@@ -135,7 +135,7 @@ Staten Island residents' top complaint is street condition.
 
 ## Where are the noises? {.smaller}
 
-```{r fig. 2_1 Noise Complaints spatial distribution, cached= T, echo=F, dev='png', fig.path='silde_figures/', warning=F, message=F}
+```{r fig. 2_1 Noise Complaints spatial distribution, cached= T, echo=F, warning=F, message=F}
 ## load NY state population data by zip code from 2010 census
 nyc_pop <- read.csv("aff_download/DEC_10_SF1_P1_with_ann.csv", skip = 1,
                     header = T, stringsAsFactors = F) 
@@ -227,24 +227,24 @@ nyc_map
 8 types of noises: _Construction_, _Dog and other animals_, _Vehicle_, _Music/TV/Talking_, _Alarm_, _Air Conditioner_, _Banging/Pounding_ and _Other_.
 
 ## Loud Music and Banging 
-```{r fig. 2_2, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
+```{r fig. 2_2, cached= T, echo=F}
 multiplot(nyc_noise_map_music, nyc_noise_map_banging, cols = 2)
 ```
 
 50% of noise are loud music/TV/talking.
 
 ## Construciton and Vehicle Noises
-```{r fig. 2_3, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
+```{r fig. 2_3, cached= T, echo=F}
 multiplot(nyc_noise_map_construction, nyc_noise_map_vehicle, cols=2)
 ```
 
 ## Dogs/other animals and Alarm
-```{r fig. 2_4, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
+```{r fig. 2_4, cached= T, echo=F }
 multiplot(nyc_noise_map_dogs, nyc_noise_map_alarm, cols=2)
 ```
 
 ## Heating and Street Condition Complaints
-```{r fig. 3_1 Heating and Street Condition,cached= T, echo=F, dev='png', fig.path='silde_figures/', warning=F, message=F}
+```{r fig. 3_1 Heating and Street Condition,cached= T, echo=F, warning=F, message=F}
 #other_complaints <- all_complaints%>%select(2, 6, 7, 9, 25, 51, 52)
 #other_complaints$`Created Date` <- as.POSIXct(strptime(data_311$`Created Date`, "%m/%d/%Y %I:%M:%S %p"))
 #other_complaints$Month <- format(other_complaints$`Created Date`, "%m")
@@ -279,6 +279,10 @@ StreetCondition_plot <- ggplot(data = StreetCondition) +
 multiplot(Heating_plot, StreetCondition_plot, cols = 2)
 ```
 
+## Conclusion {.smaller}
+ - Noise complaints are most common in all the 311 calls.
+ - The noisest neighborhood is westside of mid Manhattan, northern and southern ends of Manhanttan (with adjacent neighborhoods in Brooklyn and Bronx, respectively) are also very noisy.
+ - Other major complaints such as heating and street condition appear to correlate to cold weather. 
 
 [Wikipedia]:https://en.wikipedia.org/wiki/3-1-1  
 [Wired]:https://www.wired.com/2010/11/ff_311_new_york/  
