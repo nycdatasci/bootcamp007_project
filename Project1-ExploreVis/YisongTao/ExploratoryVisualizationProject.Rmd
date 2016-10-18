@@ -38,9 +38,14 @@ data_311 <- readRDS("all_data.RDS")
 ## 1. What are the most complained issues in New York?
 ```{r fig. 1 Complained Types, cached= T, echo=T, dev='png', fig.path='figures/', fig.width= 10, fig.height= 8}
 #data_311 <- readRDS("all_data.RDS")
-#all_complaints <- data_311 %>%select(6, 25) #Select "Complaint Type" and "Borough" columns
-#saveRDS(all_complaints, "all_complaints.RDS")            
-all_complaints <- readRDS("all_complaints.RDS")
+#åall_complaints <- data_311 %>%select(2, 6, 25) #Select "Complaint Type" and "Borough" columns
+#all_complaints$`Created Date` <- as.POSIXct(strptime(all_complaints$`Created Date`, "%m/%d/%Y %I:%M:%S %p"))
+#all_complaints$Year <- format(all_complaints$`Created Date`, "%Y")
+#all_complaints <- filter(all_complaints, Year != "2016")
+#all_complaints <- filter(all_complaints, Year != "2015")
+#all_complaints <- filter(all_complaints, Year != "2014")
+#saveRDS(all_complaints, "all_complaints_1013.RDS")            
+all_complaints <- readRDS("all_complaints_1013.RDS")
 all_complaints$`Complaint Type`[grepl("^Noise.*", all_complaints$`Complaint Type`)] <- "Noise" 
 all_complaints <- all_complaints %>%
     group_by(Borough, `Complaint Type`) %>% summarise(Count = n())
@@ -290,27 +295,31 @@ The situation is similar with complaints about street conditions, which is most 
 ```{r fig. 3_2 Heating and Street Condition,cached= T, echo=T, dev='png', fig.path='figures/', fig.width= 10, warning=F, message=F}
 nyc_list <- readRDS("nyc_list.RDS") ## load a list of NYC zip codes
 Heating_sum <- Heating %>% filter(`Incident Zip` %in% nyc_list) %>%
-    group_by(`Incident Zip`) %>% summarise(Count = n())
+    group_by(`Incident Zip`) %>% summarise(Count = n()) %>% mutate (Zip = `Incident Zip`)
+
+Heating_sum <- left_join(Heating_sum, nyc_pop)
+Heating_sum <- Heating_sum %>% select(Zip, Count, Total) %>% mutate(CountperCapita = Count/Total)
 heating_map <- append_data(nyczipgeo, Heating_sum,
-                           key.shp = "ZCTA5CE10", key.data = "Incident Zip")
+                           key.shp = "ZCTA5CE10", key.data = "Zip")
 heating_map_plot <- tm_shape(heating_map) +
-    tm_fill("Count", title = "Heating Complaints", palette = "YlOrRd") +
+    tm_fill("CountperCapita", title = "Heating Complaints", palette = "YlOrRd") +
     tm_borders(alpha = 0.5) +
     tm_style_natural(legend.frame = F, legend.bg.color = NA)
 StreetCondition_sum <- StreetCondition %>%
     filter(`Incident Zip` %in% nyc_list) %>%
-    group_by(`Incident Zip`) %>% summarise(Count = n())
+    group_by(`Incident Zip`) %>% summarise(Count = n()) %>% mutate (Zip = `Incident Zip`)
+StreetCondition_sum <- left_join(StreetCondition_sum, nyc_pop)
+StreetCondition_sum <- StreetCondition_sum %>% select(Zip, Count, Total) %>% mutate(CountperCapita = Count/Total)
 StreetCondition_map <- append_data(nyczipgeo, StreetCondition_sum,
-                                   key.shp = "ZCTA5CE10", key.data = "Incident Zip")
+                                   key.shp = "ZCTA5CE10", key.data = "Zip")
 StreetCondition_map_plot <- tm_shape(StreetCondition_map) +
-    tm_fill("Count", title = "Street Condition Complaints",
+    tm_fill("CountperCapita", title = "Street Condition Complaints",
             palette = "YlOrRd") + tm_borders(alpha = 0.5) +
     tm_style_natural(legend.frame = F, legend.bg.color = NA)
 
 multiplot(heating_map_plot, StreetCondition_map_plot, cols = 2)
 ```
-It appears some neighborhoods in Brooklyn and Bronx suffers most heating problems. Interestingly, these neighborhoods coincide with the "Banging/Pounding" noise complaints map. Maybe the deteriorating heating infrastrcutre in these neighborhoods has some connection with the "banging" noise. 
-As for road conditions, Staten Island is hit most hard, many neighborhoods in Brooklyn and Queens also suffer a lot. Manhattan and Bronx seem to have less prolem with the bad street conditions.
+It appears some neighborhoods in Upper Manhattan suffers most heating problems, some neighborhoods in Brooklyn and Bronx also have some heating issues. As for road conditions, both JFK and LaGuardia air port appear to have reported most street condition issues. 
 
 
 ## Summary:

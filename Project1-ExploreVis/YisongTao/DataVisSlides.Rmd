@@ -48,9 +48,14 @@ data <- readRDS("all_data.RDS")
 
 ```{r fig. 1 Complained Types, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
 #data_311 <- readRDS("all_data.RDS")
-#all_complaints <- data_311 %>%select(6, 25) #Select "Complaint Type" and "Borough" columns
-#saveRDS(all_complaints, "all_complaints.RDS")            
-all_complaints <- readRDS("all_complaints.RDS")
+#åall_complaints <- data_311 %>%select(2, 6, 25) #Select "Complaint Type" and "Borough" columns
+#all_complaints$`Created Date` <- as.POSIXct(strptime(all_complaints$`Created Date`, "%m/%d/%Y %I:%M:%S %p"))
+#all_complaints$Year <- format(all_complaints$`Created Date`, "%Y")
+#all_complaints <- filter(all_complaints, Year != "2016")
+#all_complaints <- filter(all_complaints, Year != "2015")
+#all_complaints <- filter(all_complaints, Year != "2014")
+#saveRDS(all_complaints, "all_complaints_1013.RDS")            
+all_complaints <- readRDS("all_complaints_1013.RDS")
 all_complaints$`Complaint Type`[grepl("^Noise.*", all_complaints$`Complaint Type`)] <- "Noise" 
 all_complaints <- all_complaints %>%
     group_by(Borough, `Complaint Type`) %>% summarise(Count = n())
@@ -109,7 +114,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 p_top10_complaints_NY
 ```
 
-14.16% of 311 calls are noise complaints.
+11.84% of 311 calls are noise complaints.    
 
 
 ## Top 10 Complaints in Manhattan
@@ -128,7 +133,8 @@ p_top10_complaints_SI
 
 Staten Island residents' top complaint is street condition.
 
-## Where are the noises? 
+## Where are the noises? {.smaller}
+
 ```{r fig. 2_1 Noise Complaints spatial distribution, cached= T, echo=F, dev='png', fig.path='silde_figures/', warning=F, message=F}
 ## load NY state population data by zip code from 2010 census
 nyc_pop <- read.csv("aff_download/DEC_10_SF1_P1_with_ann.csv", skip = 1,
@@ -227,12 +233,12 @@ multiplot(nyc_noise_map_music, nyc_noise_map_banging, cols = 2)
 
 50% of noise are loud music/TV/talking.
 
-## Construciton and Vehicle
+## Construciton and Vehicle Noises
 ```{r fig. 2_3, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
 multiplot(nyc_noise_map_construction, nyc_noise_map_vehicle, cols=2)
 ```
 
-## Dogs/ other animals and Alarm
+## Dogs/other animals and Alarm
 ```{r fig. 2_4, cached= T, echo=F, dev='png', fig.path='silde_figures/'}
 multiplot(nyc_noise_map_dogs, nyc_noise_map_alarm, cols=2)
 ```
@@ -273,20 +279,6 @@ StreetCondition_plot <- ggplot(data = StreetCondition) +
 multiplot(Heating_plot, StreetCondition_plot, cols = 2)
 ```
 
-## Is Heating issue and noise issue correlated?
-```{r fig. 3_2 Is Heating issue and noise issue correlated,cached= T, echo=F, dev='png', fig.path='silde_figures/', warning=F, message=F}
-nyc_list <- readRDS("nyc_list.RDS") ## load a list of NYC zip codes
-Heating_sum <- Heating %>% filter(`Incident Zip` %in% nyc_list) %>%
-    group_by(`Incident Zip`) %>% summarise(Count = n())
-heating_map <- append_data(nyczipgeo, Heating_sum,
-                           key.shp = "ZCTA5CE10", key.data = "Incident Zip")
-heating_map_plot <- tm_shape(heating_map) +
-    tm_fill("Count", title = "Heating Complaints", palette = "YlOrRd") +
-    tm_borders(alpha = 0.5) +
-    tm_style_natural(legend.frame = F, legend.bg.color = NA)
-multiplot(heating_map_plot, nyc_noise_map_banging, cols = 2)
-```
-Heating issues -> banging noise?
 
 [Wikipedia]:https://en.wikipedia.org/wiki/3-1-1  
 [Wired]:https://www.wired.com/2010/11/ff_311_new_york/  
