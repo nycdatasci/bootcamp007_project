@@ -133,7 +133,7 @@ plot3
 
 ```
 
-## Houses Price Trends with Months 
+## Houses Price Trends with Sold Month 
 ```{r, echo= F}
 house_mosold= house_data%>%select(.,YrSold, MoSold,SalePrice)%>%
   group_by(.,MoSold)%>%summarise(.,total = n(), median_p=median(SalePrice))
@@ -145,7 +145,7 @@ plot4 = g4 + geom_bar(aes(fill=median_p), stat = "identity") +
   xlab("") +
   ylab("Number of Houses Sold")+
   scale_x_discrete(labels=c("Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec"))+
-  ggtitle("Houses Sale vs. Month")
+  ggtitle("Houses Sale vs. Sold Month")
 plot4
 ```
 

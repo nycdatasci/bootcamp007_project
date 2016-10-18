@@ -81,7 +81,7 @@ plot4 = g4 + geom_bar(aes(fill=median_p), stat = "identity") +
   xlab("") +
   ylab("Number of Houses Sold")+
   scale_x_discrete(labels=c("Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec"))+
-  ggtitle("Houses Sale vs. Month")
+  ggtitle("Houses Sale vs. Sold Month")
 plot4
 
 plot5_violin = ggplot(data = house_data, aes(x= reorder(MSZoning,SalePrice, median), y =SalePrice)) +
