@@ -22,33 +22,42 @@ names = c("MSZoning",
           "MoSold", "YrSold", "SalePrice")
 
 house_data = house_1[, names]
+
+n_1 = c('2Story', '1Story', '1.5Fin')
+n_2 = c('2.5Unf','2.5Fin','1.5Unf','SFoyer','SLvl')
+
+house_n_1=house_data%>%filter(.,HouseStyle%in%n_1)
+house_n_2=house_data%>%filter(.,HouseStyle%in%n_2)
+
 ```
 
-## A Data Visualization Analysis Based on House Data from Ames, Iowa
+## Outlines
 
 - Background of data
 - Insights explored from data
-- reference: <https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data>.
+- Reference: <https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data>.
 
 ## Background of Data
 
-- The data set describing the sale of individual residential property in Ames, Iowa from 2006 to 2010.
+- The data set describes the sale of individual residential property in Ames, Iowa from 2006 to 2010.
 
-- Data information includes potentional homebuyer would like to know about a potential porterty.
+- The data selected for this visualization project (8 attritubes, 1456 observations) includes Categorial data, Continuous data.
 
-- The data selected for this visualization project includes Nominal, Discrete, Continuous, Ordinal.
+- "*The variables focus on the quality and quantity of many physical attributes of the property. Most of the variables are exactly the type of information that a typical home buyer would want to know about a potential property.*"[1]
+
+* [1]"Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project", Dean De Cock, Truman State University
 
 ## Background of Data
 
 - 8 attritubes selected, 1456 observations
-- SalePrice (Continuous, in $)
-- Year Built (Discrete) : original construction date
-- Year Sold (Discrete)
-- Month Sold (Discrete)
-- House Style (Nominal): style of dwelling
-- Zoning Classification (Nominal) : identifies the general zoning classification of the sale. 
-- Foundation (Nominal): type of foundation
-- Overall Quality (Ordinal, from 1 to 10)
+- **Sale Price** (in $)
+- **Year Built** : original construction date
+- **Year Sold** 
+- **Month Sold** 
+- **House Style**: style of dwelling
+- **House Location Zone**: identifies the general zoning classification of the sale. 
+- **Foundation**: type of foundation
+- **Overall Quality** (from 1 to 10)
 
 ## Background of Data
 
@@ -56,7 +65,7 @@ house_data = house_1[, names]
 summary(house_data)
 ```
 
-## House Prices Trend with Built Year
+## Prices Trend with House Built Year
 
 ```{r , echo = F}
 g1 = ggplot(data= house_data, aes(x= YearBuilt, y =SalePrice))
@@ -74,19 +83,37 @@ plot1
 
 ```
 
-## House Prices Trends with Built Year and House Styles
+## House Prices: Popular House Styles
 ```{r, echo=F}
-g2 = ggplot(data= house_data, aes(x= YearBuilt, y =SalePrice, color = HouseStyle))
-plot2 = g2 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.3)+
+g2_1 = ggplot(data= house_n_1, aes(x= YearBuilt, y =SalePrice, color = HouseStyle))
+plot2_1 = g2_1 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.3)+
   geom_smooth(method='lm',size = 1.0, se = FALSE)+ 
   scale_y_continuous(labels = comma) +
-  ggtitle(" House SalePrice Trend for HouseStyles") +
-  scale_color_manual(values = c('#fc8d62', '#dfc27d', '#7fbc41', '#80cdc1', '#a6cee3', '#4eb3d3', '#984ea3', '#e7298a'),
-                     name = "House Style", labels=c("1.5-Story", "1.5-Story(U)", "1-Story",
-                                                    "2.5-Story", "2.5-Story(U)","2-Story",
-                                                    "Split Foyer", "Split Level"))
-plot2
+  theme(legend.position ="bottom")+
+  ggtitle(" House Sale Price Trend for House Styles") +
+  ylab("Sale Price ($)") +
+  xlab("House Built Year") +
+  scale_color_manual(values = c( '#fc8d62','#7fbc41', '#4eb3d3'),
+                     name = "House Style", labels=c("1.5-Story","1-Story",
+                                                     "2-Story"))
+plot2_1
 
+```
+
+
+## House Prices: Discontinued ... and Emerged House Styles
+```{r}
+g2_2 = ggplot(data= house_n_2, aes(x= YearBuilt, y =SalePrice, color = HouseStyle))
+plot2_2 = g2_2 + geom_point(aes(color=HouseStyle),position = "jitter", pch=8, cex=.3)+
+  geom_smooth(method='lm',size = 1.0, se = FALSE)+ 
+  scale_y_continuous(labels = comma) +
+  ggtitle(" House Sale Price Trend for House Styles") +
+  ylab("Sale Price ($)") +
+  xlab("House Built Year") +
+  scale_color_manual(values = c('#dfc27d', '#80cdc1', '#a6cee3', '#984ea3', '#e7298a'),
+                     name = "House Style", labels=c("1.5-Story(U)", "2.5-Story", "2.5-Story(U)",
+                                                    "Split Foyer", "Split Level"))
+plot2_2
 ```
 
 ## House Prices Trends with Sold Years
@@ -97,7 +124,8 @@ house_yrsold= house_data%>%select(.,YrSold, SalePrice)%>%
 house_yrsold$YrSold <- factor(house_yrsold$YrSold, levels=reorder(house_yrsold$YrSold, -house_yrsold$total))
 g3 = ggplot(data=house_yrsold, aes(x = YrSold, y = total)) 
 plot3 = g3 + geom_bar(aes(fill=median_p), stat = "identity") + 
-  scale_fill_gradientn(colours=rainbow(6), name= "Median Price($)")+
+  scale_fill_gradient(guide="colorbar",high = "#132B43", low = "#56B1F7", name= "Median Price($)")+
+  geom_text(aes(label = median_p ), size = 4,  hjust = 0.5, vjust = -0.3)+
   xlab(" ") +
   ylab("Number of Houses Sold")+
   ggtitle(" House Sale vs. Year")
@@ -112,30 +140,29 @@ house_mosold= house_data%>%select(.,YrSold, MoSold,SalePrice)%>%
 house_mosold$MoSold <- factor(house_mosold$MoSold, levels=reorder(house_mosold$MoSold, -house_mosold$total))
 g4 = ggplot(data=house_mosold, aes(x = MoSold, y = total)) 
 plot4 = g4 + geom_bar(aes(fill=median_p), stat = "identity") + 
+  geom_text(aes(label = median_p ), size = 3.5,  hjust = 0.5, vjust = -0.3)+
+  scale_fill_continuous(guide="colorbar",low ="#56B1F7", high = "#132B43", name= "Median Price($)")+
   xlab("") +
   ylab("Number of Houses Sold")+
-  scale_fill_continuous(name ="Median Price ($)") +
   scale_x_discrete(labels=c("Jan", "Feb", "Mar","Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec"))+
   ggtitle("Houses Sale vs. Month")
 plot4
 ```
 
-## House Prices with Different Zonings
+## House Prices with Different Zones
 ```{r, echo= F}
 plot5_violin = ggplot(data = house_data, aes(x= reorder(MSZoning,SalePrice, median), y =SalePrice)) +
   geom_violin(aes(fill = MSZoning)) + scale_y_continuous(labels = comma) +
-  xlab("Zone Classification")+ 
-  xlab("Zoning Classification")+
+  xlab("House Location Zone ")+ 
   ylab("Sale Price ($)")+
-  ggtitle("General Zonning Classification vs. Sale Price")+
+  ggtitle("General House Location Zone vs. Sale Price")+
   scale_fill_manual(values = c('#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854'),
-                    name = " ", labels=c("Others", "Floating Village(FV)", "Residential High Density(RH)",
-                                                  "Residential Low Density(RL)", "Residential Medium Density(RM)"))+
+                    name = " ", labels=c("Others", "Floating Village", "Residential High Density",
+                                         "Residential Low Density", "Residential Medium Density"))+
   scale_x_discrete(labels=c("Others", "RM", "RH","RL", "FV")) +
   theme(legend.position ="bottom")
 
 plot5_violin
-
 ```
 
 ## Foundations Matters House Overall Quality
@@ -147,8 +174,8 @@ g6 = ggplot(data=house_overqual, aes(x = OverallQual))
 plot6=g6+geom_bar(aes(fill= Foundation), position = "fill") + 
   theme(legend.position ="bottom") + 
   scale_fill_manual(values = c('#66c2a5','#fc8d62','#8da0cb','#e78ac3','#a6d854','#ffd92f'),
-                     name = "Foundation", labels=c("Poured Contrete", "Cinder Block", "Brik&Tile",
-                                                    "Slab", "Stone","Wood"))+
+                    name = "Foundation", labels=c("Poured Contrete", "Cinder Block", "Brik&Tile",
+                                                  "Slab", "Stone","Wood"))+
   xlab("Overall Quality") +
   ylab("Percent")+
   ggtitle("House Foundation VS. Overall House Quality ")
@@ -157,14 +184,15 @@ plot6
 
 ```
 
-## Conclusion
+## Conclusion 
 
 * Popular house style changes with time 
       + Some house style no longer popular and disappear in the market
 * It is possible to get a deal in off peak house market season.
 * Estimate house price from building structure and house location
+* House built year and house overall quality relationship in future analysis
 
-## Thank you!
+**Thank you!**
 
 
 
