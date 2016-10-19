@@ -57,7 +57,7 @@ Violation Score | Safety Grade
      28+        |      C
 
 
-## Inspection Grade vs Borough
+## Inspection Grade and Borough
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -71,7 +71,7 @@ ggplot(boro_grd, aes(x=reorder(boro, boro, function(x) length(x)), fill=grade)) 
 ```
 
 
-## Inspection Grade vs Cuisine
+## Inspection Grade and Cuisine
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -85,7 +85,7 @@ ggplot(cui_grd, aes(x=reorder(cuisine.type, cuisine.type, function(x) length(x))
 ```
 
 
-## Inspection Grade vs Cuisine by Percentage
+## Inspection Grade and Cuisine by Percentage
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -101,7 +101,7 @@ ggplot(cui_grd_prop2, aes(x=reorder(cuisine.type, gradeA_prop, function(x) max(x
 
 ```
 
-## Violation Citations vs Cuisine
+## Violation Citations and Cuisine
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -121,7 +121,7 @@ ggplot(data=vio_cui_dba, aes(x=reorder(cuisine.type, avg.violation.per.dba, func
 
 ```
 
-## Violation Citations vs Cuisine by Boroughs
+## Violation Citations and Cuisine by Boroughs
 
 ```{r echo=FALSE, fig.height=4, warning=FALSE}
 
@@ -135,7 +135,7 @@ ggplot(data=vio_cui_boro, aes(x=reorder(cuisine.type, avg.violation.per.dba, fun
 
 ```
 
-## Average Violation Score vs Borough
+## Density Plot for Average Violation Score
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 
@@ -151,7 +151,7 @@ ggplot(boro_grd, aes(x=score)) + stat_density(aes(color=boro), geom="line", posi
 
 ```
 
-## Violation Score Heatmap
+## Heatmap for Violation Score
 
 ```{r echo=FALSE, warning=FALSE, fig.height=5}
 
