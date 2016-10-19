@@ -47,9 +47,6 @@ As a network analysis, I wanted to find out the following:
 * Which stocks are the most influential users talking about?
 * Which events caused the most chatter?
 
-* Is there a corellation between stock movement and number of tweets? Which stock causes more people to tweet?
-* Is there early chatter before significant price movements?
-
 ***
 
 ## Preparing the Dataset
@@ -128,11 +125,12 @@ The plot below shows the distribution of tweets and retweets during the course o
 
 Verifying by code, we get the date with the most tweets as,
 
-```{r day of max tweet}
+```{r day of max tweet, echo=TRUE}
 twperday <- stream %>% group_by(.,Date) %>% dplyr::summarise(.,Tweets=n())
 
 maxday <- twperday[which.max(twperday$Tweets), ]
 
+print(maxday)
 ```
 
 ### Day of Max Tweets
@@ -182,7 +180,7 @@ head(indegRanked)
 
 ```
 
-`r nrow(indegRanked)` out of `r length(unique(stream$Nickname))` unique users had followers less than 0. `r length(unique(stream$Nickname)) - nrow(indegRanked)` users disregarded.
+
 
 ***
 
@@ -195,7 +193,6 @@ head(indegRanked)
     + Is a RT - logical
     + RTs - integer count of the number of times the tweet was retweeted
 
-NOTE: Total # of users with retweets less than 0: 10462
 
 ```{r rtrank}
 retwRanked <- readRDS("retwRanked.RDS")
@@ -213,7 +210,6 @@ head(retwRanked)
     + Nickname
     + User Mentions - char string which lists the usernames mentioned in the tweet
 
-NOTE: Total # of users with mentions less than 0: 18754
 
 ```{r menrank}
 mentionRanked <- readRDS("mentionRanked.RDS")

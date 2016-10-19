@@ -657,21 +657,21 @@ met.yn
      
 ***
 
-##Inferences:
+* Inferences:
 a. Physical attractiveness is probably the most considered and valued attribute among those six attributes: attractiveness, sincerity, intelligence, fun, ambition, and shared interests.
 
 b. Even though males valued physical attractiveness, females seem to have high sensitivity on this attribute than do males.
 
 ***
 
-##Further Questions:
+* Further Questions:
 a. Are there any common attributes that can be found from participants received no dating match?
 b. Is ambition another influencing attribute in speed-dating?
 c. When choosing dating partner, how is age and race being weighted?
 
 ***
 
-##Limitations:
+* Limitations:
 a. The sample size is too small and the survey subjects were collected from Columbia University; therefore bias might be introduced.
 b. The survey questions were not comprehensive.
 c. Some key features of participants were not recorded. (i.e. number of ex-, length of the longest relationship they had, etc.)

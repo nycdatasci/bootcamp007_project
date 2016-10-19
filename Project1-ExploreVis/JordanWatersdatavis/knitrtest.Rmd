@@ -1,0 +1,36 @@
+---
+title: "Data Visualization"
+author: "Jordan Waters"
+date: "October 16, 2016"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+allbyweek <- read.csv('allbyweek.csv', header = T)
+allbyweek <- as.data.frame(allbyweek)
+ncaa <- read.csv('ncaa.csv', header = T)
+ncaa <- as.data.frame(ncaa)
+library(ggplot2)
+```
+
+## Better Betting with Time?
+
+- Millions of bets are placed every year on college football games
+- As betters gain more insight about teams, do they predict the outcomes more accurately?
+- Betting trends can be infered from what casinos call "Money lines".
+- Money lines exist to create equal betting on both teams in a game. Without getting into too much detail, casinos pay out more to people who bet on teams that most betters think will lose.
+
+## Week 1 Money lines
+
+```{r allbyweek, echo = TRUE}
+ggplot(filter(as.data.frame(allbyweek),allbyweek$Week == 1 & !is.na(allbyweek$Team_Line)), aes(x = reorder(Team, Team_Line), y = Team_Line)) + geom_bar(stat = 'identity', aes(fill = win)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + ggtitle("All Games from Week 1") + ylab('Money Line') + xlab('Team')
+
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
