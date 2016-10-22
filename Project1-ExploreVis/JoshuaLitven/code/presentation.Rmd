@@ -446,8 +446,11 @@ artist_popularity_full =left_join(artist_popularity_locations, artist_world_popu
                                   by="artist_name")
 
 # Plot country popularity vs world popularity
-ggplot(artist_popularity_full, aes(y=country_pop, x=pop)) +
+png(file="plots/origin_popularity_vs_world_popularity.png",width=WIDTH,height=HEIGHT)
+ggplot(artist_popularity_full, aes(y=country_pop, x=world_pop)) +
   geom_point() +
+  annotate("segment", x=0.04, xend=0.02, y=0.2, yend=0.2, arrow=arrow()) +
+  annotate("text", label="Niche Artists", x=0.06, y=0.2, size=5) +
   coord_cartesian(xlim=c(0,0.2), ylim=c(0,0.2)) +
   stat_function(fun=function(x) x, geom = "line") +
   theme_minimal() +
@@ -455,6 +458,7 @@ ggplot(artist_popularity_full, aes(y=country_pop, x=pop)) +
         axis.text=element_text(size=AXIS_SIZE)) +
   labs(title="Origin Popularity vs. World Popularity", 
        x="\nWorld Popularity", y="Origin Popularity\n")
+dev.off()
 ```
 
 ##
@@ -765,14 +769,14 @@ sampled_niche_artists_by_country =
   filter(country %in% sampled_artists_by_country$country)
 
 # Have to manually save image
-network = create_artists_country_network(niche_artists_by_country, 
-                                         use_pop=TRUE, show_labels=TRUE,
+network = create_artists_country_network(top_artists_by_country, 
+                                         use_pop=FALSE, show_labels=TRUE,
                                          select_option=TRUE,
-                                         title="Niche Artist Network")
+                                         title="Country Artist Network")
 network
 
 # Save to file
-network %>% visSave(file = "niche_artist_network.html")
+network %>% visSave(file = "country_artist_network.html")
 ```
 
 ## Coming Soon
