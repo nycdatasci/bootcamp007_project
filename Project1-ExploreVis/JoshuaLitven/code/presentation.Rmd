@@ -12,17 +12,19 @@ output: ioslides_presentation
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, fig.height=6, fig.align='center')
-library(plyr)
 library(dplyr)
 library(ggplot2)
 library(lubridate)
 library(reshape2)
 library(maps)
+library(visNetwork)
 
 # Graph settings
 TITLE_SIZE = 20
 TEXT_SIZE = 20
 AXIS_SIZE = 15
+WIDTH = 600
+HEIGHT = 567
 set.seed(2) # recreate results
 ```
 
@@ -70,8 +72,8 @@ get_artist_popularity = function(){
   most_popular_artists = 
     user_artist_plays %>%
     group_by(artist_name) %>%
-    summarise(pop = n() / total_num_users) %>%
-    arrange(desc(pop))
+    summarise(world_pop = n() / total_num_users) %>%
+    arrange(desc(world_pop))
   return(most_popular_artists)
 }
 
@@ -98,6 +100,7 @@ get_artist_popularity_by_country = function() {
     mutate(country_pop = num_listened / num_users)
   return(artist_pop_by_country)
 }
+
 
 # Create popularity choropleth map of a given artist
 output_choropleth_map = function(name){
@@ -224,22 +227,23 @@ p
 ##
 ```{r}
 # What is the user's trend for weekly listening activity? ------------------------------------------
-
+png(file="mygraphic.png",width=WIDTH,height=HEIGHT)
 p = ggplot(data=subset(sampled_user_listening_history, !is.na(hour)), aes(x=hour)) +
   geom_bar(aes(fill=DofW)) +
   facet_wrap( ~ DofW, ncol = 1) +
-  labs(title="Random User's Listening Activity (Aggregated)", x="\nHour", y="Num Songs\n") +
-  scale_y_continuous(breaks=c(0,500)) +
+  labs(title="Random User's Listening Activity (Aggregated)\n", x="\nHour", y="Num Songs\n") +
   scale_fill_discrete(name="") +
   theme_minimal() +
   theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE),
         axis.text=element_text(size=10), strip.text.x = element_blank())
 p
+dev.off()
 ```
 
 ##
 ```{r}
 # Break down by most common artists
+png(file="plots/random_user_listening_activity_breakdown.png",width=WIDTH,height=HEIGHT)
 sampled_user_artists = 
   sampled_user_listening_history %>% 
   group_by(artist_name) %>% 
@@ -261,7 +265,7 @@ sampled_user_listening_history_top =
 p = ggplot(data=subset(sampled_user_listening_history_top, !is.na(hour)), aes(x=hour)) +
   geom_bar(aes(fill=top)) +
   facet_wrap( ~ DofW, ncol=1) +
-  labs(title="Random User's Listening Activity (Aggregated)", x="\nHour", y="Num Songs\n") +
+  labs(title="Random User's Listening Activity (Aggregated)\n", x="\nHour", y="Num Songs\n") +
   scale_y_continuous(breaks=c(0,500)) +
   scale_fill_discrete(name="Artists", labels=c(paste0("Bottom ", 100 - percent, "%"),
                                                paste0("Top ", percent, "%"))) +
@@ -269,6 +273,7 @@ p = ggplot(data=subset(sampled_user_listening_history_top, !is.na(hour)), aes(x=
   theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE),
         axis.text=element_text(size=10), strip.text.x = element_blank())
 p
+dev.off()
 ```
 
 ##
@@ -282,13 +287,17 @@ user_artist_counts =
   summarise(count = n())
 
 # Plot the user's cumulative distributions
+png(file="plots/diversity_of_user_history.png",width=WIDTH,height=HEIGHT)
 g = ggplot(user_artist_counts, aes(count)) +
-  stat_ecdf(geom = "step", aes(fill=user_id)) +
-  coord_cartesian(xlim=c(0,1000)) +
-  labs(title="Diversity of User History", x="\nNum Artists", y="User C.D.F.\n") +
+  stat_ecdf(geom = "step", aes(fill=user_id), alpha=.5) +
+  coord_cartesian(xlim=c(50,1000)) +
+  labs(title="Diversity of User History", x="\nNum Artists", y="% of History\n") +
   theme_minimal() +
   theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE))
 g
+
+# Output plot
+dev.off()
 ```
 
 ## 
@@ -327,23 +336,76 @@ g
 ```{r}
 # Who are the most popular artists? ---------------------------------------
 
-num_artists = 5
+num_artists = 25
 most_popular_artists = 
   get_artist_popularity() %>% 
   slice(1:num_artists)
 
 # Plot the most popular artists
+png(file="plots/most_popular_artists.png",width=WIDTH,height=HEIGHT)
 g = ggplot(data=most_popular_artists, aes(x = artist_name)) +
-  geom_bar(aes(x = reorder(artist_name, -pop), y = pop, fill=artist_name), 
+  geom_bar(aes(x = reorder(artist_name, world_pop), y = world_pop, fill=artist_name), 
            stat = "identity") +
-  labs(title="Most Popular Artists", x="", y="% of Users\n") +
+  coord_flip() +
+  labs(title="Most Popular Artists", x="Artist\n", y="\nWorldwide Popularity") +
   theme_minimal() +
   scale_fill_discrete(guide=FALSE) +
-  theme(axis.title.x=element_blank(),
-        axis.ticks.x=element_blank(),
-        axis.text.x=element_text(angle=45, hjust=0.5, vjust=0.5),
-        plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE))
+  theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE))
 g
+dev.off()
+```
+
+```{r}
+# Where do users come from?
+
+# Get users by country
+n_users = nrow(user_artist_plays_dems)
+users_by_country =
+  user_artist_plays_dems %>% 
+  group_by(country) %>% 
+  tally() %>% 
+  mutate(ratio = n / n_users) %>% 
+  arrange(desc(ratio))
+
+world = map_data("world")
+
+# Fix mappings between user artist plays and world data
+countries = users_by_country$country
+world_countries = factor(world$region)
+countries = plyr::revalue(countries, c("United States"="USA", 
+                                       "Russian Federation"="Russia",
+                                       "United Kingdom"="UK",
+                                       "Korea, Republic of"="South Korea",
+                                       "Viet Nam"="Vietnam",
+                                       "Lao People's Democratic Republic"="Laos",
+                                       "Palestinian Territory, Occupied"="Palestine",
+                                       "Congo, the Democratic Republic of the"="Democratic Republic of the Congo",
+                                       "Iran, Islamic Republic of"="Iran",
+                                       "Macao"="China",
+                                       "Syrian Arab Republic"="Syria",
+                                       "Congo"="Democratic Republic of the Congo",
+                                       "Hong Kong"="China",
+                                       "Tanzania, United Republic of"="Tanzania",
+                                       "Falkland Islands (Malvinas)"="Falkland Islands",
+                                       "Libyan Arab Jamahiriya"="Libya"))
+users_by_country$country = countries
+
+# Join user artist plays with world data
+users_by_country_world = left_join(world, users_by_country, by=c("region"="country"))
+
+png(file="plots/users_choropleth.png",width=800,height=531)
+p <- ggplot(data = users_by_country_world)
+p <- p + geom_polygon(aes(x=long, 
+                          y=lat, 
+                          group = group, 
+                          fill=ratio)) +
+  theme_minimal() +
+  scale_fill_gradient(name="Proportion of Users\n", low="#BFEFFF", high="darkblue", na.value="white") +
+  theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE),
+        axis.title.x=element_blank(), axis.ticks=element_blank(), axis.text=element_blank()) +
+  labs(title="User Demographics", x="", y="") 
+p
+dev.off()
 ```
 
 ## 
@@ -428,6 +490,7 @@ artist_popularity_selected_countries_full =
   arrange((desc(value)))
 
 # Plot top artists across selected countries
+png(file="plots/top_artists_across_countries.png",width=WIDTH,height=HEIGHT)
 ggplot(data = artist_popularity_selected_countries_full, aes(x=artist_name, y=value)) +
   geom_bar(stat="identity", aes(fill=artist_name)) +
   facet_wrap( ~ country, nrow=length(countries)) +
@@ -436,8 +499,35 @@ ggplot(data = artist_popularity_selected_countries_full, aes(x=artist_name, y=va
   theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE),
         axis.text.y=element_text(size=10),axis.text.x=element_blank()) +
   labs(x = "", y = "Popularity\n", title = "Top Artists Across Countries")
+dev.off()
 ```
 
+
+##
+```{r similarity of users in same country vs foreign}
+# How similar are users in the same country compared to foreign users?
+
+similarity_metric = function(user1, user2){
+  user1_artists = user_artist_plays %>% filter(user_id == user1) %>% .$artist_name
+  user2_artists = user_artist_plays %>% filter(user_id == user2) %>% .$artist_name
+  
+  common_artists = intersect(user1_artists, user2_artists)
+  
+  similarity_metric = length(common_artists) / (length(user1_artists) * length(user2_artists))
+}
+
+meanSimilarity = 0
+for(i in 1:1000){
+  # Sample a user
+  sampled_user = sample_n(user_artist_plays_full, 1)
+  
+  # Sample another user from the same country
+  other_user = sample_n(user_artist_plays_full %>% filter(country == sampled_user$country), 1)
+  
+  meanSimilarity = meanSimilarity + similarity_metric(sampled_user$user_id, other_user$user_id)
+}
+
+```
 ## Question Three
 
 *How to find artists popular in a country unknown to the rest of the world?*
@@ -451,7 +541,6 @@ artist_world_popularity = get_artist_popularity()
 
 artist_popularity_full = left_join(artist_popularity_by_country, artist_world_popularity, 
                                   by="artist_name")
-colnames(artist_popularity_full)[6] = "world_pop"
 ```
 
 ##
@@ -544,20 +633,146 @@ create_popularity_plot(artist_popularity_net %>% filter(country=="United States"
 ```
 
 ```{r create_youtube_playlist}
+# Load the playlist creator
 setwd('~/Courses/nyc_data_science_academy/bootcamp007_project/Project1-ExploreVis/JoshuaLitven/')
 source('code/create_youtube_playlist.R')
-# Get top artist from each country with at least 10 users
-num_users_cut_off = 10
 
-top_artists_by_country =
+# Start with the popularity of artists for each country
+artist_popularity_by_country = get_artist_popularity_by_country()
+
+# Get niche artists by country
+# Join with world popularity
+artist_world_popularity = get_artist_popularity()
+
+artist_popularity_full = left_join(artist_popularity_by_country, artist_world_popularity, 
+                                  by="artist_name")
+num_users_threshold = 10
+num_artists = 10
+artist_popularity_net = 
   artist_popularity_full %>% 
-  filter(world_pop < world_pop_cut_off, num_users > num_users_cut_off) %>%
+  filter(num_users > num_users_threshold) %>% 
   mutate(net_pop = country_pop - world_pop) %>% 
-  top_n(1, net_pop) %>% 
+  arrange(desc(net_pop)) %>% 
+  top_n(num_artists, net_pop) %>% 
   select(country, artist_name, country_pop, world_pop, net_pop)
-top_artists_by_country$country = as.character(top_artists_by_country$country)
 
-create_playlist(top_artists_by_country)
+num_niche_artists = 1
+niche_artists_by_country = 
+  artist_popularity_net %>%
+  group_by(artist_name) %>% 
+  filter(n() == 1) %>%
+  ungroup(artist_name) %>% 
+  group_by(country) %>% 
+  top_n(num_niche_artists, net_pop) %>% 
+  arrange(country)
+
+create_playlist(niche_artists_by_country)
+```
+
+```{r create artist-country network graph}
+
+# Create the artist country network graph from a dataframe
+# The dataframe contains columns: country, artist_name, country_pop
+# If use_pop=TRUE, artist node size is proportional to country_pop
+create_artists_country_network = function(artists_by_country, title, use_pop=TRUE, show_labels=TRUE,
+                                          select_option=TRUE){
+  # Edges are defined from country to artist
+  edges = data.frame(from=artists_by_country$country,
+                     to=artists_by_country$artist_name)
+  
+  # Get the counts of each artist to specify size in network
+  artist_counts = artists_by_country  %>% group_by(artist_name)  %>% count(artist_name)
+  artist_pop = artists_by_country %>% ungroup(artist_name) %>% .$country_pop
+  country_counts = artists_by_country %>%  group_by(country) %>% count(country)
+  country_counts$country = as.character(country_counts$country)
+  
+  # Specify the nodges
+  # The nodes are all countries and artists
+  nodes = data.frame(id = c(artist_counts$artist_name, 
+                            country_counts$country),
+                     group = c(rep("Artist", nrow(artist_counts)),
+                               rep("Country", nrow(country_counts))))
+  nodes$shape <- "dot"  
+  nodes$shadow <- TRUE # Nodes will drop shadow
+  nodes$title <- c(artist_counts$artist_name, country_counts$country)
+  if(!show_labels){
+    nodes$label = NA
+  }
+  nodes$borderWidth <- 2 # Node border width
+  nodes$value = ifelse(rep(use_pop, nrow(nodes)), c((10 * artist_pop)^2, rep(1, nrow(country_counts))), 
+                       c(artist_counts$n, rep(1, nrow(country_counts))))
+  
+  nodes$color.border <- "black"
+  nodes$color.highlight.background <- "orange"
+  nodes$color.highlight.border <- "darkred"
+  
+  network = 
+    visNetwork(nodes, edges, main=title) %>%
+    visOptions(highlightNearest = TRUE) %>% 
+    visGroups(groupname = "Country", color = "red") %>%
+    visGroups(groupname = "Artist", color = "lightblue") %>% 
+    visLegend()
+  if(select_option){
+    network =
+      network %>% 
+      visOptions(highlightNearest = TRUE,
+                 nodesIdSelection = list(values=country_counts$country))
+  }
+  return(network)
+}
+
+# Start with the popularity of artists for each country
+artist_popularity_by_country = get_artist_popularity_by_country()
+
+# Get top artists by country
+num_artists = 10
+top_artists_by_country = 
+  artist_popularity_by_country %>%
+  group_by(country) %>% 
+  top_n(num_artists, country_pop)
+
+# Sample for cleaner network plot
+sample_user_threshold = 500
+sampled_artists_by_country = 
+  top_artists_by_country %>% 
+  filter(num_users > sample_user_threshold) %>% 
+  select(country, artist_name, country_pop)
+
+# Join with world popularity to get niche artists
+artist_world_popularity = get_artist_popularity()
+artist_popularity_full = left_join(artist_popularity_by_country, artist_world_popularity, 
+                                  by="artist_name")
+num_users_threshold = 10
+artist_popularity_net = 
+  artist_popularity_full %>% 
+  filter(num_users > num_users_threshold) %>% 
+  mutate(net_pop = country_pop - world_pop) %>% 
+  arrange(desc(net_pop)) %>% 
+  top_n(num_artists, net_pop) %>% 
+  select(country, artist_name, country_pop, world_pop, net_pop)
+
+num_niche_artists = 10
+niche_artists_by_country = 
+  artist_popularity_net %>%
+  group_by(artist_name) %>% 
+  filter(n() == 1) %>%
+  ungroup(artist_name) %>% 
+  group_by(country) %>% 
+  top_n(num_niche_artists, net_pop)
+
+sampled_niche_artists_by_country = 
+  niche_artists_by_country %>% 
+  filter(country %in% sampled_artists_by_country$country)
+
+# Have to manually save image
+network = create_artists_country_network(niche_artists_by_country, 
+                                         use_pop=TRUE, show_labels=TRUE,
+                                         select_option=TRUE,
+                                         title="Niche Artist Network")
+network
+
+# Save to file
+network %>% visSave(file = "niche_artist_network.html")
 ```
 
 ## Coming Soon
