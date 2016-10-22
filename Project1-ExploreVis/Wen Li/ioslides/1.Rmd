@@ -1,8 +1,9 @@
 ---
-title: "U.S. Health Insurance Rates and Benefits"
+title: "U.S. Health Insurance: Rates and Benefits"
 author: "Wen Li"
-date: "10/16/2016"
+date: "10/19/2016"
 output: ioslides_presentation
+logo: ./img/logo.png
 ---
 
 ```{r setup, include=FALSE}
@@ -14,35 +15,44 @@ AvgGroup = read.csv("./data/AvgGroup.csv", header = T)
 
 ## Outline
 
-- HHS Standard Rate Curve
-- Age and Plan Length vs. Plan Rate
-- Age and Tobacco Policy vs. Plan Rate
-- Plan Rate across States
-- Benefits vs. Plan Type
-- Which Plan Type?
+- Plan Rates
+    - Standard Rate Curve
+    - Age and Plan Length
+    - Age and Tobacco Policy
+    - Family Options and States
+<br>
+- Plan Benefits
+    - Plan Type
+    - Specialty
+<br><br><br>
+
+###### Dataset: [kaggle/CMS.gov](https://www.kaggle.com/hhs/health-insurance-marketplace) 
 
 
-## Human Health Services Rate Curve
+## Rates: Default Standard Rate Curve
+|  Human Health Services
 
 <img class="center" src="./img/10.png" height=400>
 
 
-## Age and Plan Length vs. Plan Rate
+## Rates: Age and Plan Length
 
 <img class="center" src="./img/21.png" height=400>
 
 
-## Age and Plan Length vs. Plan Rate
+## Rates: Age and Plan Length
 
 <img class="center" src="./img/22.png" height=400>
 
 
-## Age and Tobacco Policy vs. Plan Rate
+## Rates: Age and Tobacco Policy
 
 <img class="center" src="./img/30.png" height=400>
+<br>
+Future question: lower rates and benefits?
 
 
-## Plan Rate across States
+## Rates: Family Options and States
 
 ```{r, results='asis'}
 plot(gvisGeoChart(AvgGroup, 'StateCode', 'Avg', 
@@ -52,9 +62,17 @@ plot(gvisGeoChart(AvgGroup, 'StateCode', 'Avg',
                                        colorAxis = "{colors: ['#e0f3db', '#a8ddb5', '#43a2ca']}",
                                        datalessRegionColor = '#ffffff')), "chart")
 ```
+<br>
+Future question: why?
 
+## Benefits: Plan Type
+- HMO: Health Maintenance Organizations, inside network, need referral to see a specialist
+- PPO: Preferred Provider Organizations, both inside and outside
+- EPO: Exclusive Provider Organizations, inside network, no need for referral
+- POS: Point of Service, both inside and outside, need referral
+- INDEMNITY: almost any doctor or hospital you like, higher charges
 
-## Benefits vs. Plan Type
+## Benefits: Plan Type
 
 <img class="center" src="./img/51.png" height=400>
 
@@ -92,3 +110,18 @@ plot(gvisGeoChart(AvgGroup, 'StateCode', 'Avg',
 ## Which Plan Type? - INDEMNITY
 
 <img class="center" src="./img/74indemnity.png" width=800>
+
+## Inference and Future Question
+
+- Rates: age, plan length, tobacco policy, family options, states
+<br><br>
+- Benefits: plan type, unique benefits
+<br><br>
+- Future questions: 
+    - why non-preference tobacco policy with lower rates?
+    - why region matters?
+    - what is the relationship between benefits and rates?
+    - for different medical expensenes, which is the optimal plan?
+
+
+# Thank you!

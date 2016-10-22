@@ -125,11 +125,12 @@ The plot below shows the distribution of tweets and retweets during the course o
 
 Verifying by code, we get the date with the most tweets as,
 
-```{r day of max tweet}
+```{r day of max tweet, echo=TRUE}
 twperday <- stream %>% group_by(.,Date) %>% dplyr::summarise(.,Tweets=n())
 
 maxday <- twperday[which.max(twperday$Tweets), ]
 
+print(maxday)
 ```
 
 ### Day of Max Tweets

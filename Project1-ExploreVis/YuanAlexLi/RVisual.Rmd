@@ -1,5 +1,5 @@
 ---
-title: "Visualization of the NYC Restaurant Safety Inspection"
+title: "Visualization of the NYC Restaurant Safety Inspection Data"
 author: "Alex Li"
 date: "October 16, 2016"
 output: ioslides_presentation
@@ -28,15 +28,15 @@ vio_table = cbind(c("00", "02", "03", "04", "05", "06", "07", "08", "09", "10"),
 ```
 
 
-## Objective of this Exploratory Data Analysis
+## Objective of this Exploratory Visualization
 <img src="wcloud.png" alt="Smiley face" height="300" align="right">
 
-- Examine various factors that potentially affect the inspection grade
+- Examine various factors that potentially determine the inspection grade
 - Factors examined in this analysis
     + Cuisine Type
     + Restaurant Location
-    + Violation Citation
-    + Violation Score
+    + Number of Violation Citations
+    + Total Violation Score
 
 
 ## Data Source and Cleaning
@@ -45,7 +45,7 @@ vio_table = cbind(c("00", "02", "03", "04", "05", "06", "07", "08", "09", "10"),
 - Data cleaning/modification
     + Removal of non-sense data (blank restaurant names, wrong date, etc.)
     + Regrouping of cuisine type (Converting 85 types of cuisines to 24 types for meaningful analysis)
-    + Acquisition of the latest inspection data for each restaurant
+    + Obtaining the latest inspection data for each restaurant
 
 
 ## Inspection Grade
@@ -57,7 +57,7 @@ Violation Score | Safety Grade
      28+        |      C
 
 
-## Inspection Grade vs Borough
+## Inspection Grade and Borough
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -71,7 +71,7 @@ ggplot(boro_grd, aes(x=reorder(boro, boro, function(x) length(x)), fill=grade)) 
 ```
 
 
-## Inspection Grade vs Cuisine
+## Inspection Grade and Cuisine
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -85,13 +85,13 @@ ggplot(cui_grd, aes(x=reorder(cuisine.type, cuisine.type, function(x) length(x))
 ```
 
 
-## Inspection Grade vs Cuisine by Ratio
+## Inspection Grade and Cuisine by Percentage
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
 cui_grd_prop2 = cui_grd %>% group_by(., cuisine.type) %>% summarise(., gradeA_prop=sum(grade=="A")/length(grade)) %>% 
                             right_join(., cui_grd, by="cuisine.type")
-# cui_grd_prop2 = fread("cui_grd_prop2.csv", stringsAsFactors=FALSE)
+
 cui_grd_prop2$grade = factor(cui_grd_prop2$grade, levels=c("C", "B", "A"))
 ggplot(cui_grd_prop2, aes(x=reorder(cuisine.type, gradeA_prop, function(x) max(x)), fill=grade)) + 
   geom_bar(aes(filled=grade), position="fill") +
@@ -101,7 +101,7 @@ ggplot(cui_grd_prop2, aes(x=reorder(cuisine.type, gradeA_prop, function(x) max(x
 
 ```
 
-## Violation Citations vs Cuisine
+## Violation Citations and Cuisine
 
 ```{r echo=FALSE, warning=FALSE, fig.height=4}
 
@@ -113,7 +113,6 @@ vio_grd_rest = vio_grd %>% group_by(., dba) %>% summarise(., violation.per.dba=n
                            distinct(., dba, .keep_all=TRUE)
 vio_cui_dba = vio_grd_rest %>% group_by(., cuisine.type) %>% summarise(., avg.violation.per.dba=mean(violation.per.dba)) %>%
                                right_join(., select(vio_grd_rest, cuisine.type, boro, score, grade), by="cuisine.type")
-# vio_cui_dba = fread("vio_cui_dba.csv", stringsAsFactors=FALSE)
 ggplot(data=vio_cui_dba, aes(x=reorder(cuisine.type, avg.violation.per.dba, function(x) -max(x)), y=avg.violation.per.dba)) + 
   geom_bar(stat="identity", fill="darkred", alpha=0.8) + ylim(c(0, 3)) + theme_bw() +
   xlab("Cuisine Type") + ylab("Average Violation Citations per Restaurant") + 
@@ -122,12 +121,12 @@ ggplot(data=vio_cui_dba, aes(x=reorder(cuisine.type, avg.violation.per.dba, func
 
 ```
 
-## Violation Citations vs Cuisine and Boroughs
+## Violation Citations and Cuisine by Boroughs
 
 ```{r echo=FALSE, fig.height=4, warning=FALSE}
 
 vio_cui_boro = vio_grd_rest %>% group_by(., cuisine.type, boro) %>% summarise(., avg.violation.per.dba=mean(violation.per.dba))
-# vio_heatmap = fread("vio_heatmap.csv", stringsAsFactors=FALSE)
+
 ggplot(data=vio_cui_boro, aes(x=reorder(cuisine.type, avg.violation.per.dba, function(x) max(x)), y=avg.violation.per.dba)) + 
   geom_bar(stat="identity", fill="darkred", alpha=0.8) + theme_bw() +
   xlab("Cuisine Type") + ylab("Average Violation Citations per Restaurant") + 
@@ -136,14 +135,14 @@ ggplot(data=vio_cui_boro, aes(x=reorder(cuisine.type, avg.violation.per.dba, fun
 
 ```
 
-## Violation Score vs Borough
+## Density Plot for Average Violation Score
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 
 ggplot(boro_grd, aes(x=score)) + stat_density(aes(color=boro), geom="line", position="identity") + 
   xlim(c(0, 40)) + geom_vline(xintercept=c(13.5, 27.5), colour="grey") + theme_bw() + 
   theme(legend.position="top", legend.key=element_blank()) + xlim(c(0, 40)) + 
-  ylab("Density") + xlab("Violation Score") + ggtitle("Density Curve of Violation Score in Each Borough") + 
+  ylab("Density") + xlab("Average Violation Score") + ggtitle("Density Curve of Average Violation Score in Each Borough") + 
   scale_y_continuous(breaks=seq(0, 0.2, 0.02), labels=scales::percent) + 
   ggplot2::annotate("text", x=c(1, 14.5, 28.5), y=0.15, label=c("A", "B", "C"), size=6) + 
   ggplot2::annotate("rect", xmin=0, xmax=13.5, ymin=0, ymax=0.16, alpha=0.3, fill="darkgreen") + 
@@ -152,7 +151,7 @@ ggplot(boro_grd, aes(x=score)) + stat_density(aes(color=boro), geom="line", posi
 
 ```
 
-## Violation Score Heatmap
+## Heatmap for Violation Score
 
 ```{r echo=FALSE, warning=FALSE, fig.height=5}
 
@@ -170,7 +169,7 @@ ggplot(data=vio_grd_sco, aes(x=as.factor(boro), y=as.factor(cuisine.type)), fill
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 
-zip_choropleth(rec_zip, zip_zoom=rec_zip$region, num_colors=5, title="Violation Score based on NYC Zipcode") + 
+zip_choropleth(rec_zip, zip_zoom=rec_zip$region, num_colors=5, title="Average Violation Score based on NYC Zipcode") + 
   scale_fill_brewer(palette="YlOrRd", name="Violation Score")
 
 ```

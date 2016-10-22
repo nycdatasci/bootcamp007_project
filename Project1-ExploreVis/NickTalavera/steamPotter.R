@@ -80,7 +80,7 @@ title = paste("Overall Ownership and Amount Sold Percent Increases Compared to P
 metacriticScoresVSIncreaseSeventyPlus$GameAge = floor(metacriticScoresVSIncreaseSeventyPlus$GameAge/365)
 metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$GameAge),]
 metacriticScoresVSIncreaseSeventyPlus$GameAge = cut_interval(metacriticScoresVSIncreaseSeventyPlus$GameAge, length = 3, rm.na = FALSE)
-factosokaf = 100
+factosokaf = 100000
 metacriticScoresVSIncreaseSeventyPlus$Owners_Before = round(metacriticScoresVSIncreaseSeventyPlus$Owners_Before/factosokaf)*factosokaf
 metacriticScoresVSIncreaseSeventyPlus = summarise(group_by(metacriticScoresVSIncreaseSeventyPlus, Owners_Before), meanSalePercent = mean(Sale_Percent), meanGameAge =  mean(GameAge), meanIncrease = mean(Increase), meanSales = mean(Sales))
 metacriticScoresVSIncreaseSeventyPlus = metacriticScoresVSIncreaseSeventyPlus[!is.na(metacriticScoresVSIncreaseSeventyPlus$meanSalePercent),]
