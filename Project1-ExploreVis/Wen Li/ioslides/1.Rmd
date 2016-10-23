@@ -1,5 +1,5 @@
 ---
-title: "U.S. Health Insurance: Rates and Benefits"
+title: 'U.S. Health Insurance: Rates and Benefits'
 author: "Wen Li"
 date: "10/19/2016"
 output: ioslides_presentation
