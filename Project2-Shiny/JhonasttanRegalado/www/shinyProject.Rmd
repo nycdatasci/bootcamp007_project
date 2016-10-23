@@ -1,0 +1,200 @@
+Citibike Shiny (web) project:
+
+Determine bike availability and surrounding options based on number of docked bikes
+
+Assumptions
+1. Judgement is based on prior month available pattern
+
+Target:
+1. Tourists or first time riders seeking more info on availability trends
+
+User options
+1. search for address
+2. select bike availability count:
+  a. status of green if station docked bike count is > than user selection
+  b. status of yellow if station docked bike count is == to user selection
+  c. status of red if station docked bike count is < than user selection
+3. select radius between 1 - 5 miles
+4. from and to address - produce avg ride time based on trip duration from citibike data file
+5. select ride time: 30 / 45 min
+5. select peak time view - avg bike count based on prior month data
+
+Would be nice:
+1. Show available bikes and docking counts within radius of the from / to address
+
+To do:
+1. Download monthly citibike use data to:
+  a. capture average travel time between locations
+  b. avg docked bike count at stations
+  c. popular stations
+  d. trips within time range: 30 mins, 45 mins
+2. Capture station info daily
+3. Capture station status at run time
+4. Build map
+
+Sources:
+1. https://cran.r-project.org/web/packages/jsonlite/vignettes/json-apis.html >>
+A single public API that shows location, status and current availability for all stations in the New York City bike sharing imitative.
+2. http://www.kdd.org/kdd2016/subtopic/view/rebalancing-bike-sharing-systems-a-multi-source-data-smart-optimization >> article - Rebalancing Bike Sharing Systems: A Multi-source Data Smart Optimization
+3. http://toddwschneider.com/posts/a-tale-of-twenty-two-million-citi-bikes-analyzing-the-nyc-bike-share-system/ >> article - A Tale of Twenty-Two Million Citi Bike Rides: Analyzing the NYC Bike Share System
+4. http://bostonography.com/hubwaymap/ - Boston Hubway (Citibike version)
+5. http://www.kdd.org/kdd2016/subtopic/view/rebalancing-bike-sharing-systems-a-multi-source-data-smart-optimization << bike distribution problem
+6. bike route path: http://data.beta.nyc/dataset/nyc-cycling-map
+7. GPX track: https://www.r-bloggers.com/plotting-gpx-tracks-with-shiny-and-leaflet/
+8. Nice shiny: http://streamstatsags.cr.usgs.gov/v3_beta/
+9. Bike charts: https://spatialityblog.com/2012/05/14/citibikenyc_firstlastmile_quantified/
+10. Mapzen Leaflet R: http://spatialecology.weebly.com/r-code--data/category/mapzen
+11. Mapzen json request - https://mapzen.com/documentation/search/response/
+12. geojson routing w/ mapzen: http://rowanwinsemius.id.au/blog/getting-started-with-routing-leaflet/
+  a. routing library: https://gist.github.com/ramnathv/9998388
+  b. http://stackoverflow.com/questions/28469399/not-displaying-route-using-rmaps-and-leaflet-routing-machine-plugin/33358080#33358080
+  c. http://bl.ocks.org/ramnathv/9998388
+  d. http://gis.stackexchange.com/questions/186748/leaflet-routing-machine-how-to-initialise-map-without-waypoints-loaded
+
+Mapbox token: pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A
+Mapbox tutorial: https://www.mapbox.com/api-documentation/#maps
+Mapbox API Playground: https://www.mapbox.com/api-playground/#/forward-geocoding/?_k=b4si62
+Mapbox API Playground Directions: https://www.mapbox.com/api-documentation/#directions
+
+Example that works:
+https://api.mapbox.com/directions/v5/mapbox/cycling/-73.98%2C40.73%3B-73.97%2C40.75.json?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A&overview=simplified&geometries=geojson
+
+1. Citibike:
+  a. Station info / status: https://gbfs.citibikenyc.com/gbfs/gbfs.json
+    i. station info: https://gbfs.citibikenyc.com/gbfs/en/station_information.json
+    ii. station status: https://gbfs.citibikenyc.com/gbfs/en/station_status.json
+    iii. station info / status: http://citibikenyc.com/stations/json 
+  b. Monthly usage: https://s3.amazonaws.com/tripdata/index.html
+  c. NYC Gov bikes: http://www.nyc.gov/html/dot/html/about/datafeeds.shtml#Bikes
+2. Mobile app: https://www.citibikenyc.com/how-it-works/app
+  a. provides bike availability stats per docking stations within your perimeter
+3. 
+  a. Leaflet Shiny how to: https://rstudio.github.io/leaflet/shiny.html
+  b. https://jhonasttan.carto.com/dashboard << Carto possibilities
+  c. https://mapzen.com/products/turn-by-turn/?d=0&lat=40.7259&lng=-73.9805&z=12&c=multimodal&st_lat=37.839682&st_lng=-122.485284&st=Vista%20Point&end_lat=37.80927&end_lng=-122.25981&end=Fairyland&use_bus=0.5&use_rail=0.6&use_transfers=0.4&dt=2016-10-25T08%3A00&dt_type=1 
+  d. Geocoding: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+Load libraries
+```{r}
+library(jsonlite)
+library(dplyr)
+library(cartography)
+library(leaflet)
+library(magrittr)
+library(ggmap)
+library(RCurl)
+library(RJSONIO)
+
+gGeoCode <- function(address,verbose=FALSE) {
+  if(verbose) cat(address,"\n")
+  u <- construct.geocode.url(address)
+  doc <- getURL(u)
+  x <- fromJSON(doc,simplify = FALSE)
+  if(x$status=="OK") {
+    lat <- x$results[[1]]$geometry$location$lat
+    lng <- x$results[[1]]$geometry$location$lng
+    return(c(lat, lng))
+  } else {
+    return(c(NA,NA))
+  }
+}
+
+
+```
+
+Fetch station info from REST sites:
+
+```{r}
+
+cb_url <- "https://feeds.citibikenyc.com/stations/stations.json"
+
+#cb_json <- fromJSON("http://citibikenyc.com/stations/json")
+cb_json <- fromJSON(cb_url)
+cb_stations <- cb_json$stationBeanList
+names(cb_stations)
+nrow(cb_stations)
+```
+
+Subset of bike data from local file
+
+```{r}
+
+#cb_df  <- read.csv("./data/201606-citibike-tripdata.csv",stringsAsFactors = FALSE)
+
+cb_df  <- read.csv("./data/201606-citibike-tridatasubset.csv",stringsAsFactors = FALSE) #sampled 1k rows dataset
+
+#load("/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project2-Shiny/JhonasttanRegalado/201606-citibike-tripdata_df_duration.rds")
+
+#which(rowSums(is.na(cb_df)) !=0 )
+#length(which(rowSums(is.na(cb_df)) !=0 ))
+
+#group_by(start.station.id, start.station.name, 
+#                                                          start.station.latitude, start.station.longitude,
+#                                                          end.station.id,end.station.name, end.station.latitude,
+#                                                          end.station.longitude)
+
+cb_df_avg_trip_duration <- cb_df %>% group_by(start.station.id, start.station.name, 
+                                                          start.station.latitude, start.station.longitude,
+                                                          end.station.id,end.station.name, end.station.latitude,
+                                                          end.station.longitude) %>% 
+  summarise(avg_duration_sec = mean(tripduration), 
+            avg_duration_min = mean(tripduration)/60 ) %>% 
+  filter(start.station.id != end.station.id) %>%  #select destinations where start station is not equal to end station.
+  arrange(start.station.name) 
+
+#saveRDS(cb_df, file = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project2-Shiny/JhonasttanRegalado/201606-citibike-tripdata_df.rds")
+  
+#saveRDS(cb_df_avg_trip_duration, file = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project2-Shiny/JhonasttanRegalado/201606-citibike-tripdata_df_duration.rds")
+
+#citibike_df_avg_trip_duration_unique <- filter(citibike_df_avg_trip_duration,start.station.id != end.station.id)
+```
+
+User basic query:
+1. Get from station info based on station ID
+2. Get to station info based on station ID
+3. Get avg duration in minutes
+```{r}
+s_start <- cb_stations %>% filter(id==504) %>% select(stationName,availableBikes,availableDocks, totalDocks)
+s_end <- cb_stations %>% filter(id==164) %>% select(stationName,availableBikes,availableDocks, totalDocks)
+avg_ride_time <- cb_df_avg_trip_duration %>% filter(start.station.id == 504, end.station.id == 164) %>% dplyr::select(avg_duration_min)
+```
+
+Map two locations - to and from
+
+```{r}
+
+oneRow <- cb_df_avg_trip_duration[1,c("start.station.name","start.station.latitude","start.station.longitude","end.station.name","end.station.latitude","end.station.longitude")]
+tempMatrix <- oneRow %>% matrix(2,3,2)
+exmapLeaflet <- as.data.frame(tempMatrix)
+names(exmapLeaflet)  <- c("station.name","lat","lng")
+exmapLeaflet$lat <- as.numeric(exmapLeaflet$lat)
+exmapLeaflet$lng <- as.numeric(exmapLeaflet$lng)
+
+tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
+
+
+conUrl <- "https://api.mapbox.com/directions/v5/mapbox/cycling/-73.98,40.73;-73.97,40.75?geometries=geojson&continue_straight=true&access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
+
+
+con <- url(conUrl)  
+data.json <- fromJSON(paste(readLines(con), collapse=""))
+close(con)
+
+poly_points <- data.frame(matrix((unlist(data.json$routes[[1]]$geometry$coordinates)),length(unlist(data.json$routes[[1]]$geometry$coordinates)),2,2))
+names(poly_points) <- c("lng","lat")
+# rebuild poly_points with first and last row from exmapLeaflet
+#poly_points <- poly_points %>% group_by(lng,lat) %>% count() %>% select(lng,lat)
+
+map_it <- leaflet(data = exmapLeaflet) %>% 
+  addTiles(urlTemplate = tile_layer) %>% 
+  addPopups(exmapLeaflet, lat = exmapLeaflet$lat,lng = exmapLeaflet$lng, popup = as.character(exmapLeaflet$station.name)) %>%
+  addPolylines(lng = poly_points$lng,lat = poly_points$lat,color="green", popup = "Avg Ride = 40 Mins") %>% 
+  fitBounds(lng1 = exmapLeaflet$lng[1],lat1 = exmapLeaflet$lat[1], 
+            lng2 = exmapLeaflet$lng[2], lat2 = exmapLeaflet$lat[2] )
+map_it
+
+#https://rstudio.github.io/leaflet/json.html
+
+
+```
+
