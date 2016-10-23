@@ -25,9 +25,9 @@ shinyServer(function(input, output){
       #capture waypoints
       
       conUrl_start <- "https://api.mapbox.com/directions/v5/mapbox/cycling/"
-      conUrl_mid <- paste0(exmapLeaflet$lng[1],exmapLeaflet$lat[1],";",exmapLeaflet$lng[2],exmapLeaflet$lat[2]) # ex: -73.98,40.73;-73.97,40.75
+      conUrl_mid <- paste0(exmapLeaflet$lng[1],",",exmapLeaflet$lat[1],";",exmapLeaflet$lng[2],",",exmapLeaflet$lat[2]) # ex: -73.98,40.73;-73.97,40.75
       conUrl_end <- "?geometries=geojson&continue_straight=true&access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
-      con <- paste0(conUrl_start,conUrl_mid,conUrl_end)
+      conUrl <- paste0(conUrl_start,conUrl_mid,conUrl_end)
     
       con <- url(conUrl)  
       data.json <- fromJSON(paste(readLines(con), collapse=""))
