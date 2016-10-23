@@ -1,3 +1,7 @@
+library(httr)
+library(rjson)
+library(RJSONIO)
+library(shiny)
 library(shinydashboard)
 library(leaflet)
 library(dplyr)
@@ -27,11 +31,14 @@ shinyServer(function(input, output){
       exmapLeaflet$lat <- as.numeric(exmapLeaflet$lat)
       exmapLeaflet$lng <- as.numeric(exmapLeaflet$lng)
       
+      #complete coordinates
+      poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
+      
       #generate map
       leaflet(data = exmapLeaflet) %>% 
         addTiles(urlTemplate = tile_layer) %>% 
         addPopups(exmapLeaflet, lat = exmapLeaflet$lat,lng = exmapLeaflet$lng, popup = as.character(exmapLeaflet$station.name)) %>%
-        addPolylines(lng = poly_points$lng,lat = poly_points$lat,color="green", popup = "Avg Ride = 40 Mins") %>% 
+        addPolylines(lng = poly_points$lng,lat = poly_points$lat,color="green", popup = paste0("Avg Time: ",round(data.json$routes[[1]]$duration/60,,integer = 2))) %>% 
         fitBounds(lng1 = exmapLeaflet$lng[1],lat1 = exmapLeaflet$lat[1], 
                   lng2 = exmapLeaflet$lng[2], lat2 = exmapLeaflet$lat[2] )
           
