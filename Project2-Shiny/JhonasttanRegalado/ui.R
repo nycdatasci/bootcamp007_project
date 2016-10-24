@@ -31,7 +31,7 @@ shinyUI(dashboardPage(
                        infoBoxOutput("minBox"),
                        infoBoxOutput("avgBox")),
               fluidRow(box(tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
-                           leafletOutput("map"), height = 300, width = 12))),#,
+                           leafletOutput("map"), height = 500, width = 12))),#,
                        #box(htmlOutput("hist"), height = 300))),
       
       tabItem(tabName = "data",

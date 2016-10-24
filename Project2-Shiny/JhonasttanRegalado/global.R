@@ -28,4 +28,9 @@ cb_df_avg_trip_duration <- cb_df %>% group_by(start.station.id, start.station.na
 tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
 
 #set column selection
-choice <- names(cb_df_avg_trip_duration)[c(1,3,4,5,7)]
+cb_url <- "https://feeds.citibikenyc.com/stations/stations.json"
+cb_json <- fromJSON(paste(readLines(cb_url), collapse=""))
+cb_stations <- cb_json$stationBeanList
+cb_station_df <- data.frame(t(sapply(cb_stations,unlist)),stringsAsFactors = FALSE)
+
+choice <- cb_station_df$stationName
