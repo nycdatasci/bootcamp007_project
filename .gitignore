@@ -7,3 +7,7 @@
 *.Rapp.history
 *.DS_Store
 .Rproj.user
+./Project1-ExploreVis/*.csv
+./Project3-WebScraping/*.csv
+./Project4-MachineLearning/*.csv
+./Project5-Capstone/*.csv
