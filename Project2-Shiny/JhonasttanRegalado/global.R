@@ -32,5 +32,17 @@ cb_url <- "https://feeds.citibikenyc.com/stations/stations.json"
 cb_json <- fromJSON(paste(readLines(cb_url), collapse=""))
 cb_stations <- cb_json$stationBeanList
 cb_station_df <- data.frame(t(sapply(cb_stations,unlist)),stringsAsFactors = FALSE)
+cb_station_df$id <- as.numeric(cb_station_df$id)
+cb_station_df$totalDocks <- as.numeric(cb_station_df$totalDocks)
+cb_station_df$availableDocks <- as.numeric(cb_station_df$availableDocks)
+cb_station_df$availableBikes <- as.numeric(cb_station_df$availableBikes)
+cb_station_df <- filter(cb_station_df, statusValue == "In Service")
 
+# set select box options
 choice <- cb_station_df$stationName
+
+#return red fonts in HTML syntax
+
+html_font_color <- function(var_x,var_color = "green") {
+  paste0("<font color=",var_color,">",var_x,"</font>")
+}
