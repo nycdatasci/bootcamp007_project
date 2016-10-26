@@ -28,16 +28,12 @@ shinyServer(function(input, output){
           addPopups(leaflet_info$ExmapLeaflet, lat = leaflet_info$ExmapLeaflet$lat,
                     lng = leaflet_info$ExmapLeaflet$lng, popup = as.character(leaflet_info$ExmapLeaflet$station.name)) %>%
           addPolylines(.,noClip=TRUE,lng = leaflet_info$Poly_points$lng,lat = leaflet_info$Poly_points$lat,color="blue", 
-                       popup = paste0("Avg Time: ",round(leaflet_info$Data.json$routes[[1]]$duration/60,,integer = 2))) %>%
+                       popup = paste0("Avg Time: ",round(leaflet_info$Data.json$routes[[1]]$duration/60,,integer = 2), " mins")) %>%
            fitBounds(lng1 = leaflet_info$ExmapLeaflet$lng[1],lat1 = leaflet_info$ExmapLeaflet$lat[1], 
                     lng2 = leaflet_info$ExmapLeaflet$lng[2], lat2 = leaflet_info$ExmapLeaflet$lat[2] )
       } else if (length(input$selected) < 1 ) {
         
         leaflet_info <- get_all_markers()
-        
-        #popup_info <- HTML(paste0(leaflet_info$stationName,
-        #                     "<br>Bikes: ", leaflet_info$availableBikes, " / Docks: ", 
-        #                     leaflet_info$availableDocks, " / Total Docks: ", leaflet_info$totalDocks))
         
         leaflet(data = leaflet_info) %>% 
           addTiles(urlTemplate = tile_layer) %>% 
@@ -55,7 +51,7 @@ shinyServer(function(input, output){
           addMarkers(popup = paste0("Station: ", leaflet_info$stationName,
                                     "<br>Bikes: ", leaflet_info$availableBikes, " / Docks: ", 
                                     leaflet_info$availableDocks, " / Total Docks: ", leaflet_info$totalDocks)) %>% 
-          setView(lng = leaflet_info$lng[1],lat = leaflet_info$lat[1], zoom = 15)
+          setView(lng = leaflet_info$lng[1],lat = leaflet_info$lat[1], zoom = 12)
         
       }
 

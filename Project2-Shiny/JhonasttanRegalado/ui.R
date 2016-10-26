@@ -21,7 +21,7 @@ shinyUI(dashboardPage(
       menuItem("Gauge", tabName = "gauge", icon = icon("line_chart",lib = "font-awesome")),
       menuItem("Data", tabName = "data", icon = icon("database"))),
     
-    selectInput("selected", "Select Location(s)", c("Stations"="", cb_station_df$stationName), 
+    selectInput("selected", "Type Location(s)", c("Stations"="", cb_station_df$stationName), 
                 multiple=TRUE,selected = c("Pershing Square South"))
     
   ),
