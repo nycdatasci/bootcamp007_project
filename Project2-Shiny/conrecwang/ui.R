@@ -6,7 +6,7 @@ shinyUI(dashboardPage(skin = "green",
   dashboardSidebar(
     sidebarUserPanel("Conred Wang",image = "author.jpg"),
     sidebarMenu(
-      menuItem("See For Yourself", tabName = "tabInfo", icon = icon("eye")),
+      menuItem("See for Yourself", tabName = "tabInfo", icon = icon("eye")),
       menuItem("Data", tabName = "tabData", icon = icon("database")),
       menuItem("Higher Education", tabName = "tabEd", icon = icon("graduation-cap")),
       menuItem("Work Hard", tabName = "tabHour", icon = icon("clock-o")),
@@ -21,23 +21,18 @@ shinyUI(dashboardPage(skin = "green",
     ),
     tabItems(
 
+      
 # -- [tabName = "tabInfo"] BEGIN ***
       tabItem(tabName = "tabInfo", 
         fluidPage(
-          tags$div(
-#            h1("Hello Shiny!"),
-#            hr(),
-#            p(strong("bold font "), em("italic font")),
-#            p(code("code block")),
-#            a(href="http://www.google.com", "link to Google"),
-#            HTML('<p>
-#                 <label>A numeric input:</label><br /> 
-#                 <input type="number" name="n" value="7" min="1" max="30" />
-#                 </p>')
-#            )
-            HTML('
+          tabBox(title = "Information", id="infoPages", width = 12,
+            tabPanel("See for Yourself",
+              img(src="see.jpg")
+            ),              
+            tabPanel("Page 1",
+              tags$div(
+                HTML('
 <!-- Page 1 -->
-
 <h2>Most asian parents tell their children :</h2>
 <h4><img src="high.ed.small.jpg"> Higher Education +</h4>
 <h4><img src="work.hard.small.jpg"> Work Hard +</h4>
@@ -46,10 +41,12 @@ shinyUI(dashboardPage(skin = "green",
 <h3>?</h3>
 <h3>? Myth or Fact ?</h3>
 <h3>?</h3>
-
-<h4><img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"> 
-Page 1 <img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"></h4> 
-
+                ') #HTML
+              ) # tags$div
+            ), # page 1
+            tabPanel("Page 2",
+              tags$div(
+                HTML('
 <!-- Page 2 -->
 <h3> </h3>
 <br>
@@ -65,19 +62,21 @@ Page 1 <img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"
 <br>
 <h3> </h3>
 <br>
-<h4><img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"> 
-Page 2 <img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"></h4> 
-
-
+                ') #HTML
+              ) # tags$div
+            ), # page 2
+            tabPanel("Page 3",
+              tags$div(
+                HTML('
 <!-- Page 3 -->
 <h3> </h3>
 <br>
 <h3> </h3>
 <br>
-<h3>In <strong>I Told You So</strong>, I focused only on asian adult who working in private sector.</h3>
+<h3>In <strong>I Told You So</strong>, I focused only on asian adults who working in private sector.</h3>
 <br>
 <h3>In this study, <strong>See For Yourself</strong>, using <strong>Shinny</strong>, 
-I invite you to join my investigation about the telling 
+I invite you to join my investigation about the myth/fact 
 against different races, working classes/sectors, and the combination of both.  
 We can click <strong>"Higher Education" / "Work Hard" / "Happy Marriage"</strong>, 
 and select<strong>"Race" / "Work Class"</strong> from drop-down list.</h3>
@@ -88,15 +87,17 @@ and select<strong>"Race" / "Work Class"</strong> from drop-down list.</h3>
 <br>
 <h3> </h3>
 <br>
-<h4><img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"> 
-Page 3 <img src="see.for.yourself.logo.jpg"><img src="see.for.yourself.logo.jpg"></h4> 
-                 
-            ')
-          ) # tags$div
+                ') #HTML
+              ) # tags$div
+            ), # page 3
+            tabPanel("Page 4",
+              h1("TRY NOW &"),
+              img(src="see.jpg")
+            ) # page 4              
+          ) #tabBox
         ) # fluidPage
       ), # tabInfo
-# -- [tabName = "tabInfo"] END ***
-
+# -- [tabName = "tabInfo"] END ***/Users/blessed/NYCDSA/project/PrjShiny/WRK/conredwang
       tabItem(tabName = "tabData", 
         fluidRow(box(DT::dataTableOutput("table"), width = 12)) 
       ),
