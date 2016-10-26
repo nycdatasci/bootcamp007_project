@@ -8,6 +8,8 @@ library(leaflet)
 library(googleVis)
 library(data.table)
 library(DT)
+library(googleVis)
+
 
 shinyUI(dashboardPage(
   dashboardHeader(title = "Citibike Analysis"),
@@ -16,13 +18,11 @@ shinyUI(dashboardPage(
     sidebarUserPanel("Jhonasttan Regalado", image = "JhonasttanRegalado.jpg"),
     sidebarMenu(
       menuItem("Map", tabName = "map", icon = icon("map")),
+      menuItem("Gauge", tabName = "gauge", icon = icon("line_chart",lib = "font-awesome")),
       menuItem("Data", tabName = "data", icon = icon("database"))),
     
-    #selectizeInput("selected",
-    #               "Select Item to Display",
-    #               choice)
-    selectInput("selected", "Select Location (MAX = 2)", c("Stations"="", cb_station_df$stationName), 
-                multiple=TRUE,selected = c("W 38 St & 8 Ave","Pershing Square South"))
+    selectInput("selected", "Select Location(s)", c("Stations"="", cb_station_df$stationName), 
+                multiple=TRUE,selected = c("Pershing Square South"))
     
   ),
   
@@ -30,15 +30,19 @@ shinyUI(dashboardPage(
     tabItems(
       tabItem(tabName = "map",
               fluidRow(infoBoxOutput("station"),
-                       infoBoxOutput("destination"),
-                       infoBoxOutput("avgBox")),
+                       infoBoxOutput("destination")#,
+                       #infoBoxOutput("avgBox")
+                       ),
               fluidRow(box(tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
                            leafletOutput("map"), height = 500, width = 12))),#,
                        #box(htmlOutput("hist"), height = 300))),
       
       tabItem(tabName = "data",
               fluidRow(box(DT::dataTableOutput("table"), 
-                           width = 12)))))
+                           width = 12))),
+      tabItem(tabName = "gauge",
+              fluidRow(box(htmlOutput("gauge"), height = 30000,width = 18)))
+      ))
       
   
 ))

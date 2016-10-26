@@ -38,6 +38,9 @@ cb_station_df$availableDocks <- as.numeric(cb_station_df$availableDocks)
 cb_station_df$availableBikes <- as.numeric(cb_station_df$availableBikes)
 cb_station_df <- filter(cb_station_df, statusValue == "In Service")
 
+#gauge query
+cb_station_gauge <- cb_station_df[,c("stationName","availableBikes")] %>% arrange(desc(availableBikes))
+
 # set select box options
 choice <- cb_station_df$stationName
 
@@ -45,4 +48,49 @@ choice <- cb_station_df$stationName
 
 html_font_color <- function(var_x,var_color = "green") {
   paste0("<font color=",var_color,">",var_x,"</font>")
+}
+
+
+get_coordinates <- function(vars) { #process two addresses and return coordinates for leaflet
+  oneRow <- filter(cb_station_df, stationName == vars[1]) %>% 
+    select(stationName,latitude,longitude)
+  oneRow <- rbind(oneRow, filter(cb_station_df, stationName == vars[2]) %>% 
+                    select(stationName,latitude,longitude))
+  
+  exmapLeaflet <- oneRow
+  names(exmapLeaflet)  <- c("station.name","lat","lng")
+  exmapLeaflet$lat <- as.numeric(exmapLeaflet$lat)
+  exmapLeaflet$lng <- as.numeric(exmapLeaflet$lng)
+  
+  #capture waypoints
+  conUrl_start <- "https://api.mapbox.com/directions/v5/mapbox/cycling/"
+  conUrl_mid <- paste0(exmapLeaflet$lng[1],",",exmapLeaflet$lat[1],";",exmapLeaflet$lng[2],",",exmapLeaflet$lat[2]) # ex: -73.98,40.73;-73.97,40.75
+  conUrl_end <- "?geometries=geojson&continue_straight=true&access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
+  conUrl <- paste0(conUrl_start,conUrl_mid,conUrl_end)
+  
+  con <- url(conUrl)  
+  data.json <- fromJSON(paste(readLines(con), collapse=""))
+  close(con)
+  
+  poly_points <- data.frame(matrix((unlist(data.json$routes[[1]]$geometry$coordinates)),length(unlist(data.json$routes[[1]]$geometry$coordinates)),2,2))
+  names(poly_points) <- c("lng","lat")
+  travel_duration <- data.json$routes[[1]]$duration
+  
+  
+  #complete coordinates
+  poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
+  poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
+  rownames(poly_points) <- 1:nrow(poly_points)
+  observe(poly_points)
+  list(ExmapLeaflet = exmapLeaflet,Poly_points = poly_points, Data.json = data.json)
+}
+
+get_markers <- function(vars) {
+  cb_station_df_markers <- filter(cb_station_df, cb_station_df$stationName %in% vars ) %>% 
+    select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
+}
+
+
+get_all_markers <- function() {
+  cb_station_df_all_markers <- cb_station_df %>% select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
 }
