@@ -39,10 +39,14 @@ cb_station_df$availableBikes <- as.numeric(cb_station_df$availableBikes)
 cb_station_df <- filter(cb_station_df, statusValue == "In Service")
 
 #gauge query
-cb_station_gauge <- cb_station_df[,c("stationName","availableBikes")] %>% arrange(desc(availableBikes))
+cb_station_bike_gauge <- cb_station_df[,c("stationName","availableBikes")] %>% arrange(desc(availableBikes))
+cb_station_dock_gauge <- cb_station_df[,c("stationName","availableDocks")] %>% arrange(desc(availableDocks))
 
 # set select box options
 choice <- cb_station_df$stationName
+
+maxBikes <- max(cb_station_df$availableBikes)
+maxDocks <- max(cb_station_df$availableDocks)
 
 #return red fonts in HTML syntax
 
@@ -53,12 +57,12 @@ html_font_color <- function(var_x,var_color = "green") {
 
 get_coordinates <- function(vars) { #process two addresses and return coordinates for leaflet
   oneRow <- filter(cb_station_df, stationName == vars[1]) %>% 
-    select(stationName,latitude,longitude)
+    select(stationName,latitude,longitude, availableBikes, availableDocks, totalDocks)
   oneRow <- rbind(oneRow, filter(cb_station_df, stationName == vars[2]) %>% 
-                    select(stationName,latitude,longitude))
+                    select(stationName,latitude,longitude, availableBikes, availableDocks, totalDocks))
   
   exmapLeaflet <- oneRow
-  names(exmapLeaflet)  <- c("station.name","lat","lng")
+  names(exmapLeaflet)[1:3]  <- c("station.name","lat","lng")
   exmapLeaflet$lat <- as.numeric(exmapLeaflet$lat)
   exmapLeaflet$lng <- as.numeric(exmapLeaflet$lng)
   
@@ -72,25 +76,33 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
   data.json <- fromJSON(paste(readLines(con), collapse=""))
   close(con)
   
-  poly_points <- data.frame(matrix((unlist(data.json$routes[[1]]$geometry$coordinates)),length(unlist(data.json$routes[[1]]$geometry$coordinates)),2,2))
+  poly_points <- data.frame(matrix((unlist(data.json$routes[[1]]$geometry$coordinates)),
+                                   length(unlist(data.json$routes[[1]]$geometry$coordinates)),2,2))
   names(poly_points) <- c("lng","lat")
   travel_duration <- data.json$routes[[1]]$duration
   
   
   #complete coordinates
-  poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
-  poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
-  rownames(poly_points) <- 1:nrow(poly_points)
-  observe(poly_points)
+  #poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
+  #poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
+  #rownames(poly_points) <- 1:nrow(poly_points)
+  #observe(poly_points)
   list(ExmapLeaflet = exmapLeaflet,Poly_points = poly_points, Data.json = data.json)
 }
 
 get_markers <- function(vars) {
-  cb_station_df_markers <- filter(cb_station_df, cb_station_df$stationName %in% vars ) %>% 
+  cb_station_df_markers <- filter(cb_station_df, cb_station_df$stationName %in% vars[[1]] ) %>% 
     select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
+  cb_station_df_markers_2 <- filter(cb_station_df, availableBikes >= vars[[2]] | availableDocks >= vars[[3]] ) %>% 
+    select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
+  cb_station_df_markers <- rbind(cb_station_df_markers,cb_station_df_markers_2)
+  
 }
 
 
-get_all_markers <- function() {
-  cb_station_df_all_markers <- cb_station_df %>% select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
+get_all_markers <- function(inputBikesAvailable = 0,inputDocksAvailable = 0) {
+  print(names(inputBikesAvailable))
+  cb_station_df_all_markers <- cb_station_df %>% 
+    filter( cb_station_df, (availableBikes >= as.integer(inputBikesAvailable) | availableDocks >= as.integer(inputDocksAvailable)) ) %>%
+    select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
 }

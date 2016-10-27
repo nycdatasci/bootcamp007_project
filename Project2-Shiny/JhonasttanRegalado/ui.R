@@ -17,12 +17,18 @@ shinyUI(dashboardPage(
   dashboardSidebar(
     sidebarUserPanel("Jhonasttan Regalado", image = "JhonasttanRegalado.jpg"),
     sidebarMenu(
-      menuItem("Map", tabName = "map", icon = icon("map")),
-      menuItem("Gauge", tabName = "gauge", icon = icon("line_chart",lib = "font-awesome")),
+      menuItem("Map It", tabName = "map", icon = icon("map")),
+      menuItem("Bike Gauge", tabName = "gaugeBikes", icon = icon("line_chart",lib = "font-awesome")),
+      menuItem("Dock Gauge", tabName = "gaugeDocks", icon = icon("line_chart",lib = "font-awesome")),
       menuItem("Data", tabName = "data", icon = icon("database"))),
     
     selectInput("selected", "Type Location(s)", c("Stations"="", cb_station_df$stationName), 
-                multiple=TRUE,selected = c("Pershing Square South"))
+                multiple=TRUE,selected = c("Pershing Square South")),
+    
+    sliderInput("bikesAvailable", "Bikes Available:",  
+                min = 0, max = 50, value = 50, step = 5, round = TRUE),
+    sliderInput("docksAvailable", "Docks Available:",  
+                min = 0, max = 50, value = 50, step = 5, round = TRUE)
     
   ),
   
@@ -40,8 +46,11 @@ shinyUI(dashboardPage(
       tabItem(tabName = "data",
               fluidRow(box(DT::dataTableOutput("table"), 
                            width = 12))),
-      tabItem(tabName = "gauge",
-              fluidRow(box(htmlOutput("gauge"), height = 30000,width = 18)))
+      tabItem(tabName = "gaugeBikes",
+              fluidRow(box(htmlOutput("gaugeBikes"), height = 30000,width = 18))),
+      tabItem(tabName = "gaugeDocks",
+              fluidRow(box(htmlOutput("gaugeDocks"), height = 30000,width = 18)))
+      
       ))
       
   
