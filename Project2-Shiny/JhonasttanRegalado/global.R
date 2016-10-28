@@ -11,6 +11,8 @@ library(googleVis)
 library(data.table)
 library(DT)
 
+
+
 #load 1k row sample data for June
 cb_df  <- read.csv("./data/201606-citibike-tridatasubset.csv",stringsAsFactors = FALSE) #sampled 1k rows dataset
 
@@ -48,6 +50,8 @@ choice <- cb_station_df$stationName
 maxBikes <- max(cb_station_df$availableBikes)
 maxDocks <- max(cb_station_df$availableDocks)
 
+
+
 #return red fonts in HTML syntax
 
 html_font_color <- function(var_x,var_color = "green") {
@@ -83,10 +87,9 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
   
   
   #complete coordinates
-  #poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
-  #poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
-  #rownames(poly_points) <- 1:nrow(poly_points)
-  #observe(poly_points)
+  poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
+  poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
+  rownames(poly_points) <- 1:nrow(poly_points)
   list(ExmapLeaflet = exmapLeaflet,Poly_points = poly_points, Data.json = data.json)
 }
 
