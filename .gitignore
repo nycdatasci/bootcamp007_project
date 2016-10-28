@@ -11,3 +11,9 @@
 ./Project3-WebScraping/*.csv
 ./Project4-MachineLearning/*.csv
 ./Project5-Capstone/*.csv
+
+*.png
+
+*.eps
+
+*.jpeg
