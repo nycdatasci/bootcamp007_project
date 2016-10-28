@@ -66,13 +66,13 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
                     select(stationName,latitude,longitude, availableBikes, availableDocks, totalDocks))
   
   exmapLeaflet <- oneRow
-  names(exmapLeaflet)[1:3]  <- c("station.name","lat","lng")
-  exmapLeaflet$lat <- as.numeric(exmapLeaflet$lat)
-  exmapLeaflet$lng <- as.numeric(exmapLeaflet$lng)
+  names(exmapLeaflet)[1:3]  <- c("station.name","latitude","longitude")
+  exmapLeaflet$latitude<- as.numeric(exmapLeaflet$latitude)
+  exmapLeaflet$longitude <- as.numeric(exmapLeaflet$longitude)
   
   #capture waypoints
   conUrl_start <- "https://api.mapbox.com/directions/v5/mapbox/cycling/"
-  conUrl_mid <- paste0(exmapLeaflet$lng[1],",",exmapLeaflet$lat[1],";",exmapLeaflet$lng[2],",",exmapLeaflet$lat[2]) # ex: -73.98,40.73;-73.97,40.75
+  conUrl_mid <- paste0(exmapLeaflet$longitude[1],",",exmapLeaflet$latitude[1],";",exmapLeaflet$longitude[2],",",exmapLeaflet$latitude[2]) # ex: -73.98,40.73;-73.97,40.75
   conUrl_end <- "?geometries=geojson&continue_straight=true&access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
   conUrl <- paste0(conUrl_start,conUrl_mid,conUrl_end)
   
@@ -82,12 +82,12 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
   
   poly_points <- data.frame(matrix((unlist(data.json$routes[[1]]$geometry$coordinates)),
                                    length(unlist(data.json$routes[[1]]$geometry$coordinates)),2,2))
-  names(poly_points) <- c("lng","lat")
+  names(poly_points) <- c("longitude","latitude")
   travel_duration <- data.json$routes[[1]]$duration
   
   
   #complete coordinates
-  poly_points <- rbind(poly_points, exmapLeaflet[2,c('lng','lat')])
+  poly_points <- rbind(poly_points, exmapLeaflet[2,c('longitude','latitude')])
   poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
   rownames(poly_points) <- 1:nrow(poly_points)
   list(ExmapLeaflet = exmapLeaflet,Poly_points = poly_points, Data.json = data.json)
@@ -95,9 +95,10 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
 
 get_markers <- function(vars) {
   cb_station_df_markers <- filter(cb_station_df, cb_station_df$stationName %in% vars[[1]] ) %>% 
-    select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
-  cb_station_df_markers_2 <- filter(cb_station_df, availableBikes >= vars[[2]] | availableDocks >= vars[[3]] ) %>% 
-    select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
+    select(stationName,latitude= latitude,longitude = longitude, availableBikes, availableDocks, totalDocks)
+  #cb_station_df_markers_2 <- filter(cb_station_df, availableBikes >= vars[[2]] | availableDocks >= vars[[3]] ) %>% 
+    cb_station_df_markers_2 <- filter(cb_station_df, availableBikes >= vars[[2]] & availableDocks >= vars[[3]] ) %>% 
+        select(stationName,latitude= latitude,longitude = longitude, availableBikes, availableDocks, totalDocks)
   cb_station_df_markers <- rbind(cb_station_df_markers,cb_station_df_markers_2)
   
 }
@@ -106,6 +107,7 @@ get_markers <- function(vars) {
 get_all_markers <- function(inputBikesAvailable = 0,inputDocksAvailable = 0) {
   print(names(inputBikesAvailable))
   cb_station_df_all_markers <- cb_station_df %>% 
-    filter( cb_station_df, (availableBikes >= as.integer(inputBikesAvailable) | availableDocks >= as.integer(inputDocksAvailable)) ) %>%
-    select(stationName,lat = latitude,lng = longitude, availableBikes, availableDocks, totalDocks)
+    #filter( cb_station_df, (availableBikes >= as.integer(inputBikesAvailable) | availableDocks >= as.integer(inputDocksAvailable)) ) %>%
+    filter( cb_station_df, (availableBikes >= as.integer(inputBikesAvailable) & availableDocks >= as.integer(inputDocksAvailable)) ) %>%
+    select(stationName,latitude= latitude,longitude = longitude, availableBikes, availableDocks, totalDocks)
 }

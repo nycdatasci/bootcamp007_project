@@ -23,10 +23,10 @@ shinyServer(function(input, output){
         leaflet(data = leaflet_info$ExmapLeaflet) %>% 
           addTiles(urlTemplate = tile_layer) %>% 
           addMarkers(popup = paste0(c("Station","Destination"), ": ", leaflet_info$ExmapLeaflet$station.name)) %>% 
-          addPolygons(.,noClip=TRUE,lng = leaflet_info$Poly_points$lng,lat = leaflet_info$Poly_points$lat,color="blue", 
+          addPolygons(.,noClip=TRUE,lng = leaflet_info$Poly_points$longitude,lat= leaflet_info$Poly_points$latitude,color="blue", 
                        popup = paste0("Avg Time: ",round(leaflet_info$Data.json$routes[[1]]$duration/60,,integer = 2), " mins")) %>%
-           fitBounds(lng1 = leaflet_info$ExmapLeaflet$lng[1],lat1 = leaflet_info$ExmapLeaflet$lat[1], 
-                    lng2 = leaflet_info$ExmapLeaflet$lng[2], lat2 = leaflet_info$ExmapLeaflet$lat[2] )
+           fitBounds(lng1 = leaflet_info$ExmapLeaflet$longitude[1],lat1 = leaflet_info$ExmapLeaflet$latitude[1], 
+                    lng2 = leaflet_info$ExmapLeaflet$longitude[2], lat2 = leaflet_info$ExmapLeaflet$latitude[2] )
         
       } else {
         
@@ -40,29 +40,29 @@ shinyServer(function(input, output){
           addMarkers(popup = paste0("Station: ", leaflet_info$stationName,
                                     "<br>Bikes: ", leaflet_info$availableBikes, " / Docks: ",
                                     leaflet_info$availableDocks, " / Total Docks: ", leaflet_info$totalDocks)) %>%
-          addCircles(lat = leaflet_info[1:length(input$selected),'lat'], 
-                     lng = leaflet_info[1:length(input$selected),'lng'],
-                     weight = leaflet_info$availableBikes, radius = leaflet_info$availableDocks, 
+          addCircles(lat = leaflet_info[1:length(input$selected),'latitude'], 
+                     lng = leaflet_info[1:length(input$selected),'longitude'],
+                     weight = leaflet_info$availableBikes, radius = leaflet_info$availableDocks / input$docksAvailable, 
                      color =  ifelse(leaflet_info$availableBikes >= input$bikesAvailable,"green","red"),
                      #weight = 1, radius = ((leaflet_info$availableBikes + leaflet_info$availableDocks) * 5 ), color =  "black",
                      fillColor = "orange", fillOpacity=0.5, opacity=1) %>%
-          #addPolylines(lat = as.numeric(leaflet_info[1:length(input$selected),'lat']), 
-          #           lng = as.numeric(leaflet_info[1:length(input$selected),'lng'])) %>% 
-          setView(lng = leaflet_info$lng[1],lat = leaflet_info$lat[1], zoom = 13)
+          #addPolylines(lat = as.numeric(leaflet_info[1:length(input$selected),'latitude']), 
+          #           lng = as.numeric(leaflet_info[1:length(input$selected),'longitude'])) %>% 
+          #setView(lng = leaflet_info$longitude[1],lat = leaflet_info$latitude[1], zoom = 13)
+          setView(lng = -73.976522, lat = 40.7528, zoom = 13)
         
       }
 
     }) # End of renderleaflet
     
     
-
     output$gaugeBikes <-  renderGvis(
                         gvisGauge(filter(cb_station_bike_gauge, availableBikes >= as.integer(input$bikesAvailable)) %>%  
                                         arrange(desc(availableBikes)), 
                         options=list(min=0, max= max(as.integer(cb_station_df$totalDocks)), greenFrom=15,
                                      greenTo=max(as.integer(cb_station_df$totalDocks)), yellowFrom=5, yellowTo=15,
-                                     redFrom=0, redTo=5, width=1000, 
-                                     height= ifelse(input$docksAvailable <=25, 30000, 30000/input$bikesAvailable * 2)))
+                                     redFrom=0, redTo=5, width=500, 
+                                     height= 30000))# ifelse(input$docksAvailable <=25, 30000, 30000/input$bikesAvailable * 2)))
     ) # End of gaugeBikes
     
     output$gaugeDocks <-  renderGvis(
@@ -70,8 +70,8 @@ shinyServer(function(input, output){
                   arrange(desc(availableDocks)), 
                 options=list(min=0, max=max(as.integer(cb_station_df$totalDocks)), greenFrom=15,
                              greenTo=max(as.integer(cb_station_df$totalDocks)), yellowFrom=5, yellowTo=15,
-                             redFrom=0, redTo=5, width=1000, 
-                             height= ifelse(input$docksAvailable <=25, 30000, 30000/input$bikesAvailable * 2)))
+                             redFrom=0, redTo=5, width=500, 
+                             height= 30000))#ifelse(input$docksAvailable <=25, 30000, 30000/input$bikesAvailable * 2)))
     ) # End of gaugeDocks
     
     output$table <- DT::renderDataTable({

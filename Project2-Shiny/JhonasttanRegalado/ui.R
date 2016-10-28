@@ -26,13 +26,13 @@ shinyUI(dashboardPage(
       menuItem("Intro", tabName = "introVideo", icon = icon("file-video-o"))),
     
     selectInput("selected", "Type Location(s)", c("Stations"="", cb_station_df$stationName), 
-                multiple=TRUE,selected = c("Pershing Square South")),
+                multiple=TRUE), #,selected = c("Pershing Square South")),
     
     sliderInput("bikesAvailable", "Bikes Available:",  
-                min = 0, max = 50, value = 50, step = 5, round = TRUE),
+                min = 0, max = 50, value = 0, step = 5, round = TRUE),
     
     sliderInput("docksAvailable", "Docks Available:",  
-                min = 0, max = 50, value = 50, step = 5, round = TRUE)#,
+                min = 0, max = 50, value = 0, step = 5, round = TRUE)#,
     
     #actionButton("refresh", "Refresh")
     

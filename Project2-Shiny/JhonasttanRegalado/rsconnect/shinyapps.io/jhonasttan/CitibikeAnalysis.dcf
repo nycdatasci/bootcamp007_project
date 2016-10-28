@@ -2,8 +2,8 @@ name: CitibikeAnalysis
 account: jhonasttan
 server: shinyapps.io
 appId: 133361
-bundleId: 598949
+bundleId: 599466
 url: https://jhonasttan.shinyapps.io/CitibikeAnalysis/
-when: 1477617074.27867
+when: 1477669893.51652
 asMultiple: FALSE
 asStatic: FALSE
