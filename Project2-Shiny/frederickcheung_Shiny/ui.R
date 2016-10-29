@@ -30,9 +30,7 @@ dashboardPage(
               fluidRow(
               box(
             title = "Controls",
-            selectInput("select", label = h3("Select Country"),
-                        choices = healthdfcountry,
-                        selected = 1),
+            selectizeInput("Country", "Select Countries", healthdfcountry , multiple=TRUE, selected = 'United States'),
             selectInput("inSelect", "Category",
                                healthdfcat),
             selectInput("inSelect2", label = "Category Indicator",
