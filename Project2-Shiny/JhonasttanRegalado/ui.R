@@ -14,7 +14,7 @@ library(htmltools)
 
 
 shinyUI(dashboardPage(
-  dashboardHeader(title = "Citibike Analysis"),
+  dashboardHeader(title = "Citi Bike Availability Analysis"),
   
   dashboardSidebar(
     sidebarUserPanel("Jhonasttan Regalado", image = "JhonasttanRegalado.jpg"),
@@ -25,8 +25,10 @@ shinyUI(dashboardPage(
       menuItem("Data", tabName = "data", icon = icon("database")),
       menuItem("Intro", tabName = "introVideo", icon = icon("file-video-o"))),
     
-    selectInput("selected", "Type Location(s)", c("Stations"="", cb_station_df$stationName), 
+    selectInput("selected", "Station Location(s)", c("Stations"="", cb_station_df$stationName), 
                 multiple=TRUE), #,selected = c("Pershing Square South")),
+    
+    textInput("manualAddress", "Street Address (within NY)",placeholder = "Lexington Ave"),
     
     sliderInput("bikesAvailable", "Bikes Available:",  
                 min = 0, max = 50, value = 0, step = 5, round = TRUE),
@@ -50,14 +52,29 @@ shinyUI(dashboardPage(
                        #box(htmlOutput("hist"), height = 300))),
       
       tabItem(tabName = "data",
-              fluidRow(box(DT::dataTableOutput("table"), 
-                           width = 12))),
+              fluidRow(column(12 ,div(align = "left", HTML("<br><h2>NYC Citi Bike Data via REST API<h2><br>"))),
+                       column(12, box(DT::dataTableOutput("table"), width = 12)))),
       tabItem(tabName = "gaugeBikes",
-              fluidRow(box(htmlOutput("gaugeBikes"), height = 30000,width = 18))),
+              fluidRow(column(12 ,div(align = "left", HTML("<br><h2>Bike Capacity by Station in Descending Order<h2><br>"))),
+                       column(12, box(htmlOutput("gaugeBikes"), height = 30000,width = 18)))),
       tabItem(tabName = "gaugeDocks",
-              fluidRow(box(htmlOutput("gaugeDocks"), height = 30000,width = 18))),
+              fluidRow(column(12 ,div(align = "left", HTML("<br><h2>Dock Capacity by Station in Descending Order<h2><br>"))),
+                       column(12, box(htmlOutput("gaugeDocks"), height = 30000,width = 18)))),
       tabItem(tabName = "introVideo",
-              fluidRow(div(align = "center", embed_youtube(id = "HCRWyB5VSCw"))))
+              fluidRow(column(12, div(align = "left", HTML("<br><h2>How to Video<h2><br>"))),
+                       column(12, div(align = "left", embed_youtube(id = "Gw4Uiw4me8A", frameborder = 50))),
+                       column(12,tags$div(
+                                   tags$ul(
+                                      tags$li(HTML("<h3><b>Map</b>: Locate and view capacity for multiple stations<h3>")),
+                                      tags$li(HTML("<h3><b>Map</b>: View travel time between two stations<h3>")),
+                                      tags$li(HTML("<h3><b>Map</b>: Filter on Bike / Dock capacity<h3>")),
+                                      tags$li(HTML("<h3><b>Bike / Dock Gauge</b>: Gauge Bike / Dock capacity by station<h3>")),
+                                      tags$li(HTML("<h3><b>Data</b>: Query NYC Citi Bike station data<h3>")),
+                                      tags$li(HTML("<h3><b>Developer</b>: <a href='mailto:jhonasttan@gmail.com?Subject=NYC%20Citi%20Bike%20Shiny%20App' target='_top'>Jhonasttan Regalado, PMP</a><h3>"))
+                                      
+                            )
+                          ))
+                       ))
       
       ))
       

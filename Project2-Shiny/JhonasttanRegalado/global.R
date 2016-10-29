@@ -14,17 +14,17 @@ library(DT)
 
 
 #load 1k row sample data for June
-cb_df  <- read.csv("./data/201606-citibike-tridatasubset.csv",stringsAsFactors = FALSE) #sampled 1k rows dataset
+#cb_df  <- read.csv("./data/201606-citibike-tridatasubset.csv",stringsAsFactors = FALSE) #sampled 1k rows dataset
 
 #calculate avg ride times between locations: from / to
-cb_df_avg_trip_duration <- cb_df %>% group_by(start.station.id, start.station.name, 
-                                              start.station.latitude, start.station.longitude,
-                                              end.station.id,end.station.name, end.station.latitude,
-                                              end.station.longitude) %>% 
-  summarise(avg_duration_sec = mean(tripduration), 
-            avg_duration_min = mean(tripduration)/60 ) %>% 
-  filter(start.station.id != end.station.id) %>%  #select destinations where start station is not equal to end station.
-  arrange(start.station.name) 
+#cb_df_avg_trip_duration <- cb_df %>% group_by(start.station.id, start.station.name, 
+#                                              start.station.latitude, start.station.longitude,
+#                                              end.station.id,end.station.name, end.station.latitude,
+#                                              end.station.longitude) %>% 
+#  summarise(avg_duration_sec = mean(tripduration), 
+#            avg_duration_min = mean(tripduration)/60 ) %>% 
+#  filter(start.station.id != end.station.id) %>%  #select destinations where start station is not equal to end station.
+#  arrange(start.station.name) 
 
 #set leaflet map tile
 tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
@@ -58,8 +58,22 @@ html_font_color <- function(var_x,var_color = "green") {
   paste0("<font color=",var_color,">",var_x,"</font>")
 }
 
+get_cb_station_refresh <- function() {
+  cb_url <- "https://feeds.citibikenyc.com/stations/stations.json"
+  cb_json <- fromJSON(paste(readLines(cb_url), collapse=""))
+  cb_stations <- cb_json$stationBeanList
+  cb_station_df <- data.frame(t(sapply(cb_stations,unlist)),stringsAsFactors = FALSE)
+  cb_station_df$id <- as.numeric(cb_station_df$id)
+  cb_station_df$totalDocks <- as.numeric(cb_station_df$totalDocks)
+  cb_station_df$availableDocks <- as.numeric(cb_station_df$availableDocks)
+  cb_station_df$availableBikes <- as.numeric(cb_station_df$availableBikes)
+  cb_station_df <- filter(cb_station_df, statusValue == "In Service")  
+  
+}
 
 get_coordinates <- function(vars) { #process two addresses and return coordinates for leaflet
+  cb_station_df <- get_cb_station_refresh()
+  
   oneRow <- filter(cb_station_df, stationName == vars[1]) %>% 
     select(stationName,latitude,longitude, availableBikes, availableDocks, totalDocks)
   oneRow <- rbind(oneRow, filter(cb_station_df, stationName == vars[2]) %>% 
@@ -81,19 +95,21 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
   close(con)
   
   poly_points <- data.frame(matrix((unlist(data.json$routes[[1]]$geometry$coordinates)),
-                                   length(unlist(data.json$routes[[1]]$geometry$coordinates)),2,2))
+                                   length(unlist(data.json$routes[[1]]$geometry$coordinates))/2,2,2))
   names(poly_points) <- c("longitude","latitude")
   travel_duration <- data.json$routes[[1]]$duration
   
   
   #complete coordinates
-  poly_points <- rbind(poly_points, exmapLeaflet[2,c('longitude','latitude')])
+  #poly_points <- rbind(poly_points, exmapLeaflet[2,c('longitude','latitude')])
   poly_points <- rbind(poly_points,poly_points[rev(rownames(poly_points)),])
   rownames(poly_points) <- 1:nrow(poly_points)
   list(ExmapLeaflet = exmapLeaflet,Poly_points = poly_points, Data.json = data.json)
 }
 
 get_markers <- function(vars) {
+  cb_station_df <- get_cb_station_refresh()
+  
   cb_station_df_markers <- filter(cb_station_df, cb_station_df$stationName %in% vars[[1]] ) %>% 
     select(stationName,latitude= latitude,longitude = longitude, availableBikes, availableDocks, totalDocks)
   #cb_station_df_markers_2 <- filter(cb_station_df, availableBikes >= vars[[2]] | availableDocks >= vars[[3]] ) %>% 
