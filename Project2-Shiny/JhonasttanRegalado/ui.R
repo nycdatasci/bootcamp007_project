@@ -30,6 +30,8 @@ shinyUI(dashboardPage(
     
     textInput("manualAddress", "Street Address (within NY)",placeholder = "Lexington Ave"),
     
+    selectInput("zoom","Map Zoom Level", choices = c(11,13,15,17),selected = 13),
+    
     sliderInput("bikesAvailable", "Bikes Available:",  
                 min = 0, max = 50, value = 0, step = 5, round = TRUE),
     

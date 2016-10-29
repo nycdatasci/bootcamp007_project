@@ -54,7 +54,7 @@ shinyServer(function(input, output){
           #addPolylines(lat = as.numeric(leaflet_info[1:length(input$selected),'latitude']), 
           #           lng = as.numeric(leaflet_info[1:length(input$selected),'longitude'])) %>% 
           #setView(lng = leaflet_info$longitude[1],lat = leaflet_info$latitude[1], zoom = 13)
-            setView(lng = manualCoordinates$lon, lat = manualCoordinates$lat, zoom = 16)
+            setView(lng = manualCoordinates$lon, lat = manualCoordinates$lat, zoom = input$zoom)
           } else {
             leaflet(data = leaflet_info) %>% 
               addTiles(urlTemplate = tile_layer) %>% 
@@ -67,7 +67,7 @@ shinyServer(function(input, output){
                          color =  ifelse(leaflet_info$availableBikes >= input$bikesAvailable,"green","red"),
                          #weight = 1, radius = ((leaflet_info$availableBikes + leaflet_info$availableDocks) * 5 ), color =  "black",
                          fillColor = "orange", fillOpacity=0.5, opacity=1) %>%
-          setView(lng = -73.976522, lat = 40.7528, zoom = 13)
+          setView(lng = -73.976522, lat = 40.7528, zoom = input$zoom)
           
           }
       }
@@ -76,13 +76,16 @@ shinyServer(function(input, output){
     
     
     output$gaugeBikes <-  renderGvis(
+      
                         gvisGauge(filter(cb_station_bike_gauge, availableBikes >= as.integer(input$bikesAvailable)) %>%  
                                         arrange(desc(availableBikes)), 
                         options=list(min=0, max= max(as.integer(cb_station_df$totalDocks)), greenFrom=15,
                                      greenTo=max(as.integer(cb_station_df$totalDocks)), yellowFrom=5, yellowTo=15,
                                      redFrom=0, redTo=5, width=500, 
                                      height= 30000))# ifelse(input$docksAvailable <=25, 30000, 30000/input$bikesAvailable * 2)))
-    ) # End of gaugeBikes
+    
+                        
+                        ) # End of gaugeBikes
     
     output$gaugeDocks <-  renderGvis(
       gvisGauge(filter(cb_station_dock_gauge, availableDocks >= as.integer(input$docksAvailable)) %>% 
