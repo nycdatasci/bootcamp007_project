@@ -21,14 +21,24 @@ shinyServer(function(input, output){
       if (length(input$selected) == 2) {
       
         leaflet_info <- get_coordinates(input$selected)
+        popup_maneuver_info <- get_maneuver_info(leaflet_info$Data.json$routes[[1]]$legs[[1]]$steps)
+        popup_message <- HTML(paste0("Avg Time: ",round(leaflet_info$Data.json$routes[[1]]$duration/60,,integer = 2), " mins<br>"),
+                                  #   "<ul>", paste0("<li>", popup_maneuver_info, "</li>"), "<ul>")
+                              "<ul><li>",
+                              paste(popup_maneuver_info,sep = "",collapse = "<li>"),
+                              "<ul>")
+                              
+        
     #print(leaflet_info$Poly_points) << helped trouble shoot the issue
         leaflet(data = leaflet_info$ExmapLeaflet) %>% 
           addTiles(urlTemplate = tile_layer) %>% 
           addMarkers(popup = paste0(c("Station","Destination"), ": ", leaflet_info$ExmapLeaflet$station.name)) %>% 
-          addPolygons(leaflet_info$Poly_points, noClip=FALSE,lng = leaflet_info$Poly_points$longitude,lat= leaflet_info$Poly_points$latitude,color="blue", 
-                       popup = paste0("Avg Time: ",round(leaflet_info$Data.json$routes[[1]]$duration/60,,integer = 2), " mins"),
-                      fill = FALSE) %>%
+          #addGeoJSON(leaflet_info$Poly_points,stroke = TRUE,
+          #           color = "blue",fill = TRUE,fillColor = "blue", weight = 1,opacity = 1, fillOpacity = 1) %>%
           #addTopoJSON(leaflet_info$Data.json$routes[[1]]$geometry$coordinates) %>% 
+          addPolygons(leaflet_info$Poly_points, noClip=FALSE,lng = leaflet_info$Poly_points$longitude,lat= leaflet_info$Poly_points$latitude,color="blue", 
+                       popup = popup_message,
+                      fill = FALSE) %>%
            fitBounds(lng1 = leaflet_info$ExmapLeaflet$longitude[1],lat1 = leaflet_info$ExmapLeaflet$latitude[1], 
                     lng2 = leaflet_info$ExmapLeaflet$longitude[2], lat2 = leaflet_info$ExmapLeaflet$latitude[2] )
         

@@ -87,7 +87,7 @@ get_coordinates <- function(vars) { #process two addresses and return coordinate
   #capture waypoints
   conUrl_start <- "https://api.mapbox.com/directions/v5/mapbox/cycling/"
   conUrl_mid <- paste0(exmapLeaflet$longitude[1],",",exmapLeaflet$latitude[1],";",exmapLeaflet$longitude[2],",",exmapLeaflet$latitude[2]) # ex: -73.98,40.73;-73.97,40.75
-  conUrl_end <- "?geometries=geojson&continue_straight=true&access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
+  conUrl_end <- "?geometries=geojson&steps=true&continue_straight=true&access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
   conUrl <- paste0(conUrl_start,conUrl_mid,conUrl_end)
   
   con <- url(conUrl)  
@@ -126,4 +126,13 @@ get_all_markers <- function(inputBikesAvailable = 0,inputDocksAvailable = 0) {
     #filter( cb_station_df, (availableBikes >= as.integer(inputBikesAvailable) | availableDocks >= as.integer(inputDocksAvailable)) ) %>%
     filter( cb_station_df, (availableBikes >= as.integer(inputBikesAvailable) & availableDocks >= as.integer(inputDocksAvailable)) ) %>%
     select(stationName,latitude= latitude,longitude = longitude, availableBikes, availableDocks, totalDocks)
+}
+
+get_maneuver_info <- function(stepsInfo) {
+  instructions <- c("")
+  #cat(instructions)
+  for (i in (1:length(stepsInfo)) ) {
+    instructions[i] <- stepsInfo[[i]]$maneuver$instruction
+  }
+  instructions
 }

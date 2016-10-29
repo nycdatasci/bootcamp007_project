@@ -68,11 +68,11 @@ shinyUI(dashboardPage(
                        column(12,tags$div(
                                    tags$ul(
                                       tags$li(HTML("<h3><b>Map</b>: Locate and view capacity for multiple stations<h3>")),
-                                      tags$li(HTML("<h3><b>Map</b>: View travel time between two stations<h3>")),
+                                      tags$li(HTML("<h3><b>Map</b>: View travel time between two stations with cycling directions<h3>")),
                                       tags$li(HTML("<h3><b>Map</b>: Filter on Bike / Dock capacity<h3>")),
                                       tags$li(HTML("<h3><b>Bike / Dock Gauge</b>: Gauge Bike / Dock capacity by station<h3>")),
                                       tags$li(HTML("<h3><b>Data</b>: Query NYC Citi Bike station data<h3>")),
-                                      tags$li(HTML("<h3><b>Developer</b>: <a href='mailto:jhonasttan@gmail.com?Subject=NYC%20Citi%20Bike%20Shiny%20App' target='_top'>Jhonasttan Regalado, PMP</a><h3>"))
+                                      tags$li(HTML("<h3><b>Feedback</b>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Jhonasttan Regalado, PMP</a><h3>"))
                                       
                             )
                           ))
