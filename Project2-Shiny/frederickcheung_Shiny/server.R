@@ -19,14 +19,12 @@ function(input, output, session) {
     
 
     observe({
-      x <- input$inCheckboxGroup
-      
+      x <- healthdf %>% filter(., Topic==input$inSelect) %>% select(., Indicator.Name.y)
       # Can use character(0) to remove all choices
       if (is.null(x))
         x <- character(0)
-      
       # Can also set the label and select items
-      updateSelectInput(session, "inSelect",
+      updateSelectInput(session, "inSelect2",
                         label = paste("Category Indicator", length(x)),
                         choices = x)
         })#end observe

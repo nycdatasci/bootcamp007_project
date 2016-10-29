@@ -9,11 +9,9 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   observe({
     x <- input$inCheckboxGroup
-    
     # Can use character(0) to remove all choices
     if (is.null(x))
       x <- character(0)
-    
     # Can also set the label and select items
     updateSelectInput(session, "inSelect",
                       label = paste("Select input label", length(x)),

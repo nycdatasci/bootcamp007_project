@@ -13,6 +13,7 @@ healthdfcountry <- unique(healthdf$Country.Name)
 healthdfcat <- unique(healthdf$Topic)
 healthdfcatindic <- unique(healthdf$Indicator.Name.x)
 
+
 dashboardPage(
   dashboardHeader(title = "World Health Data"),
   dashboardSidebar(
@@ -34,9 +35,9 @@ dashboardPage(
           box(plotOutput("plot1", height = 250)),
           box(
             
-            selectInput("inCheckboxGroup", "Category",
-                        healthdftopic),
-            selectInput("inSelect", label = "Select input",
+            selectInput("inSelect", "Category",
+                               healthdfcat),
+            selectInput("inSelect2", label = "Select input",
                         choices = c("Item A", "Item B", "Item C")),
             
             title = "Controls",
@@ -60,9 +61,8 @@ dashboardPage(
           
           hr(),
           fluidRow(column(3, verbatimTextOutput("value")))
-        ) #end fluidRow
-        
-    )#/tabItem2
+            ) #end fluidRow
+        )#/tabItem2
       ) #end tabItems
     ) #end dashboardBody
   ) #end dashboardPage
