@@ -20,8 +20,8 @@ dashboardPage(
     sidebarMenu(
           menuItem("Barchart", tabName = "Barchart", icon = icon("bar-chart-o")),
           menuItem("Map", tabName = "Map", icon = icon("map"))
-        )
-    ),
+        ) #end sidebarMenu
+    ), #end dashboardSidebar
   dashboardBody(
     # Boxes need to be put in a row (or column)
 
@@ -34,16 +34,16 @@ dashboardPage(
           box(plotOutput("plot1", height = 250)),
           box(
             
-            selectInput("inCheckboxGroup", "Input checkbox",
-                        c("Item A", "Item B", "Item C")),
+            selectInput("inCheckboxGroup", "Category",
+                        healthdftopic),
             selectInput("inSelect", label = "Select input",
                         choices = c("Item A", "Item B", "Item C")),
             
             title = "Controls",
             sliderInput("slider", "Number of observations:", 1, 100, 50)
-          )
-        )
-      ),
+          ) #end box
+        ) #end fluidRow
+      ), #end tabItem1
       # Second tab content
       tabItem(tabName = "Map",
         h2("Maps of Countries"),
@@ -60,9 +60,9 @@ dashboardPage(
           
           hr(),
           fluidRow(column(3, verbatimTextOutput("value")))
-        )
+        ) #end fluidRow
         
     )#/tabItem2
-      )
-    )
-  )
+      ) #end tabItems
+    ) #end dashboardBody
+  ) #end dashboardPage

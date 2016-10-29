@@ -18,19 +18,20 @@ function(input, output, session) {
     hist(data)
     
 
-      observe({
-        x <- input$inCheckboxGroup
-        
-        # Can use character(0) to remove all choices
-        if (is.null(x))
-          x <- character(0)
-        
-        # Can also set the label and select items
-        updateSelectInput(session, "inSelect",
-                          label = paste("Select input label", length(x)),
-                          choices = x)
-      })
-    }
-  )
-}
+    observe({
+      x <- input$inCheckboxGroup
+      
+      # Can use character(0) to remove all choices
+      if (is.null(x))
+        x <- character(0)
+      
+      # Can also set the label and select items
+      updateSelectInput(session, "inSelect",
+                        label = paste("Category Indicator", length(x)),
+                        choices = x)
+        })#end observe
+      })#end render plot
+    } #end function
+ 
+
 
