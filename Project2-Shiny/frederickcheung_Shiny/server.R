@@ -2,7 +2,7 @@ setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
 library(dplyr)
 library(ggplot2)
 library(shinydashboard)
-library(googleVis)
+library(dygraphs)
 
 healthdf <- readRDS("healthdf")
 healthdfcountry <- unique(healthdf$Country.Name)
@@ -13,6 +13,7 @@ function(input, output, session) {
   set.seed(122)
   histdata <- rnorm(500)
 
+  #this controls my 'Controls" box
   observe({
     x <- healthdf %>% filter(., Topic==input$inSelect) %>% select(., Indicator.Name.y)
     x <- unique(x)
@@ -23,12 +24,12 @@ function(input, output, session) {
     updateSelectInput(session, "inSelect2",
                       label = paste("Category Indicator", length(x)),
                       choices = x)
-          })#end observe
-                  output$plot1 <- renderPlot({
-                  data <- histdata[seq_len(input$slider)]
-                  hist(data)
-      })#end render plot
-    } #end function
+      })#end observe
+  
+  #this renders my time series graph
+  
+  
+  } #end function
  
 
 

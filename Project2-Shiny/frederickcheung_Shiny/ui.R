@@ -1,18 +1,11 @@
 #This is my data processing of my healthdf file
 
 setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
-library(dplyr)
-library(ggplot2)
-library(shinydashboard)
-library(googleVis)
-library(dplyr)
 
 healthdf <- readRDS("healthdf")
-
 healthdfcountry <- unique(healthdf$Country.Name)
 healthdfcat <- unique(healthdf$Topic)
 healthdfcatindic <- unique(healthdf$Indicator.Name.x)
-
 
 dashboardPage(
   dashboardHeader(title = "World Health Data"),
@@ -34,9 +27,16 @@ dashboardPage(
             selectInput("inSelect", "Category",
                                healthdfcat),
             selectInput("inSelect2", label = "Category Indicator",
-                        choices = character(0))
-            ) #end box
-         ) #end fluidRow
+                        choices = character(0)),
+            uiOutput("graphvariables")
+            ) #end box1
+         ), #end fluidRow1
+        
+        fluidRow(
+            lungDeaths <- cbind(mdeaths, fdeaths),
+            dygraph(lungDeaths)
+            
+          )#end fluidRow2
         ) #end tabItem1
       ) #end tabItems
     ) #end dashboardBody
