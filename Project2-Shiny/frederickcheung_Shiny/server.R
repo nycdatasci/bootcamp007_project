@@ -1,13 +1,15 @@
-setwd("~/Dropbox/Projects_NYCDSA7/Shiny")
+setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
 library(dplyr)
 library(ggplot2)
 library(shinydashboard)
 library(googleVis)
 
 healthdf <- readRDS("healthdf")
-healthdftopic <- unique(healthdf$Topic)
+healthdfcountry <- unique(healthdf$Country.Name)
+healthdfcat <- unique(healthdf$Topic)
+healthdfcatindic <- unique(healthdf$Indicator.Name.x)
 
-function(input, output) {
+function(input, output, session) {
   set.seed(122)
   histdata <- rnorm(500)
 
@@ -15,12 +17,20 @@ function(input, output) {
     data <- histdata[seq_len(input$slider)]
     hist(data)
     
-function(input, output) {
-      
-      # You can access the value of the widget with input$select, e.g.
-      output$value <- renderPrint({healthdftopic}) #map to healthdf$topic
-      
+
+      observe({
+        x <- input$inCheckboxGroup
+        
+        # Can use character(0) to remove all choices
+        if (is.null(x))
+          x <- character(0)
+        
+        # Can also set the label and select items
+        updateSelectInput(session, "inSelect",
+                          label = paste("Select input label", length(x)),
+                          choices = x)
+      })
     }
-  })
+  )
 }
 

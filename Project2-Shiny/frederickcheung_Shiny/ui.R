@@ -1,6 +1,6 @@
 #This is my data processing of my healthdf file
 
-setwd("~/Dropbox/Projects_NYCDSA7/Shiny")
+setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
 library(dplyr)
 library(ggplot2)
 library(shinydashboard)
@@ -10,9 +10,8 @@ library(dplyr)
 #healthdf <- readRDS("healthdf")
 
 healthdfcountry <- unique(healthdf$Country.Name)
-healthdftopic <- unique(healthdf$Topic)
-healthdfsubtopic <- unique(healthdf$Indicator.Name.x)
-
+healthdfcat <- unique(healthdf$Topic)
+healthdfcatindic <- unique(healthdf$Indicator.Name.x)
 
 dashboardPage(
   dashboardHeader(title = "World Health Data"),
@@ -34,6 +33,12 @@ dashboardPage(
               fluidRow(
           box(plotOutput("plot1", height = 250)),
           box(
+            
+            selectInput("inCheckboxGroup", "Input checkbox",
+                        c("Item A", "Item B", "Item C")),
+            selectInput("inSelect", label = "Select input",
+                        choices = c("Item A", "Item B", "Item C")),
+            
             title = "Controls",
             sliderInput("slider", "Number of observations:", 1, 100, 50)
           )
@@ -43,21 +48,21 @@ dashboardPage(
       tabItem(tabName = "Map",
         h2("Maps of Countries"),
         fluidRow(
-          selectInput("select", label = h3("Select box"), 
-                      choices = healthdfcountry, 
+          selectInput("select", label = h3("Select box"),
+                      choices = healthdfcountry,
                       selected = 1),
-          selectInput("select", label = h3("Select box"), 
-                      choices = healthdftopic, 
+          selectInput("select", label = h3("Select box"),
+                      choices = healthdfcat,
                       selected = 1),
           # selectInput("select", label = h3("Select box"), 
-          #             choices = healthdfsubtopic, 
+          #             choices = healthdfcatindic, 
           #             selected = 1),
           
           hr(),
           fluidRow(column(3, verbatimTextOutput("value")))
         )
         
-    )#/tabItem
+    )#/tabItem2
       )
     )
   )
