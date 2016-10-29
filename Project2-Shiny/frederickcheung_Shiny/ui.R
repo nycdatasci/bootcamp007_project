@@ -32,17 +32,14 @@ dashboardPage(
         h2("Health Graph by Topic"),
               fluidRow(
               box(
-            
-            selectInput("select", label = h3("Select Country"),
-                        choices = healthdfcountry,
-                        selected = 1),
+            # title = "Controls",
+            # selectInput("select", label = h3("Select Country"),
+            #             choices = healthdfcountry,
+            #             selected = 1),
             selectInput("inSelect", "Category",
                                healthdfcat),
-            selectInput("inSelect2", label = "Select input",
-                        choices = c("Item A", "Item B", "Item C")),
-            
-            title = "Controls"
-            
+            selectInput("inSelect2", label = "Category Indicator",
+                        choices = character(0))
             ) #end box
          ) #end fluidRow
         ) #end tabItem1
