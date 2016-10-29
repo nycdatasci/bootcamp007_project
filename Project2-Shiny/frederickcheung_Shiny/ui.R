@@ -17,25 +17,22 @@ healthdfcatindic <- unique(healthdf$Indicator.Name.x)
 dashboardPage(
   dashboardHeader(title = "World Health Data"),
   dashboardSidebar(
-
     sidebarMenu(
           menuItem("Chart", tabName = "Chart", icon = icon("bar-chart-o"))
         ) #end sidebarMenu
     ), #end dashboardSidebar
   dashboardBody(
     # Boxes need to be put in a row (or column)
-
     tabItems(
       # First tab content
-      
       tabItem(tabName = "Chart",
         h2("Health Graph by Topic"),
               fluidRow(
               box(
-            # title = "Controls",
-            # selectInput("select", label = h3("Select Country"),
-            #             choices = healthdfcountry,
-            #             selected = 1),
+            title = "Controls",
+            selectInput("select", label = h3("Select Country"),
+                        choices = healthdfcountry,
+                        selected = 1),
             selectInput("inSelect", "Category",
                                healthdfcat),
             selectInput("inSelect2", label = "Category Indicator",
