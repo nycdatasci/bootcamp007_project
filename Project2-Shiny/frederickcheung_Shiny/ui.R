@@ -7,7 +7,7 @@ library(shinydashboard)
 library(googleVis)
 library(dplyr)
 
-#healthdf <- readRDS("healthdf")
+healthdf <- readRDS("healthdf")
 
 healthdfcountry <- unique(healthdf$Country.Name)
 healthdfcat <- unique(healthdf$Topic)
@@ -19,8 +19,7 @@ dashboardPage(
   dashboardSidebar(
 
     sidebarMenu(
-          menuItem("Barchart", tabName = "Barchart", icon = icon("bar-chart-o")),
-          menuItem("Map", tabName = "Map", icon = icon("map"))
+          menuItem("Chart", tabName = "Chart", icon = icon("bar-chart-o"))
         ) #end sidebarMenu
     ), #end dashboardSidebar
   dashboardBody(
@@ -29,40 +28,24 @@ dashboardPage(
     tabItems(
       # First tab content
       
-      tabItem(tabName = "Barchart",
+      tabItem(tabName = "Chart",
         h2("Health Graph by Topic"),
               fluidRow(
-          box(plotOutput("plot1", height = 250)),
-          box(
+              box(
             
+            selectInput("select", label = h3("Select Country"),
+                        choices = healthdfcountry,
+                        selected = 1),
             selectInput("inSelect", "Category",
                                healthdfcat),
             selectInput("inSelect2", label = "Select input",
                         choices = c("Item A", "Item B", "Item C")),
             
-            title = "Controls",
-            sliderInput("slider", "Number of observations:", 1, 100, 50)
-          ) #end box
-        ) #end fluidRow
-      ), #end tabItem1
-      # Second tab content
-      tabItem(tabName = "Map",
-        h2("Maps of Countries"),
-        fluidRow(
-          selectInput("select", label = h3("Select box"),
-                      choices = healthdfcountry,
-                      selected = 1),
-          selectInput("select", label = h3("Select box"),
-                      choices = healthdfcat,
-                      selected = 1),
-          # selectInput("select", label = h3("Select box"), 
-          #             choices = healthdfcatindic, 
-          #             selected = 1),
-          
-          hr(),
-          fluidRow(column(3, verbatimTextOutput("value")))
-            ) #end fluidRow
-        )#/tabItem2
+            title = "Controls"
+            
+            ) #end box
+         ) #end fluidRow
+        ) #end tabItem1
       ) #end tabItems
     ) #end dashboardBody
   ) #end dashboardPage
