@@ -2,8 +2,8 @@ name: NYC_HS
 account: yisongtao
 server: shinyapps.io
 appId: 133899
-bundleId: 600440
+bundleId: 600443
 url: https://yisongtao.shinyapps.io/NYC_HS/
-when: 1477803952.60306
+when: 1477804402.86741
 asMultiple: FALSE
 asStatic: FALSE

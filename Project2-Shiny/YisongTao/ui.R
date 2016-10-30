@@ -46,6 +46,7 @@ navbarPage("NYC Public High Schools", id="nav",
         )
       )
     ),
+    tags$li("Click a school name in the table will go to the school's location on map."),
     hr(),
     DT::dataTableOutput("hs_info"),
     htmlOutput("School_Info_dt")

@@ -158,7 +158,7 @@ function(input, output, session) {
           tags$br(), 
           tags$strong(HTML(sprintf("%s", selectedHS$addr_2))),
           tags$br(),tags$br(),
-          if (!is.na(email)){
+          if (!is.na(selectedHS$Email)){
           tags$strong(HTML(sprintf("Email: %s", email)))},
           tags$br(),
           tags$strong(HTML(sprintf("Phone: %s", selectedHS$Phone_Number))),
