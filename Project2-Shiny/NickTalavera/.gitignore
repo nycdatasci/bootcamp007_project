@@ -1,0 +1,5 @@
+*.csv
+.Rproj.user
+*.tar.xz
+
+.Rhistory
