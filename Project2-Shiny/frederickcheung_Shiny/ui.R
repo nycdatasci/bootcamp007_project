@@ -1,13 +1,7 @@
-#This is my data processing of my healthdf file
+#This is the UI to my project
 
-setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
+setwd("~/Dropbox/Projects_NYCDSA7/Shiny/Test Project")
 library(shinydashboard)
-library(dygraphs)
-
-healthdf <- readRDS("healthdf")
-healthdfcountry <- unique(healthdf$Country.Name)
-healthdfcat <- unique(healthdf$Topic)
-healthdfcatindic <- unique(healthdf$Indicator.Name.x)
 
 dashboardPage(
   dashboardHeader(title = "World Health Data"),
@@ -21,25 +15,14 @@ dashboardPage(
     tabItems(
       # First tab content
       tabItem(tabName = "Chart",
-        h2("Health Graph by Topic"),
-              fluidRow(
-              box(
-            title = "Controls",
-            selectizeInput("Country", "Select Countries", healthdfcountry , multiple=TRUE, selected = 'United States'),
-            selectInput("inSelect", "Category",
-                               healthdfcat),
-            selectInput("inSelect2", label = "Category Indicator",
-                        choices = character(0)),
-            uiOutput("graphvariables")
-            ) #end box1
-         ), #end fluidRow1
-        
+        h2("Life Expectancy by Gender"),
+              
         fluidRow(
             
-          dygraphOutput("dygraph1")
+          htmlOutput("LifeExpect")
           
             
-          )#end fluidRow2
+          )#end fluidRow1
         ) #end tabItem1
       ) #end tabItems
     ) #end dashboardBody

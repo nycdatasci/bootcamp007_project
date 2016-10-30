@@ -295,10 +295,16 @@ function(input, output, session) {
          return()
          }
      output$School_Info_dt <- renderUI({
-        selected<-input$hs_info_rows_selected
-        selected_hs <- hs_SAT_survey[hs_SAT_survey$ID == selected,]
-        selected_sd <- hs_info_disp$School_District[hs_SAT_survey$ID == selected]
-        selected_grades <- hs_info_disp$Grades[hs_SAT_survey$ID == selected]
+        selected_table <- hs_info_disp %>%
+            filter(
+                is.null(input$boroughs) | Borough %in% input$boroughs,
+                is.null(input$neighborhoods) | Neighborhood %in% input$neighborhoods
+            )
+        selected_dbn <- selected_table$DBN[input$hs_info_rows_selected]
+        
+        selected_hs <- hs_SAT_survey[hs_SAT_survey$DBN == selected_dbn,]
+        selected_sd <- hs_info_disp$School_District[hs_SAT_survey$DBN == selected_dbn]
+        selected_grades <- hs_info_disp$Grades[hs_SAT_survey$DBN == selected_dbn]
         sname <- paste0("<a href='http://",selected_hs$Website, "'>", selected_hs$school_name,"</a>")
         email <- paste0("<a href='mailto:",selected_hs$Email, "'>", selected_hs$Email,"</a>")
         tagList(
