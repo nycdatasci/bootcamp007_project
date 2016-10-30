@@ -63,19 +63,29 @@ shinyUI(dashboardPage(
               fluidRow(column(12 ,div(align = "left", HTML("<br><h2>Dock Capacity by Station in Descending Order<h2><br>"))),
                        column(12, box(htmlOutput("gaugeDocks"), height = 30000,width = 18)))),
       tabItem(tabName = "introVideo",
-              fluidRow(column(12, div(align = "left", HTML("<br><h2>How to Video<h2><br>"))),
+              fluidRow(column(12, div(align = "left", HTML("<br><h2>Analyze NYC Citi Bike Bike / Station Capacity and Plan your Trip<h2><br>"))),
+                       column(6, div(align = "left", HTML("<p><h3>I have been fascinated by the number of people riding NYC Citi Bikes to and from work. 
+                                                           I’ve asked a few Citi Bike subscribers about their experience, and yes, some have dealt with a pothole or two; therefore, was interested in understanding the logistics. 
+                                                           How are the stations replenished and how do users typically deal with bike capacity constraints when they really need a bike. 
+                                                           Do they go to a nearby station, or hail a cab? 
+                                                          The Citibike Station Capacity Analysis product was developed and implemented within a two-week timeline using the Lean Startup methodology. 
+                                                          The goal of this working prototype is to help users address the identified gaps. I welcome you to try the product and 
+                                                          provide constructive feedback. Thanks!</p>"))),
+                       column(12, div(align = "left", HTML("<br><h2>How to Video<h2><br>"))),
                        column(12, div(align = "left", embed_youtube(id = "Gw4Uiw4me8A", frameborder = 50))),
+                       column(12, div(align = "left", HTML("<br><h2>Features<h2>"))),
                        column(12,tags$div(
                                    tags$ul(
                                       tags$li(HTML("<h3><b>Map</b>: Locate and view capacity for multiple stations<h3>")),
                                       tags$li(HTML("<h3><b>Map</b>: View travel time between two stations with cycling directions<h3>")),
                                       tags$li(HTML("<h3><b>Map</b>: Filter on Bike / Dock capacity<h3>")),
+                                      tags$li(HTML("<h3><b>Map</b>: Pin map to your location<h3>")),
                                       tags$li(HTML("<h3><b>Bike / Dock Gauge</b>: Gauge Bike / Dock capacity by station<h3>")),
-                                      tags$li(HTML("<h3><b>Data</b>: Query NYC Citi Bike station data<h3>")),
-                                      tags$li(HTML("<h3><b>Feedback</b>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Jhonasttan Regalado, PMP</a><h3>"))
+                                      tags$li(HTML("<h3><b>Data</b>: Query NYC Citi Bike station data<h3>"))
                                       
                             )
-                          ))
+                          )),
+                       column(12, div(align = "left", HTML("<br><h3><b>Feedback<b>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Jhonasttan Regalado, PMP</a><h3>")))
                        ))
       
       ))

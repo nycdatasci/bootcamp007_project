@@ -9,20 +9,20 @@ Target:
 1. Tourists or first time riders seeking more info on availability trends
 
 User options
-1. search for address
-2. select bike availability count:
+1. search for address - DONE
+2. select bike availability count: - PARTIALLY DONE
   a. status of green if station docked bike count is > than user selection
   b. status of yellow if station docked bike count is == to user selection
   c. status of red if station docked bike count is < than user selection
-3. select radius between 1 - 5 miles
-4. from and to address - produce avg ride time based on trip duration from citibike data file
-5. select ride time: 30 / 45 min
-5. select peak time view - avg bike count based on prior month data
+3. select radius between 1 - 5 miles - MODIFIED: used slider feature to view surrounding bike / dock capacity
+4. from and to address - produce avg ride time based on trip duration from citibike data file DONE
+5. select ride time: 30 / 45 min - FUTURE ITERATION
+5. select peak time view - avg bike count based on prior month data - FUTURE ITERATION
 
 Would be nice:
-1. Show available bikes and docking counts within radius of the from / to address
+1. Show available bikes and docking counts within radius of the from / to address - MODIFIED: used slider feature to view surrounding bike / dock capacity
 
-To do:
+To do: DROPPED on final version to reduce latency on web page loading
 1. Download monthly citibike use data to:
   a. capture average travel time between locations
   b. avg docked bike count at stations
@@ -32,7 +32,25 @@ To do:
 3. Capture station status at run time
 4. Build map
 
-Sources:
+
+Citibike products:
+
+1. Citibike:
+  a. Station info / status: https://gbfs.citibikenyc.com/gbfs/gbfs.json
+    i. station info: https://gbfs.citibikenyc.com/gbfs/en/station_information.json
+    ii. station status: https://gbfs.citibikenyc.com/gbfs/en/station_status.json
+    iii. station info / status: http://citibikenyc.com/stations/json 
+  b. Monthly usage: https://s3.amazonaws.com/tripdata/index.html
+  c. NYC Gov bikes: http://www.nyc.gov/html/dot/html/about/datafeeds.shtml#Bikes
+2. Mobile app: https://www.citibikenyc.com/how-it-works/app
+  a. provides bike availability stats per docking stations within your perimeter
+3. 
+  a. Leaflet Shiny how to: https://rstudio.github.io/leaflet/shiny.html
+  b. https://jhonasttan.carto.com/dashboard << Carto possibilities
+  c. https://mapzen.com/products/turn-by-turn/?d=0&lat=40.7259&lng=-73.9805&z=12&c=multimodal&st_lat=37.839682&st_lng=-122.485284&st=Vista%20Point&end_lat=37.80927&end_lng=-122.25981&end=Fairyland&use_bus=0.5&use_rail=0.6&use_transfers=0.4&dt=2016-10-25T08%3A00&dt_type=1 
+  d. Geocoding: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+API research and source:
 1. https://cran.r-project.org/web/packages/jsonlite/vignettes/json-apis.html >>
 A single public API that shows location, status and current availability for all stations in the New York City bike sharing imitative.
 2. http://www.kdd.org/kdd2016/subtopic/view/rebalancing-bike-sharing-systems-a-multi-source-data-smart-optimization >> article - Rebalancing Bike Sharing Systems: A Multi-source Data Smart Optimization
@@ -51,28 +69,16 @@ A single public API that shows location, status and current availability for all
   c. http://bl.ocks.org/ramnathv/9998388
   d. http://gis.stackexchange.com/questions/186748/leaflet-routing-machine-how-to-initialise-map-without-waypoints-loaded
 
-Mapbox token: pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A
+
 Mapbox tutorial: https://www.mapbox.com/api-documentation/#maps
 Mapbox API Playground: https://www.mapbox.com/api-playground/#/forward-geocoding/?_k=b4si62
 Mapbox API Playground Directions: https://www.mapbox.com/api-documentation/#directions
 
 Example that works:
+Mapbox token: pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A
 https://api.mapbox.com/directions/v5/mapbox/cycling/-73.98%2C40.73%3B-73.97%2C40.75.json?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A&overview=simplified&geometries=geojson
 
-1. Citibike:
-  a. Station info / status: https://gbfs.citibikenyc.com/gbfs/gbfs.json
-    i. station info: https://gbfs.citibikenyc.com/gbfs/en/station_information.json
-    ii. station status: https://gbfs.citibikenyc.com/gbfs/en/station_status.json
-    iii. station info / status: http://citibikenyc.com/stations/json 
-  b. Monthly usage: https://s3.amazonaws.com/tripdata/index.html
-  c. NYC Gov bikes: http://www.nyc.gov/html/dot/html/about/datafeeds.shtml#Bikes
-2. Mobile app: https://www.citibikenyc.com/how-it-works/app
-  a. provides bike availability stats per docking stations within your perimeter
-3. 
-  a. Leaflet Shiny how to: https://rstudio.github.io/leaflet/shiny.html
-  b. https://jhonasttan.carto.com/dashboard << Carto possibilities
-  c. https://mapzen.com/products/turn-by-turn/?d=0&lat=40.7259&lng=-73.9805&z=12&c=multimodal&st_lat=37.839682&st_lng=-122.485284&st=Vista%20Point&end_lat=37.80927&end_lng=-122.25981&end=Fairyland&use_bus=0.5&use_rail=0.6&use_transfers=0.4&dt=2016-10-25T08%3A00&dt_type=1 
-  d. Geocoding: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
 
 Load libraries
 ```{r}

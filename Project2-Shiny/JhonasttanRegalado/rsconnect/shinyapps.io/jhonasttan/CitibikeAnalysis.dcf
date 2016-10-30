@@ -2,9 +2,9 @@ name: citibikeanalysis
 account: jhonasttan
 server: shinyapps.io
 appId: 134533
-bundleId: 600158
+bundleId: 600325
 url: https://jhonasttan.shinyapps.io/citibikeanalysis/
-when: 1477759054.558
+when: 1477787754.55224
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: data/201606-citibike-tridatasubset.csv|data/201606-citibike-tripdata_df_duration.rds|data/201606-citibike-tripdata_df.rds|www/shinyProject.Rmd

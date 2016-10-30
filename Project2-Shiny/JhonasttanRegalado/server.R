@@ -29,7 +29,7 @@ shinyServer(function(input, output){
                               "<ul>")
                               
         
-    #print(leaflet_info$Poly_points) << helped trouble shoot the issue
+    #print(leaflet_info$Poly_points) << helped trouble shoot the polygon issue
         leaflet(data = leaflet_info$ExmapLeaflet) %>% 
           addTiles(urlTemplate = tile_layer) %>% 
           addMarkers(popup = paste0(c("Station","Destination"), ": ", leaflet_info$ExmapLeaflet$station.name)) %>% 
