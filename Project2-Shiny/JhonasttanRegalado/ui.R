@@ -72,7 +72,7 @@ shinyUI(dashboardPage(
                                                           The goal of this working prototype is to help users address the identified gaps. I welcome you to try the product and 
                                                           provide constructive feedback. Thanks!</p>"))),
                        column(12, div(align = "left", HTML("<br><h2>How to Video<h2><br>"))),
-                       column(12, div(align = "left", embed_youtube(id = "Gw4Uiw4me8A", frameborder = 50))),
+                       column(12, div(align = "left", embed_youtube(id = "StMAiYCMuco", frameborder = 50))),
                        column(12, div(align = "left", HTML("<br><h2>Features<h2>"))),
                        column(12,tags$div(
                                    tags$ul(
