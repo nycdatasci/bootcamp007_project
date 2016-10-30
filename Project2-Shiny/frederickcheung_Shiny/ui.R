@@ -1,6 +1,8 @@
 #This is my data processing of my healthdf file
 
 setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
+library(shinydashboard)
+library(dygraphs)
 
 healthdf <- readRDS("healthdf")
 healthdfcountry <- unique(healthdf$Country.Name)
@@ -33,8 +35,9 @@ dashboardPage(
          ), #end fluidRow1
         
         fluidRow(
-            lungDeaths <- cbind(mdeaths, fdeaths),
-            dygraph(lungDeaths)
+            
+          dygraphOutput("dygraph1")
+          
             
           )#end fluidRow2
         ) #end tabItem1

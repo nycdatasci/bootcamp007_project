@@ -1,6 +1,5 @@
 setwd("~/github/bootcamp007_project/Project2-Shiny/frederickcheung_Shiny")
 library(dplyr)
-library(ggplot2)
 library(shinydashboard)
 library(dygraphs)
 
@@ -27,8 +26,14 @@ function(input, output, session) {
       })#end observe
   
   #this renders my time series graph
-  
-  
+  #need to reshape data for time to be in rows and convert to time series to
+  #be able to use dygraph
+    
+  output$dygraph1 <- renderDygraph({
+      HealthPlot <- cbind(mdeaths, fdeaths)
+      dygraph(HealthPlot)
+      
+    }) #end render Dygraph
   } #end function
  
 
