@@ -137,14 +137,24 @@ shinyServer(function(input, output){
     }
     
     # filter by cause
-    temp = temp %>% summarise("Carrier" = sum(CarrierDelay),
-                              "Weather" = sum(WeatherDelay),
-                              "NAS" = sum(NASDelay),
-                              "Late Aircraft" = sum(LateAircraftDelay),
-                              "Security" = sum(SecurityDelay))
+    carrier_df = temp %>% filter(CarrierDelay != 0)
+    carrier_mean = mean(carrier_df$CarrierDelay)
+    
+    weather_df = temp %>% filter(WeatherDelay != 0)
+    weather_mean = mean(weather_df$WeatherDelay)
+    
+    NAS_df = temp %>% filter(NASDelay != 0)
+    NAS_mean = mean(NAS_df$NASDelay)
+    
+    LateAC_df = temp %>% filter(LateAircraftDelay != 0)
+    LateAC_mean = mean(LateAC_df$LateAircraftDelay)
+    
+    Security_df = temp %>% filter(SecurityDelay != 0)
+    security_mean = mean(Security_df$SecurityDelay)
     
     # combine to find percentage of flights that were delayed in that month
-    temp2 = data.frame("Delay Causes" = names(temp), "Total Delays" = t(temp[1,]))
+    temp2 = data.frame(Delay.Causes = c("Carrier", "Weather", "NAS", "Late Aircraft", "Security"),
+                       X1 = c(carrier_mean, weather_mean, NAS_mean, LateAC_mean, security_mean))
     temp2
   })
   
