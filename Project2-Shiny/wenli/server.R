@@ -26,7 +26,7 @@ function(input, output) {
     else {
       leafletProxy('map', data = points()) %>% clearShapes() %>%
         addCircles(lat = ~ LATITUDE, lng = ~ LONGITUDE,
-                   radius = 100, stroke = F, fillOpacity = 0.5, 
+                   radius = 500, stroke = F, fillOpacity = 0.5, 
                    color = ~ colpal(EVENT_TYPE), 
                    popup = ~ paste(sep = '<br/>','Event Type:', EVENT_TYPE))}
   })
@@ -48,7 +48,7 @@ function(input, output) {
   
   # tab-2 output
   output$dygraph1 = renderDygraph({
-    dygraph(types_xt, main = 'Storm Events in U.S.: 2007 - 2016', group = 'SE') %>%
+    dygraph(types_xt, main = 'Storm Events in U.S. 2007 - 2016', group = 'SE') %>%
       dyOptions(colors = RColorBrewer::brewer.pal(6, 'Paired'), fillGraph = T, fillAlpha = 0.2,
                 includeZero = T, axisLineColor = '#386cb0') %>%
       dyHighlight(highlightCircleSize = 2, 
