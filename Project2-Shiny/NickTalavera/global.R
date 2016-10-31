@@ -51,7 +51,7 @@ printCurrency <- function(value, currency.sym="$", digits=2, sep=",", decimal=".
 home <- "~/Drug_Project"
 options(scipen=999)
 
-ec2 = FALSE
+ec2 = TRUE
 if (ec2 == TRUE) {
   home <- "~/Drug_Project"
   darknetDirectory = "~/s3/Data/Darknet"
@@ -77,10 +77,10 @@ dnmData$Price = NULL
 dnmData$Drug_Weight_Unit = NULL
 #dnmData$Price_Per_Gram = as.numeric(dnmData$Price_Per_Gram)
 dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
+dnmData = dnmData[!is.na(dnmData$Market_Name),]
 dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
 dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
-timeAddedRange = range(dnmData$Time_Added)
-print(timeAddedRange)
-sheetDateRange = range(dnmData$Sheet_Date)
+timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
+sheetDateRange = range(dnmData$Sheet_Date, na.rm = TRUE)
 maxPricePerWeight = roundUpNice(max(dnmData$Price_Per_Gram, na.rm = TRUE))
 setwd(home)

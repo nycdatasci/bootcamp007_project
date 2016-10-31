@@ -1,4 +1,4 @@
-# Darknet Market Analyzer
+D# Darknet Market Analyzer
 # Darknet Market Analysis
 # Nick Talavera
 # Date: Octber 25, 2016
@@ -150,22 +150,22 @@ dashboardPage(skin = "green",
                                      
                                      
                                      
-                                     # dateRangeInput('dataPostedDate',
-                                     #                label = paste('Choose the date range for when the item was posted:'),
-                                     #                start = timeAddedRange[1], end = timeAddedRange[2],
-                                     #                min = timeAddedRange[1], max = timeAddedRange[2],
-                                     #                separator = " - ", format = "mm/dd/yy",
-                                     #                startview = 'month', weekstart = 1
-                                     # ),
+                                     dateRangeInput('dataPostedDate',
+                                                    label = paste('Choose the date range for when the item was posted:'),
+                                                    start = timeAddedRange[1], end = timeAddedRange[2],
+                                                    min = timeAddedRange[1], max = timeAddedRange[2],
+                                                    separator = " - ", format = "mm/dd/yy",
+                                                    startview = 'month', weekstart = 1
+                                     ),
                                      
                                      
-                                     # dateRangeInput('dataAccessedDate',
-                                     #                label = paste('Choose the date range for when the item was accessed:'),
-                                     #                start = sheetDateRange[1], end = sheetDateRange[2],
-                                     #                min = sheetDateRange[1], max = sheetDateRange[2],
-                                     #                separator = " - ", format = "mm/dd/yy",
-                                     #                startview = 'month', weekstart = 1
-                                     # ),
+                                     dateRangeInput('dataAccessedDate',
+                                                    label = paste('Choose the date range for when the item was accessed:'),
+                                                    start = sheetDateRange[1], end = sheetDateRange[2],
+                                                    min = sheetDateRange[1], max = sheetDateRange[2],
+                                                    separator = " - ", format = "mm/dd/yy",
+                                                    startview = 'month', weekstart = 1
+                                     ),
                                      
                                      helpText("Note: Leave a field empty to select all."),
                                      actionButton("query", label = "Go")
