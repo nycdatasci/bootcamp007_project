@@ -83,7 +83,7 @@ function(input, output) {
   
   
   # tab-3 output
-  output$boxplt1 = renderPlot({
+  output$barplt1 = renderPlot({
     ggplot(FatalLoc,
            aes(x = reorder(FATALITY_LOCATION, FATALITY_LOCATION, function(x)-length(x)))) +
       geom_bar(aes(fill = FATALITY_SEX), alpha = 0.7) +
@@ -97,7 +97,19 @@ function(input, output) {
       ylab('Deaths')
   })
   
-  output$boxplt2 = renderPlot({
+  output$barplt2 = renderPlot({
+    ggplot(dths, aes(x = reorder(EVENT_TYPE, -DEATHS), y = DEATHS)) +
+      geom_bar(aes(fill = EVENT_TYPE), stat = 'identity', alpha = 0.7, width = 0.6) +
+      theme_economist() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+            legend.position = 'none') +
+      scale_fill_economist() +
+      ggtitle('Storm Types vs. Fatality') +
+      xlab('') +
+      ylab('Deaths')
+  })
+  
+  output$boxplt = renderPlot({
     ggplot(FatalLoc, aes(x = FATALITY_SEX, y = FATALITY_AGE)) +
       geom_boxplot(aes_string(fill = 'FATALITY_SEX'), color = 'lightgray', alpha = 0.7, width = 0.3) +                 
       theme_economist() +
