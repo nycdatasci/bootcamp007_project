@@ -1,13 +1,14 @@
 library(shiny)
 library(shinydashboard)
 library(rpivotTable)
-library(googleVis)
+library(googleVis) 
 
 shinyUI(
   dashboardPage(
-                
+  ## Title              
   dashboardHeader(title="Kickstarter Explorer"),
   
+  ## Sidebar
   dashboardSidebar(
     sidebarMenu(
       menuItem("Summary", tabName = "sumTab", icon = icon("bar-chart")),
