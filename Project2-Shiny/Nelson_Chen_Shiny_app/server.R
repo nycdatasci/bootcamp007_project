@@ -122,6 +122,32 @@ shinyServer(function(input, output){
     temp
   })
   
+  delay_causes = reactive({
+    temp = delay_flights
+    
+    # Filter if there is input (not equal to none)
+    if (input$airport_start2 != 'All'){
+      temp = temp %>% filter(Origin == input$airport_start2)
+    }
+    if (input$airport_end2 != 'All'){
+      temp = temp %>% filter(Dest == input$airport_end2)
+    }
+    if (input$AirLine2 != 'All'){
+      temp = temp %>% filter(UniqueCarrier == Airlines[input$AirLine2])
+    }
+    
+    # filter by cause
+    temp = temp %>% summarise("Carrier" = sum(CarrierDelay),
+                              "Weather" = sum(WeatherDelay),
+                              "NAS" = sum(NASDelay),
+                              "Late Aircraft" = sum(LateAircraftDelay),
+                              "Security" = sum(SecurityDelay))
+    
+    # combine to find percentage of flights that were delayed in that month
+    temp2 = data.frame("Delay Causes" = names(temp), "Total Delays" = t(temp[1,]))
+    temp2
+  })
+  
   ### Output Functions ###
   
   # Output datatable of all delays for different routes (input starting airport)
@@ -173,8 +199,8 @@ shinyServer(function(input, output){
   # Output bar chart of delays aggregated by days of the week
   output$barchart = renderPlot({
     data = weekday_gen()
-    title_ = paste('Weekday BarChart -', "Origin: ", input$airport_start, ", Dest: ",
-                  input$airport_end, ", Airline: ", input$AirLine, sep='')
+    title_ = paste('Weekday Chart - ', input$airport_start, " to ",
+                   input$airport_end, " on ", input$AirLine, sep='')
     ggplot(data, aes(x = DayOfWeek, y = Percent, fill = DayOfWeek)) +
       geom_bar(stat = 'identity') + scale_fill_pander("Weekday") + 
       ggtitle(title_) + theme_pander(base_size = 22)
@@ -183,10 +209,24 @@ shinyServer(function(input, output){
   # Output line chart of delays aggregated by month of the year
   output$lineGraph = renderPlot({
     data = month_gen()
-    title_ = paste('Monthly Graph -', "Origin: ", input$airport_start, ", Dest: ",
-                   input$airport_end, ", Airline: ", input$AirLine, sep='')
+    title_ = paste('Monthly Graph - ', input$airport_start, " to ",
+                   input$airport_end, " on ", input$AirLine, sep='')
     ggplot(data, aes(x = Month, y = Percent)) + 
       geom_line(color = 'blue') + scale_x_continuous(breaks=1:12) +
-      ggtitle(title_) + theme_economist(base_size = 18)
+      ggtitle(title_) + theme_economist(base_size = 18) +
+      xlab('Months') + ylab('Percent (%)')
+  })
+  
+  # Delay reason chart
+  output$delayChart = renderPlot({
+    data = delay_causes()
+    print(data)
+    title_ = paste('Delay Causes - ', input$airport_start, " to ",
+                   input$airport_end, " on ", input$AirLine, sep='')
+    g = ggplot(data, aes(x = Delay.Causes, y = X1, fill = Delay.Causes)) +
+      geom_bar(stat = 'identity') + scale_fill_pander("") + 
+      ggtitle(title_) + xlab('Delay Causes') + ylab('Total Delays in Min') + 
+      theme_pander(base_size = 22) + coord_flip()
+    g
   })
 })
