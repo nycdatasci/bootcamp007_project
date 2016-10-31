@@ -1,0 +1,53 @@
+@import url('//fonts.googleapis.com/css?family=Lobster|Cabin:400,700');
+
+.main-header .logo {
+  font-family: 'Lobster', cursive;
+  font-size: 25px;
+  text-align: center;
+  padding: 10px;
+  line-height: 1.1;
+}
+
+/* logo */
+.skin-blue .main-header .logo {
+                              background-color: #081245;
+                              }
+
+/* logo when hovered */
+.skin-blue .main-header .logo:hover {
+                              background-color: #081245;
+                              }
+                              
+
+/* navbar (rest of the header) */
+.skin-blue .main-header .navbar {
+                              background-color: #6e9fa5;
+                              }
+
+/* main sidebar */
+.skin-blue .main-sidebar {
+                              background-color: #6e9fa5;
+                              }
+
+/* active selected tab in the sidebarmenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+                              background-color: #41676d;
+                              color:#d6f4fc;
+                              font-weight:900;
+                              }
+
+/* other links in the sidebarmenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a{
+                              background-color: #cbebf4;
+                              color: #000000;
+                              }
+                              
+/* other links in the sidebarmenu when hovered */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+                              opacity: 0.7;
+                              }  
+
+/* toggle button when hovered  */                    
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+                              opacity: 0.7;
+                              }                              
