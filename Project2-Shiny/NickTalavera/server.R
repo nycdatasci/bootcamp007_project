@@ -135,19 +135,19 @@ shinyServer(function(input, output, session) {
   
   # Render number of cities box
   output$bitcoinHighLow <- renderValueBox({
-    dataSet = select(dnmData,BitcoinPriceUSD)
+    dataSet = select(dnmData,Price_Per_Gram)
     #dataSet = dataSet[!is.infinite(abs(dataSet$BitcoinPriceUSD)),]
     choice = sample(c(1:3),1)
     if (choice == 1) {
-      value = min(dataSet$BitcoinPriceUSD, na.rm = TRUE)
+      value = min(dataSet$Price_Per_Gram, na.rm = TRUE)
       text = "Low"
     }
     else if (choice == 2) {
-      value = mean(dataSet$BitcoinPriceUSD, na.rm = TRUE)
+      value = mean(dataSet$Price_Per_Gram, na.rm = TRUE)
       text = "Average"
     }
     else {
-      value = max(dataSet$BitcoinPriceUSD, na.rm = TRUE)
+      value = max(dataSet$Price_Per_Gram, na.rm = TRUE)
       text = "High"
     }
     valueBox(
@@ -299,8 +299,9 @@ shinyServer(function(input, output, session) {
       dataSet = dataSet[!is.na(dataSet$Market_Name),]
       dataSet = dataSet[!is.na(dataSet$Price_Per_Gram),]
       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Market_Name), meanPrice_Per_Gram=mean(Price_Per_Gram, na.rm = TRUE)/max(Price_Per_Gram, na.rm = TRUE))
-      temp <- row.names(as.data.frame(summary(dataSet$Market_Name, max=11))) # create a df or something else with the summary output.
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Market_Name), meanPrice_Per_Gram=mean(Price_Per_Gram, na.rm = TRUE)/max(Price_Per_Gram, na.rm = TRUE), lenMN = length(Price_Per_Gram))
+      dataSet= dataSet[dataSet$lenMN >=3,]
+      temp <- row.names(as.data.frame(summary(dataSet$Market_Name, max=5))) # create a df or something else with the summary output.
       dataSet$Market_Name <- as.character(dataSet$Market_Name)
       dataSet$top <- ifelse(
         dataSet$Market_Name %in% temp, ## condition: match aDDs$answer with row.names in summary df
@@ -351,7 +352,7 @@ shinyServer(function(input, output, session) {
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
       # dataSet = dataSet[as.character(dataSet$Drug_Type) == "Marijuana",]
-      dataSet = summarise(group_by(dataSet, Sheet_Date), meanPrice_Per_Gram=mean(Price_Per_Gram)*gramMult, meanBTC = mean(BitcoinPriceUSD))
+      dataSet = summarise(group_by(dataSet, Sheet_Date), meanPrice_Per_Gram=mean(Price_Per_Gram)*gramMult, meanBTC = mean(Price_Per_Gram))
       colourCount = length(unique(dataSet$meanPrice_Per_Gram))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
