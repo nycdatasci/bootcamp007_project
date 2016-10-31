@@ -9,13 +9,13 @@
 # Packages
 library(shiny)
 library(shinydashboard)
-library(dplyr)
 library(DT)
 library(leaflet)
 library(maps)
 library(geosphere)
 library(ggplot2)
 library(ggthemes)
+library(dplyr)
 
 # Server function
 shinyServer(function(input, output){
@@ -230,12 +230,11 @@ shinyServer(function(input, output){
   # Delay reason chart
   output$delayChart = renderPlot({
     data = delay_causes()
-    print(data)
     title_ = paste('Delay Causes - ', input$airport_start, " to ",
                    input$airport_end, " on ", input$AirLine, sep='')
     g = ggplot(data, aes(x = Delay.Causes, y = X1, fill = Delay.Causes)) +
       geom_bar(stat = 'identity') + scale_fill_pander("") + 
-      ggtitle(title_) + xlab('Delay Causes') + ylab('Total Delays in Min') + 
+      ggtitle(title_) + xlab('Delay Causes') + ylab('Average Delays in Min') + 
       theme_pander(base_size = 22) + coord_flip()
     g
   })
