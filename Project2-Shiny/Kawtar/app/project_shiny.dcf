@@ -1,0 +1,10 @@
+name: project_shiny
+title:
+account: kbds
+server: shinyapps.io
+appId: 134655
+bundleId: 600767
+url: https://kbds.shinyapps.io/project_shiny/
+when: 1477856971.51095
+asMultiple: FALSE
+asStatic: FALSE
