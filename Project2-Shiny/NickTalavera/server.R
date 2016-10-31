@@ -398,7 +398,7 @@ shinyServer(function(input, output, session) {
       colourCount = length(unique(dataSet$meanPrice_Per_Gram))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Time_Added, colour=Market_Name))
+      g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
       g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
     })
   })
