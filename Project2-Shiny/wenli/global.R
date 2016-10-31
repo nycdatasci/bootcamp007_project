@@ -26,6 +26,10 @@ load("data/desc_txt.RData")
 LatLngTime = LatLngTime %>% 
   mutate(., EVENT_DATE = as.Date(BEGIN_DATE_TIME, format = '%d-%b-%y %H:%M:%S'))
 LatLngTime$DATE_YM = as.yearmon(as.character(LatLngTime$YEARMONTH), format = '%Y%m')
+# bar chart: storm type vs deaths
+dths = LatLngTime %>% group_by(., EVENT_TYPE) %>%
+  summarise(., DEATHS = sum(DEATHS_DIRECT + DEATHS_INDIRECT)) %>%
+  arrange(., DEATHS)
 # dygraph: time vs. event type
 fata = LatLngTime %>% 
   select(., DEATHS_DIRECT, DEATHS_INDIRECT, DATE_YM) %>%
