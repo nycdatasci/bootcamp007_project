@@ -11,8 +11,8 @@ library(googleVis)
 suppressWarnings(suppressPackageStartupMessages(library(googleVis)))
 
 
-file1= "C:\\Users\\KB\\Downloads\\Datasets\\Shiny_project\\co2_emission_eu_3.csv"
-file2= "C:\\Users\\KB\\Downloads\\Datasets\\Shiny_project\\Co2_US_3.csv"
+file1= "./data/Co2_emission_eu_3.csv"
+file2= "./data/Co2_US_3.csv"
 
 Co2_EU= read.csv(file1,stringsAsFactors = FALSE)
 Co2_US= read.csv(file2,stringsAsFactors = FALSE)
