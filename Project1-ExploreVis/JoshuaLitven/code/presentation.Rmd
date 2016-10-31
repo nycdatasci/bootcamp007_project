@@ -286,9 +286,15 @@ user_artist_counts =
   group_by(user_id, artist_name) %>% 
   summarise(count = n())
 
+sampled_users = sample(unique(user_artist_counts$user_id), 100, replace=FALSE)
+
+sample_counts = 
+  user_artist_counts %>% 
+  filter(user_id %in% sampled_users)
+
 # Plot the user's cumulative distributions
 png(file="plots/diversity_of_user_history.png",width=WIDTH,height=HEIGHT)
-g = ggplot(user_artist_counts, aes(count)) +
+g = ggplot(sample_counts, aes(count)) +
   stat_ecdf(geom = "step", aes(fill=user_id), alpha=.5) +
   coord_cartesian(xlim=c(50,1000)) +
   labs(title="Diversity of User History", x="\nNum Artists", y="% of History\n") +
@@ -347,7 +353,7 @@ g = ggplot(data=most_popular_artists, aes(x = artist_name)) +
   geom_bar(aes(x = reorder(artist_name, world_pop), y = world_pop, fill=artist_name), 
            stat = "identity") +
   coord_flip() +
-  labs(title="Most Popular Artists", x="Artist\n", y="\nWorldwide Popularity") +
+  labs(title="Most Popular Artists", x="Artist\n", y="\nProportion of Users Favorited") +
   theme_minimal() +
   scale_fill_discrete(guide=FALSE) +
   theme(plot.title = element_text(size=TITLE_SIZE), text = element_text(size = TEXT_SIZE))
@@ -449,8 +455,9 @@ artist_popularity_full =left_join(artist_popularity_locations, artist_world_popu
 png(file="plots/origin_popularity_vs_world_popularity.png",width=WIDTH,height=HEIGHT)
 ggplot(artist_popularity_full, aes(y=country_pop, x=world_pop)) +
   geom_point() +
-  annotate("segment", x=0.04, xend=0.02, y=0.2, yend=0.2, arrow=arrow()) +
-  annotate("text", label="Niche Artists", x=0.06, y=0.2, size=5) +
+  annotate("segment", x=0.045, xend=0.02, y=0.2, yend=0.2, arrow=arrow()) +
+  annotate("text", label="Niche Artists", x=0.07, y=0.2, size=6) +
+  annotate("text", label="y = x", x=.12, y=0.15, size=6) +
   coord_cartesian(xlim=c(0,0.2), ylim=c(0,0.2)) +
   stat_function(fun=function(x) x, geom = "line") +
   theme_minimal() +

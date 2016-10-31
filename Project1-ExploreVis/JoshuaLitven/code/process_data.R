@@ -15,7 +15,7 @@ setwd('~/Courses/nyc_data_science_academy/bootcamp007_project/Project1-ExploreVi
 RAW_PATH = file.path('data', 'raw_data')
 PROCESSED_PATH = file.path('data', 'processed_data')
 SUBSET_FLAG = TRUE
-SUBSET_SIZE = 1000000 # number of rows to import for testing
+SUBSET_SIZE = 5000000 # number of rows to import for testing
 
 
 # Helper Functions --------------------------------------------------------
