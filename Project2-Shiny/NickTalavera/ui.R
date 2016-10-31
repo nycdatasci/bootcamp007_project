@@ -214,13 +214,24 @@ dashboardPage(skin = "green",
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Number of postings per day over time for each darknet (color fill of drug type)",
+                                           title = "Number of postings per day over time for each darknet",
                                            status = "primary",
                                            width = 12,
                                            height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("postsPerDayWithDrugColor")
+                                         ) #End of Box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                         box(
+                                           title = "Number of Drugs Available Per Market",
+                                           status = "primary",
+                                           width = 12,
+                                           height = 700,
+                                           solidHeader = FALSE,
+                                           collapsible = TRUE,
+                                           plotOutput("numberOfDrugsAvailablePerMarket")
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
@@ -234,17 +245,17 @@ dashboardPage(skin = "green",
                                            plotOutput("pricePerDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
-                                       fluidRow(
-                                         box(
-                                           title = "Most active country each day",
-                                           status = "primary",
-                                           width = 12,
-                                           height = 700,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           plotOutput("mostActiveCountryDaily")
-                                         ) #End of Box
-                                       ),# end of fluidRow
+#                                        fluidRow(
+#                                          box(
+#                                            title = "Most active country each day",
+#                                            status = "primary",
+#                                            width = 12,
+#                                            height = 700,
+#                                            solidHeader = FALSE,
+#                                            collapsible = TRUE,
+#                                            plotOutput("mostActiveCountryDaily")
+#                                          ) #End of Box
+#                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
                                            title = "Average prices of drugs for each market",
@@ -268,15 +279,15 @@ dashboardPage(skin = "green",
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
-                                         box(
-                                           title = "Number of posts compared to bitcoin price (colored by country)",
-                                           status = "primary",
-                                           width = 12,
-                                           height = 700,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           plotOutput("postsComparedToBicoinPrice")
-                                         ) #End of Box
+#                                          box(
+#                                            title = "Number of posts compared to bitcoin price (colored by country)",
+#                                            status = "primary",
+#                                            width = 12,
+#                                            height = 700,
+#                                            solidHeader = FALSE,
+#                                            collapsible = TRUE,
+#                                            plotOutput("postsComparedToBicoinPrice")
+#                                          ) #End of Box
                                        )# end of fluidRow
                                      )# end of box
                               )#end of column

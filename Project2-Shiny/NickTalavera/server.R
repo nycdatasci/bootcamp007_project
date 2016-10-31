@@ -389,28 +389,36 @@ shinyServer(function(input, output, session) {
   
   
   output$postsPerDayWithDrugColor <- renderPlot({
-    withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
+    withProgress(message = "Number of postings per day over time for each darknet", {
       # Get Data
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram))
-      temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
-      dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
-      dataSet$top <- ifelse(
-        dataSet$Drug_Type %in% temp, ## condition: match aDDs$answer with row.names in summary df
-        dataSet$Drug_Type, ## then it should be named as aDDs$answer
-        "Other" ## else it should be named "Other"
-      )
-      dataSet$top <- as.factor(dataSet$top)
-      dataSet = dataSet[as.character(dataSet$top) != "Other",]
+      # dataSet = summarise(group_by(dataSet, Time_Added, Market_Name))
       colourCount = length(unique(dataSet$meanPrice_Per_Gram))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
-      g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per 10 Grams (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
+      g = ggplot(data = dataSet, aes(x = Time_Added, colour=Market_Name))
+      g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
     })
   })
+  
+  output$numberOfDrugsAvailablePerMarket <- renderPlot({
+    withProgress(message = "Number of postings per day over time for each darknet", {
+      # Get Data
+      dataSet <- getDataSetToUse()
+      dataSet$Market_Name = as.character(dataSet$Market_Name)
+      dataSet = dataSet[!is.na(dataSet$Drug_Type),]
+      dataSet = summarise(group_by(dataSet, Market_Name), drugCount = length(unique(Drug_Type)))
+      colourCount = length(unique(dataSet$Market_Name))
+      getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
+      platteNew = getPalette(colourCount)
+      g = ggplot(data = dataSet, aes(x = Market_Name, y = drugCount))
+      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market')
+    })
+  })
+  
+  
   output$pricePerDrug <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
       # Get Data
@@ -439,7 +447,7 @@ shinyServer(function(input, output, session) {
   output$mostActiveCountryDaily <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
       # Get Data
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
 #       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
 #       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
@@ -489,7 +497,7 @@ shinyServer(function(input, output, session) {
   output$pricesComparedToBicoinPrice <- renderPlot({
     withProgress(message = "Average prices of drugs against price of bitcoins", {
       # Get Data
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
       dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram), meanBTC = mean(Price_Per_Gram, na.rm = TRUE))
@@ -511,7 +519,7 @@ shinyServer(function(input, output, session) {
   })
   output$postsComparedToBicoinPrice <- renderPlot({
     withProgress(message = "Number of posts compared to bitcoin price (colored by country)", {
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Shipped_From),]
       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
       dataSet$Time_Added = as.character(dataSet$Time_Added)

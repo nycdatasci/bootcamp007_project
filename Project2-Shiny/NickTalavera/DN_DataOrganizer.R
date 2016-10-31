@@ -328,10 +328,11 @@ addBTC = function(data) {
   colnames(bitcoinData)[colnames(bitcoinData) == 'Total Volume'] = "BitcoinVolume"
   # bitcoinData = select(bitcoinData, Sheet_Date = Date, BitcoinPriceUSD =  "24h Average", BitcoinVolume = "Total Volume")
   bitcoinData$Sheet_Date = as.Date(bitcoinData$Sheet_Date,'%Y-%m-%d')
-  print(bitcoinData$Sheet_Date)
+  # print(bitcoinData$Sheet_Date)
   # dnmData$BitcoinPriceUSD = as.numeric(dnmData$BitcoinPriceUSD)
   #Merge Bitcoin data into Darknet Data
   data = merge(x = data, y = bitcoinData, by = "Sheet_Date", all.x = TRUE)
+  print(str(data))
   data$Price_Per_Gram_BTC = data$Price_Per_Gram*data$BitcoinPriceUSD
   return(data)
 }
