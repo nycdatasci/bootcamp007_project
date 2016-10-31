@@ -71,7 +71,7 @@ shinyUI(
                                      ), 
                                      mainPanel(
                                        tabsetPanel(
-                                         tabPanel('Data', dataTableOutput("excel_table")),
+                                         tabPanel('Data', DT::dataTableOutput("excel_table")),
                                          tabPanel('Structure', verbatimTextOutput('data_structure'),
                                                   p(textOutput('data_dim'))),
                                          tabPanel('Summary', verbatimTextOutput('data_summary'))
