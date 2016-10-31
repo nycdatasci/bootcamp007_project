@@ -26,7 +26,7 @@ function(input, output) {
     else {
       leafletProxy('map', data = points()) %>% clearShapes() %>%
         addCircles(lat = ~ LATITUDE, lng = ~ LONGITUDE,
-                   radius = 100, stroke = F, fillOpacity = 0.5, 
+                   radius = 500, stroke = F, fillOpacity = 0.5, 
                    color = ~ colpal(EVENT_TYPE), 
                    popup = ~ paste(sep = '<br/>','Event Type:', EVENT_TYPE))}
   })
