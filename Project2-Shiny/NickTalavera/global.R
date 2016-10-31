@@ -77,6 +77,7 @@ dnmData$Price = NULL
 dnmData$Drug_Weight_Unit = NULL
 #dnmData$Price_Per_Gram = as.numeric(dnmData$Price_Per_Gram)
 dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
+dnmData = dnmData[!is.na(dnmData$Market_Name),]
 dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
 dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
 timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
