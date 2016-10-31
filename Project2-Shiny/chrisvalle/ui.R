@@ -13,7 +13,7 @@ ui <- dashboardPage(skin = "green",
                         menuItem("Sales Revenues", tabName = "sales", icon = icon("dollar",lib = "font-awesome")),
                         menuItem("Business Model", tabName = "bizmod", icon = icon("bank",lib = "font-awesome")),
                         menuItem("Transactions", tabName = "trxn", icon = icon("credit-card",lib = "font-awesome")),
-                        menuItem("Stores", tabName = "stores", icon = icon("map-marker",lib = "font-awesome")),
+                        # menuItem("Stores", tabName = "stores", icon = icon("map-marker",lib = "font-awesome")),
                         menuItem("Stock Market", tabName = "stockmarket", icon = icon("line-chart",lib = "font-awesome")),
                         
                         checkboxGroupInput("checkGroup",
@@ -52,15 +52,15 @@ ui <- dashboardPage(skin = "green",
                                 )),
                         
                         
-                        # Transactions & Tickets tab
-                        tabItem(tabName = "stores",
-                                fluidRow(
-                                  box(plotOutput("   ", height = 400)),
-                                  box(plotOutput("   ", height = 400)),
-                                  box(title = "Annual",
-                                      sliderInput("slider", "year:", 2010, 2016, 2014))
-                                  
-                                )), 
+                        # # Transactions & Tickets tab
+                        # tabItem(tabName = "stores",
+                        #         fluidRow(
+                        #           box(plotOutput("    ", height = 400)),
+                        #           box(plotOutput("    ", height = 400)),
+                        #           box(title = "Annual",
+                        #               sliderInput("slider", "year:", 2010, 2016, 2014))
+                        #           
+                        #         )), 
                         
                         # Stores
                         tabItem(tabName = "trxn",

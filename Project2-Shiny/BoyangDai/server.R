@@ -292,9 +292,9 @@ shinyServer(function(input, output, session) {
   # - - - - - - - - - #
   #    excel_table    #
   # - - - - - - - - - #
-  output$excel_table = renderDataTable({
-    datatable(data_recoder2() ,
-              extensions = c('ColReorder','TableTools'),
+  output$excel_table = DT::renderDataTable({
+    DT::datatable(data_recoder2() ,
+              extensions = c('ColReorder','Buttons'),
               options = list(dom = 'RMD<"cvclear"C><"clear"T>lfrtip',
                              searchHighlight = TRUE,
                              pageLength=10 ,
