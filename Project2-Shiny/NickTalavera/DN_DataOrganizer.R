@@ -45,7 +45,7 @@ cleanupCSV = function(data) {
   data$Shipped_From = (as.character(data$Shipped_From))
   data$Drug_Type = (as.character(data$Drug_Type))
   data$Item_Name_Full_Text = (as.character(data$Item_Name_Full_Text))
-  data = addBTC(data)
+  
   print(2)
   data = removeStrangeCountries(data)
   print(3)
@@ -63,7 +63,7 @@ cleanupCSV = function(data) {
   print(9)
   data = find1g(data)
   print(10)
-
+  data = addBTC(data)
   data$Drug_Quantity_In_Order = NULL
   data$X = NULL
   data$Item_Name_Full_Text = NULL
@@ -328,11 +328,15 @@ addBTC = function(data) {
   colnames(bitcoinData)[colnames(bitcoinData) == 'Total Volume'] = "BitcoinVolume"
   # bitcoinData = select(bitcoinData, Sheet_Date = Date, BitcoinPriceUSD =  "24h Average", BitcoinVolume = "Total Volume")
   bitcoinData$Sheet_Date = as.Date(bitcoinData$Sheet_Date,'%Y-%m-%d')
+  data$Sheet_Date = as.Date(data$Sheet_Date,'%Y-%m-%d')
+  # print(class(data$Sheet_Date))
+  # print(class(bitcoinData$Sheet_Date))
+  # print(bitcoinData)
   # print(bitcoinData$Sheet_Date)
   # dnmData$BitcoinPriceUSD = as.numeric(dnmData$BitcoinPriceUSD)
   #Merge Bitcoin data into Darknet Data
   data = merge(x = data, y = bitcoinData, by = "Sheet_Date", all.x = TRUE)
-  print(str(data))
+  # print(head(data))
   data$Price_Per_Gram_BTC = data$Price_Per_Gram*data$BitcoinPriceUSD
   return(data)
 }
