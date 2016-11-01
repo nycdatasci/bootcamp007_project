@@ -1,7 +1,8 @@
 name: Nelson_Chen_Shiny_app
+title:
 account: nelsonchen
 server: shinyapps.io
 appId: 134800
-bundleId: 600959
+bundleId: 602149
 url: https://nelsonchen.shinyapps.io/Nelson_Chen_Shiny_app/
-when: 1477883147.89973
+when: 1477974683.33749
