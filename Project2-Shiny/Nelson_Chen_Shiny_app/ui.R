@@ -151,15 +151,18 @@ shinyUI(dashboardPage(
                     # Choose airline from drop down menu
                     column(width = 4,
                            box(width = NULL, status = "warning",
-                               selectInput("AirLine2", "Air Line Carrier", selected = 'AA',
+                               selectInput("AirLine2", "Air Line Carrier", selected = 'Jetblue Airways',
                                            c('All' = 'All', names(Airlines)))
                                
                            )
                     ),
-                    fluidRow(column(width = 12, align="center",
-                      plotOutput("delayChart", height = 400, width = 600),
-                      plotOutput("delayTotal", height = 400, width = 600)
-                    ))
+                    fluidRow(column(width = 6, align="center",
+                      plotOutput("delayChart", height = 300, width = 500)),
+                      column(width = 6, align="center",
+                      plotOutput("delayTotal", height = 300, width = 500)
+                    )),
+                    fluidRow(column(width = 12, align = "center",
+                                   plotOutput("delayDist", height = 300, width = 500)))
               
             ),
             

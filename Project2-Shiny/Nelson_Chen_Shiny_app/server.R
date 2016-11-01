@@ -165,6 +165,24 @@ shinyServer(function(input, output){
     temp2
   })
   
+  delay_dist = reactive({
+    temp = delay_flights
+    
+    # Filter if there is input (not equal to none)
+    if (input$airport_start2 != 'All'){
+      temp = temp %>% filter(Origin == input$airport_start2)
+    }
+    if (input$airport_end2 != 'All'){
+      temp = temp %>% filter(Dest == input$airport_end2)
+    }
+    if (input$AirLine2 != 'All'){
+      temp = temp %>% filter(UniqueCarrier == Airlines[input$AirLine2])
+    }
+    
+    data = melt(temp[c('CarrierDelay', "WeatherDelay", "NASDelay", 'LateAircraftDelay', "SecurityDelay")])
+    data = data[data$value != 0,]
+  })
+  
   ### Output Functions ###
   
   # Output datatable of all delays for different routes (input starting airport)
@@ -242,16 +260,27 @@ shinyServer(function(input, output){
     g = ggplot(data, aes(x = Delay.Causes, y = X1, fill = Delay.Causes)) +
       geom_bar(stat = 'identity') + scale_fill_pander("") +
       ggtitle(title_) + xlab('Delay Causes') + ylab('Median Delays in Min') +
-      theme_pander(base_size = 22) + coord_flip()
+      theme_pander(base_size = 20) + coord_flip()
     g
   })
   
+  # Total Delays
   output$delayTotal = renderPlot({
     data = delay_causes()
     g = ggplot(data, aes(x = Delay.Causes, y = total, fill = Delay.Causes)) +
       geom_bar(stat = 'identity') + scale_fill_pander("") +
       ggtitle('Flight Total by Delay Causes') + xlab('Delay Causes') + ylab('Total Flights') +
-      theme_pander(base_size = 22) + coord_flip()
+      theme_pander(base_size = 20) + coord_flip()
     g
+  })
+  
+  # Delay Distributions
+  output$delayDist = renderPlot({
+    data = delay_dist()
+    ggplot(data, aes(x=variable,y=value, fill = variable)) + geom_violin() + theme_pander(base_size = 22) + 
+      xlab('Delay Causes') + ylab('Delay in Min') + scale_fill_discrete("Delay Causes") +
+      theme(axis.text.x = element_text(size = 14, angle = 30, hjust = 1), 
+            legend.text = element_text(size = 12),
+            legend.title = element_text(size = 14)) + ggtitle('Delay Causes Violin Plot')
   })
 })
