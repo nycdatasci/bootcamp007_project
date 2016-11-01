@@ -76,14 +76,14 @@ shinyUI(
                              choices = sort(trend_cn)),
                  selectInput("indicator1", "Choose an Indicator:",
                              choices = indicator_names_t),
-                 selectInput("year1", "Choose an Indicator:",
+                 selectInput("year1", "Choose a Year:",
                              choices = sort(select_yr))
                ),
                #end of sidebar
                mainPanel(
-                 plotlyOutput(outputId = "trend_plot", width = "600px", height = "500px"),
+                 plotlyOutput(outputId = "trend_plot", width = "500px", height = "400px"),
                  hr(),
-                 plotlyOutput(outputId = "hist", width = "600px", height = "500px")
+                 plotlyOutput(outputId = "hist", width = "500px", height = "400px")
                  )# end of mainpanel
              )),
     #End of tabPanel
