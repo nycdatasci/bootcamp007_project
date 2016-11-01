@@ -157,7 +157,8 @@ shinyUI(dashboardPage(
                            )
                     ),
                     fluidRow(column(width = 12, align="center",
-                      plotOutput("delayChart", height = 400, width = 600)
+                      plotOutput("delayChart", height = 400, width = 600),
+                      plotOutput("delayTotal", height = 400, width = 600)
                     ))
               
             ),

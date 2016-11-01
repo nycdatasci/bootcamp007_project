@@ -34,7 +34,10 @@ function(input, output) {
             addCircles(lat = ~latitude, lng = ~longitude, radius=~(num*1000))%>%
             addProviderTiles(input$map,options = providerTileOptions(noWrap = FALSE))%>%
             addMarkers(~longitude, ~latitude, popup = ~as.character(pokemonName))
-          }})
+          }
+        
+        })
+      
       output$mytable = renderDataTable({pkmStatus[pkmStatus$Name==input$mon,][,2:12]}, options = list(bSortClasses = FALSE))
     }
 #  # points <- eventReactive(input$recalc, {

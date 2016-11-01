@@ -6,7 +6,7 @@
 # 
 #    http://shiny.rstudio.com/
 #
-setwd("C:/Users/James/Desktop/RSHINY")
+# setwd("C:/Users/James/Desktop/RSHINY")
 library(shinydashboard)
 
 dashboardPage(

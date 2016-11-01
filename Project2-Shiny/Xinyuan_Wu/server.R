@@ -47,7 +47,7 @@ function(input, output) {
         g <- ggplot(plot14(), aes_string(x = 'trans_desc', y = input$mpgtype))
         g <- g + geom_boxplot(aes(color = trans_desc))
         g <- g + xlab("Transmission Type") + ylab("Selected Parameter") + ggtitle("Fuel Consumption vs. Transmission")
-        g <- g + theme_gdocs()
+        # g <- g + theme_gdocs()
         g <- g + coord_cartesian(ylim = c(5, 60))
         g <- g + theme(legend.position="none")
         g <- g + scale_colour_hue("Transmission Type")
@@ -57,7 +57,7 @@ function(input, output) {
         g <- ggplot(plot2(), aes(x = fuel_type, y = count))
         g <- g + geom_bar(stat = 'identity', aes(fill = fuel_type))
         g <- g + xlab("Fuel Type") + ylab("Count") + ggtitle("Vehicle Distribution vs. fuel type")
-        g <- g + theme_gdocs()
+        # g <- g + theme_gdocs()
         g <- g + theme(legend.position="none")
         g
     })
@@ -65,7 +65,7 @@ function(input, output) {
         g <- ggplot(plot3(), aes(x = drive_desc, y = count))
         g <- g + geom_bar(stat = 'identity', aes(fill = drive_desc))
         g <- g + xlab("Drive Type") + ylab("Count") + ggtitle("Vehicle Distribution vs. Drive Type")
-        g <- g + theme_gdocs()
+        # g <- g + theme_gdocs()
         g <- g + theme(legend.position="none")
         g
     })
@@ -75,13 +75,14 @@ function(input, output) {
         g <- g + geom_smooth(aes(color = disp), size = 2, se = FALSE, color = "orange")
         g <- g + xlab("Displacement") + ylab("Selected Parameter") + ggtitle("Fuel Consumption vs. Displacement")
         g <- g + coord_cartesian(ylim = c(5, 60))
-        g <- g + theme_gdocs()
+        # g <- g + theme_gdocs()
         g <- g + theme(legend.position="none")
         g <- g + scale_colour_hue("Displacement")
         g
         
     })
     output$plot5 <- renderGvis({
+      print("test")
         gvisMotionChart(plot5(), idvar = "carline_broad", timevar = "year",
                         options=list(width = 1000,
                                      height = 600))
