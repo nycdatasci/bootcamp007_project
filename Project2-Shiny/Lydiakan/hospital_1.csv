@@ -1,0 +1,661 @@
+City,Year,Category_staff,Number_staff,Category_of_beds,%_bed_occupied,Number_of_beds,Category_patient,Number_Patient
+Taipei City,2006,Total,26740,Total,,19992,Clinic,162699
+Taichung City,2006,Total,15527,Total,,16840,Clinic,80302
+Tainan City,2006,Total,9013,Total,,9872,Clinic,50603
+Kaohsiung City,2006,Total,16324,Total,,17356,Clinic,77863
+Keelung City,2006,Total,1979,Total,,2170,Clinic,13271
+Hsinchu City,2006,Total,2041,Total,,2076,Clinic,19369
+Chiayi City,2006,Total,3139,Total,,3260,Clinic,18849
+New Taipei City,2006,Total,9698,Total,,11138,Clinic,67357
+Taoyuan City,2006,Total,11122,Total,,12549,Clinic,57337
+Hsinchu County,2006,Total,1316,Total,,2044,Clinic,6004
+Yilan County,2006,Total,2616,Total,,3701,Clinic,19976
+Miaoli County,2006,Total,1898,Total,,2969,Clinic,13396
+Changhua County,2006,Total,6244,Total,,6714,Clinic,39325
+Nantou County,2006,Total,1917,Total,,2968,Clinic,20281
+Yunlin County,2006,Total,2023,Total,,2649,Clinic,13194
+Chiayi County,2006,Total,2662,Total,,3225,Clinic,10490
+Pingtung County,2006,Total,4156,Total,,5397,Clinic,18153
+Penghu County,2006,Total,318,Total,,452,Clinic,986
+Hualien County,2006,Total,3146,Total,,4234,Clinic,8211
+Taitung County,2006,Total,1021,Total,,1223,Clinic,7453
+Kinmen County,2006,Total,152,Total,,285,Clinic,499
+Lienchiang County,2006,Total,38,Total,,38,Clinic,41
+Taipei City,2006,Doctor,5666,General,75.5,14880,Emergency,1028541
+Taichung City,2006,Doctor,2682,General,63.6,12093,Emergency,739422
+Tainan City,2006,Doctor,1562,General,66.8,7101,Emergency,496615
+Kaohsiung City,2006,Doctor,2995,General,64.3,12858,Emergency,784290
+Keelung City,2006,Doctor,365,General,66.7,1594,Emergency,142532
+Hsinchu City,2006,Doctor,316,General,63.6,1367,Emergency,218394
+Chiayi City,2006,Doctor,435,General,68.7,2247,Emergency,162728
+New Taipei City,2006,Doctor,1621,General,73.7,8184,Emergency,682494
+Taoyuan City,2006,Doctor,2046,General,67.4,9333,Emergency,634518
+Hsinchu County,2006,Doctor,171,General,53.1,1445,Emergency,110170
+Yilan County,2006,Doctor,344,General,72.6,2854,Emergency,163698
+Miaoli County,2006,Doctor,254,General,61.7,2114,Emergency,124844
+Changhua County,2006,Doctor,1008,General,59.5,4782,Emergency,320129
+Nantou County,2006,Doctor,262,General,69.5,2332,Emergency,129747
+Yunlin County,2006,Doctor,300,General,61.1,1872,Emergency,149262
+Chiayi County,2006,Doctor,421,General,65.8,2488,Emergency,127924
+Pingtung County,2006,Doctor,535,General,64.8,4089,Emergency,273702
+Penghu County,2006,Doctor,54,General,57.4,343,Emergency,36258
+Hualien County,2006,Doctor,560,General,84,3511,Emergency,138334
+Taitung County,2006,Doctor,132,General,62.7,840,Emergency,84561
+Kinmen County,2006,Doctor,18,General,35.1,234,Emergency,16146
+Lienchiang County,2006,Doctor,9,General,19.4,34,Emergency,4938
+Taipei City,2006,RN/LPN,16062,Specialty,60.6,5112,Surgery ,377020
+Taichung City,2006,RN/LPN,9889,Specialty,64.4,4747,Surgery ,214397
+Tainan City,2006,RN/LPN,5687,Specialty,63.9,2771,Surgery ,116921
+Kaohsiung City,2006,RN/LPN,10336,Specialty,58.2,4498,Surgery ,204403
+Keelung City,2006,RN/LPN,1240,Specialty,62,576,Surgery ,25306
+Hsinchu City,2006,RN/LPN,1349,Specialty,57.6,709,Surgery ,36370
+Chiayi City,2006,RN/LPN,2115,Specialty,58.3,1013,Surgery ,41936
+New Taipei City,2006,RN/LPN,6332,Specialty,62.5,2954,Surgery ,136304
+Taoyuan City,2006,RN/LPN,7251,Specialty,58.7,3216,Surgery ,149337
+Hsinchu County,2006,RN/LPN,907,Specialty,64.6,599,Surgery ,12506
+Yilan County,2006,RN/LPN,1790,Specialty,49.8,847,Surgery ,55715
+Miaoli County,2006,RN/LPN,1249,Specialty,57,855,Surgery ,27179
+Changhua County,2006,RN/LPN,4123,Specialty,55.9,1932,Surgery ,83691
+Nantou County,2006,RN/LPN,1295,Specialty,55,636,Surgery ,30389
+Yunlin County,2006,RN/LPN,1310,Specialty,52.7,777,Surgery ,27791
+Chiayi County,2006,RN/LPN,1788,Specialty,56,737,Surgery ,33131
+Pingtung County,2006,RN/LPN,2895,Specialty,56.3,1308,Surgery ,46298
+Penghu County,2006,RN/LPN,200,Specialty,29.4,109,Surgery ,2800
+Hualien County,2006,RN/LPN,2035,Specialty,61.2,723,Surgery ,29645
+Taitung County,2006,RN/LPN,699,Specialty,52.8,383,Surgery ,12983
+Kinmen County,2006,RN/LPN,93,Specialty,31.3,51,Surgery ,1066
+Lienchiang County,2006,RN/LPN,17,Specialty,0,4,Surgery ,56
+Taipei City,2007,Total,27462,Total,,20502,Clinic,20434565
+Taichung City,2007,Total,16409,Total,,17093,Clinic,11923649
+Tainan City,2007,Total,9211,Total,,9721,Clinic,6551180
+Kaohsiung City,2007,Total,16737,Total,,17271,Clinic,13253950
+Keelung City,2007,Total,1998,Total,,2231,Clinic,1624654
+Hsinchu City,2007,Total,2139,Total,,2194,Clinic,1942525
+Chiayi City,2007,Total,3238,Total,,3349,Clinic,2300008
+New Taipei City,2007,Total,9972,Total,,11348,Clinic,7929827
+Taoyuan City,2007,Total,11556,Total,,12177,Clinic,7816197
+Hsinchu County,2007,Total,1321,Total,,2005,Clinic,982408
+Yilan County,2007,Total,2789,Total,,3863,Clinic,2031163
+Miaoli County,2007,Total,1939,Total,,3017,Clinic,1889614
+Changhua County,2007,Total,6623,Total,,6531,Clinic,5198760
+Nantou County,2007,Total,1947,Total,,2994,Clinic,1734167
+Yunlin County,2007,Total,2354,Total,,2884,Clinic,1880315
+Chiayi County,2007,Total,2670,Total,,3123,Clinic,1816399
+Pingtung County,2007,Total,4198,Total,,5243,Clinic,2912999
+Penghu County,2007,Total,322,Total,,452,Clinic,279667
+Hualien County,2007,Total,3136,Total,,4173,Clinic,1583887
+Taitung County,2007,Total,1063,Total,,1279,Clinic,798101
+Kinmen County,2007,Total,185,Total,,288,Clinic,193153
+Lienchiang County,2007,Total,36,Total,,38,Clinic,66172
+Taipei City,2007,Doctor,5882,General,74.8,15308,Emergency,1062583
+Taichung City,2007,Doctor,2832,General,63.9,12372,Emergency,756126
+Tainan City,2007,Doctor,1600,General,68.1,7057,Emergency,513019
+Kaohsiung City,2007,Doctor,3051,General,67.8,12710,Emergency,817898
+Keelung City,2007,Doctor,374,General,67.6,1651,Emergency,144773
+Hsinchu City,2007,Doctor,330,General,57.5,1519,Emergency,225515
+Chiayi City,2007,Doctor,437,General,66.6,2347,Emergency,162443
+New Taipei City,2007,Doctor,1660,General,73.9,8395,Emergency,701126
+Taoyuan City,2007,Doctor,2051,General,67.5,9091,Emergency,620773
+Hsinchu County,2007,Doctor,171,General,60.2,1410,Emergency,105481
+Yilan County,2007,Doctor,364,General,71.5,2954,Emergency,173420
+Miaoli County,2007,Doctor,258,General,61.7,2164,Emergency,124124
+Changhua County,2007,Doctor,1049,General,67.8,4674,Emergency,335073
+Nantou County,2007,Doctor,254,General,74.2,2341,Emergency,129272
+Yunlin County,2007,Doctor,343,General,57.5,2048,Emergency,158795
+Chiayi County,2007,Doctor,438,General,66.8,2423,Emergency,127641
+Pingtung County,2007,Doctor,544,General,66.1,3926,Emergency,262141
+Penghu County,2007,Doctor,53,General,58.9,343,Emergency,38911
+Hualien County,2007,Doctor,559,General,83.6,3427,Emergency,137207
+Taitung County,2007,Doctor,136,General,61,907,Emergency,91636
+Kinmen County,2007,Doctor,23,General,35.5,234,Emergency,17700
+Lienchiang County,2007,Doctor,6,General,21.1,34,Emergency,7060
+Taipei City,2007,RN/LPN,16450,Specialty,59.5,5194,Surgery ,366032
+Taichung City,2007,RN/LPN,10372,Specialty,65.8,4721,Surgery ,211111
+Tainan City,2007,RN/LPN,5839,Specialty,66.3,2664,Surgery ,116037
+Kaohsiung City,2007,RN/LPN,10697,Specialty,61.3,4561,Surgery ,217030
+Keelung City,2007,RN/LPN,1247,Specialty,69.8,580,Surgery ,24144
+Hsinchu City,2007,RN/LPN,1430,Specialty,62.8,675,Surgery ,37834
+Chiayi City,2007,RN/LPN,2199,Specialty,62.6,1002,Surgery ,40419
+New Taipei City,2007,RN/LPN,6475,Specialty,71.5,2953,Surgery ,138871
+Taoyuan City,2007,RN/LPN,7511,Specialty,62.4,3086,Surgery ,165340
+Hsinchu County,2007,RN/LPN,903,Specialty,63.5,595,Surgery ,13145
+Yilan County,2007,RN/LPN,1918,Specialty,48.6,909,Surgery ,51853
+Miaoli County,2007,RN/LPN,1260,Specialty,57.7,853,Surgery ,28013
+Changhua County,2007,RN/LPN,4368,Specialty,64.1,1857,Surgery ,90323
+Nantou County,2007,RN/LPN,1313,Specialty,57.7,653,Surgery ,22221
+Yunlin County,2007,RN/LPN,1526,Specialty,54.1,836,Surgery ,28086
+Chiayi County,2007,RN/LPN,1772,Specialty,61.3,700,Surgery ,34972
+Pingtung County,2007,RN/LPN,2911,Specialty,61.1,1317,Surgery ,42227
+Penghu County,2007,RN/LPN,199,Specialty,31.1,109,Surgery ,2885
+Hualien County,2007,RN/LPN,2016,Specialty,60.8,746,Surgery ,30010
+Taitung County,2007,RN/LPN,734,Specialty,51.2,372,Surgery ,11702
+Kinmen County,2007,RN/LPN,117,Specialty,33.9,54,Surgery ,1468
+Lienchiang County,2007,RN/LPN,17,Specialty,0,4,Surgery ,60
+Taipei City,2008,Total,28655,Total,,21053,Clinic,20252270
+Taichung City,2008,Total,16887,Total,,16873,Clinic,12249496
+Tainan City,2008,Total,9338,Total,,9642,Clinic,6605717
+Kaohsiung City,2008,Total,17461,Total,,17186,Clinic,13304540
+Keelung City,2008,Total,2062,Total,,2215,Clinic,1643106
+Hsinchu City,2008,Total,2273,Total,,2086,Clinic,1980052
+Chiayi City,2008,Total,3430,Total,,3477,Clinic,2415136
+New Taipei City,2008,Total,11301,Total,,12154,Clinic,8333069
+Taoyuan City,2008,Total,11974,Total,,12163,Clinic,7388873
+Hsinchu County,2008,Total,1276,Total,,2005,Clinic,948823
+Yilan County,2008,Total,2889,Total,,3773,Clinic,2097345
+Miaoli County,2008,Total,1978,Total,,3232,Clinic,1825759
+Changhua County,2008,Total,6974,Total,,7237,Clinic,5560332
+Nantou County,2008,Total,2023,Total,,3012,Clinic,1850866
+Yunlin County,2008,Total,2558,Total,,2997,Clinic,1998594
+Chiayi County,2008,Total,2517,Total,,2519,Clinic,1635736
+Pingtung County,2008,Total,4137,Total,,5125,Clinic,2843499
+Penghu County,2008,Total,331,Total,,451,Clinic,277341
+Hualien County,2008,Total,3106,Total,,4153,Clinic,1581542
+Taitung County,2008,Total,1116,Total,,1352,Clinic,795942
+Kinmen County,2008,Total,210,Total,,288,Clinic,219581
+Lienchiang County,2008,Total,37,Total,,27,Clinic,77233
+Taipei City,2008,Doctor,6001,General,72.5,15689,Emergency,1035743
+Taichung City,2008,Doctor,2954,General,67.1,12241,Emergency,754009
+Tainan City,2008,Doctor,1645,General,69.8,7011,Emergency,509503
+Kaohsiung City,2008,Doctor,3193,General,69.2,12523,Emergency,806469
+Keelung City,2008,Doctor,387,General,69.1,1623,Emergency,137036
+Hsinchu City,2008,Doctor,358,General,63,1398,Emergency,219608
+Chiayi City,2008,Doctor,471,General,68,2381,Emergency,161178
+New Taipei City,2008,Doctor,1902,General,72.5,8810,Emergency,704100
+Taoyuan City,2008,Doctor,2113,General,68.9,9084,Emergency,618283
+Hsinchu County,2008,Doctor,169,General,63,1410,Emergency,102328
+Yilan County,2008,Doctor,376,General,77.5,2904,Emergency,175017
+Miaoli County,2008,Doctor,263,General,61.5,2357,Emergency,123695
+Changhua County,2008,Doctor,1142,General,63,5325,Emergency,336449
+Nantou County,2008,Doctor,266,General,77.5,2341,Emergency,127276
+Yunlin County,2008,Doctor,399,General,58.7,2127,Emergency,158236
+Chiayi County,2008,Doctor,435,General,73,1926,Emergency,113651
+Pingtung County,2008,Doctor,532,General,65,3845,Emergency,251506
+Penghu County,2008,Doctor,52,General,59.4,342,Emergency,34042
+Hualien County,2008,Doctor,523,General,82.2,3407,Emergency,132869
+Taitung County,2008,Doctor,145,General,67.1,955,Emergency,84463
+Kinmen County,2008,Doctor,29,General,44.4,234,Emergency,20667
+Lienchiang County,2008,Doctor,7,General,34.2,25,Emergency,6388
+Taipei City,2008,RN/LPN,17211,Specialty,59.5,5364,Surgery ,357668
+Taichung City,2008,RN/LPN,10561,Specialty,70.5,4632,Surgery ,218756
+Tainan City,2008,RN/LPN,5866,Specialty,67.6,2631,Surgery ,122562
+Kaohsiung City,2008,RN/LPN,11109,Specialty,61.4,4663,Surgery ,220583
+Keelung City,2008,RN/LPN,1274,Specialty,64.4,592,Surgery ,25471
+Hsinchu City,2008,RN/LPN,1509,Specialty,64.7,688,Surgery ,38259
+Chiayi City,2008,RN/LPN,2310,Specialty,60.7,1096,Surgery ,40315
+New Taipei City,2008,RN/LPN,7251,Specialty,69,3344,Surgery ,147148
+Taoyuan City,2008,RN/LPN,7820,Specialty,63.4,3079,Surgery ,158647
+Hsinchu County,2008,RN/LPN,866,Specialty,62.8,595,Surgery ,12295
+Yilan County,2008,RN/LPN,1995,Specialty,54,869,Surgery ,49938
+Miaoli County,2008,RN/LPN,1262,Specialty,50.7,875,Surgery ,28463
+Changhua County,2008,RN/LPN,4540,Specialty,61.1,1912,Surgery ,93301
+Nantou County,2008,RN/LPN,1345,Specialty,54.7,671,Surgery ,25324
+Yunlin County,2008,RN/LPN,1638,Specialty,56.2,870,Surgery ,28664
+Chiayi County,2008,RN/LPN,1647,Specialty,68.7,593,Surgery ,34834
+Pingtung County,2008,RN/LPN,2861,Specialty,63,1280,Surgery ,42143
+Penghu County,2008,RN/LPN,209,Specialty,27.4,109,Surgery ,3117
+Hualien County,2008,RN/LPN,2001,Specialty,59.8,746,Surgery ,30357
+Taitung County,2008,RN/LPN,759,Specialty,48.5,397,Surgery ,12394
+Kinmen County,2008,RN/LPN,131,Specialty,30.8,54,Surgery ,1476
+Lienchiang County,2008,RN/LPN,18,Specialty,0,2,Surgery ,85
+Taipei City,2009,Total,29582,Total,,21210,Clinic,21346253
+Taichung City,2009,Total,17406,Total,,17232,Clinic,12505069
+Tainan City,2009,Total,9603,Total,,9669,Clinic,6664909
+Kaohsiung City,2009,Total,18044,Total,,17383,Clinic,13519457
+Keelung City,2009,Total,2151,Total,,2204,Clinic,1673632
+Hsinchu City,2009,Total,2434,Total,,2130,Clinic,2063658
+Chiayi City,2009,Total,3577,Total,,3530,Clinic,2541194
+New Taipei City,2009,Total,12346,Total,,12405,Clinic,9054375
+Taoyuan City,2009,Total,12229,Total,,12094,Clinic,8129002
+Hsinchu County,2009,Total,1329,Total,,2122,Clinic,945339
+Yilan County,2009,Total,2950,Total,,3712,Clinic,2055649
+Miaoli County,2009,Total,2052,Total,,3244,Clinic,1959948
+Changhua County,2009,Total,7101,Total,,7081,Clinic,4865743
+Nantou County,2009,Total,2131,Total,,3043,Clinic,1956723
+Yunlin County,2009,Total,2737,Total,,3220,Clinic,2074774
+Chiayi County,2009,Total,2878,Total,,2956,Clinic,1708396
+Pingtung County,2009,Total,4329,Total,,5198,Clinic,3240440
+Penghu County,2009,Total,353,Total,,448,Clinic,278592
+Hualien County,2009,Total,3217,Total,,4170,Clinic,1599978
+Taitung County,2009,Total,1128,Total,,1393,Clinic,816565
+Kinmen County,2009,Total,236,Total,,245,Clinic,242010
+Lienchiang County,2009,Total,42,Total,,27,Clinic,81830
+Taipei City,2009,Doctor,6092,General,71.9,15788,Emergency,1152358
+Taichung City,2009,Doctor,3024,General,64.9,12490,Emergency,814857
+Tainan City,2009,Doctor,1724,General,68.4,7019,Emergency,548047
+Kaohsiung City,2009,Doctor,3243,General,68.5,12425,Emergency,880503
+Keelung City,2009,Doctor,403,General,70.4,1603,Emergency,151653
+Hsinchu City,2009,Doctor,362,General,58.1,1487,Emergency,234868
+Chiayi City,2009,Doctor,477,General,66.6,2401,Emergency,179617
+New Taipei City,2009,Doctor,2023,General,75.1,8862,Emergency,817167
+Taoyuan City,2009,Doctor,2137,General,67.9,9059,Emergency,642899
+Hsinchu County,2009,Doctor,181,General,57.6,1527,Emergency,105956
+Yilan County,2009,Doctor,377,General,78.2,2876,Emergency,194569
+Miaoli County,2009,Doctor,264,General,61,2370,Emergency,130229
+Changhua County,2009,Doctor,1122,General,64.7,5241,Emergency,360396
+Nantou County,2009,Doctor,279,General,75.2,2361,Emergency,146511
+Yunlin County,2009,Doctor,415,General,58,2260,Emergency,170813
+Chiayi County,2009,Doctor,447,General,63.6,2327,Emergency,119953
+Pingtung County,2009,Doctor,560,General,67.4,3862,Emergency,285994
+Penghu County,2009,Doctor,51,General,62.9,337,Emergency,41571
+Hualien County,2009,Doctor,553,General,80.7,3432,Emergency,149465
+Taitung County,2009,Doctor,151,General,70.4,935,Emergency,94246
+Kinmen County,2009,Doctor,25,General,56.8,188,Emergency,25392
+Lienchiang County,2009,Doctor,8,General,30.2,25,Emergency,7045
+Taipei City,2009,RN/LPN,17850,Specialty,60.1,5422,Surgery ,372166
+Taichung City,2009,RN/LPN,10884,Specialty,68.1,4742,Surgery ,224557
+Tainan City,2009,RN/LPN,5996,Specialty,68.6,2650,Surgery ,126892
+Kaohsiung City,2009,RN/LPN,11498,Specialty,60.4,4958,Surgery ,217472
+Keelung City,2009,RN/LPN,1323,Specialty,62.8,601,Surgery ,27041
+Hsinchu City,2009,RN/LPN,1639,Specialty,63.8,643,Surgery ,37571
+Chiayi City,2009,RN/LPN,2414,Specialty,59.3,1129,Surgery ,42144
+New Taipei City,2009,RN/LPN,7949,Specialty,70.5,3543,Surgery ,158669
+Taoyuan City,2009,RN/LPN,7976,Specialty,61.4,3035,Surgery ,166962
+Hsinchu County,2009,RN/LPN,891,Specialty,61.5,595,Surgery ,13332
+Yilan County,2009,RN/LPN,2051,Specialty,59.2,836,Surgery ,49571
+Miaoli County,2009,RN/LPN,1325,Specialty,51.4,874,Surgery ,27632
+Changhua County,2009,RN/LPN,4638,Specialty,63.6,1840,Surgery ,92226
+Nantou County,2009,RN/LPN,1405,Specialty,54.2,682,Surgery ,26147
+Yunlin County,2009,RN/LPN,1773,Specialty,54.3,960,Surgery ,29571
+Chiayi County,2009,RN/LPN,1910,Specialty,59.9,629,Surgery ,35272
+Pingtung County,2009,RN/LPN,2995,Specialty,57.8,1336,Surgery ,44376
+Penghu County,2009,RN/LPN,229,Specialty,28.8,111,Surgery ,3084
+Hualien County,2009,RN/LPN,2050,Specialty,61.4,738,Surgery ,32209
+Taitung County,2009,RN/LPN,765,Specialty,43.2,458,Surgery ,9783
+Kinmen County,2009,RN/LPN,152,Specialty,34.2,57,Surgery ,2445
+Lienchiang County,2009,RN/LPN,19,Specialty,0,2,Surgery ,80
+Taipei City,2010,Total,30064,Total,,21216,Clinic,21637451
+Taichung City,2010,Total,17979,Total,,17207,Clinic,12794833
+Tainan City,2010,Total,9893,Total,,9496,Clinic,6584162
+Kaohsiung City,2010,Total,18968,Total,,17429,Clinic,13500356
+Keelung City,2010,Total,2187,Total,,2152,Clinic,1677968
+Hsinchu City,2010,Total,2541,Total,,2193,Clinic,2126793
+Chiayi City,2010,Total,3725,Total,,3514,Clinic,2605811
+New Taipei City,2010,Total,12843,Total,,12457,Clinic,9054351
+Taoyuan City,2010,Total,12526,Total,,12219,Clinic,8267650
+Hsinchu County,2010,Total,1327,Total,,2123,Clinic,962494
+Yilan County,2010,Total,2986,Total,,3728,Clinic,2137982
+Miaoli County,2010,Total,2047,Total,,3221,Clinic,1983052
+Changhua County,2010,Total,7309,Total,,7130,Clinic,5414663
+Nantou County,2010,Total,2209,Total,,3148,Clinic,2008251
+Yunlin County,2010,Total,2967,Total,,3381,Clinic,2121099
+Chiayi County,2010,Total,2977,Total,,3066,Clinic,1745725
+Pingtung County,2010,Total,4380,Total,,5298,Clinic,3055533
+Penghu County,2010,Total,365,Total,,455,Clinic,321759
+Hualien County,2010,Total,3294,Total,,4294,Clinic,1634851
+Taitung County,2010,Total,1174,Total,,1383,Clinic,802225
+Kinmen County,2010,Total,245,Total,,251,Clinic,248466
+Lienchiang County,2010,Total,39,Total,,40,Clinic,83226
+Taipei City,2010,Doctor,6206,General,73.6,15742,Emergency,1131035
+Taichung City,2010,Doctor,3117,General,66.6,12442,Emergency,830766
+Tainan City,2010,Doctor,1739,General,70.2,6906,Emergency,553133
+Kaohsiung City,2010,Doctor,3342,General,68.7,12472,Emergency,876869
+Keelung City,2010,Doctor,429,General,75,1542,Emergency,144310
+Hsinchu City,2010,Doctor,374,General,62.8,1499,Emergency,239768
+Chiayi City,2010,Doctor,502,General,67.2,2401,Emergency,178808
+New Taipei City,2010,Doctor,2078,General,77.2,8838,Emergency,768887
+Taoyuan City,2010,Doctor,2150,General,69,9101,Emergency,653808
+Hsinchu County,2010,Doctor,181,General,62.9,1523,Emergency,105497
+Yilan County,2010,Doctor,384,General,75.4,2880,Emergency,193305
+Miaoli County,2010,Doctor,259,General,61.3,2350,Emergency,140071
+Changhua County,2010,Doctor,1143,General,65.3,5341,Emergency,366145
+Nantou County,2010,Doctor,279,General,75.4,2427,Emergency,157166
+Yunlin County,2010,Doctor,460,General,58.4,2335,Emergency,176210
+Chiayi County,2010,Doctor,456,General,70.8,2367,Emergency,118138
+Pingtung County,2010,Doctor,569,General,65.2,3957,Emergency,276106
+Penghu County,2010,Doctor,59,General,67.2,337,Emergency,42072
+Hualien County,2010,Doctor,558,General,81.1,3556,Emergency,150448
+Taitung County,2010,Doctor,147,General,63.9,935,Emergency,93160
+Kinmen County,2010,Doctor,29,General,61.8,188,Emergency,26869
+Lienchiang County,2010,Doctor,8,General,17.8,38,Emergency,6866
+Taipei City,2010,RN/LPN,18019,Specialty,62.5,5474,Surgery ,383527
+Taichung City,2010,RN/LPN,11190,Specialty,69.1,4765,Surgery ,226455
+Tainan City,2010,RN/LPN,6152,Specialty,72,2590,Surgery ,130185
+Kaohsiung City,2010,RN/LPN,12199,Specialty,62.8,4957,Surgery ,215785
+Keelung City,2010,RN/LPN,1316,Specialty,65.7,610,Surgery ,26725
+Hsinchu City,2010,RN/LPN,1716,Specialty,65.3,694,Surgery ,39817
+Chiayi City,2010,RN/LPN,2477,Specialty,66.4,1113,Surgery ,40959
+New Taipei City,2010,RN/LPN,8215,Specialty,71.7,3619,Surgery ,162073
+Taoyuan City,2010,RN/LPN,8116,Specialty,58.1,3118,Surgery ,161420
+Hsinchu County,2010,RN/LPN,874,Specialty,61.7,600,Surgery ,13104
+Yilan County,2010,RN/LPN,2049,Specialty,55.9,848,Surgery ,32268
+Miaoli County,2010,RN/LPN,1311,Specialty,54.1,871,Surgery ,27887
+Changhua County,2010,RN/LPN,4706,Specialty,64.6,1789,Surgery ,92482
+Nantou County,2010,RN/LPN,1447,Specialty,56.6,721,Surgery ,26421
+Yunlin County,2010,RN/LPN,1902,Specialty,52.2,1046,Surgery ,32093
+Chiayi County,2010,RN/LPN,1963,Specialty,60.8,699,Surgery ,34914
+Pingtung County,2010,RN/LPN,3009,Specialty,61.5,1341,Surgery ,43659
+Penghu County,2010,RN/LPN,231,Specialty,29.3,118,Surgery ,3645
+Hualien County,2010,RN/LPN,2085,Specialty,61.5,738,Surgery ,32674
+Taitung County,2010,RN/LPN,804,Specialty,56.9,448,Surgery ,10090
+Kinmen County,2010,RN/LPN,150,Specialty,30.8,63,Surgery ,2020
+Lienchiang County,2010,RN/LPN,18,Specialty,0,2,Surgery ,86
+Taipei City,2011,Total,30656,Total,,21082,Clinic,21727215
+Taichung City,2011,Total,18691,Total,,17725,Clinic,13096561
+Tainan City,2011,Total,10062,Total,,9211,Clinic,6596911
+Kaohsiung City,2011,Total,19683,Total,,17287,Clinic,13607922
+Keelung City,2011,Total,2176,Total,,2150,Clinic,1665464
+Hsinchu City,2011,Total,2689,Total,,2238,Clinic,2209386
+Chiayi City,2011,Total,3835,Total,,3599,Clinic,2679673
+New Taipei City,2011,Total,13126,Total,,12634,Clinic,9278396
+Taoyuan City,2011,Total,12731,Total,,12187,Clinic,8329991
+Hsinchu County,2011,Total,1374,Total,,2042,Clinic,955499
+Yilan County,2011,Total,3063,Total,,3785,Clinic,2236100
+Miaoli County,2011,Total,2103,Total,,3179,Clinic,1954100
+Changhua County,2011,Total,7416,Total,,7090,Clinic,5464906
+Nantou County,2011,Total,2299,Total,,3093,Clinic,2029208
+Yunlin County,2011,Total,3041,Total,,3337,Clinic,2152353
+Chiayi County,2011,Total,2929,Total,,3055,Clinic,1757661
+Pingtung County,2011,Total,4608,Total,,5346,Clinic,3115245
+Penghu County,2011,Total,366,Total,,455,Clinic,325798
+Hualien County,2011,Total,3298,Total,,4239,Clinic,1659235
+Taitung County,2011,Total,1202,Total,,1400,Clinic,770709
+Kinmen County,2011,Total,249,Total,,251,Clinic,246988
+Lienchiang County,2011,Total,35,Total,,46,Clinic,85699
+Taipei City,2011,Doctor,6369,General,75.8,15673,Emergency,1170145
+Taichung City,2011,Doctor,3220,General,64.9,12927,Emergency,849114
+Tainan City,2011,Doctor,1734,General,71.3,6743,Emergency,572303
+Kaohsiung City,2011,Doctor,3385,General,71.6,12244,Emergency,887087
+Keelung City,2011,Doctor,425,General,77.3,1539,Emergency,145852
+Hsinchu City,2011,Doctor,426,General,65.1,1555,Emergency,253492
+Chiayi City,2011,Doctor,521,General,67.7,2442,Emergency,183555
+New Taipei City,2011,Doctor,2139,General,78.5,8961,Emergency,838716
+Taoyuan City,2011,Doctor,2175,General,69.6,9098,Emergency,663053
+Hsinchu County,2011,Doctor,175,General,65.1,1484,Emergency,108209
+Yilan County,2011,Doctor,392,General,75.6,2930,Emergency,201487
+Miaoli County,2011,Doctor,253,General,59.8,2334,Emergency,143680
+Changhua County,2011,Doctor,1165,General,66.6,5282,Emergency,375877
+Nantou County,2011,Doctor,305,General,77.3,2377,Emergency,155678
+Yunlin County,2011,Doctor,466,General,58.2,2317,Emergency,180257
+Chiayi County,2011,Doctor,432,General,69.7,2367,Emergency,124651
+Pingtung County,2011,Doctor,603,General,65.5,4002,Emergency,290695
+Penghu County,2011,Doctor,57,General,61.7,337,Emergency,42530
+Hualien County,2011,Doctor,564,General,82.8,3520,Emergency,151405
+Taitung County,2011,Doctor,154,General,65.3,946,Emergency,101346
+Kinmen County,2011,Doctor,28,General,58.3,188,Emergency,27197
+Lienchiang County,2011,Doctor,5,General,20.6,40,Emergency,7298
+Taipei City,2011,RN/LPN,18248,Specialty,66,5409,Surgery ,395337
+Taichung City,2011,RN/LPN,11634,Specialty,70,4798,Surgery ,227017
+Tainan City,2011,RN/LPN,6312,Specialty,73.8,2468,Surgery ,125968
+Kaohsiung City,2011,RN/LPN,12661,Specialty,63.9,5043,Surgery ,222260
+Keelung City,2011,RN/LPN,1302,Specialty,64.6,611,Surgery ,25691
+Hsinchu City,2011,RN/LPN,1787,Specialty,72,683,Surgery ,41339
+Chiayi City,2011,RN/LPN,2526,Specialty,68.2,1157,Surgery ,41580
+New Taipei City,2011,RN/LPN,8298,Specialty,74.9,3673,Surgery ,162593
+Taoyuan City,2011,RN/LPN,8219,Specialty,65.3,3089,Surgery ,163627
+Hsinchu County,2011,RN/LPN,924,Specialty,70.8,558,Surgery ,12999
+Yilan County,2011,RN/LPN,2091,Specialty,55.7,855,Surgery ,35173
+Miaoli County,2011,RN/LPN,1349,Specialty,53.9,845,Surgery ,27554
+Changhua County,2011,RN/LPN,4750,Specialty,66,1808,Surgery ,92981
+Nantou County,2011,RN/LPN,1476,Specialty,59.8,716,Surgery ,25372
+Yunlin County,2011,RN/LPN,1943,Specialty,55.1,1020,Surgery ,32902
+Chiayi County,2011,RN/LPN,1949,Specialty,60.7,688,Surgery ,33536
+Pingtung County,2011,RN/LPN,3123,Specialty,62.2,1344,Surgery ,42870
+Penghu County,2011,RN/LPN,231,Specialty,29.9,118,Surgery ,3648
+Hualien County,2011,RN/LPN,2039,Specialty,65,719,Surgery ,32371
+Taitung County,2011,RN/LPN,808,Specialty,54.3,454,Surgery ,10051
+Kinmen County,2011,RN/LPN,157,Specialty,35.5,63,Surgery ,1840
+Lienchiang County,2011,RN/LPN,18,Specialty,9.9,6,Surgery ,73
+Taipei City,2012,Total,31067,Total,,20819,Clinic,22855610
+Taichung City,2012,Total,19204,Total,,17646,Clinic,13540291
+Tainan City,2012,Total,11215,Total,,9161,Clinic,6752981
+Kaohsiung City,2012,Total,20238,Total,,17257,Clinic,13452168
+Keelung City,2012,Total,2236,Total,,2235,Clinic,1620828
+Hsinchu City,2012,Total,2820,Total,,2290,Clinic,2258917
+Chiayi City,2012,Total,3917,Total,,3691,Clinic,2761541
+New Taipei City,2012,Total,13489,Total,,12751,Clinic,9661483
+Taoyuan City,2012,Total,13326,Total,,12085,Clinic,8790155
+Hsinchu County,2012,Total,1346,Total,,2049,Clinic,969741
+Yilan County,2012,Total,3162,Total,,3732,Clinic,2501017
+Miaoli County,2012,Total,2160,Total,,3090,Clinic,1913624
+Changhua County,2012,Total,7656,Total,,6999,Clinic,5588413
+Nantou County,2012,Total,2353,Total,,3123,Clinic,2043212
+Yunlin County,2012,Total,3000,Total,,3284,Clinic,2255173
+Chiayi County,2012,Total,3111,Total,,3019,Clinic,1838568
+Pingtung County,2012,Total,4527,Total,,5431,Clinic,3204388
+Penghu County,2012,Total,360,Total,,455,Clinic,319838
+Hualien County,2012,Total,3305,Total,,4183,Clinic,1693274
+Taitung County,2012,Total,1250,Total,,1405,Clinic,732613
+Kinmen County,2012,Total,260,Total,,251,Clinic,232927
+Lienchiang County,2012,Total,36,Total,,46,Clinic,89435
+Taipei City,2012,Doctor,6531,General,75,15533,Emergency,1150630
+Taichung City,2012,Doctor,3258,General,66.4,12959,Emergency,864306
+Tainan City,2012,Doctor,1835,General,68.1,6656,Emergency,575557
+Kaohsiung City,2012,Doctor,3384,General,71.3,12278,Emergency,916788
+Keelung City,2012,Doctor,407,General,67.1,1623,Emergency,143329
+Hsinchu City,2012,Doctor,430,General,63.7,1601,Emergency,251315
+Chiayi City,2012,Doctor,554,General,65.5,2539,Emergency,181351
+New Taipei City,2012,Doctor,2178,General,75.4,9100,Emergency,828863
+Taoyuan City,2012,Doctor,2265,General,71.4,8973,Emergency,651158
+Hsinchu County,2012,Doctor,184,General,61.4,1517,Emergency,104928
+Yilan County,2012,Doctor,377,General,73.7,2910,Emergency,208226
+Miaoli County,2012,Doctor,279,General,63,2253,Emergency,146030
+Changhua County,2012,Doctor,1177,General,67.5,5222,Emergency,368779
+Nantou County,2012,Doctor,313,General,76,2407,Emergency,160586
+Yunlin County,2012,Doctor,441,General,61.4,2278,Emergency,187965
+Chiayi County,2012,Doctor,482,General,65.8,2406,Emergency,127670
+Pingtung County,2012,Doctor,604,General,64.6,4110,Emergency,300104
+Penghu County,2012,Doctor,60,General,59.6,337,Emergency,43980
+Hualien County,2012,Doctor,570,General,84.8,3488,Emergency,150075
+Taitung County,2012,Doctor,163,General,60.8,972,Emergency,102417
+Kinmen County,2012,Doctor,37,General,65.3,188,Emergency,27595
+Lienchiang County,2012,Doctor,7,General,13.3,40,Emergency,6934
+Taipei City,2012,RN/LPN,18338,Specialty,70.9,5286,Surgery ,416782
+Taichung City,2012,RN/LPN,12002,Specialty,74.3,4687,Surgery ,241296
+Tainan City,2012,RN/LPN,7165,Specialty,73.6,2505,Surgery ,136255
+Kaohsiung City,2012,RN/LPN,13150,Specialty,67.8,4979,Surgery ,230864
+Keelung City,2012,RN/LPN,1355,Specialty,60.7,612,Surgery ,23209
+Hsinchu City,2012,RN/LPN,1887,Specialty,74.1,689,Surgery ,43605
+Chiayi City,2012,RN/LPN,2534,Specialty,74.1,1152,Surgery ,40511
+New Taipei City,2012,RN/LPN,8486,Specialty,74,3651,Surgery ,159600
+Taoyuan City,2012,RN/LPN,8575,Specialty,66.5,3112,Surgery ,167241
+Hsinchu County,2012,RN/LPN,871,Specialty,73.5,532,Surgery ,12970
+Yilan County,2012,RN/LPN,2167,Specialty,58.9,822,Surgery ,37052
+Miaoli County,2012,RN/LPN,1349,Specialty,55.1,837,Surgery ,29202
+Changhua County,2012,RN/LPN,4900,Specialty,67.1,1777,Surgery ,96285
+Nantou County,2012,RN/LPN,1499,Specialty,60.1,716,Surgery ,25261
+Yunlin County,2012,RN/LPN,1907,Specialty,57.5,1006,Surgery ,35179
+Chiayi County,2012,RN/LPN,2052,Specialty,64.1,613,Surgery ,34304
+Pingtung County,2012,RN/LPN,3045,Specialty,61.4,1321,Surgery ,43773
+Penghu County,2012,RN/LPN,224,Specialty,24.4,118,Surgery ,3367
+Hualien County,2012,RN/LPN,2041,Specialty,65.7,695,Surgery ,33065
+Taitung County,2012,RN/LPN,843,Specialty,58.7,433,Surgery ,10370
+Kinmen County,2012,RN/LPN,156,Specialty,36.4,63,Surgery ,1505
+Lienchiang County,2012,RN/LPN,18,Specialty,0,6,Surgery ,52
+Taipei City,2013,Total,31283,Total,,20660,Clinic,22860271
+Taichung City,2013,Total,19742,Total,,17768,Clinic,13728358
+Tainan City,2013,Total,11909,Total,,9320,Clinic,7080493
+Kaohsiung City,2013,Total,20902,Total,,16954,Clinic,13701346
+Keelung City,2013,Total,2338,Total,,2296,Clinic,1635321
+Hsinchu City,2013,Total,3019,Total,,2363,Clinic,2286163
+Chiayi City,2013,Total,4009,Total,,3669,Clinic,2878628
+New Taipei City,2013,Total,13930,Total,,12610,Clinic,9969701
+Taoyuan City,2013,Total,13546,Total,,12096,Clinic,8568730
+Hsinchu County,2013,Total,1408,Total,,2075,Clinic,1033965
+Yilan County,2013,Total,3234,Total,,3673,Clinic,2429891
+Miaoli County,2013,Total,2219,Total,,2843,Clinic,1914989
+Changhua County,2013,Total,7795,Total,,6967,Clinic,5637300
+Nantou County,2013,Total,2359,Total,,3014,Clinic,2081842
+Yunlin County,2013,Total,3116,Total,,3259,Clinic,2344303
+Chiayi County,2013,Total,3231,Total,,3098,Clinic,1869929
+Pingtung County,2013,Total,4564,Total,,5272,Clinic,3235885
+Penghu County,2013,Total,386,Total,,471,Clinic,344282
+Hualien County,2013,Total,3340,Total,,4197,Clinic,1728621
+Taitung County,2013,Total,1286,Total,,1295,Clinic,727418
+Kinmen County,2013,Total,254,Total,,251,Clinic,245859
+Lienchiang County,2013,Total,46,Total,,46,Clinic,83755
+Taipei City,2013,Doctor,6542,General,74.6,15051,Emergency,1060092
+Taichung City,2013,Doctor,3293,General,64.9,13053,Emergency,825484
+Tainan City,2013,Doctor,1913,General,71.5,6744,Emergency,564567
+Kaohsiung City,2013,Doctor,3563,General,72.4,12029,Emergency,869501
+Keelung City,2013,Doctor,443,General,67,1685,Emergency,131012
+Hsinchu City,2013,Doctor,460,General,63.2,1682,Emergency,230909
+Chiayi City,2013,Doctor,571,General,66.6,2528,Emergency,168161
+New Taipei City,2013,Doctor,2299,General,74.9,9017,Emergency,781711
+Taoyuan City,2013,Doctor,2299,General,71.9,8800,Emergency,627522
+Hsinchu County,2013,Doctor,184,General,60.4,1566,Emergency,110920
+Yilan County,2013,Doctor,402,General,73.3,2874,Emergency,196980
+Miaoli County,2013,Doctor,278,General,68.1,2008,Emergency,141722
+Changhua County,2013,Doctor,1213,General,66,5188,Emergency,347047
+Nantou County,2013,Doctor,321,General,76.9,2301,Emergency,152348
+Yunlin County,2013,Doctor,442,General,61.1,2241,Emergency,177967
+Chiayi County,2013,Doctor,482,General,68.7,2406,Emergency,118260
+Pingtung County,2013,Doctor,612,General,64.8,4017,Emergency,286905
+Penghu County,2013,Doctor,74,General,57.5,353,Emergency,41323
+Hualien County,2013,Doctor,587,General,84,3440,Emergency,141016
+Taitung County,2013,Doctor,160,General,64.4,920,Emergency,94957
+Kinmen County,2013,Doctor,38,General,66,188,Emergency,25473
+Lienchiang County,2013,Doctor,11,General,15.1,40,Emergency,7450
+Taipei City,2013,RN/LPN,18392,Specialty,63.4,5609,Surgery ,415183
+Taichung City,2013,RN/LPN,12348,Specialty,71.1,4715,Surgery ,246211
+Tainan City,2013,RN/LPN,7650,Specialty,69.7,2576,Surgery ,140684
+Kaohsiung City,2013,RN/LPN,13360,Specialty,64.6,4922,Surgery ,232993
+Keelung City,2013,RN/LPN,1403,Specialty,54.4,611,Surgery ,25981
+Hsinchu City,2013,RN/LPN,2010,Specialty,69.7,681,Surgery ,44646
+Chiayi City,2013,RN/LPN,2574,Specialty,71.8,1141,Surgery ,42735
+New Taipei City,2013,RN/LPN,8687,Specialty,73.5,3593,Surgery ,168070
+Taoyuan City,2013,RN/LPN,8678,Specialty,65.9,3296,Surgery ,170581
+Hsinchu County,2013,RN/LPN,902,Specialty,71.3,509,Surgery ,13773
+Yilan County,2013,RN/LPN,2196,Specialty,58.8,799,Surgery ,35752
+Miaoli County,2013,RN/LPN,1390,Specialty,53.9,835,Surgery ,29668
+Changhua County,2013,RN/LPN,4942,Specialty,66.7,1779,Surgery ,97903
+Nantou County,2013,RN/LPN,1478,Specialty,54.3,713,Surgery ,25078
+Yunlin County,2013,RN/LPN,1995,Specialty,56.5,1018,Surgery ,36225
+Chiayi County,2013,RN/LPN,2147,Specialty,54.1,692,Surgery ,37388
+Pingtung County,2013,RN/LPN,3058,Specialty,61.2,1255,Surgery ,45982
+Penghu County,2013,RN/LPN,230,Specialty,29.3,118,Surgery ,3583
+Hualien County,2013,RN/LPN,2021,Specialty,57.2,757,Surgery ,34277
+Taitung County,2013,RN/LPN,834,Specialty,66.5,375,Surgery ,10222
+Kinmen County,2013,RN/LPN,149,Specialty,32,63,Surgery ,1842
+Lienchiang County,2013,RN/LPN,17,Specialty,0,6,Surgery ,51
+Taipei City,2014,Total,31906,Total,,20257,Clinic,22889596
+Taichung City,2014,Total,20027,Total,,17765,Clinic,14012036
+Tainan City,2014,Total,12206,Total,,9401,Clinic,7520842
+Kaohsiung City,2014,Total,21346,Total,,16915,Clinic,13826131
+Keelung City,2014,Total,2469,Total,,2387,Clinic,1710241
+Hsinchu City,2014,Total,3139,Total,,2385,Clinic,2356481
+Chiayi City,2014,Total,4047,Total,,3481,Clinic,2950236
+New Taipei City,2014,Total,14329,Total,,12788,Clinic,10241235
+Taoyuan City,2014,Total,13915,Total,,12063,Clinic,8877551
+Hsinchu County,2014,Total,1450,Total,,2073,Clinic,1056003
+Yilan County,2014,Total,3364,Total,,3453,Clinic,2478329
+Miaoli County,2014,Total,2278,Total,,2962,Clinic,1928870
+Changhua County,2014,Total,7949,Total,,6886,Clinic,5726361
+Nantou County,2014,Total,2323,Total,,2980,Clinic,2134983
+Yunlin County,2014,Total,3291,Total,,3274,Clinic,2091112
+Chiayi County,2014,Total,3384,Total,,3042,Clinic,1908027
+Pingtung County,2014,Total,4627,Total,,5020,Clinic,3210762
+Penghu County,2014,Total,382,Total,,471,Clinic,357024
+Hualien County,2014,Total,3402,Total,,4183,Clinic,1794025
+Taitung County,2014,Total,1315,Total,,1286,Clinic,749024
+Kinmen County,2014,Total,264,Total,,400,Clinic,225058
+Lienchiang County,2014,Total,42,Total,,46,Clinic,82677
+Taipei City,2014,Doctor,6626,General,74.9,14705,Emergency,1081832
+Taichung City,2014,Doctor,3369,General,65.5,13048,Emergency,847896
+Tainan City,2014,Doctor,1924,General,73.7,6667,Emergency,587491
+Kaohsiung City,2014,Doctor,3668,General,72.5,12022,Emergency,918061
+Keelung City,2014,Doctor,466,General,68.9,1776,Emergency,133899
+Hsinchu City,2014,Doctor,498,General,65.6,1678,Emergency,240319
+Chiayi City,2014,Doctor,576,General,66.3,2380,Emergency,173480
+New Taipei City,2014,Doctor,2394,General,73.3,9104,Emergency,796215
+Taoyuan City,2014,Doctor,2377,General,73.3,8766,Emergency,645124
+Hsinchu County,2014,Doctor,200,General,63.3,1545,Emergency,109366
+Yilan County,2014,Doctor,420,General,76.8,2677,Emergency,205430
+Miaoli County,2014,Doctor,286,General,59.5,2138,Emergency,145534
+Changhua County,2014,Doctor,1206,General,68.5,5111,Emergency,365379
+Nantou County,2014,Doctor,315,General,77.5,2279,Emergency,154583
+Yunlin County,2014,Doctor,465,General,61.6,2247,Emergency,184858
+Chiayi County,2014,Doctor,526,General,72.7,2344,Emergency,125258
+Pingtung County,2014,Doctor,619,General,69.8,3775,Emergency,297538
+Penghu County,2014,Doctor,64,General,58.2,353,Emergency,39994
+Hualien County,2014,Doctor,591,General,82.5,3454,Emergency,144781
+Taitung County,2014,Doctor,168,General,68.3,898,Emergency,103495
+Kinmen County,2014,Doctor,39,General,36.9,335,Emergency,26303
+Lienchiang County,2014,Doctor,11,General,10.4,40,Emergency,7220
+Taipei City,2014,RN/LPN,18706,Specialty,67.4,5552,Surgery ,426123
+Taichung City,2014,RN/LPN,12461,Specialty,69.5,4717,Surgery ,253634
+Tainan City,2014,RN/LPN,7855,Specialty,69.9,2734,Surgery ,150020
+Kaohsiung City,2014,RN/LPN,13587,Specialty,65.9,4890,Surgery ,233682
+Keelung City,2014,RN/LPN,1495,Specialty,55.7,611,Surgery ,27370
+Hsinchu City,2014,RN/LPN,2069,Specialty,73.8,707,Surgery ,48973
+Chiayi City,2014,RN/LPN,2572,Specialty,77,1101,Surgery ,45036
+New Taipei City,2014,RN/LPN,8836,Specialty,73,3684,Surgery ,175367
+Taoyuan City,2014,RN/LPN,8903,Specialty,66.8,3297,Surgery ,176098
+Hsinchu County,2014,RN/LPN,910,Specialty,66.7,528,Surgery ,14148
+Yilan County,2014,RN/LPN,2270,Specialty,59.8,776,Surgery ,36846
+Miaoli County,2014,RN/LPN,1438,Specialty,54.1,824,Surgery ,33108
+Changhua County,2014,RN/LPN,5052,Specialty,69.3,1775,Surgery ,100477
+Nantou County,2014,RN/LPN,1446,Specialty,56.7,701,Surgery ,25661
+Yunlin County,2014,RN/LPN,2131,Specialty,59.9,1027,Surgery ,36801
+Chiayi County,2014,RN/LPN,2230,Specialty,57.2,698,Surgery ,38879
+Pingtung County,2014,RN/LPN,3083,Specialty,64,1245,Surgery ,46479
+Penghu County,2014,RN/LPN,227,Specialty,32.7,118,Surgery ,4057
+Hualien County,2014,RN/LPN,2080,Specialty,57.2,729,Surgery ,34406
+Taitung County,2014,RN/LPN,844,Specialty,63.6,388,Surgery ,10590
+Kinmen County,2014,RN/LPN,150,Specialty,29.1,65,Surgery ,1914
+Lienchiang County,2014,RN/LPN,15,Specialty,0,6,Surgery ,42
+Taipei City,2015,Total,32717,Total,,20104,Clinic,22616866
+Taichung City,2015,Total,20699,Total,,17899,Clinic,14288951
+Tainan City,2015,Total,12770,Total,,9579,Clinic,7926271
+Kaohsiung City,2015,Total,22032,Total,,17094,Clinic,13704167
+Keelung City,2015,Total,2511,Total,,2397,Clinic,1736051
+Hsinchu City,2015,Total,3361,Total,,2381,Clinic,2412021
+Chiayi City,2015,Total,4104,Total,,3404,Clinic,2991084
+New Taipei City,2015,Total,14795,Total,,12706,Clinic,10218125
+Taoyuan City,2015,Total,14571,Total,,11965,Clinic,8875718
+Hsinchu County,2015,Total,1513,Total,,2154,Clinic,1025775
+Yilan County,2015,Total,3325,Total,,3449,Clinic,2541048
+Miaoli County,2015,Total,2306,Total,,2935,Clinic,1935066
+Changhua County,2015,Total,8273,Total,,6892,Clinic,5793960
+Nantou County,2015,Total,2342,Total,,2970,Clinic,2156586
+Yunlin County,2015,Total,3386,Total,,3288,Clinic,2130903
+Chiayi County,2015,Total,3342,Total,,3026,Clinic,1945168
+Pingtung County,2015,Total,4746,Total,,4940,Clinic,3199832
+Penghu County,2015,Total,380,Total,,471,Clinic,356736
+Hualien County,2015,Total,3476,Total,,4057,Clinic,1799945
+Taitung County,2015,Total,1372,Total,,1233,Clinic,756959
+Kinmen County,2015,Total,269,Total,,348,Clinic,215779
+Lienchiang County,2015,Total,42,Total,,43,Clinic,80647
+Taipei City,2015,Doctor,6798,General,75.6,12965,Emergency,1092187
+Taichung City,2015,Doctor,3489,General,65.3,10710,Emergency,861401
+Tainan City,2015,Doctor,2004,General,73.1,5571,Emergency,633856
+Kaohsiung City,2015,Doctor,3835,General,72.2,10235,Emergency,942734
+Keelung City,2015,Doctor,476,General,74.3,1281,Emergency,137760
+Hsinchu City,2015,Doctor,516,General,64.5,1561,Emergency,242013
+Chiayi City,2015,Doctor,577,General,68.4,1970,Emergency,175999
+New Taipei City,2015,Doctor,2434,General,73.6,6600,Emergency,797964
+Taoyuan City,2015,Doctor,2454,General,73.7,6955,Emergency,663052
+Hsinchu County,2015,Doctor,201,General,62.7,857,Emergency,110976
+Yilan County,2015,Doctor,413,General,75.5,1951,Emergency,210807
+Miaoli County,2015,Doctor,279,General,65.1,1432,Emergency,153570
+Changhua County,2015,Doctor,1259,General,67.9,3728,Emergency,374182
+Nantou County,2015,Doctor,311,General,77.9,1216,Emergency,156421
+Yunlin County,2015,Doctor,470,General,63.2,1815,Emergency,189223
+Chiayi County,2015,Doctor,544,General,73.1,1760,Emergency,128103
+Pingtung County,2015,Doctor,643,General,71.9,2638,Emergency,304695
+Penghu County,2015,Doctor,58,General,57.6,237,Emergency,41903
+Hualien County,2015,Doctor,601,General,82.1,1484,Emergency,148984
+Taitung County,2015,Doctor,164,General,70.2,621,Emergency,93967
+Kinmen County,2015,Doctor,33,General,47.1,169,Emergency,27924
+Lienchiang County,2015,Doctor,8,General,21.9,26,Emergency,6776
+Taipei City,2015,RN/LPN,19250,Specialty,70.9,5492,Surgery ,372903
+Taichung City,2015,RN/LPN,12932,Specialty,70.2,4741,Surgery ,257853
+Tainan City,2015,RN/LPN,8205,Specialty,71.9,2747,Surgery ,156566
+Kaohsiung City,2015,RN/LPN,13996,Specialty,68.3,4842,Surgery ,243329
+Keelung City,2015,RN/LPN,1521,Specialty,59.8,613,Surgery ,28096
+Hsinchu City,2015,RN/LPN,2249,Specialty,71.7,703,Surgery ,51502
+Chiayi City,2015,RN/LPN,2622,Specialty,73.1,1101,Surgery ,46078
+New Taipei City,2015,RN/LPN,9198,Specialty,73.7,3665,Surgery ,182892
+Taoyuan City,2015,RN/LPN,9395,Specialty,66.9,3365,Surgery ,171005
+Hsinchu County,2015,RN/LPN,959,Specialty,61.1,549,Surgery ,14433
+Yilan County,2015,RN/LPN,2256,Specialty,58.9,772,Surgery ,36971
+Miaoli County,2015,RN/LPN,1464,Specialty,56.3,797,Surgery ,29544
+Changhua County,2015,RN/LPN,5260,Specialty,64.9,1823,Surgery ,104741
+Nantou County,2015,RN/LPN,1480,Specialty,61,691,Surgery ,24949
+Yunlin County,2015,RN/LPN,2196,Specialty,59.3,1041,Surgery ,39141
+Chiayi County,2015,RN/LPN,2189,Specialty,61.6,682,Surgery ,41112
+Pingtung County,2015,RN/LPN,3157,Specialty,64.2,1236,Surgery ,46335
+Penghu County,2015,RN/LPN,233,Specialty,32,118,Surgery ,3762
+Hualien County,2015,RN/LPN,2127,Specialty,62.1,691,Surgery ,34685
+Taitung County,2015,RN/LPN,912,Specialty,63.5,366,Surgery ,10732
+Kinmen County,2015,RN/LPN,161,Specialty,22.3,77,Surgery ,1959
+Lienchiang County,2015,RN/LPN,18,Specialty,2.3,17,Surgery ,43

@@ -29,7 +29,7 @@ library("ggthemes")
 * Which kind of chemicals being used the most  
 * How does the trend change from 2009 to 2016 
 
-## Number of Chemical Cosmetic by Category
+## Chemical Cosmetic by Category
 
 ```{r echo = FALSE}
 CCMprim=count(CCM,PrimaryCategory) %>% arrange(desc(n))
@@ -97,13 +97,13 @@ ggplot(data= subn_makeup, aes(x=reorder(SubCategory,-n), y=n))+
 
 ```
 
-## Number of Chemical Count in Each Category
+## Chemical Count in Each Category
 <img src="images/violin.png" alt="md_quick_ref" height="450" width="800" align="middle">
 
 ## Chemical Types in Primary Category
 <img src="images/stack.png" alt="md_quick_ref" height="450" width="800" align="middle">
 
-## Number of Chemical Cosmetic by Company
+## Chemical Cosmetic by Company
 ```{r echo = FALSE}
 ccm1=count(CCM, CompanyName) %>% arrange(desc(n)) %>% top_n(10,n)
 
@@ -157,6 +157,10 @@ ggplot(data=CCMtem3)+
   xlab("Year")+ ylab("Number of Times Reported")+ 
   ggtitle("Timeline of Reported Cosmetics")
 ```
+
+## Inference 
+- Non-permenant make up has highest chance to contain chemical, and 
+- 
 
 ## Future Questions 
 - Which company take the longest time to remove chemical 

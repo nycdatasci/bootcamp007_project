@@ -65,6 +65,8 @@ Country | Artist | Country Pop. | World Pop. | Net Pop.
     world_pop = x[4]
     net_pop = x[5]
     
+    print(paste0('Creating video for ', country))
+    
     video = create_video_url(artist)
     video_name = video[[1]]
     video_url = video[[2]]
