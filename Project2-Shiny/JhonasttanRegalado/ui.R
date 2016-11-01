@@ -80,7 +80,7 @@ shinyUI(dashboardPage(
                        column(12, div(align = "left", embed_youtube(id = "StMAiYCMuco", frameborder = 50))),
                        column(12, div(align = "left", HTML("<br><h3><u><b>Features</u>
                                                            <ul><li><h3><b>Map:</b><ul>
-                                                           <li><h3>Locate and view capacity for multiple stations>
+                                                           <li><h3>Locate and view capacity for multiple stations
                                                            <li><h3>View travel time between two stations with cycling directions
                                                            <li><h3>Filter on Bike / Dock capacity
                                                            <li><h3>Pin map to your location<h3></ul>
