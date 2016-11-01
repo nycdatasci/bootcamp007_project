@@ -1,0 +1,19 @@
+scrapy shell https://majornelson.com/blog/xbox-one-backward-compatibility/
+
+response.xpath('/html[@class='js flexbox pointerevents']/body[@class='page page-id-20954 page-child parent-pageid-1129 page-template-default mp6 customizer-styles-applied highlander-enabled highlander-light']/section[@id='primary']/div[@class='container-fluid']/article[@id='post-20954']/div[@class='entry-content row']/div[@class='col-md-8 col-sm-10 col-md-offset-2 col-sm-offset-1 single-content']/div[@id='DataTables_Table_0_wrapper']/table[@id='DataTables_Table_0']/tbody/tr[@class='odd'][3]/td[@class='sorting_1']/a').extract()
+
+   //*[@id="DataTables_Table_0"]
+   //*[@id="DataTables_Table_0"]/tbody/tr[1]
+//*[@id="DataTables_Table_0"]/tbody/tr[5]/td[1]
+//*[@id="DataTables_Table_0"]/tbody/tr[5]/td[1]/a
+
+response.xpath('/html[@class='js flexbox pointerevents']/body[@class='page page-id-20954 page-child parent-pageid-1129 page-template-default mp6 customizer-styles-applied highlander-enabled highlander-light']/section[@id='primary']/div[@class='container-fluid']/article[@id='post-20954']/div[@class='entry-content row']/div[@class='col-md-8 col-sm-10 col-md-offset-2 col-sm-offset-1 single-content']/div[@id='DataTables_Table_0_wrapper']/table[@id='DataTables_Table_0']/tbody/tr[@class='odd'][3]/td[@class='sorting_1']/a').extract()
+
+
+scrapy shell https://majornelson.com/blog/xbox-one-backward-compatibility/
+
+
+
+
+scrapy shell https://xbox.uservoice.com/forums/298503-backwards-compatibility
+response.xpath('/html/body/div[2]/div/div/div[1]/article/section[3]/ol/li[1]/div[1]/h2/a').extract()

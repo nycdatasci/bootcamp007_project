@@ -1,8 +1,8 @@
 library(shiny)
 library(googleVis)
-temp = read.csv(file="~/shiny_proj/data/shiny_files/data/temp2009.csv")
-temp1994 = read.csv(file="~/shiny_proj/data/shiny_files/data/temp1994.csv")
-oil = read.csv(file="~/shiny_proj/data/shiny_files/data/oil.2009.csv")
+temp = read.csv(file="./data/temp2009.csv")
+temp1994 = read.csv(file="./data/temp1994.csv")
+oil = read.csv(file="./data/oil.2009.csv")
 # Use a fluid Bootstrap layout
 fluidPage(    
   

@@ -1,0 +1,3 @@
+cd ~/Coding/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBC/
+scrapy crawl Major_Nelson_Blog_BC_List -t csv -o Major_Nelson_Blog_BC_List.csv
+scrapy crawl movie_budget -t csv -o movie_budget.csv
