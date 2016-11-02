@@ -50,7 +50,7 @@ shinyUI(dashboardPage(
                        infoBoxOutput("avgBox")
                        ),
               fluidRow(box(tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
-                           leafletOutput("map"), height = 500, width = 12))),#,
+                           leafletOutput("map"), height = 800, width = 12))),#,
                        #box(htmlOutput("hist"), height = 300))),
       
       tabItem(tabName = "data",
@@ -95,7 +95,7 @@ shinyUI(dashboardPage(
                                                            <li>Google’s gMap for mapping user-entered addresses to geospatial locations and googleVis for Gauge charts representing bike station capacity
                                                            <li>RJSONIO for parsing GeoJson data fetched via cURL from NYC Citi Bike and MapBox REST APIs
                                                            <li>GitHub repository for source code version control 
-                                                           <li>shinyapps.io Cloud based platform by RStudio provided a smooth release process from my RStudio IDE running on a MacBook Pro to Docker containers that includes all the required R libraries
+                                                           <li>shinyapps.io by RStudio provides PaaS (Platform as a Service) solution for a smooth change release process from my RStudio IDE running on a MacBook Pro to Docker containers that include all the required libraries
                                                            </ul>"))),
                        column(12, div(align = "left", HTML("<br><h3><u><b>Feedback<b></u>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Constructive feedback is welcomed!</a><h3>"))),
                        column(12, div(align = "left", HTML("<br><h3><u><b>LinkedIn Profile<b></u>: <a href='https://www.linkedin.com/in/jhonasttanregalado'>Jhonasttan Regalado, PMP</a><h3>")))
