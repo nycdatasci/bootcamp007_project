@@ -88,9 +88,3 @@ shinyUI(dashboardPage(
        )
   )
 ))
-dashboardSidebar(
-  sidebarUserPanel("Your Name"),
-  sidebarMenu(
-    menuItem("Map", tabName = "map", icon = icon("map")),
-    menuItem("Data", tabName = "data", icon = icon("database")))
-)

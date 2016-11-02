@@ -1,4 +1,5 @@
 ## server.R ##
+library(dplyr)
 shinyServer(function(input, output){
   
 # You can access the values of the second widget with input$slider2, e.g.
