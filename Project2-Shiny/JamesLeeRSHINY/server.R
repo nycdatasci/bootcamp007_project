@@ -1,11 +1,4 @@
-#
-# This is the server logic of a Shiny web application. You can run the 
-# application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 library(shinydashboard)
@@ -49,7 +42,8 @@ shinyServer(function(input, output) {
     YTable1 = filter(Table1, TUYEAR == input$slider1)
     
     
-    Bar = gvisColumnChart(data = YTable1, xvar = "Activity", yvar = "Time")
+    Bar = gvisColumnChart(data = YTable1, xvar = "Activity", yvar = "Time", options =list(
+      vAxes="[{viewWindowMode:'explicit',viewWindow:{min:0, max:350}}]", width=1000, height=600))
     return (Bar)
     })
   output$barPlot2 = renderGvis({
@@ -85,11 +79,12 @@ shinyServer(function(input, output) {
     YTable3 = filter(Table3, TUYEAR == input$slider2)
     
     
-    Bar2 = gvisColumnChart(data = YTable3, xvar = "Activity", yvar = "Time")
+    Bar2 = gvisColumnChart(data = YTable3, xvar = "Activity", yvar = "Time", options =list(
+                           vAxes="[{viewWindowMode:'explicit',viewWindow:{min:-5, max:8}}]", width=1000, height=600))
     return (Bar2)
   })
   
-  output$DataFrame = DT::renderDataTable(DT::datatable({
+  output$DataFrame = DT::renderDataTable({
     
     FilterTable = NewASum3
     if (input$race != 9) {
@@ -121,9 +116,11 @@ shinyServer(function(input, output) {
     Table1 = Table1 %>% 
       arrange(TUYEAR,desc(Time))
       
-    return (Table1)
+    DataTableS = DT::datatable(Table1, options =  list(pageLength =18))
+    return (DataTableS)
     
 
     
-}))
-})
+})})
+
+

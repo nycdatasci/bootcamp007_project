@@ -1,4 +1,4 @@
-setwd("C:/Users/Xinyuan Wu/Dropbox/NYC DS Academy/Project 2/Xinyuan_Wu")
+# setwd("C:/Users/Xinyuan Wu/Dropbox/NYC DS Academy/Project 2/Xinyuan_Wu")
 library(dplyr); library(DT); library(googleVis) 
 library(ggplot2); library(dplyr); library(ggthemes)
 library(shiny); library(shinydashboard); library(shinythemes)
