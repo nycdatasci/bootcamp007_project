@@ -20,6 +20,8 @@ team.name.list <- c("Arizona Cardinals", "Atlanta Falcons", "Baltimore Ravens",
 
 years.available<- c('2016-2017', '2015-2016', '2013-2014', '2012-2013', '2011-2012')
 
+chart.type <- c('Bar Chart', 'Line Chart')
+
 offensive.positions <- c("QB", "RB", "WR", "K", "TE")
 
 # removed Week and Home Away for now
@@ -32,7 +34,9 @@ compare.stat.list <- paste(rep(stat.list, each ='2'), c('.p1','.p2'), sep='')
 names(compare.stat.list) <- rep(stat.list, each='2')
 compare.stat.list <- split(compare.stat.list, 1:2)
 
-title.bar <- "DEFAULT"
+
+
+
 
 queryAPI <- function(player.name, year){
   
@@ -106,6 +110,33 @@ queryAPI <- function(player.name, year){
   
   return(list('stats.frame'=stats.frame, 'player'= player.info))
   
+}
+
+
+
+# Gvis plotting -----------------------------------------------------------
+
+selectedGvis <- function(chart.type, title, data, xvar, yvar) {
+  
+  if (chart.type == 'Bar Chart') {
+    
+    k <- gvisBarChart(data, xvar, yvar,
+                 options = list(width = 600, height = 400,
+                                title = title,
+                                titleTextStyle = "{fontSize:18}",
+                                vAxis = "{title: 'Week'}"
+                 )
+    ) } else if(chart.type == 'Line Chart') {
+      k <- gvisLineChart(data, xvar, yvar,
+                    options = list(width = 600, height = 400,
+                                  title = title,
+                                  titleTextStyle = "{fontSize:18}",
+                                  vAxis = "{title: 'Week'}"  
+                  )
+      )
+     }
+                         
+  return(k)
 }
 
 

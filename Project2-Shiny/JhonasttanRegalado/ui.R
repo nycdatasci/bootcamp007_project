@@ -50,7 +50,7 @@ shinyUI(dashboardPage(
                        infoBoxOutput("avgBox")
                        ),
               fluidRow(box(tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
-                           leafletOutput("map"), height = 500, width = 12))),#,
+                           leafletOutput("map"), height = 800, width = 12))),#,
                        #box(htmlOutput("hist"), height = 300))),
       
       tabItem(tabName = "data",
@@ -64,7 +64,7 @@ shinyUI(dashboardPage(
                        column(12, box(htmlOutput("gaugeDocks"), height = 30000,width = 18)))),
       tabItem(tabName = "introVideo",
               fluidRow(column(12, div(align = "left", HTML("<br><h2>Analyze NYC Citi Bike Bike / Station Capacity and Plan your Trip<h2><br>"))),
-                       column(8, div(align = "left", HTML("<p><h3>The Citibike Station Capacity Analysis working prototype is a result of project 2 of the NYC Data Science Academy <a href='http://nycdatascience.com/data-science-bootcamp/'>boot camp</a>
+                       column(12, div(align = "left", HTML("<p><h3>The Citibike Station Capacity Analysis working prototype is a result of project 2 of the NYC Data Science Academy <a href='http://nycdatascience.com/data-science-bootcamp/'>boot camp</a>
                                                             (solve a business problem using open source application development frameworks Shiny and RStudio and Open Data). I have been fascinated by the number of people riding NYC Citi Bikes for either commuting or recreation. 
                                                            I’ve asked a few Citi Bike subscribers about their experience, and yes, some have dealt with a pothole or two; therefore, was interested in understanding the logistics. 
                                                            How are the stations replenished and how do users typically deal with bike capacity constraints when they really need a bike. 
@@ -76,22 +76,29 @@ shinyUI(dashboardPage(
                                                           The proposed ideas could be integrated into their product development pipeline. 
                                                           <br><br><p>I welcome you to try the product and 
                                                           provide constructive feedback. Thanks!</p>"))),
-                       column(12, div(align = "left", HTML("<br><h2>How to Video<h2><br>"))),
+                       column(12, div(align = "left", HTML("<br><h3><u><b>How to Video</u><br>"))),
                        column(12, div(align = "left", embed_youtube(id = "StMAiYCMuco", frameborder = 50))),
-                       column(12, div(align = "left", HTML("<br><h2>Features<h2>"))),
-                       column(12,tags$div(
-                                   tags$ul(
-                                      tags$li(HTML("<h3><b>Map</b>: Locate and view capacity for multiple stations<h3>")),
-                                      tags$li(HTML("<h3><b>Map</b>: View travel time between two stations with cycling directions<h3>")),
-                                      tags$li(HTML("<h3><b>Map</b>: Filter on Bike / Dock capacity<h3>")),
-                                      tags$li(HTML("<h3><b>Map</b>: Pin map to your location<h3>")),
-                                      tags$li(HTML("<h3><b>Bike / Dock Gauge</b>: Gauge Bike / Dock capacity by station<h3>")),
-                                      tags$li(HTML("<h3><b>Data</b>: Query NYC Citi Bike station data<h3>"))
-                                      
-                            )
-                          )),
-                       column(12, div(align = "left", HTML("<br><h3><b>Feedback<b>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Constructive feedback is welcomed!</a><h3>"))),
-                       column(12, div(align = "left", HTML("<br><h3><b>LinkedIn Profile<b>: <a href='https://www.linkedin.com/in/jhonasttanregalado'>Jhonasttan Regalado, PMP</a><h3>")))
+                       column(12, div(align = "left", HTML("<br><h3><u><b>Features</u>
+                                                           <ul><li><h3><b>Map:</b><ul>
+                                                           <li><h3>Locate and view capacity for multiple stations
+                                                           <li><h3>View travel time between two stations with cycling directions
+                                                           <li><h3>Filter on Bike / Dock capacity
+                                                           <li><h3>Pin map to your location<h3></ul>
+                                                           <li><h3><b>Bike / Dock Gauge</b>:</h3><ul> 
+                                                           <li><h3>Gauge Bike / Dock capacity by station<h3></ul>
+                                                           <li><h3><b>Data</b>:</b></h3><ul> 
+                                                           <li><h3>Query NYC Citi Bike station data</h3></ul>
+                                                           </ul>"))),
+                       column(12, div(align = "left", HTML("<br><h3><u><b>Technology Under the Hood</b></u><br><br>
+                                                           <ul><li>Shiny Dashboard for the user interface
+                                                           <li>Leaflet for interactive maps
+                                                           <li>Google’s gMap for mapping user-entered addresses to geospatial locations and googleVis for Gauge charts representing bike station capacity
+                                                           <li>RJSONIO for parsing GeoJson data fetched via cURL from NYC Citi Bike and MapBox REST APIs
+                                                           <li>GitHub repository for source code version control 
+                                                           <li>shinyapps.io by RStudio provides PaaS (Platform as a Service) solution for a smooth change release process from my RStudio IDE running on a MacBook Pro to Docker containers that include all the required libraries
+                                                           </ul>"))),
+                       column(12, div(align = "left", HTML("<br><h3><u><b>Feedback<b></u>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Constructive feedback is welcomed!</a><h3>"))),
+                       column(12, div(align = "left", HTML("<br><h3><u><b>LinkedIn Profile<b></u>: <a href='https://www.linkedin.com/in/jhonasttanregalado'>Jhonasttan Regalado, PMP</a><h3>")))
                        ))
       
       ))

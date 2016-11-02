@@ -14,7 +14,7 @@ library(DT)
 
 ## 1. loading the data into R
 
-TimelyEffCare = read.csv("~/TimelyEffectiveCareHospital.csv")
+TimelyEffCare = read.csv("./TimelyEffectiveCareHospital.csv")
 
 ## 2. data cleaning: remove all the entries without score
 

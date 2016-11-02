@@ -10,50 +10,85 @@
 library(shiny)
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
-  
+shinyServer(function(input, output, session) {
 
- queryData <- eventReactive( input$search.button,{
+ 
+ 
+  
+ 
+ # default stat by position. is it running query Data twice?
+
+ stats <- reactiveValues(stat = 'RushYards')  
+ plot.compare <- reactiveValues(compare = data.frame(), title = 'DEFAULT')
+ 
+
+ 
+ # redo this so changing year input automatically changes this?
+ queryData <- eventReactive( input$search.button,  {
+   
+  
    query.df <- queryAPI(input$search.player, input$year)
+   
+   
    
  }) 
  
  # does it have to be separate?
- queryData2 <- eventReactive( input$search.button2,{
+ queryData2 <- eventReactive( input$search.button2, {
    query.df2 <- queryAPI(input$search.player2, input$year)
    
  }) 
   
- 
- # default stat by position. is it running query Data twice?
- stats <- reactiveValues(stat = 'RushYards')  
- observeEvent(input$search.button, { stats$stat <- queryData()$player$default.stat})
+
  # then go by stat dropdown menu
- observeEvent( input$stats.input, { stats$stat <- input$stats.input})
+ observeEvent( input$stats.input, { 
+   # to handle comparing two players
+   if(length(stats$stat) == 1){ 
+   stats$stat <- input$stats.input
+   plot.compare$title <- stats$stat} else{
+   stats$stat <- c(compare.stat.list[[1]][input$stats.input],
+                   compare.stat.list[[2]][input$stats.input])
+   plot.compare$title <- paste0(paste0(stats$stat[1], ' vs. '), stats$stat[2])
+   }
+   
+   
+ })
+ 
 
  
   # use observeEvent and reactive value to change type of plot 
- plot.compare <- reactiveValues(compare = data.frame(), title = 'DEFAULT')
+ 
  observeEvent(input$search.button, {
+   stats$stat <- queryData()$player$default.stat
+   updateSelectInput(session, inputId = 'stats.input', selected = stats$stat)
    plot.compare$compare <- queryData()$stats.frame
    plot.compare$title <- stats$stat
    
  })
  observeEvent(input$search.button2, { 
-   plot.compare$compare <- inner_join(queryData()$stats.frame, queryData2()$stats.frame, 
-                                      by = 'Week', suffix = c('.p1', '.p2'))
    stats$stat <- c(compare.stat.list[[1]][input$stats.input],
                    compare.stat.list[[2]][input$stats.input])
-   plot.compare$title <- paste0(paste0(stats$stat[1], ' vs. '), stats$stat[2])
+   # or how to use runif? # this blocks program from crashing if they search second field first
+   if (length(queryData()) > 1){
+     plot.compare$compare <- arrange(full_join(queryData()$stats.frame, queryData2()$stats.frame, 
+                                        by = 'Week', suffix = c('.p1', '.p2')),
+                                     Week)
+     plot.compare$title <- paste0(paste0(stats$stat[1], ' vs. '), stats$stat[2])
+   }
    
    
  })
+ 
+ # I suppose the input button is toggled on? because pressing second input button
+ # which switches values inside, causes gvisBarChart to change
  observeEvent(input$search.button, {
-   output$test.plot <- renderGvis({
    
-     gvisBarChart(plot.compare$compare, xvar ='Week', yvar=stats$stat,
-                  options = list(title = plot.compare$title))
-                      
+   # would like to make toggle button instead
+   # is this best way to do ths?
+   output$test.plot <- renderGvis({
+     
+     selectedGvis(input$chart.input, plot.compare$title, plot.compare$compare, xvar ='Week', yvar=stats$stat)
+
      
     
    })
@@ -67,14 +102,7 @@ shinyServer(function(input, output) {
   output$print.team2 <- renderPrint({cat(queryData2()$player$team)})
   output$print.position2 <- renderPrint({cat(queryData2()$player$position)})
   
-  
-# rip  
-#  observeEvent(input$team.name,{
-    
-    
-#    updateSelectInput(inputId = "player.name", "Player Name", input$team.name)
-#  })
- 
+
   
   
   # ask for team

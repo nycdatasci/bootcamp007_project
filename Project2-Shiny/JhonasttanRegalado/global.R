@@ -136,3 +136,4 @@ get_maneuver_info <- function(stepsInfo) {
   }
   instructions
 }
+

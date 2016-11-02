@@ -1,8 +1,9 @@
-
+library(dplyr)
 library(shinydashboard)
 
+
 shinyUI(dashboardPage(
-  dashboardHeader(title = "My Dashboard"),
+  dashboardHeader(title = "Economic Confidence Survey"),
   dashboardSidebar(
     
     sidebarUserPanel("Yehui He",
@@ -12,12 +13,11 @@ shinyUI(dashboardPage(
     sidebarMenu(
       menuItem("Map", tabName = "map", icon = icon("map")),
       menuItem("Charts", tabName = "charts", icon = icon("bar-chart"))),
-
+      menuItem("Bar Charts", tabName = "bar", icon = icon("bar-chart")),
+  
         selectizeInput("selected",
                    "Select country to Display",
-                   choice)
-    
-  ),
+                   choice)),
   
   dashboardBody(
     tabItems(
@@ -33,12 +33,16 @@ shinyUI(dashboardPage(
                        # gvisHistoGram
                        box(htmlOutput("hist"),
                            height = 300))),
+      tabItem(tabName = "bar",      
+              fluidRow(box(htmlOutput("bar"),
+                          width = "100%"))),
       tabItem(tabName = "charts",
               # datatable
               fluidRow(box(DT::dataTableOutput("table"),
                            width = 12)))
       
     )
-  )))
+  ) # End of dashbody
+  ))
 
 

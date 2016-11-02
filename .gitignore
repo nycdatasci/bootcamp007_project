@@ -12,12 +12,9 @@
 ./Project4-MachineLearning/*.csv
 ./Project5-Capstone/*.csv
 
+
 *.png
-
-*.eps
-
-*.jpeg
 
 *.xlsx
 
-Project2-Shiny/NickTalavera/README.md
+*.jpeg

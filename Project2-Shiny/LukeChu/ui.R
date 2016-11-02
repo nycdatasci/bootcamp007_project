@@ -45,7 +45,6 @@ dashboardPage(
                   # height can be too but height must be in pixels(200, 300 etc.)
                   selectInput(inputId="year", "Year", years.available),
                   
-                  selectInput(inputId ="team.name", "Team", team.name.list),
                   
                  # search box for player search, ideally with autocomplete
                  # insert lookup table for autocomplete
@@ -54,12 +53,20 @@ dashboardPage(
                                     label = "Search Player"),
                  
                  sidebarSearchForm(textId = "search.player2", buttonId = "search.button2",
-                                   label = "Compare")
+                                   label = "Compare"),
+                 
+                 selectInput(inputId = 'stats.input', "Select Stat:", stat.list),
+                 
+                 selectInput(inputId = 'chart.input', "Select Chart Type:", chart.type)
+                 
+                 
+                 
                 ),
                 
                 
-                
-                box(width = 8, height = 300,
+                # status goes by color
+                box(title = "StatChart", status = "primary",
+                  width = 8, height = 500,
                   
                   htmlOutput("test.plot")
                 )
@@ -67,14 +74,7 @@ dashboardPage(
               
               fluidRow(
                 
-                box(
-                  # if have time convert to drop down list
-                  selectInput(inputId = 'stats.input', "Select Stat:", stat.list)
 
-                  
-                
-                  
-                ),
                 
                 box(
                   
@@ -106,7 +106,7 @@ dashboardPage(
               
               ),
       
-      tabItem(tabName = 'teams', h2('test')
+      tabItem(tabName = 'teams', h2('Coming Soon')
               
               
               )

@@ -3,9 +3,10 @@ D# Darknet Market Analyzer
 # Nick Talavera
 # Date: Octber 25, 2016
 
-
+library(shinydashboard)
 library(shiny)
 library(ggplot2)
+
 programName = "Darknet Market Analyzer"
 dashboardPage(skin = "green",
               dashboardHeader(title = programName),
