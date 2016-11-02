@@ -1,6 +1,8 @@
 ## ui.R ##
+
 library(googleVis)
 library(shinydashboard)
+
 
 dashboardPage(
   header = dashboardHeader(
@@ -45,31 +47,35 @@ dashboardPage(
                 home to 150+ Q&A sites dedicated to niche topics.")),
       
       tabItem("analysis",
-              box(width = 12,
-                fluidRow(
-                  column(width = 3,
-                         selectizeInput("lan", "Choose Language", 
-                                        choices = c("All", "Python", "R"),
-                                        width = 200)
-                         ),
-                  column(width = 3,
-                         uiOutput("cateInput")
-                         ),
-                  column(width = 4,
-                         uiOutput("pkgsInput")
-                         ),
-                  column(width = 2,
-                         br(),
-                         actionButton("go", "Go")
+              box(width = 6,
+                  selectizeInput("lan", "Choose Language", 
+                                 choices = c("All", "Python", "R"),
+                                 width = 200),
+                  conditionalPanel(
+                    condition = "input.lan != 'All'",
+                    selectizeInput("cat", "Choose Category", 
+                                   choices = c("Packages", "Topics"),
+                                   width = 200)),
+                  h3("Summary of R & Python (01/2009 - 09/2016)", align = "center"),
+                  htmlOutput("gvisBar")),
+              box(width = 6,
+                  conditionalPanel(
+                    condition = "input.lan != 'All'",
+                    selectizeInput("tag", "Select Python Packages",
+                                   choices = p_pkg_top$package,
+                                   selected = p_pkg_top$package[1:5],
+                                   multiple = TRUE,
+                                   options = list(maxItems = 20),
+                                   width = 400)
+                  ),
+                  conditionalPanel(
+                    condition = "input.lan != 'All'",
+                    actionButton("go", "Go")
+                  ),
+                  
+                  h3("Time Series Analysis", align = "center"),
+                  htmlOutput("gvisMotion")
                   )
-                )),
-              box(width = 12,
-                  fluidRow(
-                    column(6,h3("Summary of R & Python (01/2009 - 09/2016)", align = "center"),
-                           htmlOutput("gvisBar")),
-                    column(6,h3("Time Series Analysis", align = "center"),
-                           htmlOutput("gvisMotion"))
-                  ))
       ),
       tabItem("subitem1",
               "Python coming soon :)"
