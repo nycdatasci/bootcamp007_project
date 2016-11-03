@@ -6,7 +6,7 @@ library(shinydashboard)
 library(shiny)
 suppressPackageStartupMessages(library(googleVis))
 
-DATA_PATH = '/Users/alexanderlitven/Courses/nyc_data_science_academy/bootcamp007_project/Project2-Shiny/JoshuaLitven/scraping/data/'
+DATA_PATH = '../scraping/data'
 
 jsCode = "shinyjs.pageCol = function(source){document.getElementById('audio_player').src=source};"
 jsCode2 = "shinyjs.pauseAudio = function(){document.getElementById('audio_player').pause()};"
