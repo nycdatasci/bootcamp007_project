@@ -1,5 +1,7 @@
 ## server.R ##
 library(dplyr)
+library(googleVis)
+
 shinyServer(function(input, output){
   
 # You can access the values of the second widget with input$slider2, e.g.
@@ -26,6 +28,24 @@ output$plot4 <- renderGvis({
                                            width=600, height=400))
    return(GeoStates)
   }
+##else if (input$Income == "Analyze" & input$n_state == "All"){
+##    kk =df %>% group_by(q29c, income) %>% select(q29c, income)
+##    tt = group_by(kk, state) %>% count(., income)
+##    Column <- gvisColumnChart(tt, options = list(width=700, height=400))
+##    return(Column)
+##  }
+  else{
+      kk =df %>% group_by(state, q29c) %>% select(state,q29c)
+      tt = group_by(kk, state) %>% count(., q29c)
+      sname = input$n_state
+      dfBar = filter(tt, state == sname) %>% arrange(.,desc(n))
+      ee=data_frame(dfBar$q29c, Number=dfBar$n)
+      Bar <- gvisBarChart(ee, 
+                   options = list(hAxis=paste0("{title:'","Number of People", "'}"),
+                                  vAxis=paste0("{title:'","Greedy in ", input$n_state,"'}"),
+                                  width=700, height=400))
+      return(Bar)
+    }
 #  output$main_plot <- renderPlot({
     
 #    hist(faithful$eruptions,
