@@ -1,5 +1,6 @@
 library(shiny)
 library(ggplot2) # for the IGN dataset
+source('calcs.r')
 shinyUI(pageWithSidebar(
   headerPanel('Videogame Review Data since 2012 from IGN'),
   sidebarPanel(

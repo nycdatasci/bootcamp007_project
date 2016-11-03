@@ -1,3 +1,4 @@
+source('calcs.r')
 shinyServer(function(input, output) {
   # a large table, reactive to input$show_vars
   output$mytable1 = renderDataTable({
