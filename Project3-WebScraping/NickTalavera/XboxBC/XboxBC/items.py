@@ -19,6 +19,18 @@ class WikipediaXB360ExclusiveItem(scrapy.Item):
     gameName = scrapy.Field()
     exclusiveType = scrapy.Field()
 
+class RemastersItem(scrapy.Item):
+    gameName = scrapy.Field()
+class MetacriticXbox360Item(scrapy.Item):
+    gameName = scrapy.Field()
+    reviewScorePro = scrapy.Field()
+    reviewScoreUser = scrapy.Field()
+
+class WikipediaXB360KinectItem(scrapy.Item):
+    gameName = scrapy.Field()
+    kinectRequired = scrapy.Field()
+    kinectSupport = scrapy.Field()
+
 class MajorNelsonItem(scrapy.Item):
     gameName = scrapy.Field()
 
@@ -98,22 +110,6 @@ class MovieItem(scrapy.Item):
     num_facebook_like = scrapy.Field()
     image_urls = scrapy.Field()
     images = scrapy.Field()
-
-
-class MovieBudgetItem(scrapy.Item):
-    num_rows = scrapy.Field()
-    release_date = scrapy.Field()
-    movie_link = scrapy.Field()
-    movie_name = scrapy.Field()
-    production_budget = scrapy.Field()
-    domestic_gross = scrapy.Field()
-    worldwide_gross = scrapy.Field()
-
-
-class ImdbUrlItem(scrapy.Item):
-    movie_name = scrapy.Field()
-    movie_imdb_link = scrapy.Field()
-
 
 class PosterImageItem(scrapy.Item):
     image_urls = scrapy.Field()
