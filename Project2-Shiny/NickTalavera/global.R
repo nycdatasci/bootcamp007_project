@@ -75,6 +75,7 @@ dnmData$Drug_Quantity_In_Order_Unit = NULL
 dnmData$Drug_Weight = NULL
 dnmData$Price = NULL
 dnmData$Drug_Weight_Unit = NULL
+unitString = "grams"
 #dnmData$Price_Per_Gram = as.numeric(dnmData$Price_Per_Gram)
 dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
 dnmData = dnmData[!is.na(dnmData$Market_Name),]
