@@ -18,8 +18,6 @@ class WikipediaXB360Exclusive(BaseSpider):
         # rows_in_big_table = response.xpath("/table/tbody")
         rows_in_big_table = response.xpath('//*[@id="mw-content-text"]/table[4]/tr')
         print "=" * 50
-        print(rows_in_big_table)
-        print "=" * 50
         for i, onerow in enumerate(rows_in_big_table):
             WXB360ExclusiveItem = WikipediaXB360ExclusiveItem()
 
