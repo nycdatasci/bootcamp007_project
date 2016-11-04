@@ -22,7 +22,7 @@ class WriteItemPipeline(object):
 				str(item['blgCountry']) + '|' + str(item['blgFloor']) + '|' +  str(item['blgPurpose']) + '|' + \
 				str(item['isMultiPurpose']) + '|' + \
 				str(item['forOffice']) + '|' +  str(item['forResidential']) + '|' + \
-				str(item['forHotel']) + '|' +  str(item['forRetail']) + '|' + '|' + \
+				str(item['forHotel']) + '|' +  str(item['forRetail']) + '|' + \
 				str(item['yrPropose']) + '|' +  str(item['yrStart']) + '|' + str(item['yrComplete']) + '|' + \
 				str(item['tmProposeStart']) + '|' +  str(item['tmProposeComplete']) + '|' + str(item['tmStartComplete']) + '\n'
 #				following line, building url, is for debug purpose.
