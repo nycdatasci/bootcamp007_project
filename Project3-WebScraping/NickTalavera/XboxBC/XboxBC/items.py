@@ -6,12 +6,14 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy.item import Item, Field
 
 
 class UserVoiceItem(scrapy.Item):
     num_rows = scrapy.Field()
-    name = scrapy.Field()
     votes = scrapy.Field()
+    comments = scrapy.Field()
+    in_progress = scrapy.Field()
 
 class MajorNelsonItem(scrapy.Item):
     num_rows = scrapy.Field()
