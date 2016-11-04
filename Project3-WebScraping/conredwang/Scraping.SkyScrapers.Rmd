@@ -17,7 +17,7 @@ library(knitr)
 ```
 
 ## Let scrap the skyscrapers
-<img src="assets/img/tall100a.jpg" alt="output_option">
+<img src="assets/img/tall100aa.jpg" alt="output_option">
 
 ## [The Skyscraper Center](https://skyscrapercenter.com)
 - Published the [100 Tallest Completed Buildings in the World by Height to Architectural Top]('https://skyscrapercenter.com/buildings')
