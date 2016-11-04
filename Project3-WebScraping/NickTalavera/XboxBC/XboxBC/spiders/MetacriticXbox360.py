@@ -19,29 +19,29 @@ class MetacriticXbox360(scrapy.Spider):
     def parse(self, response):
         print "=" * 50
         numberOfPages = int(response.xpath('//*[@id="main"]/div[1]/div[2]/div/div[2]/ul/li[10]/a/text()').extract()[0])
+        print(numberOfPages)
         print "=" * 50
-        for j in range(1,numberOfPages+1):
+        for j in range(0,numberOfPages):
             next_page = 'http://www.metacritic.com/browse/games/score/metascore/all/xbox360/all?hardware=all&page=' + str(j)
             print("Page" + str(j))
             yield scrapy.Request(next_page, callback=self.metacriticX360Find)
 
     def metacriticX360Find(self, response):
-        # //*[@id="main"]/div[1]/div[1]/div[2]/div[3]/div/div/div[92]/div[3]/a
             rows_in_big_table = response.xpath('//*[@id="main"]/div[1]/div[1]/div[2]/div[3]/div/div/div')
             print(rows_in_big_table.extract())
             for i, onerow in enumerate(rows_in_big_table):
                 metacriticGameItem = MetacriticXbox360Item()
                 gameName = onerow.xpath('div[3]/a/text()').extract()[0].strip()
-#                 reviewScorePro = ''.join(re.findall('\d+',onerow.xpath('div[2]/div[1]/strong/text()').extract()[0]))
-#                 reviewScoreUser = ''.join(re.findall('\d+',onerow.xpath('div[3]/a/text()').extract()[0]))
-#
-#                 # /html/body/div[2]/div/div/div[1]/article/section[3]/ol/li[6]/article/div[1]/a/em
+                reviewScorePro = onerow.xpath('div[2]/div/text()').extract()[0].strip()
+                reviewScoreUser = onerow.xpath('div[4]/span[2]/text()').extract()[0].strip()
+                if reviewScoreUser== 'tbd':
+                    reviewScoreUser = ''
                 print(gameName)
-#                 print(reviewScorePro)
-#                 print(reviewScoreUser)
+                print(reviewScorePro)
+                print(reviewScoreUser)
 #
-#                 metacriticGameItem['gameName'] = gameName
-#                 metacriticGameItem['reviewScorePro'] = reviewScorePro
-#                 metacriticGameItem['reviewScoreUser'] = reviewScoreUser
+                metacriticGameItem['gameName'] = gameName
+                metacriticGameItem['reviewScorePro'] = reviewScorePro
+                metacriticGameItem['reviewScoreUser'] = reviewScoreUser
                 print "=" * 50
                 yield metacriticGameItem
