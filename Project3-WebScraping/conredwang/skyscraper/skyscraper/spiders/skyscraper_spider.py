@@ -32,7 +32,7 @@ class SkyscraperSpider(Spider):
 			forOffice = "Y" if blgPurpose.find("office") != -1 else "N"
 			forResidential = "Y" if blgPurpose.find("residential") != -1 else "N"
 			forHotel = "Y" if blgPurpose.find("hotel") != -1 else "N"
-			forRetail = "Y" if blgPurpose.find("rental") != -1 else "N"    
+			forRetail = "Y" if blgPurpose.find("retail") != -1 else "N"    
 			yrComplete = Selector(text=row).xpath('//td[9]/text()').extract()[0]
 			item = SkyscraperItem()
 			item['blgName']= blgName
