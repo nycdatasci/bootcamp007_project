@@ -74,7 +74,6 @@ class Xbox360_MS_Site(scrapy.Spider):
         for start in xboxRatingStars:
             xboxRating += float(re.findall('[0-9.]+', start)[0])/4
         numberOfReviews = response.xpath('//*[@id="ProductTitleZone"]/div[2]/span/text()').extract()[0].strip()
-        FTsmartglass = ""
 
         DLlist = response.xpath('//*[@id="navDownloadType"]/li/a/text()').extract()
         DLdemos = ""
@@ -83,7 +82,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         DLthemes = ""
         DLgamerPictures = ""
         DLgameAddons = ""
-
+        DLsmartglass = ""
         for phrase in DLlist:
             if 'Game Demos' in phrase:
                 DLdemos = re.findall('[0-9.]+',phrase)[0]
@@ -111,7 +110,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         xOne_item['ESRBRating'] = ESRBRating
         xOne_item['xbox360Rating'] = xboxRating
         xOne_item['numberOfReviews'] = numberOfReviews
-        xOne_item['DLsmartglass'] = FTsmartglass
+        xOne_item['DLsmartglass'] = DLsmartglass
         xOne_item['DLavatarItems'] = DLavatarItems
         xOne_item['DLdemos'] = DLdemos
         xOne_item['DLgameVideos'] = DLgameVideos
