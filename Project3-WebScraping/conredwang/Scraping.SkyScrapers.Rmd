@@ -53,14 +53,11 @@ colnames(tall100) = c(
 
 ---
 ```{r}
-ggplot(tall100,aes(x=blgCountry)) + geom_bar(aes(fill=blgCountry)) +
-  theme_economist() 
+ggplot(tall100,aes(x=blgCountry,y=..count..)) + 
+  geom_bar(aes(fill=blgCountry)) + 
+  theme_economist() +
+  geom_text(stat="count", aes(label=..count..,y=..count..),vjust=-0.2)
 ```
----
-```{r}
-summary(tall100)
-```
----
 
 ## A few thoughts
 
