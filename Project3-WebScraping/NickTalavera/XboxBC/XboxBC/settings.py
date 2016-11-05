@@ -70,6 +70,7 @@ ITEM_PIPELINES = {
 #    'XboxBC.pipelines.SomePipeline': 300,
 'scrapy.pipelines.images.ImagesPipeline': 1
 }
+FILES_STORE = '/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/Images'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
