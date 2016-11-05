@@ -2,18 +2,18 @@
 4|1776|One World Trade Center|New York City|US|94|office|N|Y|N|N|N|2005|2006|2014|1|9|8
 3|1972|Makkah Royal Clock Tower|Mecca|SA|120|other / hotel|Y|N|N|Y|N|2002|2002|2012|0|10|10
 2|2073|Shanghai Tower|Shanghai|CN|128|hotel / office|Y|Y|N|Y|N|2008|2009|2015|1|7|6
-7|1614|Shanghai World Financial Center|Shanghai|CN|101|hotel / office|Y|Y|N|Y|N|1994|1997|2008|3|14|11
 6|1667|TAIPEI 101|Taipei|TW|101|office|N|Y|N|N|N|1997|1999|2004|2|7|5
 5|1739|Guangzhou CTF Finance Centre|Guangzhou|CN|111|hotel / residential / office|Y|Y|Y|Y|N|2009|2010|2016|1|7|6
-9|1483|Petronas Twin Tower 1|Kuala Lumpur|MY|88|office|N|Y|N|N|N|NA|1992|1998|NA|NA|6
 8|1588|International Commerce Centre|Hong Kong|CN|108|hotel / office|Y|Y|N|Y|N|2000|2002|2010|2|10|8
+7|1614|Shanghai World Financial Center|Shanghai|CN|101|hotel / office|Y|Y|N|Y|N|1994|1997|2008|3|14|11
+9|1483|Petronas Twin Tower 2|Kuala Lumpur|MY|88|office|N|Y|N|N|N|NA|1992|1998|NA|NA|6
+9|1483|Petronas Twin Tower 1|Kuala Lumpur|MY|88|office|N|Y|N|N|N|NA|1992|1998|NA|NA|6
+13|1449|KK100|Shenzhen|CN|100|hotel / office|Y|Y|N|Y|N|2004|2007|2011|3|7|4
 12|1451|Willis Tower|Chicago|US|108|office|N|Y|N|N|N|NA|1970|1974|NA|NA|4
 11|1476|Zifeng Tower|Nanjing|CN|66|hotel / office|Y|Y|N|Y|N|2004|2005|2010|1|6|5
-9|1483|Petronas Twin Tower 2|Kuala Lumpur|MY|88|office|N|Y|N|N|N|NA|1992|1998|NA|NA|6
+16|1389|Trump International Hotel & Tower|Chicago|US|98|residential / hotel|Y|N|Y|Y|N|2001|2005|2009|4|8|4
 15|1396|432 Park Avenue|New York City|US|85|residential|N|N|Y|N|N|2011|2011|2015|0|4|4
 14|1439|Guangzhou International Finance Center|Guangzhou|CN|103|hotel / office|Y|Y|N|Y|N|2004|2006|2010|2|6|4
-13|1449|KK100|Shenzhen|CN|100|hotel / office|Y|Y|N|Y|N|2004|2007|2011|3|7|4
-18|1356|Princess Tower|Dubai|AE|101|residential|N|N|Y|N|N|2005|2006|2012|1|7|6
 100|992|Wells Fargo Plaza|Houston|US|71|office|N|Y|N|N|N|NA|1979|1983|NA|NA|4
 99|993|Leatop Plaza|Guangzhou|CN|64|office|N|Y|N|N|N|2006|2008|2012|2|6|4
 97|994|Jiangxi Nanchang Greenland Central Plaza, Par|Nanchang|CN|59|office|N|Y|N|N|N|2010|2012|2015|2|5|3
@@ -65,7 +65,7 @@
 52|1083|China World Tower|Beijing|CN|74|hotel / office|Y|Y|N|Y|N|2003|2005|2010|2|7|5
 51|1086|Minsheng Bank Building|Wuhan|CN|68|office|N|Y|N|N|N|NA|2001|2008|NA|NA|7
 50|1093|Rose Rayhaan by Rotana|Dubai|AE|71|hotel|N|N|N|Y|N|NA|2004|2007|NA|NA|3
-49|1094|Shimao International Plaza|Shanghai|CN|60|hotel / office / retail|Y|Y|N|Y|N|NA|2001|2006|NA|NA|5
+49|1094|Shimao International Plaza|Shanghai|CN|60|hotel / office / retail|Y|Y|N|Y|Y|NA|2001|2006|NA|NA|5
 48|1105|Tianjin World Financial Center|Tianjin|CN|75|office|N|Y|N|N|N|2006|2007|2011|1|5|4
 47|1109|Tianjin Modern City Office Tower|Tianjin|CN|65|office|N|Y|N|N|N|2010|2011|2016|1|6|5
 46|1112|Mercury City Tower|Moscow|RU|75|residential / office|Y|Y|Y|N|N|2006|2006|2013|0|7|7
@@ -75,7 +75,7 @@
 42|1128|John Hancock Center|Chicago|US|100|residential / office|Y|Y|Y|N|N|NA|1965|1969|NA|NA|4
 41|1135|The Center|Hong Kong|CN|73|office|N|Y|N|N|N|NA|1995|1998|NA|NA|3
 40|1136|Aon Center|Chicago|US|83|office|N|Y|N|N|N|NA|1970|1973|NA|NA|3
-39|1140|T & C Tower|Kaohsiung|TW|85|hotel / office / retail|Y|Y|N|Y|N|NA|1994|1997|NA|NA|3
+39|1140|T & C Tower|Kaohsiung|TW|85|hotel / office / retail|Y|Y|N|Y|Y|NA|1994|1997|NA|NA|3
 38|1149|The Pinnacle|Guangzhou|CN|60|office|N|Y|N|N|N|2007|2008|2012|1|5|4
 37|1150|Forum 66 Tower 1|Shenyang|CN|68|hotel / office|Y|Y|N|Y|N|NA|2008|2015|NA|NA|7
 36|1155|The Torch|Dubai|AE|86|residential|N|N|Y|N|N|2005|2005|2011|0|6|6
@@ -96,5 +96,5 @@
 21|1287|23 Marina|Dubai|AE|88|residential|N|N|Y|N|N|2005|2006|2012|1|7|6
 20|1352|Two International Finance Centre|Hong Kong|CN|88|office|N|Y|N|N|N|1996|2000|2003|4|7|3
 19|1354|Al Hamra Tower|Kuwait City|KW|80|office|N|Y|N|N|N|2005|2005|2011|0|6|6
+18|1356|Princess Tower|Dubai|AE|101|residential|N|N|Y|N|N|2005|2006|2012|1|7|6
 17|1380|Jin Mao Tower|Shanghai|CN|88|hotel / office|Y|Y|N|Y|N|NA|1994|1999|NA|NA|5
-16|1389|Trump International Hotel & Tower|Chicago|US|98|residential / hotel|Y|N|Y|Y|N|2001|2005|2009|4|8|4
