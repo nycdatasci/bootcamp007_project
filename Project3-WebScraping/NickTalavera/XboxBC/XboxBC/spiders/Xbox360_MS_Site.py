@@ -18,8 +18,8 @@ class Xbox360_MS_Site(scrapy.Spider):
     allowed_domains = ['marketplace.xbox.com']
 
     start_urls = (
-        # 'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
-        # 'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
+        'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
+        'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
         'https://marketplace.xbox.com/en-US/Games/Xbox360Games?pagesize=90&sortby=BestSelling&page=1',
     )
 

@@ -66,6 +66,8 @@ fixXbox360_MS_Site = function(data) {
   data$hasDemoAvailable[is.na(data$DLdemos)] = FALSE
   data$isListedOnMSSite = TRUE
   data$DLdemos = NULL
+  data$isAvailableToPurchaseDigitally[data$gameCount == 1] = TRUE
+  # data$isAvailableToPurchaseDigitally[is.na(data$gameCount)] = TRUE
   data[data == ""] = NA
   return(data)
 }
@@ -88,6 +90,7 @@ namePrettier = function(dataX) {
   dataX = dataX[dataX$gameName != "" & dataX$gameName != "gameName",]
   dataX$gameName = gsub("™", "", dataX$gameName)
   dataX$gameName = gsub("®", "", dataX$gameName)
+  dataX$gameName = gsub("ñ", "n", dataX$gameName)
   dataX$gameName = gsub("Full Game - ", "", dataX$gameName)
   dataX$gameName = gsub(" - Full", "", dataX$gameName)
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
@@ -104,7 +107,7 @@ namePrettier = function(dataX) {
                    'Beijing 2008 - The Official Video Game of the Olympic Games','Bejeweled 2 Deluxe','Ben 10 Ultimate Alien: Cosmic Destruction','Beowulf: The Game','Bomberman Live: Battlefest',
                    'Brutal Legend','Bully: Scholarship Edition','Cabela\'s North American Adventures','America\'s Army: True Soldiers','Brothers in Arms: Hell\'s Highway','Castlevania: Lords of Shadow 2','Castlevania: Lords of Shadow',
                    'Castlevania: Harmony of Despair','Cloudy With a Chance of Meatballs','Tom Clancy’s Rainbow Six Vegas','Tom Clancy’s Rainbow Six Vegas 2','James Cameron\'s Avatar','James Cameron\'s Avatar',
-                   'Transformers: War for Cybertron','Asteroids & Deluxe'
+                   'Transformers: War for Cybertron','Asteroids & Deluxe','Viva Pinata: Trouble in Paradise','Tom Clancy\'s Splinter Cell Double Agent','Armored Core for Answer'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -120,19 +123,25 @@ namePrettier = function(dataX) {
                           'Beijing 2008','Bejeweled 2','Ben 10 Ultimate Alien','Beowulf','Bomberman Live',
                           'Brütal Legend','Bully Scholarship Ed.','Cabela\'s North American Adventure','AA: True Soldiers','Brothers in Arms: HH','Castlevania: LoS 2','Castlevania LoS',
                           'Castlevania HD','Cloudy with a...','TC\'s RainbowSix Vegas','TC\'s RainbowSix Vegas2','James Cameron\'s Avatar: The Game','Cameron\'s Avatar',
-                          'Transformers: WFC','ATARI ASTEROIDS/ASTEROIDS DELUXE'
+                          'Transformers: WFC','ATARI ASTEROIDS/ASTEROIDS DELUXE','Viva Pinata: TIP','TC\'s SC Double Agent','AC for Answer'
                           ))
   dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
   return(dataX)
 }
 
 gameRemover = function(data) {
-  # c('Assassins Creed The Americas Collection','ACE COMBAT: AH Demo','Adidas miCoach','Batman: AA GOTY')
-  keywordsToRemove <- tolower(sort(c("bundle","pack")))
+  gamesToRemove = c('Assassins Creed The Americas Collection','ACE COMBAT: AH Demo','Adidas miCoach','Batman: AA GOTY',"XNA Creators Club", "Xbox 360 HD DVD Player", "Xbox 360 Summer Blockbusters", "Xbox 360 Team", "Xbox 360 Team", "Xbox LIVE Event Registrations",
+                    'Photo Party')
+  keywordsToRemove <- tolower(sort(c("bundle","pack",'Assassins Creed The Americas Collection','ACE COMBAT: AH Demo','Adidas miCoach','Batman: AA GOTY')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
   keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
   data$gameNameMissed = tolower(data$gameName)
   notRemoved = unlist(lapply(data$gameNameMissed, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
+  # notRemoved = unlist(lapply(data$gameNameMissed, (function (x) !is.na(str_match(x,keywordsToRemoveRegex)))))
+  for (i in gamesToRemove) {
+    print(i)
+    data = data[data$gameName != i,]
+  }
   print(sort(data$gameName[notRemoved]))
   data = data[!notRemoved,]
   return(data)
@@ -194,7 +203,7 @@ dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
 dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
-dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all","x")
+dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 # Remasters
 # XboxOne_MS_Site
 
@@ -205,7 +214,7 @@ dataUlt[is.na(dataUlt)] = FALSE
 # dataUlt = select(dataUlt, gameName, votes, kinectSupport)
 dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic","isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 dataUlt = unique(dataUlt)
-# dataUlt = gameRemover(dataUlt)
+dataUlt = gameRemover(dataUlt)
 # dataUlt = dataUlt[is.na(dataUlt$votes) | !dataUlt$c,]
 dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
