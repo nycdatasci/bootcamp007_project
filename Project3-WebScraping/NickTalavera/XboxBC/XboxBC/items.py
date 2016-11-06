@@ -73,6 +73,7 @@ class Xbox360_MS_Site_Item(scrapy.Item):
     onlineFeatures = scrapy.Field()
     price = scrapy.Field()
     priceGold = scrapy.Field()
+    gameCount = scrapy.Field()
     dayRecorded = scrapy.Field()
     releaseDate = scrapy.Field()
     ESRBRating = scrapy.Field()
