@@ -103,7 +103,8 @@ namePrettier = function(dataX) {
                    '3D Ultra MiniGolf Adventures','Adventure Time: Explore the Dungeon Because I DON\'T KNOW!','Alien Breed: Evolution','Avatar: The Last Airbender -- The Burning Earth',
                    'Beijing 2008 - The Official Video Game of the Olympic Games','Bejeweled 2 Deluxe','Ben 10 Ultimate Alien: Cosmic Destruction','Beowulf: The Game','Bomberman Live: Battlefest',
                    'Brutal Legend','Bully: Scholarship Edition','Cabela\'s North American Adventures','America\'s Army: True Soldiers','Brothers in Arms: Hell\'s Highway','Castlevania: Lords of Shadow 2','Castlevania: Lords of Shadow',
-                   'Castlevania: Harmony of Despair','Cloudy With a Chance of Meatballs','Tom Clancy’s Rainbow Six Vegas','Tom Clancy’s Rainbow Six Vegas 2'
+                   'Castlevania: Harmony of Despair','Cloudy With a Chance of Meatballs','Tom Clancy’s Rainbow Six Vegas','Tom Clancy’s Rainbow Six Vegas 2','James Cameron\'s Avatar','James Cameron\'s Avatar',
+                   'Transformers: War for Cybertron','Asteroids & Deluxe'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -118,7 +119,8 @@ namePrettier = function(dataX) {
                           '3D Ultra Minigolf','Adventure Time: Explore','Alien Breed Episode 1','Avatar: TLA: TBE',
                           'Beijing 2008','Bejeweled 2','Ben 10 Ultimate Alien','Beowulf','Bomberman Live',
                           'Brütal Legend','Bully Scholarship Ed.','Cabela\'s North American Adventure','AA: True Soldiers','Brothers in Arms: HH','Castlevania: LoS 2','Castlevania LoS',
-                          'Castlevania HD','Cloudy with a...','TC\'s RainbowSix Vegas','TC\'s RainbowSix Vegas2'
+                          'Castlevania HD','Cloudy with a...','TC\'s RainbowSix Vegas','TC\'s RainbowSix Vegas2','James Cameron\'s Avatar: The Game','Cameron\'s Avatar',
+                          'Transformers: WFC','ATARI ASTEROIDS/ASTEROIDS DELUXE'
                           ))
   dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
   return(dataX)
@@ -192,7 +194,7 @@ dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
 dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
-dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
+dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all","x")
 # Remasters
 # XboxOne_MS_Site
 
@@ -205,4 +207,6 @@ dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic","isBCCo
 dataUlt = unique(dataUlt)
 # dataUlt = gameRemover(dataUlt)
 # dataUlt = dataUlt[is.na(dataUlt$votes) | !dataUlt$c,]
-# dataUlt = dataUlt[(!is.na(dataUlt$reviewScorePro) & is.na(dataUlt$dayRecorded)) | (is.na(dataUlt$reviewScorePro) & !is.na(dataUlt$dayRecorded)),]
+dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]

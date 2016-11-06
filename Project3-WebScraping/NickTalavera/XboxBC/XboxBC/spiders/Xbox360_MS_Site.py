@@ -20,7 +20,7 @@ class Xbox360_MS_Site(scrapy.Spider):
     start_urls = (
         'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
         'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
-        'https://marketplace.xbox.com/en-US/Games/Xbox360Games?pagesize=90&sortby=Title&page=1',
+        'https://marketplace.xbox.com/en-US/Games/Xbox360Games?pagesize=90&sortby=BestSelling&page=1',
     )
 
     def parse(self, response):
@@ -45,14 +45,14 @@ class Xbox360_MS_Site(scrapy.Spider):
             xOne_item = Xbox360_MS_Site_Item()
             gameName = onerow.xpath('h2/a/text()').extract()[0].strip()
             gameName = re.sub(r'[^\x00-\x7F]+', '', gameName)
-            gameUrl = baseURL + onerow.xpath('h2/a/@href').extract()[0] + '?SortBy=BestSelling'
+            gameUrl = baseURL + onerow.xpath('h2/a/@href').extract()[0] + '?PageSize=60&Page=1&SortBy=BestSelling'
             dayRecorded = time.strftime("%x")
             xOne_item['gameName'] = gameName
             xOne_item['gamesOnDemandorArcade'] = response.xpath('//*[@id="BodyContent"]/div[1]/h1/text()').extract()[0]
             xOne_item['gameUrl'] = gameUrl
             xOne_item['dayRecorded'] = dayRecorded
             if gameUrl:
-                    yield scrapy.Request(url=(gameUrl + '?PageSize=60&Page=1&sortby=BestSellingToday'), callback=self.scrapeIndividualGames, meta={'xOne_item': xOne_item})
+                    yield scrapy.Request(url=(gameUrl), callback=self.scrapeIndividualGames, meta={'xOne_item': xOne_item})
 
     def scrapeIndividualGames(self, response):
         xOne_item = response.meta['xOne_item']
@@ -88,18 +88,14 @@ class Xbox360_MS_Site(scrapy.Spider):
         if len(highresboxart) != 0:
             highresboxart = highresboxart[0].strip()
         ESRBRating = response.xpath('//*[@id="ActualRating"]/text()').extract()[1].strip()
+        if len(ESRBRating) != 0:
+            ESRBRating = ESRBRating[0].strip()
         xboxRatingStars = ProductTitleZone.xpath('div[2]/div/span/@class').extract()
         xboxRating = 0
         for start in xboxRatingStars:
             xboxRating += float(re.findall('[0-9.]+', start)[0])/4
         numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()').extract()[0].strip()
-        gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[1]/h2/text()').extract()
-        if len(gameNameLong) != 0:
-            gameNameLong = gameNameLong[0].strip()
-            print('Long Name:' + gameNameLong)
-            print(len(gameNameLong))
-            if len(xOne_item['gameName']) < len(gameNameLong):
-                xOne_item['gameName'] = gameNameLong
+
 
         # # return
         DLlist = response.xpath('//*[@id="navDownloadType"]/li/a/text()').extract()
@@ -111,6 +107,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         DLgamerPictures = ""
         DLgameAddons = ""
         DLsmartglass = ""
+        gameNameLong = ""
         for phrase in DLlist:
             if 'Games ' in phrase:
                 gameCount = int(re.findall('[0-9.]+',phrase)[0])
@@ -129,10 +126,24 @@ class Xbox360_MS_Site(scrapy.Spider):
             elif 'Xbox SmartGlass' in phrase:
                 DLsmartglass = re.findall('[0-9.]+',phrase)[0]
 
+
         if gameCount > 0:
             priceGold = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[2]/span/span[1]/text()').extract()
             if len(priceGold) != 0:
                 priceGold = priceGold[0].strip().lstrip("$")
+
+            # if 'COD' in xOne_item['gameName']:
+            gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[1]/h2/text()').extract()
+            if len(gameNameLong) != 0:
+                gameNameLong = gameNameLong[0].strip()
+                gameNameLong = re.sub("Full Game - ","",gameNameLong)
+                if len(xOne_item['gameName']) < len(gameNameLong):
+                    xOne_item['gameName'] = gameNameLong
+            if len(gameNameLong) == 0:
+                print("FUCK")
+                gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div/h2/text()').extract()
+                gameNameLong = map(str.strip, map(str, gameNameLong))
+            print(gameNameLong)
         print(priceGold)
 
         if ' theme' in xOne_item['gameName'].lower():
@@ -143,6 +154,7 @@ class Xbox360_MS_Site(scrapy.Spider):
             return
         if 'trial game' in xOne_item['gameName'].lower():
             return
+
         xOne_item['gameCount'] = gameCount
         xOne_item['developer'] = developer
         xOne_item['publisher'] = publisher
