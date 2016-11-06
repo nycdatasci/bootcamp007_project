@@ -18,16 +18,20 @@ class Xbox360_MS_Site(scrapy.Spider):
     allowed_domains = ['marketplace.xbox.com']
 
     start_urls = (
-        'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
-        'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
+        # 'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
+        # 'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
         'https://marketplace.xbox.com/en-US/Games/Xbox360Games?pagesize=90&sortby=BestSelling&page=1',
     )
 
     def parse(self, response):
         print "=" * 50
         numberOfPages = response.xpath('//*[@id="BodyContent"]/div[3]/div[2]/div[1]/text()').extract()[0]
+        print(numberOfPages)
+        numberOfPages = re.sub(",","",numberOfPages)
         numberOfPages = re.findall('[0-9.]+',numberOfPages)[-1]
+        print(numberOfPages)
         numberOfPages = int(math.ceil(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
+        print(numberOfPages)
         for j in range(1,numberOfPages+1):
         # for j in range(1,2):
             next_page = str(response.request.url)[0:len(response.request.url)-1] + str(j)
