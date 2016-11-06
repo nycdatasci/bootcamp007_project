@@ -7,10 +7,7 @@ library(shinydashboard)
 library(shiny)
 suppressPackageStartupMessages(library(googleVis))
 
-# Source web scraping
-source("spotify_scraper.R")
-
-DATA_PATH = 'data'
+DATA_PATH = '../scraping/data'
 
 js_set_audio_src = "shinyjs.setAudioSrc = function(source){document.getElementById('audio_player').src=source};"
 js_pause_audio = "shinyjs.pauseAudio = function(){document.getElementById('audio_player').pause()};"

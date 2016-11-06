@@ -1,4 +1,4 @@
-D# Darknet Market Analyzer
+# Darknet Market Analyzer
 # Darknet Market Analysis
 # Nick Talavera
 # Date: Octber 25, 2016
@@ -41,26 +41,14 @@ dashboardPage(skin = "green",
                                        collapsed = FALSE,
                                        h3(paste("Welcome to", programName)),
                                        p(
-                                         paste("Here, we use statistical inference and forecast modeling techniques to 
-                                               explore and forecast over 13,000 real estate markets in the United States.  
-                                               This tool will enable you to:")),
-                                       tags$ul(
-                                         tags$li("get a snapshot and timeseries of the states and cities with the highest annual increase in median home values
-                                                 on this", span("Dashboard page,", style = "color:white")),
-                                         tags$li("explore home price indices and growth rates across various markets at several levels of granularity in 
-                                                 the", span("Market Explorer,", style = "color:white")),
-                                         tags$li("select a market and analyze and decompose price movements into their seasonal, trend and irregular components in the"
-                                                 , span("Value Analyzer,", style = "color:white")),
-                                         tags$li("train the most popular forecasting models and compare predictive accuracies in the", span("Forecast Modeler,", style = "color:white"), "and"),
-                                         tags$li("use these models to forecast home prices in virtually every US real estate market in the", span("Market Forecaster.", 
-                                                                                                                                                  style = "color:white"))
+                                         paste("On this website, you can visualize data from across the darknet Market. The data was collected by Gwern. More info on the data can be seen at http://www.gwern.net/Black-market%20archives.")
                                        ),
                                        p(
-                                         paste("The menus to the left will walk you through the process of exploring markets, reviewing price trends, training 
-                                               forecast models, evaluating model performance accuracy and predict home prices, 3, 5 or 10 years out.")),
+                                         paste("The left menu will guide you through exploring the markets. The dashboard is an overview of interesting facts. The Market Explorer allows you to limit the scope of the data.")
+                                       ),
                                        p(
-                                         paste("To get started, click on the Market Explorer menu on the left.  For help, click on the help tab on 
-                                               the sidebar panel.")),
+                                         paste("This website was created by Nick Talavera to allow others to explore this dataset so that others can build their own insights.")
+                                       ),
                                        p("Enjoy!")
                                      )# end of box
                               ),# end of column
@@ -120,16 +108,16 @@ dashboardPage(skin = "green",
                                      background = "navy",
                                      selectInput("marketName",
                                                  "Choose your markets:",
-                                                 choices = c(as.character(unique(dnmData$Market_Name))),
+                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Market_Name))))),
                                                  multiple = TRUE),
                                      
                                      selectInput("drugName",
                                                  "Choose your drugs:",
-                                                 choices = c(as.character(unique(dnmData$Drug_Type))),
+                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Drug_Type))))),
                                                  multiple = TRUE),
                                      selectInput("shippedFrom",
                                                  "Choose where the drugs are shipped from:",
-                                                 choices = c(as.character(unique(dnmData$Shipped_From))),
+                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Shipped_From))))),
                                                  multiple = TRUE),
                                      
                                      selectInput("weightUnits",
@@ -214,13 +202,24 @@ dashboardPage(skin = "green",
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Number of postings per day over time for each darknet (color fill of drug type)",
+                                           title = "Number of postings per day over time for each darknet",
                                            status = "primary",
                                            width = 12,
                                            height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("postsPerDayWithDrugColor")
+                                         ) #End of Box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                         box(
+                                           title = "Number of Drugs Available Per Market",
+                                           status = "primary",
+                                           width = 12,
+                                           height = 700,
+                                           solidHeader = FALSE,
+                                           collapsible = TRUE,
+                                           plotOutput("numberOfDrugsAvailablePerMarket")
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
@@ -234,17 +233,17 @@ dashboardPage(skin = "green",
                                            plotOutput("pricePerDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
-                                       fluidRow(
-                                         box(
-                                           title = "Most active country each day",
-                                           status = "primary",
-                                           width = 12,
-                                           height = 700,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           plotOutput("mostActiveCountryDaily")
-                                         ) #End of Box
-                                       ),# end of fluidRow
+#                                        fluidRow(
+#                                          box(
+#                                            title = "Most active country each day",
+#                                            status = "primary",
+#                                            width = 12,
+#                                            height = 700,
+#                                            solidHeader = FALSE,
+#                                            collapsible = TRUE,
+#                                            plotOutput("mostActiveCountryDaily")
+#                                          ) #End of Box
+#                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
                                            title = "Average prices of drugs for each market",
@@ -268,15 +267,15 @@ dashboardPage(skin = "green",
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
-                                         box(
-                                           title = "Number of posts compared to bitcoin price (colored by country)",
-                                           status = "primary",
-                                           width = 12,
-                                           height = 700,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           plotOutput("postsComparedToBicoinPrice")
-                                         ) #End of Box
+#                                          box(
+#                                            title = "Number of posts compared to bitcoin price (colored by country)",
+#                                            status = "primary",
+#                                            width = 12,
+#                                            height = 700,
+#                                            solidHeader = FALSE,
+#                                            collapsible = TRUE,
+#                                            plotOutput("postsComparedToBicoinPrice")
+#                                          ) #End of Box
                                        )# end of fluidRow
                                      )# end of box
                               )#end of column

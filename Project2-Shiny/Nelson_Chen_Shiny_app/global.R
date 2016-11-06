@@ -6,6 +6,9 @@
 # Global variables
 #############################################
 
+library(dplyr)
+library(leaflet)
+
 # Read in files
 delay_flights = readRDS('delays_only.RDS')
 total_byroutes = readRDS('total_byroutes.RDS')
