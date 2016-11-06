@@ -70,6 +70,11 @@ fixMetacritic = function(data) {
   return(data)
 }
 
+fixMajorNelson = function(data){
+  data$isDiscOnly[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))] = TRUE
+  # data$gameName['(Disc only)'%in%data$gameName] = gsub(x = data$gameName['(Disc only)'%in%data$gameName], pattern = "(Disc only)", replacement = "", ignore.case = TRUE)
+  return(data)
+}
 namePrettier = function(dataX) {
   dataX$gameName = as.character(dataX$gameName)
   dataX = dataX[dataX$gameName != "" & dataX$gameName != "gameName",]
@@ -118,13 +123,14 @@ generousNameMerger = function(dataX,dataY) {
   data$gameName.y = NULL
   data$gameName = data$gameName.x
   data$gameName.x = NULL
+  data$gameNameModded = NULL
   return (data)
 }
 
 rm(list = setdiff(ls(), lsf.str()))
 setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/CSV Processing')
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
-MajorNelsionBCList = read.csv('Major_Nelson_Blog_BC_List.csv', stringsAsFactors = FALSE, header = TRUE)
+MajorNelsionBCList = fixMajorNelson(read.csv('Major_Nelson_Blog_BC_List.csv', stringsAsFactors = FALSE, header = TRUE))
 UserVoice = namePrettier(fixUserVoice(read.csv('UserVoice.csv', stringsAsFactors = FALSE, header = TRUE)))
 WikipediaXB360Exclusive = namePrettier(fixWikipediaXB360KExclusive(read.csv('WikipediaXB360Exclusive.csv', stringsAsFactors = FALSE, header = TRUE)))
 WikipediaXB360Kinect = namePrettier(fixWikipediaXB360Kinect(read.csv('WikipediaXB360Kinect.csv', header = TRUE)))
@@ -134,11 +140,9 @@ Remasters = namePrettier(fixRemasters(read.csv('Remasters.csv', stringsAsFactors
 MetacriticXbox360 = fixMetacritic(namePrettier(read.csv('MetacriticXbox360.csv')))
 
 
-# dataUlt = generousNameMerger(MetacriticXbox360,Xbox360_MS_Site)
 dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
-# dataUlt = generousNameMerger(dataUlt, WikipediaXB360Kinect)
-# dataUlt = generousNameMerger(dataUlt, WikipediaXB360Exclusive)
-# dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
+# dataUlt = generousNameMerger(dataUlt,Xbox360_MS_Site)
+dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 
 # dataUlt = merge(x = dataUlt, y = WikipediaXB360Exclusive, by = "gameName", all = TRUE)
 # dataUlt = merge(x = dataUlt, y = Remasters, by = "gameName", all = TRUE)
