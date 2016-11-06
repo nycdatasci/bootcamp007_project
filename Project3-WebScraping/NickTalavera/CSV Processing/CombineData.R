@@ -1,5 +1,26 @@
 library(dplyr)
 library(stringr)
+
+moveMe <- function(data, tomove, where = "last", ba = NULL) {
+  temp <- setdiff(names(data), tomove)
+  x <- switch(
+    where,
+    first = data[c(tomove, temp)],
+    last = data[c(temp, tomove)],
+    before = {
+      if (is.null(ba)) stop("must specify ba column")
+      if (length(ba) > 1) stop("ba must be a single character string")
+      data[append(temp, values = tomove, after = (match(ba, temp)-1))]
+    },
+    after = {
+      if (is.null(ba)) stop("must specify ba column")
+      if (length(ba) > 1) stop("ba must be a single character string")
+      data[append(temp, values = tomove, after = (match(ba, temp)))]
+    })
+  x
+}
+
+
 fixRemasters = function(data) {
   data$Remastered = TRUE
   return(data)
@@ -9,9 +30,18 @@ fixWikipediaXB360Kinect = function(data) {
   data$gameName = str_trim(data$gameName)
   data$kinectRequired = as.character(data$kinectRequired)
   data = data[data$gameName != "",]
-  data$kinectSupport = TRUE
+  data$isKinectSupported = TRUE
   data$kinectRequired[data$kinectRequired == 'No'] = FALSE
   data$kinectRequired[data$kinectRequired == 'Yes'] = TRUE
+  data$kinectSupport = NULL
+  return(data)
+}
+fixWikipediaXB360KExclusive = function(data) {
+  # print(data$exclusiveType[data$exclusiveType == "Console"])
+  data$isConsoleExclusive[data$exclusiveType == "Console"] = TRUE
+  data$isConsoleExclusive[data$exclusiveType != "Console"] = FALSE
+  data$isExclusive = TRUE
+  data$exclusiveType = NULL
   return(data)
 }
 
@@ -46,11 +76,15 @@ namePrettier = function(dataX) {
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
                    'Halo 3: ODST','Halo: Combat Evolved Anniversary', 'Lost Planet 2','Need for Speed: ProStreet','Plants vs Zombies: Garden Warfare','Resident Evil 5',
                    'World of Tanks','Tom Clancy\'s Ghost Recon Advanced Warfighter 2','Assassin\'s Creed: Revelations','Samurai Shodown: Sen','Prototype',
-                   'Ace Combat: Assault Horizon','Battlefield: Bad Company','Dynasty Warriors 6','Dynasty Warriors 6 Empires')
+                   'Ace Combat: Assault Horizon','Battlefield: Bad Company','Dynasty Warriors 6','Dynasty Warriors 6 Empires','DmC: Devil May Cry','Pac-Man and the Ghostly Adventures','Pac-Man and the Ghostly Adventures 2',
+                   'Assassin\'s Creed IV: Black Flag','Zone of the Enders HD Collection','Dance Evolution','Blackwater'
+                   )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
                           'World of Tanks: Xbox 360 Edition','TC\'s GRAW2','Assassin\'s Creed Revelations','Samurai Shodown SEN','[PROTOTYPE]',
-                          'ACE COMBAT: AH','Battlefield: Bad Co.','DW6','DW6 Empires'))
+                          'ACE COMBAT: AH','Battlefield: Bad Co.','DW6','DW6 Empires','DmC','PAC-MAN GHOSTLY ADV','PAC-MAN GHOSTLY ADV 2',
+                          'Assassins Creed IV','ZOE HD','Dance Evolution / DanceMasters','Blackwater (video game)'
+                          ))
   a = dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)]
   print(a)
   # print(gameNameDict[tolower('DW6')])
@@ -92,7 +126,7 @@ setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 MajorNelsionBCList = read.csv('Major_Nelson_Blog_BC_List.csv', stringsAsFactors = FALSE, header = TRUE)
 UserVoice = namePrettier(fixUserVoice(read.csv('UserVoice.csv', stringsAsFactors = FALSE, header = TRUE)))
-WikipediaXB360Exclusive = namePrettier(read.csv('WikipediaXB360Exclusive.csv', stringsAsFactors = FALSE, header = TRUE))
+WikipediaXB360Exclusive = namePrettier(fixWikipediaXB360KExclusive(read.csv('WikipediaXB360Exclusive.csv', stringsAsFactors = FALSE, header = TRUE)))
 WikipediaXB360Kinect = namePrettier(fixWikipediaXB360Kinect(read.csv('WikipediaXB360Kinect.csv', header = TRUE)))
 Xbox360_MS_Site = namePrettier(fixXbox360_MS_Site(read.csv('Xbox360_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE)))
 XboxOne_MS_Site = namePrettier(read.csv('XboxOne_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE))
@@ -100,10 +134,11 @@ Remasters = namePrettier(fixRemasters(read.csv('Remasters.csv', stringsAsFactors
 MetacriticXbox360 = fixMetacritic(namePrettier(read.csv('MetacriticXbox360.csv')))
 
 
-dataUlt = generousNameMerger(MetacriticXbox360,Xbox360_MS_Site)
-dataUlt = generousNameMerger(dataUlt, WikipediaXB360Kinect)
-dataUlt = generousNameMerger(dataUlt, WikipediaXB360Exclusive)
-dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
+# dataUlt = generousNameMerger(MetacriticXbox360,Xbox360_MS_Site)
+dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
+# dataUlt = generousNameMerger(dataUlt, WikipediaXB360Kinect)
+# dataUlt = generousNameMerger(dataUlt, WikipediaXB360Exclusive)
+# dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 
 # dataUlt = merge(x = dataUlt, y = WikipediaXB360Exclusive, by = "gameName", all = TRUE)
 # dataUlt = merge(x = dataUlt, y = Remasters, by = "gameName", all = TRUE)
@@ -117,4 +152,6 @@ dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 # dataUlt$in_progress[dataUlt$in_progress == ""] = FALSE
 # dataUlt = dataUlt[dataUlt$gameName != "",]
 # dataUlt = select(dataUlt, gameName, votes, kinectSupport)
+dataUlt = moveMe(dataUlt, c("gameName"), "first")
 dataUlt = unique(dataUlt)
+# dataUlt = dataUlt[(!is.na(dataUlt$reviewScorePro) & is.na(dataUlt$dayRecorded)) | (is.na(dataUlt$reviewScorePro) & !is.na(dataUlt$dayRecorded)),]

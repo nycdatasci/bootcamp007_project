@@ -28,7 +28,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         numberOfPages = int(math.ceil(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
         for j in range(1,numberOfPages+1):
         # for j in range(1,2):
-            next_page = 'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=' + str(j)
+            next_page = 'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=' + str(j) + '?PageSize=60&Page=1&sortby=BestSellingToday'
             print("Page" + str(j))
             print(next_page)
             yield scrapy.Request(next_page, callback=self.xbPageFind)
@@ -52,7 +52,6 @@ class Xbox360_MS_Site(scrapy.Spider):
             if gameUrl:
                     yield scrapy.Request(url=gameUrl, callback=self.scrapeIndividualGames, meta={'xOne_item': xOne_item})
 
-
     def scrapeIndividualGames(self, response):
         xOne_item = response.meta['xOne_item']
         ProductPublishing = response.xpath('//*[@id="ProductPublishing"]')
@@ -74,7 +73,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         onlineFeatures = response.xpath('div[2]/div/div[2]/ul').extract()
         if len(onlineFeatures) != 0:
             onlineFeatures = onlineFeatures[0]
-        price = response.xpath('//*[@id="GetProduct"]/a[2]/span/span/text()').extract()
+        price = response.xpath('//*[@id="GetProduct"]/a/span/span/text()').extract()
         if len(price) != 0:
             price = price[0]
         releaseDate = ProductPublishing.xpath('li[1]/text()').extract()
@@ -90,6 +89,9 @@ class Xbox360_MS_Site(scrapy.Spider):
         for start in xboxRatingStars:
             xboxRating += float(re.findall('[0-9.]+', start)[0])/4
         numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()').extract()[0].strip()
+        gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[1]/h2/text()').extract()[0].strip()
+        if len(xOne_item['gameName']) < len(gameNameLong):
+            xOne_item['gameName'] = gameNameLong
 
         DLlist = response.xpath('//*[@id="navDownloadType"]/li/a/text()').extract()
         DLdemos = ""
@@ -125,6 +127,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         xOne_item['highresboxart'] = highresboxart
         xOne_item['ESRBRating'] = ESRBRating
         xOne_item['xbox360Rating'] = xboxRating
+        xOne_item['releaseDate'] = releaseDate
         xOne_item['numberOfReviews'] = numberOfReviews
         xOne_item['DLsmartglass'] = DLsmartglass
         xOne_item['DLavatarItems'] = DLavatarItems
