@@ -1,0 +1,12 @@
+id, owner_id, name, image_url, category_id
+"5FJXhjdILmRA2z5bvz4nzf","spotify","Today's Top Hits","https://u.scdn.co/images/pl/default/7197112fe2e18095a6ae8c7ccf65c8e45befa5b5","pop"
+"0lbtgFu3JNKX77J5YOpW7n","spotify","Rock This","https://u.scdn.co/images/pl/default/2edbd6c060cdfa646a8733f23a4a05b368958886","rock"
+"5O2ERf8kAYARVVdfCKZ9G7","spotify","Coffee Table Jazz","https://u.scdn.co/images/pl/default/23daf65c6e6516dcbfae24e1cd4e94cdd1d2ae55","jazz"
+"0XUlpafP8eIlIWt3VHSd7q","spotify","Feel Good Indie Rock","https://u.scdn.co/images/pl/default/35e55ca1334bf34c374390aa7554a040d7219f27","indie_alt"
+"1GQLlzxBxKTb6tJsD4RxHI","spotify","electroNOW","https://u.scdn.co/images/pl/default/64030e3bf99c9b5c028e88b965d40a0a8a42f70b","edm_dance"
+"4BKT5olNFqLB1FAa8OtC8k","spotify","Your Favorite Coffeehouse","https://u.scdn.co/images/pl/default/dde0c0ca2931038a00c22f5b0750fd38335bdeff","chill"
+"2jPqXjczinrHdKh6qzHcoz","spotify","PEACE","https://u.scdn.co/images/pl/default/a74220a04ca8ba355a852f4c2eb119508bd73877","sleep"
+"5yolys8XG4q7YfjYGl5Lff","spotify","Rap Caviar","https://u.scdn.co/images/pl/default/9a98566d34e5c0435d597d1fe29fa48a12156f08","hiphop"
+"4ecQaDJHF55Ls9m2lKIXbI","spotify","Hot Country","https://u.scdn.co/images/pl/default/5ab8618ea8b263592d699e27eadf11313afce738","country"
+"7t5PfPV1MdYnpmGPxwv5Ef","spotify","I Love My 90's R&B","https://u.scdn.co/images/pl/default/d1f24e64fe62a2acb2a395c5cb25e348e0ad40ac","soul"
+"7ECmf74Ey57LAYulSxhL9w","spotify","Funky Heavy Bluesy","https://u.scdn.co/images/pl/default/058dc82bcdd2b52c15e351ff902b623c6bd2d418","blues"
