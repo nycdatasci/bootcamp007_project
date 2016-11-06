@@ -33,6 +33,7 @@ class WikipediaXB360KinectItem(scrapy.Item):
 
 class MajorNelsonItem(scrapy.Item):
     gameName = scrapy.Field()
+    BCCompatible = scrapy.Field()
 
 class XboxOne_MS_Site_Item(scrapy.Item):
     gameName = scrapy.Field()
