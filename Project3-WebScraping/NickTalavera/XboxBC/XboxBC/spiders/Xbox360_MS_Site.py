@@ -28,7 +28,7 @@ class Xbox360_MS_Site(scrapy.Spider):
         numberOfPages = int(math.ceil(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
         for j in range(1,numberOfPages+1):
         # for j in range(1,2):
-            next_page = 'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=' + str(j) + '?PageSize=60&Page=1&sortby=BestSellingToday'
+            next_page = 'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=' + str(j)
             print("Page" + str(j))
             print(next_page)
             yield scrapy.Request(next_page, callback=self.xbPageFind)
@@ -50,7 +50,7 @@ class Xbox360_MS_Site(scrapy.Spider):
             xOne_item['gameUrl'] = gameUrl
             xOne_item['dayRecorded'] = dayRecorded
             if gameUrl:
-                    yield scrapy.Request(url=gameUrl, callback=self.scrapeIndividualGames, meta={'xOne_item': xOne_item})
+                    yield scrapy.Request(url=(gameUrl + '?PageSize=60&Page=1&sortby=BestSellingToday'), callback=self.scrapeIndividualGames, meta={'xOne_item': xOne_item})
 
     def scrapeIndividualGames(self, response):
         xOne_item = response.meta['xOne_item']
