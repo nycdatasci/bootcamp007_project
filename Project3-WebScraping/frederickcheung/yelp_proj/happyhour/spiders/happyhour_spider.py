@@ -26,7 +26,7 @@ class yelpSpider(scrapy.Spider):
         if last_page_number < 10:
             return
         else:
-            page_urls = [response.url + "?start=" + str(pageNumber)
+            page_urls = ["https://www.yelp.com/search?find_desc=Restaurants&find_loc=Boston,+MA&start=" + str(pageNumber)+"&sortby=rating&attrs=HappyHour"
                 for pageNumber in range(0, last_page_number+10, 10)]
             for page_url in page_urls:
                 yield scrapy.Request(page_url,
