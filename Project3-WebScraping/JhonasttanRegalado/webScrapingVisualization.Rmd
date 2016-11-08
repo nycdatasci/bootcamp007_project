@@ -1,0 +1,21 @@
+---
+title: "SpyderProject"
+author: "Jhonasttan Regalado"
+date: "11/7/2016"
+output: html_document
+---
+
+Visualize the Starbucks locations and their amenities.
+1. Scrapy for store locators
+2. Leaflet for visualization
+3. ML clustering for grouping the stores based on amenities
+4. Map layer for citibikeanallysis app
+
+```{r}
+#Load data rendered by Scrapy
+library(tidyverse)
+df_sb <- read.csv('./starbucks/StarbucksStores.txt', stringsAsFactors = FALSE)
+View(df_sb)
+head(df_sb)
+```
+

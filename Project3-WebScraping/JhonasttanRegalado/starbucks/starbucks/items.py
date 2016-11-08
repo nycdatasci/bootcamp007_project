@@ -14,7 +14,51 @@ class StarbucksItem(Item):
     StoreId = Field(serializer=str)
     Name = Field(serializer=str)
     PhoneNumber = Field(serializer=str)
-    Coordinates = Field(serializer=str)
+    Longitude = Field()
+    Latitude = Field()
     Address = Field(serializer=str)
-    Features = Field(serializer=str)
-    Slug = Field(serializer=str)
+    Amenities = Field(serializer=str)
+    Url = Field(serializer=str)
+    AmeCL = Field(serializer=int)
+    AmeWA = Field(serializer=int)
+    AmeWF = Field(serializer=int)
+    AmeCD = Field(serializer=int)
+    AmeDR = Field(serializer=int)
+    AmeLB = Field(serializer=int)
+    AmeGO = Field(serializer=int)
+    AmeFZ = Field(serializer=int)
+    AmeXO = Field(serializer=int)
+    AmeLU = Field(serializer=int)
+    AmeRW = Field(serializer=int)
+    AmePS = Field(serializer=int)
+    AmeCS = Field(serializer=int)
+    AmeMX = Field(serializer=int)
+    AmeVS = Field(serializer=int)
+    AmeNB = Field(serializer=int)
+    AmeSQ = Field(serializer=int)
+    AmeEM = Field(serializer=int)
+    AmeBA = Field(serializer=int)
+    
+    AmeOther = Field(serializer=str)
+    
+    '''
+    {"code":"CL","name":"Starbucks Reserve-Clover Brewed"},
+    {"code":"WA","name":"Oven-warmed Food"},
+    {"code":"WF","name":"Wireless Hotspot"},
+    {"code":"CD","name":"Mobile Payment"},
+    {"code":"DR","name":"Digital Rewards"},
+    {"code":"LB","name":"LaBoulange"},
+    {"code":"GO","name":"Google Wi-Fi"},
+    {"code":"FZ","name":"Fizzio Handcrafted Sodas"},
+    {"code":"XO","name":"Mobile Order and Pay"},
+    {"code":"LU","name":"Lunch"},
+    {"code":"RW","name":"My Starbucks Rewards"},
+    {"code":"PS","name":"Playbook Store System"},
+    {"code":"CS","name":"tbd - Coffee Scale"}
+    {"code":"MX","name":"Music Experience"}
+    {u'VS': u'Verismo'}
+    {u'NB': u'Nitro Cold Brew'}
+    {u'SQ': u'tbd'}
+    {u'EM': u'Starbucks Evenings'}
+    {u'BA': u'Bakery'}
+    '''
