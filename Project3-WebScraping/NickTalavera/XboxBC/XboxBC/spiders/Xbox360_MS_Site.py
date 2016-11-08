@@ -60,47 +60,6 @@ class Xbox360_MS_Site(scrapy.Spider):
 
     def scrapeIndividualGames(self, response):
         xOne_item = response.meta['xOne_item']
-        ProductPublishing = response.xpath('//*[@id="ProductPublishing"]')
-        Overview1 = response.xpath('//*[@id="overview1"]')
-        Overview2 = response.xpath('//*[@id="overview2"]')
-        ProductTitleZone = response.xpath('//*[@id="ProductTitleZone"]')
-        developer = ProductPublishing.xpath('li[3]/text()').extract()
-        if len(developer) != 0:
-            developer = developer[0].strip()
-        publisher = ProductPublishing.xpath('li[2]/text()').extract()
-        if len(publisher) != 0:
-            publisher = publisher[0].strip()
-        genre = ProductPublishing.xpath('li[4]/text()').extract()
-        if len(genre) != 0:
-            genre = genre[0].strip()
-        features = Overview2.xpath('div[2]/div/div[1]/ul').extract()
-        if len(features) != 0:
-            features = features[0]
-        onlineFeatures = response.xpath('div[2]/div/div[2]/ul').extract()
-        if len(onlineFeatures) != 0:
-            onlineFeatures = onlineFeatures[0]
-        price = response.xpath('//*[@id="GetProduct"]/a/span/span/text()').extract()
-        if len(price) != 0:
-            price = price[0].strip().lstrip("$")
-            if price == "Free":
-                price = 0
-        releaseDate = ProductPublishing.xpath('li[1]/text()').extract()
-        if len(releaseDate) != 0:
-            releaseDate = releaseDate[0].strip()
-
-        highresboxart = Overview1.xpath('div[1]/img/@src').extract()
-        if len(highresboxart) != 0:
-            highresboxart = highresboxart[0].strip()
-        ESRBRating = response.xpath('//*[@id="ActualRating"]/text()').extract()[1].strip()
-        if len(ESRBRating) != 0:
-            ESRBRating = ESRBRating[0].strip()
-        xboxRatingStars = ProductTitleZone.xpath('div[2]/div/span/@class').extract()
-        xboxRating = 0
-        for start in xboxRatingStars:
-            xboxRating += float(re.findall('[0-9.]+', start)[0])/4
-        numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()').extract()[0].strip()
-
-
         # # return
         DLlist = response.xpath('//*[@id="navDownloadType"]/li/a/text()').extract()
         gameCount = ""
@@ -158,6 +117,50 @@ class Xbox360_MS_Site(scrapy.Spider):
             return
         if 'trial game' in xOne_item['gameName'].lower():
             return
+
+        ProductPublishing = response.xpath('//*[@id="ProductPublishing"]')
+        Overview1 = response.xpath('//*[@id="overview1"]')
+        Overview2 = response.xpath('//*[@id="overview2"]')
+        ProductTitleZone = response.xpath('//*[@id="ProductTitleZone"]')
+        developer = ProductPublishing.xpath('li[3]/text()').extract()
+        if len(developer) != 0:
+            developer = developer[0].strip()
+        publisher = ProductPublishing.xpath('li[2]/text()').extract()
+        if len(publisher) != 0:
+            publisher = publisher[0].strip()
+        genre = ProductPublishing.xpath('li[4]/text()').extract()
+        if len(genre) != 0:
+            genre = genre[0].strip()
+        features = Overview2.xpath('div[2]/div/div[1]/ul').extract()
+        if len(features) != 0:
+            features = features[0]
+        onlineFeatures = response.xpath('div[2]/div/div[2]/ul').extract()
+        if len(onlineFeatures) != 0:
+            onlineFeatures = onlineFeatures[0]
+        price = response.xpath('//*[@id="GetProduct"]/a/span/span/text()').extract()
+        if len(price) != 0:
+            price = price[0].strip().lstrip("$")
+            if price == "Free":
+                price = 0
+        releaseDate = ProductPublishing.xpath('li[1]/text()').extract()
+        if len(releaseDate) != 0:
+            releaseDate = releaseDate[0].strip()
+            if releaseDate.replace("/", "").isdigit() == False:
+                print("RELEASE DATE ERROR")
+                print(ProductPublishing.xpath('li/text()').extract())
+
+        highresboxart = Overview1.xpath('div[1]/img/@src').extract()
+        if len(highresboxart) != 0:
+            highresboxart = highresboxart[0].strip()
+        ESRBRating = response.xpath('//*[@id="ActualRating"]/text()').extract()[1].strip()
+        if len(ESRBRating) != 0:
+            ESRBRating = ESRBRating[0].strip()
+        xboxRatingStars = ProductTitleZone.xpath('div[2]/div/span/@class').extract()
+        xboxRating = 0
+        for start in xboxRatingStars:
+            xboxRating += float(re.findall('[0-9.]+', start)[0])/4
+        numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()').extract()[0].strip()
+
 
         xOne_item['gameCount'] = gameCount
         xOne_item['developer'] = developer

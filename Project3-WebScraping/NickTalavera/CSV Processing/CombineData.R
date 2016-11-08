@@ -1,5 +1,6 @@
 library(dplyr)
 library(stringr)
+library(Hmisc)
 library(stringi)
 moveMe <- function(data, tomove, where = "last", ba = NULL) {
   temp <- setdiff(names(data), tomove)
@@ -61,6 +62,13 @@ fixUserVoice = function(data) {
 fixXbox360_MS_Site = function(data) {
   # data = unique.data.frame(data)/
   data = unique(data)
+  
+## FIX LATER
+  data = data[!is.na(data$releaseDate) & !is.na(as.numeric(gsub("/", "",as.character(data$releaseDate)))),]
+  print(data$releaseDate)
+  print(as.character(data$releaseDate))
+  print(data$releaseDate)
+  # data$releaseDate = as.Date(as.character(data$releaseDate), format = "%m/%d/%Y")
   data$gameName = str_trim(as.character(data$gameName))
   data$hasDemoAvailable[data$DLdemos>0] = TRUE
   data$hasDemoAvailable[is.na(data$DLdemos)] = FALSE
@@ -93,6 +101,8 @@ namePrettier = function(dataX) {
   dataX$gameName = gsub("®", "", dataX$gameName)
   dataX$gameName = gsub("ñ", "n", dataX$gameName)
   dataX$gameName = gsub("Full Game - ", "", dataX$gameName)
+  dataX$gameName = gsub("Full Version", "", dataX$gameName)
+  dataX$gameName = gsub(" - FREE OFFER", "", dataX$gameName)
   dataX$gameName = gsub(" - Full", "", dataX$gameName)
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
                    'Halo 3: ODST','Halo: Combat Evolved Anniversary', 'Lost Planet 2','Need for Speed: ProStreet','Plants vs Zombies: Garden Warfare','Resident Evil 5',
@@ -114,7 +124,12 @@ namePrettier = function(dataX) {
                    "Sam & Max Beyond Time & Space",'Sonic The Hedgehog 4 Episode II','Soul Calibur II HD','Jane\'s Advanced Strike Fighters','Tour de France 2009','Tour de France 2013',
                    "50 Cent: Blood on the Sand",'Brave: The Video Game','Battlefield 2: Modern Combat','Dragon Ball Z for Kinect','Dragon Ball Z: BURST LIMIT','LEGO Indiana Jones 2: The Adventure Continues',
                    'LEGO Indiana Jones: The Original Adventures','LEGO Star Wars III: The Clone Wars','LEGO The Lord of the Rings','LEGO Harry Potter: Years 1-4','The Walking Dead: Survival Instinct','Transformers: Revenge of the Fallen',
-                   'The Warriors: Street Brawl','The Raven - Legacy of a Master Thief Episode 1','Metal Gear Solid HD Collection','Metal Gear Solid HD Collection'
+                   'The Warriors: Street Brawl','The Raven - Legacy of a Master Thief Episode 1','Metal Gear Solid HD Collection','Metal Gear Solid HD Collection','The Witcher 2: Assassins of Kings',
+                   'Tony Hawk\'s American Wasteland','A.R.E.S. Extinction Agenda EX','Sonic\'s Ultimate Genesis Collection','Tom Clancy\'s Splinter Cell Conviction','World Series of Poker: Tournament of Champions','Where the Wild Things Are','Titanfall','Worms Revolution','Valiant Hearts: The Great War',
+                   'Young Justice: Legacy','Zeno Clash Ultimate Edition','Thrillville: Off the Rails','The Price is Right: Decades','Penguins of Madagascar: Dr. Blowhole Returns - Again','The King of Fighters 2002 Ultimate Match','Tom Clancy\'s H.A.W.X',
+                   'Star Wars: The Clone Wars - Republic Heroes','Superstars V8 Next Challenge','Street Fighter II Hyper Fighting','Dead or Alive 5 Last Round','Super Hero Squad: The Infinity Gauntlet','Are You Smarter Than a 5th Grader: Game Time','Are You Smarter Than a 5th Grader: Game Time',
+                   "Cabela's Alaskan Adventures",'Deadliest Catch: Alaskan Storm','Hannah Montana The Movie','Ace Combat: Assault Horizon','Chronicles of Riddick: Assault on Dark Athena','Naval Assault: The Killing Tide','Cabela\'s African Safari','Chivalry: Medieval Warfare',
+                   'Civil War: Secret Missions','Civil War: Secret Missions','Call of Duty: Black Ops III','Cabela\'s Big Game Hunter: Hunting Party','Command & Conquer 3: Kane\'s Wrath','Command & Conquer Red Alert 3','Commanders: Attack of the Genos'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -136,7 +151,12 @@ namePrettier = function(dataX) {
                           'Sam & Max Beyond Time and Space','SONIC 4 Episode II','SOULCALIBURII HD ONLINE','JASF','Tour de France 2009 - The Official Game','Tour de France 2013 - 100th Edition',
                           "50 Cent: BotS",'Disney/Pixar: Brave The Video Game','Battlefield 2: MC','DBZ for Kinect','DBZ: BURST LIMIT','LEGO Indiana Jones 2',
                           'LEGO Indiana Jones','LEGO Star Wars III','LEGO Lord of the Rings','LEGO Harry Potter','TWD: Survival Instinct','Transformers 2',
-                          'The Warriors: SB','The Raven Episode 1','METAL GEAR SOLID 2 AND 3 HD','Metal Gear Solid 2 & 3: HD Edition'
+                          'The Warriors: SB','The Raven Episode 1','METAL GEAR SOLID 2 AND 3 HD','Metal Gear Solid 2 & 3: HD Edition','The Witcher 2: Assassins of Kings Enhanced Edition',
+                          'American Wasteland','A.R.E.S.','Sonic\'s UGC','SplinterCellConviction','WSOP: TOC','WtWTA','Titanfall Deluxe Edition','Worms The Revolution Collection','Valiant Hearts',
+                          'Young Justice','Zeno Clash UE','Thrillville: OTR','The Price Is Right','The Penguins of Madagascar','THE KING OF FIGHTERS 2002 UNLIMITED MATCH','TCs H.A.W.X',
+                          'SWTCW: Republic Heroes','Superstars V8 NC','Street Fighter II\' HF','DOA5 Last Round','Super Hero Squad: TIG','5th Grader','5th Grader: Game Time',
+                          'Alaskan Adventures','Alaskan Storm','Hannah The Movie','ASSAULTHORIZON','Assault on Dark Athena','Naval Assault','Cabela\'s Safari','Chivalry',
+                          'Civil War','CW: Secret Missions','COD: Black Ops III','Cabela\'s Hunting Party','C&C3: Kane\'s Wrath','C&C Red Alert 3','Commanders: Attack'
                           ))
   dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
   return(dataX)
@@ -144,16 +164,17 @@ namePrettier = function(dataX) {
 
 gameRemover = function(data) {
   gamesToRemove = c('Assassins Creed The Americas Collection','ACE COMBAT: AH Demo','Adidas miCoach','Batman: AA GOTY',"XNA Creators Club", "Xbox 360 HD DVD Player", "Xbox 360 Summer Blockbusters", "Xbox 360 Team", "Xbox 360 Team", "Xbox LIVE Event Registrations",
-                    'Photo Party','Deus Ex: Human Revolution – Director’s Cut','Xbox Live Arcade Unplugged Vol. 1','LEGO Lord of the Rings - Demo','Windows Media Center','World of Tanks Public Test')
-  keywordsToRemove <- tolower(sort(c("bundle","pack",'Assassins Creed The Americas Collection','ACE COMBAT: AH Demo','Adidas miCoach','Batman: AA GOTY')))
+                    'Photo Party','Deus Ex: Human Revolution – Director’s Cut','Xbox Live Arcade Unplugged Vol. 1','LEGO Lord of the Rings - Demo','Windows Media Center','World of Tanks Public Test',
+                    'Black','Transformers: The Cybertron Experience','Burnout 3: Takedown','Command and Conquer 3')
+  keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
   keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
   data$gameNameMissed = tolower(data$gameName)
   notRemoved = unlist(lapply(data$gameNameMissed, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
   # notRemoved = unlist(lapply(data$gameNameMissed, (function (x) !is.na(str_match(x,keywordsToRemoveRegex)))))
-  for (i in gamesToRemove) {
+  for (i in tolower(gamesToRemove)) {
     print(i)
-    data = data[data$gameName != i,]
+    data = data[tolower(data$gameName) != i,]
   }
   print(sort(data$gameName[notRemoved]))
   data = data[!notRemoved,]
@@ -172,6 +193,14 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keep = "x") {
   dataY$gameNameModded = gsub("®", "", dataY$gameNameModded)
   dataX$gameNameModded = gsub("s$", "", dataX$gameNameModded)
   dataY$gameNameModded = gsub("s$", "", dataY$gameNameModded)
+  dataX$gameNameModded = gsub("the", "", dataX$gameNameModded)
+  dataY$gameNameModded = gsub("the", "", dataY$gameNameModded)
+  dataX$gameNameModded = gsub("a", "", dataX$gameNameModded)
+  dataY$gameNameModded = gsub("a", "", dataY$gameNameModded)
+  dataX$gameNameModded = gsub("of", "", dataX$gameNameModded)
+  dataY$gameNameModded = gsub("of", "", dataY$gameNameModded)
+  dataX$gameNameModded = gsub("for", "", dataX$gameNameModded)
+  dataY$gameNameModded = gsub("for", "", dataY$gameNameModded)
   # dataX$gameNameModded = gsub("[^\x20-\x7E]", "", dataX$gameNameModded)
   # dataY$gameNameModded = gsub("[^\x20-\x7E]", "", dataY$gameNameModded)
   
