@@ -37,8 +37,9 @@ fixWikipediaXB360Kinect = function(data) {
   data$isKinectRequired = as.character(data$kinectRequired)
   data = data[data$gameName != "",]
   data$isKinectSupported = TRUE
-  data$kinectRequired[data$kinectRequired == 'No'] = FALSE
-  data$kinectRequired[data$kinectRequired == 'Yes'] = TRUE
+  data$isKinectRequired[data$isKinectRequired == 'No'] = FALSE
+  data$isKinectRequired[data$isKinectRequired == 'Yes'] = TRUE
+  data$isKinectRequired = as.logical(data$isKinectRequired)
   data$kinectSupport = NULL
   data$kinectRequired = NULL
   return(data)
@@ -60,24 +61,26 @@ fixMSXBone = function(data) {
 
 fixUserVoice = function(data) {
   data$gameName = str_trim(data$gameName)
-  data$isInProgress = as.character(data$in_progress)
-  # data = data[data$gameName != "",]
-  # data$kinectSupport = TRUE
+  data$in_progress[data$in_progress == 'In-Progress'] = TRUE
+  data$isInProgress = as.logical(data$in_progress)
+  data = data[data$gameName != "",]
   data$isOnUserVoice = TRUE
-  data$isInProgress[data$isInProgress == 'In-Progress'] = TRUE
-  # data$kinectRequired[data$kinectRequired == 'Yes'] = TRUE
-  data$in_progress = NULL
   return(data)
 }
 
 fixXbox360_MS_Site = function(data) {
   # data = unique.data.frame(data)/
+  data = as.data.frame(data)
   data = unique(data)
+  data$price = as.numeric(as.character(data$price))
+  data$numberOfReviews = as.integer(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
+  # data$Pricea = as.numeric(data$Price)
   
 ## FIX LATER
   # data = data[!is.na(data$releaseDate) & !is.na(as.numeric(gsub("/", "",as.character(data$releaseDate)))),]
-  releaseDateds = as.Date(data$releaseDate, format = "%m/%d/%Y")
+  releaseDateds = as.Date(as.Date(data$releaseDate, format = "%m/%d/%Y"))
   data$releaseDate = as.character(releaseDateds)
+  # data$releaseDates = releaseDateds
   data$gameName = str_trim(as.character(data$gameName))
   data$hasDemoAvailable[data$DLdemos>0] = TRUE
   data$hasDemoAvailable[is.na(data$DLdemos)] = FALSE
@@ -109,10 +112,11 @@ namePrettier = function(dataX) {
   dataX$gameName = gsub("™", "", dataX$gameName)
   dataX$gameName = gsub("®", "", dataX$gameName)
   dataX$gameName = gsub("ñ", "n", dataX$gameName)
-  dataX$gameName = gsub("Full Game - ", "", dataX$gameName)
-  dataX$gameName = gsub("Full Version", "", dataX$gameName)
+  dataX$gameName = gsub("Full*Game - ", "", dataX$gameName)
+  dataX$gameName = gsub("Full*Version", "", dataX$gameName)
   dataX$gameName = gsub(" - FREE OFFER", "", dataX$gameName)
   dataX$gameName = gsub(" - Full", "", dataX$gameName)
+  dataX$gameName = gsub("EA*Sports", "", dataX$gameName)
   removeWords = tolower(c('Base Game','free to play','full game','(TM)$','NA$'))
   for (i in removeWords) {
     dataX$gameName = gsub(i, "", dataX$gameName, ignore.case = TRUE)
@@ -151,7 +155,7 @@ namePrettier = function(dataX) {
                    'Star Ocean: The Last Hope','High School Musical 3: Senior Year Dance','DeathSpank: Thongs of Virtue','Digimon: All-Star Rumble','RAW - Realms of Ancient War','Super Puzzle Fighter II Turbo HD Remix','Don King Presents Prizefighter','Prison Break: The Conspiracy',
                    'Spider-Man: Shattered Dimensions','Penny Arcade Adventures: Episode One','Penny Arcade Adventures: Episode Two','Project Gotham Racing 4','Viva Pinata: Party Animals','Ninety-Nine Nights II','Naruto Shippuden: Ultimate Ninja Storm 3 Full Burst','The Chronicles of Narnia: Prince Caspian',
                    'Need for Speed: Undercover','SpongeBob HeroPants','SpongeBob Squarepants: Plankton\'s Robotic Revenge','Leela','Diablo III: Reaper of Souls','Diablo III: Reaper of Souls','Destroy All Humans! Path of the Furon',
-                   ''
+                   'Dead to Rights: Retribution'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -185,7 +189,7 @@ namePrettier = function(dataX) {
                           'Star Ocean: TLH','HSM3 Senior Year DANCE','Deathspank T.O.V.','Digimon: ASR','RAW','Puzzle Fighter HD','Prizefighter','Prison Break',
                           'Spider-Man:Dimensions','Penny Arcade Episode 1','Penny Arcade Episode Two','PGR 4','Party Animals','N3II: Ninety-Nine Nights','Naruto Shippuden: Ultimate Ninja Storm 3','Narnia: Prince Caspian',
                           'NFS Undercover','SBHP','SB: Robotic Revenge','Deepak Chopras Leela','Diablo III: Reaper of Souls – Ultimate Evil Edition','Diablo III','DAH! Path of the Furon',
-                          ''
+                          'DTR: Retribution'
                           ))
   dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
   return(dataX)
@@ -198,7 +202,8 @@ gameRemover = function(data) {
                     'Cyber Troopers Virtual On Oratorio Tangram','DB: Raging Blast','DB: Raging Blast 2','DDR/DS Universe','Zuma\'s Revenge! Collection','This is Vegas','Vampires and Werewolves','Zapper','Max Payne',
                     'Grabbed by the Ghoulies','Metal Arms: Glitch in the System','Max Payne 2: The Fall of Max Payne','Fable','Guilty Gear X2 #Reload','Psychonauts','Raze\'s Hell','Jade Empire','Sid Meier\'s Pirates!',
                     'Ninja Gaiden Black','Indigo Prophecy','Gauntlet: Seven Sorrows','Halo Waypoint','Halo Wars 2 Avatar Store','Boxing Fight','Build A Buddy','Darts Vs Zombies','Gears of War 4 Store','Gears of War: Ultimate Edition Store',
-                    'Project Natal','Prey 2','PlayOnline Viewer','Ninety-Nine Nights/JP','Obut Ptanque 2','Destiny: The Taken King - Digital Collector\'s Edition','Destiny: The Taken King - Legendary Edition'
+                    'Project Natal','Prey 2','PlayOnline Viewer','Ninety-Nine Nights/JP','Obut Ptanque 2','Destiny: The Taken King - Digital Collector\'s Edition','Destiny: The Taken King - Legendary Edition',
+                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator'
                     )
   keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
@@ -217,7 +222,8 @@ gameRemover = function(data) {
 generousNameMerger = function(dataX,dataY,mergeType="all",keep = "x") {
   dataX$gameNameModded = tolower(dataX$gameName)
   dataY$gameNameModded = tolower(dataY$gameName)
-  removeWords = tolower(c('s',"[^[:alnum:] ]"," ",'&','and',"™","®",'of','DX','disney','for','edition','standard','special','game', 'the','Base Game','free to play','full game', 'year','hd','movie','TM','Cabela\'s','NA$',"s$","x$"))
+  removeWords = tolower(c("[^[:alnum:] ]"," ",'Videogame','EA*SPORTS','Soccer','&',"™","®",'of','DX','disney','for','edition','standard','special','game', 'the','Base*Game','free*to*play','full*game', 'year','hd','movie','TM','Cabela\'s','and','NA$'," x$","s$"))
+  
   for (i in removeWords) {
     dataX$gameNameModded = gsub(i, "", dataX$gameNameModded, ignore.case = TRUE)
     dataY$gameNameModded = gsub(i, "", dataY$gameNameModded, ignore.case = TRUE)
@@ -261,7 +267,7 @@ MajorNelsionBCList = namePrettier(fixMajorNelson(read.csv('Major_Nelson_Blog_BC_
 UserVoice = namePrettier(fixUserVoice(read.csv('UserVoice.csv', stringsAsFactors = FALSE, header = TRUE)))
 WikipediaXB360Exclusive = namePrettier(fixWikipediaXB360KExclusive(read.csv('WikipediaXB360Exclusive.csv', stringsAsFactors = FALSE, header = TRUE)))
 WikipediaXB360Kinect = namePrettier(fixWikipediaXB360Kinect(read.csv('WikipediaXB360Kinect.csv', stringsAsFactors = FALSE, header = TRUE)))
-Xbox360_MS_Site = namePrettier(fixXbox360_MS_Site(as.data.frame(read.csv('Xbox360_MS_Site.csv', stringsAsFactors = TRUE, header = TRUE))))
+Xbox360_MS_Site = namePrettier(fixXbox360_MS_Site(as.data.frame(read.csv('Xbox360_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE))))
 XboxOne_MS_Site = namePrettier(fixMSXBone(read.csv('XboxOne_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE)))
 Remasters = namePrettier(fixRemasters(read.csv('RemastersXB.csv', stringsAsFactors = FALSE, header = TRUE)))
 MetacriticXbox360 = namePrettier(fixMetacritic(namePrettier(read.csv('MetacriticXbox360.csv', stringsAsFactors = FALSE))))
@@ -271,13 +277,15 @@ dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
 dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
-dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
+dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
 # Remasters
 # XboxOne_MS_Site
 
 dataUlt[dataUlt == ""] = NA
+dataUlt = unique(dataUlt)
+dataUlt = gameRemover(dataUlt)
 dataUlt$isListedOnMSSite[is.na(dataUlt$isListedOnMSSite)] = FALSE
 dataUlt$isMetacritic[is.na(dataUlt$isMetacritic)] = FALSE
 dataUlt$isBCCompatible[is.na(dataUlt$isBCCompatible)] = FALSE
@@ -288,19 +296,34 @@ dataUlt$isConsoleExclusive[is.na(dataUlt$isConsoleExclusive)] = FALSE
 dataUlt$isKinectRequired[is.na(dataUlt$isKinectRequired)] = FALSE
 dataUlt$isDiscOnly[is.na(dataUlt$isDiscOnly)] = FALSE
 dataUlt$isInProgress[is.na(dataUlt$isInProgress)] = FALSE
-dataUlt$isOnXboxOne[dataUlt$isRemastered == TRUE] = TRUE
+dataUlt$hasDemoAvailable[is.na(dataUlt$hasDemoAvailable)] = FALSE
 dataUlt$isOnXboxOne[is.na(dataUlt$isOnXboxOne)] = FALSE
-dataUlt$isRemastered = NULL
-# dataUlt$kinectRequired[is.na(dataUlt$kinectRequired)] = FALSE
-# dataUlt$in_progress[dataUlt$in_progress == ""] = FALSE
+dataUlt$isAvailableToPurchaseDigitally[is.na(dataUlt$isAvailableToPurchaseDigitally)] = FALSE
+# dataUlt$votes[is.na(dataUlt$votes)] = 0
+# dataUlt$comments[is.na(dataUlt$comments)] = 0
+dataUlt$DLsmartglass[is.na(dataUlt$DLsmartglass)] = 0
+dataUlt$DLgameVideos[is.na(dataUlt$DLgameVideos)] = 0
+dataUlt$DLgamerPictures[is.na(dataUlt$DLgamerPictures)] = 0
+dataUlt$DLgameAddons[is.na(dataUlt$DLgameAddons)] = 0
+dataUlt$DLavatarItems[is.na(dataUlt$DLavatarItems)] = 0
+dataUlt$DLthemes[is.na(dataUlt$DLthemes)] = 0
+dataUlt$gameUrl[is.na(dataUlt$gameUrl)] = 'http://marketplace.xbox.com/en-US/Product'
+dataUlt$gamesOnDemandorArcade[is.na(dataUlt$gamesOnDemandorArcade)] = "Retail"
 
-# dataUlt = select(dataUlt, gameName, votes, kinectSupport)
-dataUlt = unique(dataUlt)
-dataUlt = gameRemover(dataUlt)
-dataUlt = moveMe(dataUlt, c("gameName","gameNameModded","isListedOnMSSite","isMetacritic","isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = dataUlt[!is.na(dataUlt$gameName),]
+dataUlt$priceGold = NULL
+dataUlt$kinectSupport = NULL
+dataUlt$onlineFeatures = NULL
+# dataUlt$gameNameModded = NULL
+dataUlt$isRemastered = NULL
+dataUlt$dayRecorded = NULL
+na_count <-sapply(dataUlt, function(y) sum(length(which(is.na(y)))))
+print(na_count)
+dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic","isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 # dataUlt = dataUlt[is.na(dataUlt$votes) | !dataUlt$c,]
 dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-
-dataUltKNN = kNN(dataUlt, k = sqrt(nrow(dataUlt)))
+# lapply(dataUlt, class)
+# dataUltKNN = kNN(dataUlt, k = sqrt(nrow(dataUlt)))
+# sapply(dataUltKNN, function(y) sum(length(which(y==TRUE))))
