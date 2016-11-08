@@ -14,15 +14,23 @@ class yelpSpider(scrapy.Spider):
         
         full_listing = response.xpath('//*[@class="biz-listing-large"]').extract()
         
-        for i, onerow in full_listing:
-            #name = Selector(text=full_listing[i]).xpath('//a[@class="biz-name js-analytics-click"]//span/text()').extract()
-            #address = ' '.join(Selector(text=full_listing[i]).xpath('//address//text()').extract()).strip()
-            url = Selector(text=full_listing[i]).xpath('//a[@class="biz-name js-analytics-click"]/@href').extract()
-            phone = Selector(text=full_listing[i]).xpath('//*[@class="biz-phone"]//text()').extract()
-            # rating = 
-            # price_rating = Selector(text=full_listing[i]).xpath('//*[@class="business-attribute price-range"]').extract()
 
-        yield item
+        for listing in full_listing:  
+            item = YelpItem()
+            name = Selector(text=listing).xpath('//a[@class="biz-name js-analytics-click"]//span/text()').extract()
+            item['name'] = name
+            address = ' '.join(Selector(text=listing).xpath('//address//text()').extract()).strip()
+            item['address'] = address
+            url = Selector(text=listing).xpath('//a[@class="biz-name js-analytics-click"]/@href').extract()
+            item['url'] = url
+            phone = Selector(text=listing).xpath('//*[@class="biz-phone"]//text()').extract()
+            item['phone'] = phone
+            # rating = 
+            # item['rating'] = rating
+            price_rating = Selector(text=listing).xpath('//*[@class="business-attribute price-range"]').extract()
+            item['price_rating'] = price_rating
+
+            yield item
 
         # for url in urls:
         #     item = YelpItem()
