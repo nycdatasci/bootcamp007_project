@@ -122,13 +122,26 @@ class Xbox360_MS_Site(scrapy.Spider):
         Overview1 = response.xpath('//*[@id="overview1"]')
         Overview2 = response.xpath('//*[@id="overview2"]')
         ProductTitleZone = response.xpath('//*[@id="ProductTitleZone"]')
-        developer = ProductPublishing.xpath('li[3]/text()').extract()
-        if len(developer) != 0:
-            developer = developer[0].strip()
-        publisher = ProductPublishing.xpath('li[2]/text()').extract()
+        ProductPublishingCount = 1
+        releaseDate = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
+        if len(releaseDate) != 0:
+            releaseDate = releaseDate[0].strip()
+            if releaseDate.replace("/", "").isdigit() == False:
+                print("RELEASE DATE ERROR")
+                print(ProductPublishing.xpath('li/text()').extract())
+                releaseDate = ""
+            else:
+                ProductPublishingCount = ProductPublishingCount + 1
+
+        publisher = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
         if len(publisher) != 0:
             publisher = publisher[0].strip()
-        genre = ProductPublishing.xpath('li[4]/text()').extract()
+            ProductPublishingCount = ProductPublishingCount + 1
+        developer = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
+        if len(developer) != 0:
+            developer = developer[0].strip()
+            ProductPublishingCount = ProductPublishingCount + 1
+        genre = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
         if len(genre) != 0:
             genre = genre[0].strip()
         features = Overview2.xpath('div[2]/div/div[1]/ul').extract()
@@ -142,12 +155,8 @@ class Xbox360_MS_Site(scrapy.Spider):
             price = price[0].strip().lstrip("$")
             if price == "Free":
                 price = 0
-        releaseDate = ProductPublishing.xpath('li[1]/text()').extract()
-        if len(releaseDate) != 0:
-            releaseDate = releaseDate[0].strip()
-            if releaseDate.replace("/", "").isdigit() == False:
-                print("RELEASE DATE ERROR")
-                print(ProductPublishing.xpath('li/text()').extract())
+
+
 
         highresboxart = Overview1.xpath('div[1]/img/@src').extract()
         if len(highresboxart) != 0:
