@@ -1,4 +1,5 @@
 import scrapy
+import re
 from scrapy import Spider
 from scrapy.selector import Selector
 from happyhour.items import YelpItem
@@ -7,7 +8,7 @@ from happyhour.items import YelpItem
 
 class yelpSpider(scrapy.Spider):
     name = "happyhour_spider"
-    allowed_domains = ['https://www.yelp.com']
+    allowed_domains = ['www.yelp.com']
     start_urls = ["https://www.yelp.com/search?find_desc=Restaurants&find_loc=Boston,+MA&start=0&sortby=rating&attrs=HappyHour"]
 
     def last_pagenumber_in_search(self, response):
@@ -18,7 +19,7 @@ class yelpSpider(scrapy.Spider):
                 .group(1))
             return last_page_number    
         except:
-            print response.xpath('//*[@class="available-number pagination-links_anchor"]').extract()
+            print "last page not found"
     
     def parse(self, response):
         last_page_number = self.last_pagenumber_in_search(response)
@@ -42,9 +43,9 @@ class yelpSpider(scrapy.Spider):
             name = Selector(text=listing).xpath('//a[@class="biz-name js-analytics-click"]//span/text()').extract()
             item['name'] = name
             address = Selector(text=listing).xpath('//address//text()').extract()
-            item['address'] = ','.join(address).strip()
+            item['address'] = ', '.join(address).strip()
             url = Selector(text=listing).xpath('//a[@class="biz-name js-analytics-click"]/@href').extract()
-            item['url'] = 'www.yelp.com'+str(url)
+            item['url'] = 'www.yelp.com'+str(url[0])
             #'www.yelp.com'+str(url[0])
             phone = Selector(text=listing).xpath('//*[@class="biz-phone"]//text()').extract()
             item['phone'] = phone
