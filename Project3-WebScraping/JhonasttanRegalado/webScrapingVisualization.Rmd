@@ -19,3 +19,4 @@ View(df_sb)
 head(df_sb)
 ```
 
+Completed ability to scrape for Starbucks locations in NYC via scraper. Am getting duplicate entries, but leaving to Carto to locate based on unique geospatial info for now.
