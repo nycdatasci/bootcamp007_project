@@ -18,8 +18,8 @@ class Xbox360_MS_Site(scrapy.Spider):
     allowed_domains = ['marketplace.xbox.com']
 
     start_urls = (
-        'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
         'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
+        'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
         'https://marketplace.xbox.com/en-US/Games/Xbox360Games?pagesize=90&sortby=BestSelling&page=1',
     )
 
@@ -132,15 +132,15 @@ class Xbox360_MS_Site(scrapy.Spider):
                 releaseDate = ""
             else:
                 ProductPublishingCount = ProductPublishingCount + 1
-
-        publisher = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
-        if len(publisher) != 0:
-            publisher = publisher[0].strip()
-            ProductPublishingCount = ProductPublishingCount + 1
         developer = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
         if len(developer) != 0:
             developer = developer[0].strip()
             ProductPublishingCount = ProductPublishingCount + 1
+        publisher = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
+        if len(publisher) != 0:
+            publisher = publisher[0].strip()
+            ProductPublishingCount = ProductPublishingCount + 1
+
         genre = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
         if len(genre) != 0:
             genre = genre[0].strip()
@@ -161,15 +161,17 @@ class Xbox360_MS_Site(scrapy.Spider):
         highresboxart = Overview1.xpath('div[1]/img/@src').extract()
         if len(highresboxart) != 0:
             highresboxart = highresboxart[0].strip()
-        ESRBRating = response.xpath('//*[@id="ActualRating"]/text()').extract()[1].strip()
-        if len(ESRBRating) != 0:
-            ESRBRating = ESRBRating[0].strip()
+        ESRBRating = response.xpath('//*[@id="ActualRating"]/text()').extract()
+        for i in ESRBRating:
+            if len(i.strip()) != 0:
+                ESRBRating = i.strip()
         xboxRatingStars = ProductTitleZone.xpath('div[2]/div/span/@class').extract()
         xboxRating = 0
         for start in xboxRatingStars:
             xboxRating += float(re.findall('[0-9.]+', start)[0])/4
-        numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()').extract()[0].strip()
-
+        numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()')
+        if len(numberOfReviews) != 0:
+            numberOfReviews = numberOfReviews.extract()[0].strip().strip(',')
 
         xOne_item['gameCount'] = gameCount
         xOne_item['developer'] = developer
