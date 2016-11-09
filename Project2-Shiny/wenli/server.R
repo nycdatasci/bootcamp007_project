@@ -128,7 +128,7 @@ function(input, output) {
     par(bg = "#2B3E4F") 
     wordcloud(words = descr()$word, freq = descr()$freq, min.freq = input$min_freq,
               max.words = input$max_wds, random.order = FALSE, rot.per = 0.35, 
-              colors = brewer.pal(8, 'Blues'))
+              colors = brewer.pal(8, 'Pastel1'))
   })
   
 }
