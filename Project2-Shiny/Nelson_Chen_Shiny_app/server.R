@@ -9,13 +9,14 @@
 # Packages
 library(shiny)
 library(shinydashboard)
-library(dplyr)
 library(DT)
 library(leaflet)
 library(maps)
 library(geosphere)
 library(ggplot2)
 library(ggthemes)
+library(dplyr)
+library(reshape2)
 
 # Server function
 shinyServer(function(input, output){
@@ -122,6 +123,66 @@ shinyServer(function(input, output){
     temp
   })
   
+  delay_causes = reactive({
+    temp = delay_flights
+    
+    # Filter if there is input (not equal to none)
+    if (input$airport_start2 != 'All'){
+      temp = temp %>% filter(Origin == input$airport_start2)
+    }
+    if (input$airport_end2 != 'All'){
+      temp = temp %>% filter(Dest == input$airport_end2)
+    }
+    if (input$AirLine2 != 'All'){
+      temp = temp %>% filter(UniqueCarrier == Airlines[input$AirLine2])
+    }
+    
+    # filter by cause
+    carrier_df = temp %>% filter(CarrierDelay != 0)
+    carrier_total = (carrier_df %>% summarise(total = n()))[1,1]
+    carrier_median = median(carrier_df$CarrierDelay)
+
+    weather_df = temp %>% filter(WeatherDelay != 0)
+    weather_total = (weather_df %>% summarise(total = n()))[1,1]
+    weather_median = median(weather_df$WeatherDelay)
+
+    NAS_df = temp %>% filter(NASDelay != 0)
+    NAS_total = (NAS_df %>% summarise(total = n()))[1,1]
+    NAS_median = median(NAS_df$NASDelay)
+
+    LateAC_df = temp %>% filter(LateAircraftDelay != 0)
+    LateAC_total = (LateAC_df %>% summarise(total = n()))[1,1]
+    LateAC_median = median(LateAC_df$LateAircraftDelay)
+
+    Security_df = temp %>% filter(SecurityDelay != 0)
+    security_total = (Security_df %>% summarise(total = n()))[1,1]
+    security_median = median(Security_df$SecurityDelay)
+    
+    # combine to find percentage of flights that were delayed in that month
+    temp2 = data.frame(Delay.Causes = c("Carrier", "Weather", "NAS", "Late Aircraft", "Security"),
+                       X1 = c(carrier_median, weather_median, NAS_median, LateAC_median, security_median),
+                       total = c(carrier_total, weather_total, NAS_total, LateAC_total, security_total))
+    temp2
+  })
+  
+  delay_dist = reactive({
+    temp = delay_flights
+    
+    # Filter if there is input (not equal to none)
+    if (input$airport_start2 != 'All'){
+      temp = temp %>% filter(Origin == input$airport_start2)
+    }
+    if (input$airport_end2 != 'All'){
+      temp = temp %>% filter(Dest == input$airport_end2)
+    }
+    if (input$AirLine2 != 'All'){
+      temp = temp %>% filter(UniqueCarrier == Airlines[input$AirLine2])
+    }
+    
+    data = melt(temp[c('CarrierDelay', "WeatherDelay", "NASDelay", 'LateAircraftDelay', "SecurityDelay")])
+    data = data[data$value != 0,]
+  })
+  
   ### Output Functions ###
   
   # Output datatable of all delays for different routes (input starting airport)
@@ -173,8 +234,8 @@ shinyServer(function(input, output){
   # Output bar chart of delays aggregated by days of the week
   output$barchart = renderPlot({
     data = weekday_gen()
-    title_ = paste('Weekday BarChart -', "Origin: ", input$airport_start, ", Dest: ",
-                  input$airport_end, ", Airline: ", input$AirLine, sep='')
+    title_ = paste('Weekday Chart - ', input$airport_start, " to ",
+                   input$airport_end, " on ", input$AirLine, sep='')
     ggplot(data, aes(x = DayOfWeek, y = Percent, fill = DayOfWeek)) +
       geom_bar(stat = 'identity') + scale_fill_pander("Weekday") + 
       ggtitle(title_) + theme_pander(base_size = 22)
@@ -183,10 +244,43 @@ shinyServer(function(input, output){
   # Output line chart of delays aggregated by month of the year
   output$lineGraph = renderPlot({
     data = month_gen()
-    title_ = paste('Monthly Graph -', "Origin: ", input$airport_start, ", Dest: ",
-                   input$airport_end, ", Airline: ", input$AirLine, sep='')
+    title_ = paste('Monthly Graph - ', input$airport_start, " to ",
+                   input$airport_end, " on ", input$AirLine, sep='')
     ggplot(data, aes(x = Month, y = Percent)) + 
       geom_line(color = 'blue') + scale_x_continuous(breaks=1:12) +
-      ggtitle(title_) + theme_economist(base_size = 18)
+      ggtitle(title_) + theme_economist(base_size = 18) +
+      xlab('Months') + ylab('Percent (%)')
+  })
+  
+  # Delay reason chart
+  output$delayChart = renderPlot({
+    data = delay_causes()
+    title_ = paste('Delay Causes - ', input$airport_start, " to ",
+                   input$airport_end, " on ", input$AirLine, sep='')
+    g = ggplot(data, aes(x = Delay.Causes, y = X1, fill = Delay.Causes)) +
+      geom_bar(stat = 'identity') + scale_fill_pander("") +
+      ggtitle(title_) + xlab('Delay Causes') + ylab('Median Delays in Min') +
+      theme_pander(base_size = 20) + coord_flip()
+    g
+  })
+  
+  # Total Delays
+  output$delayTotal = renderPlot({
+    data = delay_causes()
+    g = ggplot(data, aes(x = Delay.Causes, y = total, fill = Delay.Causes)) +
+      geom_bar(stat = 'identity') + scale_fill_pander("") +
+      ggtitle('Flight Total by Delay Causes') + xlab('Delay Causes') + ylab('Total Flights') +
+      theme_pander(base_size = 20) + coord_flip()
+    g
+  })
+  
+  # Delay Distributions
+  output$delayDist = renderPlot({
+    data = delay_dist()
+    ggplot(data, aes(x=variable,y=value, fill = variable)) + geom_violin() + theme_pander(base_size = 22) + 
+      xlab('Delay Causes') + ylab('Delay in Min') + scale_fill_discrete("Delay Causes") +
+      theme(axis.text.x = element_text(size = 14, angle = 30, hjust = 1), 
+            legend.text = element_text(size = 12),
+            legend.title = element_text(size = 14)) + ggtitle('Delay Causes Violin Plot')
   })
 })

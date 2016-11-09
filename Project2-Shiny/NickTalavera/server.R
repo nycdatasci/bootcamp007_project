@@ -38,7 +38,7 @@ shinyServer(function(input, output, session) {
   
   # Highest Home Value Index by City Box
   output$highestViBox <- renderValueBox({
-    dataSet = select(dnmData,Market_Name,Drug_Type,Price_Per_Gram)
+    dataSet = select(dnmData,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSet$Market_Name = as.character(dataSet$Market_Name)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount = length(unique(Market_Name)))
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
@@ -46,8 +46,8 @@ shinyServer(function(input, output, session) {
     drugRandom = sample(unique(dataSetTemp$Drug_Type),1)
     dataSet = dataSet[dataSet$Drug_Type == drugRandom,]
     marketRandom = sample(unique(dataSet$Market_Name),1)
-    averagePriceNotMarket = mean(dataSet$Price_Per_Gram[dataSet$Drug_Type == drugRandom & dataSet$Market_Name != marketRandom], na.rm = TRUE)
-    averagePriceMarket = mean(dataSet$Price_Per_Gram[dataSet$Drug_Type == drugRandom & dataSet$Market_Name == marketRandom], na.rm = TRUE)
+    averagePriceNotMarket = mean(dataSet$Price_Per_Gram_BTC[dataSet$Drug_Type == drugRandom & dataSet$Market_Name != marketRandom], na.rm = TRUE)
+    averagePriceMarket = mean(dataSet$Price_Per_Gram_BTC[dataSet$Drug_Type == drugRandom & dataSet$Market_Name == marketRandom], na.rm = TRUE)
     percentDiff = (averagePriceMarket - averagePriceNotMarket) / abs(averagePriceNotMarket)
     if (percentDiff > 0) {
       hl = "Higher"
@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
   # Render Annual Price Growth  Box
   output$usAnnualBox <- renderValueBox({
     price = 0
-    dataSet = select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram)
+    dataSet = select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
     print(dataSetTemp)
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
@@ -76,8 +76,8 @@ shinyServer(function(input, output, session) {
     dataSet = dataSet[dataSet$Shipped_From == countryRandom,]
     dateRandom = sample(unique(dataSet$Sheet_Date[!is.na(dataSet$Sheet_Date)]),1)
     dataSet = dataSet[dataSet$Sheet_Date == dateRandom,]
-    dataSet = dataSet[!is.na(dataSet$Price_Per_Gram),]
-    price = mean(dataSet$Price_Per_Gram, rm.na = TRUE)*28.345
+    dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
+    price = mean(dataSet$Price_Per_Gram_BTC, rm.na = TRUE)*28.345
     valueBox(
       paste0(str_Currency(price)), paste("Average Price Per Ounce For",drugRandom,"In",str_title_case(countryRandom), "on", dateRandom), icon = icon("dollar"), color = "green"
     )
@@ -86,7 +86,7 @@ shinyServer(function(input, output, session) {
   # Render Highest Annual Price Growth  Box
   output$highestAnnualBox <- renderValueBox({
     price = 0
-    dataSet = select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram)
+    dataSet = select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
     drugRandom = sample(unique(dataSetTemp$Drug_Type),1)
@@ -100,7 +100,7 @@ shinyServer(function(input, output, session) {
         break
       }
     }
-    price = mean(dataSet$Price_Per_Gram, rm.na = TRUE)
+    price = mean(dataSet$Price_Per_Gram_BTC, rm.na = TRUE)
     valueBox(
       paste0(mostPostedDay), paste("Day Of The Most",drugRandom,"Posts On",marketRandom), icon = icon("line-chart"), color = "purple"
     )
@@ -135,19 +135,19 @@ shinyServer(function(input, output, session) {
   
   # Render number of cities box
   output$bitcoinHighLow <- renderValueBox({
-    dataSet = select(dnmData,Price_Per_Gram)
+    dataSet = select(dnmData,BitcoinPriceUSD)
     #dataSet = dataSet[!is.infinite(abs(dataSet$BitcoinPriceUSD)),]
     choice = sample(c(1:3),1)
     if (choice == 1) {
-      value = min(dataSet$Price_Per_Gram, na.rm = TRUE)
+      value = min(dataSet$BitcoinPriceUSD, na.rm = TRUE)
       text = "Low"
     }
     else if (choice == 2) {
-      value = mean(dataSet$Price_Per_Gram, na.rm = TRUE)
+      value = mean(dataSet$BitcoinPriceUSD, na.rm = TRUE)
       text = "Average"
     }
     else {
-      value = max(dataSet$Price_Per_Gram, na.rm = TRUE)
+      value = max(dataSet$BitcoinPriceUSD, na.rm = TRUE)
       text = "High"
     }
     valueBox(
@@ -158,7 +158,7 @@ shinyServer(function(input, output, session) {
   
   # Render number of cities box
   output$mostPopularMarketForDrugX <- renderValueBox({
-    dataSet = summarise(group_by(dnmData, Drug_Type, Market_Name), mnPrice = mean(Price_Per_Gram))
+    dataSet = summarise(group_by(dnmData, Drug_Type, Market_Name), mnPrice = mean(Price_Per_Gram_BTC))
     drugRandom = sample(unique(dataSet$Drug_Type),1)
     dataSet = filter(dataSet, Drug_Type == drugRandom)
     dataSet = arrange(dataSet, desc(mnPrice))
@@ -192,7 +192,7 @@ shinyServer(function(input, output, session) {
       dataSet$top <- as.factor(dataSet$top)
       
       
-      colourCount = length(unique(dataSet$Price_Per_Gram))
+      colourCount = length(unique(dataSet$Price_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = reorder_size(top)))
@@ -214,7 +214,7 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       
-      colourCount = length(unique(dataSet$Price_Per_Gram))
+      colourCount = length(unique(dataSet$Price_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = reorder_size(top))) #+ ggtitle(title)
@@ -272,8 +272,8 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram))
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC))
       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=11))) # create a df or something else with the summary output.
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
       dataSet$top <- ifelse(
@@ -283,11 +283,11 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
-      g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per Gram (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
+      g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per Gram (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) 
     })
   })
   
@@ -297,9 +297,9 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Market_Name),]
-      dataSet = dataSet[!is.na(dataSet$Price_Per_Gram),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Market_Name), meanPrice_Per_Gram=mean(Price_Per_Gram, na.rm = TRUE)/max(Price_Per_Gram, na.rm = TRUE), lenMN = length(Price_Per_Gram))
+      dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Market_Name), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC, na.rm = TRUE)/max(Price_Per_Gram_BTC, na.rm = TRUE), lenMN = length(Price_Per_Gram_BTC))
       dataSet= dataSet[dataSet$lenMN >=3,]
       temp <- row.names(as.data.frame(summary(dataSet$Market_Name, max=5))) # create a df or something else with the summary output.
       dataSet$Market_Name <- as.character(dataSet$Market_Name)
@@ -310,10 +310,10 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Market_Name))
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Market_Name))
       g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per Gram (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + scale_y_continuous(labels = dollar_format(prefix = "$"))
     })
   })
@@ -324,8 +324,8 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram))
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC))
       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
       dataSet$top <- ifelse(
@@ -335,29 +335,30 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
       g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per 10 Grams (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
     })
   })
   
   
   output$drugPricesVSBitcoinVSPharma <- renderPlot({
-    withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
+    withProgress(message = "Number of Posts in Each Darknet Market Time Series Compared to Bitcoin Prices (USD)", {
       # Get Data
-      gramMult = 28
+      # gramMult = 28
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
       # dataSet = dataSet[as.character(dataSet$Drug_Type) == "Marijuana",]
-      dataSet = summarise(group_by(dataSet, Sheet_Date), meanPrice_Per_Gram=mean(Price_Per_Gram)*gramMult, meanBTC = mean(Price_Per_Gram))
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      dataSet = summarise(group_by(dataSet, Sheet_Date), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC), meanBTC = mean(BitcoinPriceUSD))
+      dataSet = dataSet[dataSet$meanPrice_Per_Gram_BTC <= 1000,]
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(Sheet_Date))
-      g + geom_line(aes(y=meanPrice_Per_Gram), na.rm = TRUE, size=1) + geom_line(aes(y=meanBTC), na.rm = TRUE, size=1, color = "red") + ylab(paste('Average Price Per','Ounce (Normalized)')) + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + scale_y_continuous(labels = dollar_format(prefix = "$"))
+      g + geom_line(aes(y=meanPrice_Per_Gram_BTC), na.rm = TRUE, size=1) + geom_line(aes(y=meanBTC), na.rm = TRUE, size=1, color = "red") + ylab(paste('Average Price Per','Gram', '(Normalized)')) + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + scale_y_continuous(labels = dollar_format(prefix = "$"))
     })
   })
   
@@ -368,8 +369,8 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram))
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC))
       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
       dataSet$top <- ifelse(
@@ -379,46 +380,54 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
       g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per 10 Grams (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
     })
   })
   
   
   output$postsPerDayWithDrugColor <- renderPlot({
-    withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
+    withProgress(message = "Number of postings per day over time for each darknet", {
       # Get Data
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram))
-      temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
-      dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
-      dataSet$top <- ifelse(
-        dataSet$Drug_Type %in% temp, ## condition: match aDDs$answer with row.names in summary df
-        dataSet$Drug_Type, ## then it should be named as aDDs$answer
-        "Other" ## else it should be named "Other"
-      )
-      dataSet$top <- as.factor(dataSet$top)
-      dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      # dataSet = summarise(group_by(dataSet, Time_Added, Market_Name))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
-      g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per 10 Grams (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
+      g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
+      g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
     })
   })
+  
+  output$numberOfDrugsAvailablePerMarket <- renderPlot({
+    withProgress(message = "Number of postings per day over time for each darknet", {
+      # Get Data
+      dataSet <- getDataSetToUse()
+      dataSet$Market_Name = as.character(dataSet$Market_Name)
+      dataSet = dataSet[!is.na(dataSet$Drug_Type),]
+      dataSet = summarise(group_by(dataSet, Market_Name), drugCount = length(unique(Drug_Type)))
+      colourCount = length(unique(dataSet$Market_Name))
+      getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
+      platteNew = getPalette(colourCount)
+      g = ggplot(data = dataSet, aes(x = Market_Name, y = drugCount))
+      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market')
+    })
+  })
+  
+  
   output$pricePerDrug <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[!is.na(dataSet$Price_Per_Gram),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram, na.rm = TRUE)/max(Price_Per_Gram, na.rm = TRUE), lenMN = length(Price_Per_Gram))
+      dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC, na.rm = TRUE)/max(Price_Per_Gram_BTC, na.rm = TRUE), lenMN = length(Price_Per_Gram_BTC))
       dataSet= dataSet[dataSet$lenMN >=3,]
       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type))) # create a df or something else with the summary output.
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
@@ -429,21 +438,21 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
       g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per Gram') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + scale_y_continuous(labels = dollar_format(prefix = "$"))
     })
   })
   output$mostActiveCountryDaily <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
       # Get Data
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
 #       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-#       dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-#       dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram))
+#       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+#       dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC))
 #       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
 #       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
 #       dataSet$top <- ifelse(
@@ -454,10 +463,10 @@ shinyServer(function(input, output, session) {
 #       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
 #       dataSet$top <- as.factor(dataSet$top)
 #       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-#       colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+#       colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
 #       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
 #       platteNew = getPalette(colourCount)
-      # g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
+      # g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
       # g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per 10 Grams (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
     })
   })
@@ -466,9 +475,9 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Market_Name),]
-      dataSet = dataSet[!is.na(dataSet$Price_Per_Gram),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Market_Name), meanPrice_Per_Gram=mean(Price_Per_Gram, na.rm = TRUE)/max(Price_Per_Gram, na.rm = TRUE), lenMN = length(Price_Per_Gram))
+      dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Market_Name), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC, na.rm = TRUE)/max(Price_Per_Gram_BTC, na.rm = TRUE), lenMN = length(Price_Per_Gram_BTC))
       dataSet= dataSet[dataSet$lenMN >=3,]
       temp <- row.names(as.data.frame(summary(dataSet$Market_Name))) # create a df or something else with the summary output.
       dataSet$Market_Name <- as.character(dataSet$Market_Name)
@@ -479,20 +488,20 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Market_Name))
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Market_Name))
       g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per Gram') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + scale_y_continuous(labels = dollar_format(prefix = "$"))
     })
   })
   output$pricesComparedToBicoinPrice <- renderPlot({
     withProgress(message = "Average prices of drugs against price of bitcoins", {
       # Get Data
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
-      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram=mean(Price_Per_Gram)/max(Price_Per_Gram), meanBTC = mean(Price_Per_Gram, na.rm = TRUE))
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC), meanBTC = mean(BitcoinPriceUSD, na.rm = TRUE))
       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
       dataSet$top <- ifelse(
@@ -502,25 +511,42 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram, colour=Drug_Type))
-      g + geom_line(na.rm = TRUE, size=1) + geom_line(aes(y=meanBTC), size = 3, color="red") + ylab("Average prices of drugs against price of bitcoins") + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
+      g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
+      g + geom_line(na.rm = TRUE, size=1) + geom_line(aes(y=meanBTC), size = 3, color="red") + ylab("Average prices of drugs against price of bitcoins") + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
     })
   })
   output$postsComparedToBicoinPrice <- renderPlot({
     withProgress(message = "Number of posts compared to bitcoin price (colored by country)", {
-      dataSet <- dnmData
+      dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Shipped_From),]
-      dataSet = dataSet[dataSet$Price_Per_Gram <= 3000,]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
       dataSet$Time_Added = as.character(dataSet$Time_Added)
       dataSet = summarise(group_by(dataSet, Time_Added), counter = count(Shipped_From, na.rm = TRUE))
       colourCount = length(unique(dataSet$Shipped_From))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = Time_Added, y=count(Shipped_From), colour=Shipped_From))
-      g + geom_line(na.rm = TRUE, size=1) + geom_line(aes(y=BitcoinPriceUSD), size = 3, color="red") + ylab("Number of Posts") + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Shipping Location")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
+      g + geom_line(na.rm = TRUE, size=1) + geom_line(aes(y=BitcoinPriceUSD), size = 3, color="red") + ylab("Number of Posts") + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Shipping Location")) 
+    })
+  })
+  
+  output$drugPricesVSBitcoinVSPharmaMarketExplorer <- renderPlot({
+    withProgress(message = "Number of Posts in Each Darknet Market Time Series Compared to Bitcoin Prices (USD)", {
+      # Get Data
+      dataSet <- getDataSetToUse()
+      dataSet = dataSet[!is.na(dataSet$Drug_Type),]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      # dataSet = dataSet[as.character(dataSet$Drug_Type) == "Marijuana",]
+      dataSet = summarise(group_by(dataSet, Sheet_Date), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC), meanBTC = mean(BitcoinPriceUSD))
+      
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
+      getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
+      platteNew = getPalette(colourCount)
+      g = ggplot(data = dataSet, aes(Sheet_Date))
+      g + geom_line(aes(y=meanPrice_Per_Gram_BTC), na.rm = TRUE, size=1) + geom_line(aes(y=meanBTC), na.rm = TRUE, size=1, color = "red") + ylab(paste('Average Price Per','Gram (Normalized)')) + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + scale_y_continuous(labels = dollar_format(prefix = "$"))
     })
   })
   
@@ -542,13 +568,17 @@ shinyServer(function(input, output, session) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$Shipped_From%in%input$shippedFrom)),]
     }
     # switch(input$weightUnits)
+    if (!is.null(input$weightUnits)) {
     drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
     names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
-    dataToDisplay$Price_Per_Gram = dataToDisplay$Price_Per_Gram*drugUnitMutiplier[input$weightUnits]
-    
-    # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram),]
+    dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
+    }
+    if (!is.null(input$weightValue)) {
+      dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
+    }
+    # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
     if (!is.null(input$pricePerWeight)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram <= input$pricePerWeight[2],]
+      dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
     }
     if (!is.null(input$dataAccessedDate)) {
       dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]

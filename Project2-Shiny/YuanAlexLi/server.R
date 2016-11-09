@@ -80,8 +80,7 @@ function(input, output, session) {
         )
 
     leaflet(poke_df) %>% addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
-      addMarkers(icon=~pokeIcon[Pokemon], group="pokemon") %>%
-      addLayersControl(overlayGroups=c("pokemon", "marker", "density"))
+      addMarkers(icon=~pokeIcon[Pokemon], group="pokemon") 
 
   })
   
@@ -109,7 +108,7 @@ function(input, output, session) {
     
     knnFit = modelSel(modelName)
     
-    res_df = predict(knnFit, newdata=obs, type = "prob")*100
+    res_df = predict(knnFit, newdata=obs, type="prob")*100
     res_df[, 4] = ifelse(length(res_df==3), 0, res[,4])
     res_df[, 5] = ifelse(length(res_df==4), 0, res[,5])
     colnames(res_df) = c("Common", "Uncommon", "Rare", "Very Rare", "Super Rare")
@@ -124,11 +123,7 @@ function(input, output, session) {
   
   # Adding additional marker
   observe({
-    # clearMarkers(map)
     shiny::validate(shiny::need(input$map_click, FALSE))
-    # input$map_click$id = "marker"
-    # updateSelectInput(session, input$map_marker_click, selected="")
-    # removeMarker("map", layerId=input$map_click$id) 
     leafletProxy("map") %>% 
       addMarkers(input$map_click$lng, input$map_click$lat)
   })

@@ -1,0 +1,107 @@
+---
+title: "Music Explorer"
+author: "Joshua Litven"
+date: "10/30/2016"
+output: ioslides_presentation
+---
+
+## Question
+
+*How do you learn about new music?*
+
+## Question
+
+*How do you learn about new music?*
+![title](https://static1.squarespace.com/static/547dce0ce4b037bc72d6db93/t/55d23c1de4b0a6ed8765a26b/1439841310475/?format=750w)
+
+## Motivation
+
+- Exploring different genres of music
+- Learning about artists
+- Filtering large playlists
+
+## Shiny App: Music Explorer
+
+Let's see it in action!
+
+## Challenges
+
+- Scraping data
+- Constructing the artist network graph
+- Audio using Javascript
+
+## Scraping Data
+
+```{r eval=FALSE}
+get_playlists = function(category_id){
+  # Request playlists
+  URI = paste0('https://api.spotify.com/v1/browse/categories/', 
+               category_id, '/playlists')
+  request = GET(url = URI, add_headers(Authorization = HeaderValue))
+  playlist_object = fromJSON(content(request, "text")) 
+  playlists = playlist_object$playlists$items
+  return(playlists)
+  
+}
+get_tracks = function(playlist_id, user_id){
+  # Request track features
+  URI = paste0('https://api.spotify.com/v1/users/',
+               user_id,'/playlists/', playlist_id,'/tracks')
+  response2 = GET(url = URI, add_headers(Authorization = HeaderValue))
+  tracks = fromJSON(content(response2, "text"))$items$track
+  return(tracks)
+}
+```
+
+## Constructing the Artist Network
+
+- For each artist in the playlist, create a node
+- Take the union of artists and their related artists
+- Define an edge to connect related artists
+- Filter out artists with only one edge
+- Result: All artists are connected to at least two other artists
+
+## Audio in Graphs using Javascript
+
+```{r eval=FALSE}
+histogram_js = "if(chart.getSelection().length > 0){
+                    var row_index = chart.getSelection()[0].row;
+                    var tooltip = data.getValue(row_index, 0);
+                    Shiny.onInputChange('tooltip',tooltip);
+                  }else{Shiny.onInputChange('tooltip', '');}"
+gvisHistogram(data.frame(name=tracks$full_name, minutes=minutes),
+                  options=list(title="Track Duration",
+                               titleTextStyle="{fontName:'Courier', 
+                               fontSize:24}",
+                               legend="none",
+                               hAxis="{title: 'Minutes', 
+                                      titleTextStyle:{fontSize:20}}",
+                               tooltip="{isHtml:'True'}",
+                               gvis.listener.jscode = histogram_js))
+```
+
+## Insights
+
+- Networks consists of subnetworks
+    + Connected by crossover artists
+- "*Lone wolf*" nodes
+    + Artists that do not connect to other artists
+- Artist tags are strange
+    + e.g. "*contemporary post-bop*" "*post-teen pop*", "*dirty south rap*", "*crunk*"
+- Some Spotify metrics seem dubious
+    + e.g. beats per minute, mood, liveness
+- Others are more consistent
+    + e.g. energy, decibals, popularity
+
+## Future Work
+
+- Add more playlists
+- Functionality to input any public playlist
+- Spotify login to view private playlists
+- Cluster network to identify subgenres
+- Improve performance
+
+Your turn!!
+https://jlitven.shinyapps.io/music_explorer/
+
+

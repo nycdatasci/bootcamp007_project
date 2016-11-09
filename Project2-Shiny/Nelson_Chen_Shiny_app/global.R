@@ -6,6 +6,9 @@
 # Global variables
 #############################################
 
+library(dplyr)
+library(leaflet)
+
 # Read in files
 delay_flights = readRDS('delays_only.RDS')
 total_byroutes = readRDS('total_byroutes.RDS')
@@ -16,6 +19,13 @@ airports = read.csv('airports.csv')
 # Convert some variables to factors
 delay_flights$DayOfWeek = as.factor(delay_flights$DayOfWeek)
 delay_flights$Origin = as.factor(delay_flights$Origin)
+
+# Convert some variables to numeric
+delay_flights$CarrierDelay = as.numeric(paste(delay_flights$CarrierDelay))
+delay_flights$WeatherDelay = as.numeric(paste(delay_flights$WeatherDelay))
+delay_flights$NASDelay = as.numeric(paste(delay_flights$NASDelay))
+delay_flights$SecurityDelay = as.numeric(paste(delay_flights$SecurityDelay))
+delay_flights$LateAircraftDelay = as.numeric(paste(delay_flights$LateAircraftDelay))
 
 # Names of airport codes
 airport_codes = levels(delay_flights$Origin)
