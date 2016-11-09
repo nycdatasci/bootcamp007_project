@@ -36,18 +36,19 @@ fixRemasters = function(data) {
 
 fixWikipediaXB360Kinect = function(data) {
   data$gameName = str_trim(data$gameName)
-  data$isKinectRequired = as.character(data$kinectRequired)
+  colnames(data)[colnames(data) == 'publisher'] = "publisherKinect"
+  colnames(data)[colnames(data) == 'kinectRequired'] = "isKinectRequired"
+  colnames(data)[colnames(data) == 'kinectSupport'] = "isKinectSupported"
+  data$isKinectRequired = as.character(data$isKinectRequired)
   data = data[data$gameName != "",]
   data$isKinectSupported = TRUE
   data$isKinectRequired[data$isKinectRequired == 'No'] = FALSE
   data$isKinectRequired[data$isKinectRequired == 'Yes'] = TRUE
   data$isKinectRequired = as.logical(data$isKinectRequired)
-  data$kinectSupport = NULL
-  data$kinectRequired = NULL
   return(data)
 }
 fixWikipediaXB360KExclusive = function(data) {
-  # print(data$exclusiveType[data$exclusiveType == "Console"])
+  colnames(data)[colnames(data) == 'publisher'] = "publisherExclusive"
   data$isConsoleExclusive[data$exclusiveType == "Console"] = TRUE
   data$isConsoleExclusive[data$exclusiveType != "Console"] = FALSE
   data$isExclusive = TRUE
@@ -231,27 +232,11 @@ gameRemover = function(data) {
 }
 
 fixPublishers = function(data) {
-  # data$publisher = stri_trans_totitle(as.character(data$publisher))
-  data$publisher = gsub("™", "", data$publisher)
   data$publisher = gsub("\\/.*","",data$publisher)
   data$publisher = gsub("\\,.*","",data$publisher)
   data$publisher = gsub("\\(.*", "", data$publisher)
-  data$publisher = gsub("Of.*", "", data$publisher)
-  data$publisher = gsub("®", "", data$publisher)
   data$publisher = gsub("\\.", "", data$publisher)
-  data$publisher = gsub("--", "", data$publisher)
-  removeWords = c('Inc$','Ltd$','Srl','publsiher','publisher',"America",'europe','Corporation','Digital','Co$')
-  for (i in removeWords) {
-    data$publisher = gsub(i, "", data$publisher, ignore.case = FALSE)
-  }
   data$publisher = rm_white(str_trim(data$publisher))
-  # data$publisher = str_trim(data$publisher)
-  # 
-  # gameNameDict = c(
-  # )
-  # # names(gameNameDict) = tolower(c(
-  # # ))
-  # data$publisher[tolower(data$publisher)%in%names(gameNameDict)] = gameNameDict[tolower(data$publisher[tolower(data$publisher)%in%names(gameNameDict)])]
   data$publisher = synonymousPublishers(data$publisher)
   print(paste(sort(unique(data$publisher))))
   return(data)
@@ -260,6 +245,8 @@ fixPublishers = function(data) {
 synonymousPublishers = function(PublisherStrings) {
   # print(PublisherStrings)
   defunct = c('cdv Software Entertainment','Conspiracy Entertainment', 'Aq Interactive', 'Crave Entertainment','Destineer','Dtp Entertainment','Midway Games','MTV Games','Oxygen Games','Playlogic Entertainment, Inc.','Southpeak Games','Xs Games', 'Gamecock Media Group')
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Action & Adventure')] = NA
+  PublisherStrings[grepl(PublisherStrings, pattern = 'English')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = '2K')] = '2K Games'
   PublisherStrings[grepl(PublisherStrings, pattern = '345')] = '345 Games'
   PublisherStrings[grepl(PublisherStrings, pattern = '505')] = '505 Games'
@@ -269,6 +256,7 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Bitcomposer', ignore.case = TRUE)] = 'Bitcomposer Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Codemasters', ignore.case = TRUE)] = 'Codemasters'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Capcom', ignore.case = TRUE)] = 'Capcom'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Black.Bean', ignore.case = TRUE)] = 'Black Bean Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Crave')] = 'Crave'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Popcap',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'EA') | grepl(PublisherStrings, pattern = 'Electronic.Arts',ignore.case = TRUE)] = 'Electronic Arts'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Microsoft',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Mojang',ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'MGS',ignore.case = TRUE)] = 'Microsoft'
@@ -405,23 +393,26 @@ dataUlt$isDiscOnly[is.na(dataUlt$gamesOnDemandorArcade)] = TRUE
 dataUlt$isAvailableToPurchasePhysically[!is.na(dataUlt$isAvailableToPurchaseDigitally) | dataUlt$gamesOnDemandorArcade != "Arcade"] = TRUE
 dataUlt$isAvailableToPurchasePhysically[is.na(dataUlt$isAvailableToPurchasePhysically)] == FALSE
 dataUlt$gamesOnDemandorArcade[is.na(dataUlt$gamesOnDemandorArcade)] = "Retail"
+dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(dataUlt$publisher)]
+dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
 dataUlt = fixPublishers(dataUlt)
-
 dataUlt = dataUlt[!is.na(dataUlt$gameName),]
 
 # dataUlt = dataUlt[dataUlt$numberOfReviews >= 0,]
 dataUlt$priceGold = NULL
 dataUlt$kinectSupport = NULL
 dataUlt$onlineFeatures = NULL
-# dataUlt$gameNameModded = NULL
+dataUlt$gameNameModded = NULL
 dataUlt$isRemastered = NULL
 dataUlt$dayRecorded = NULL
+dataUlt$publisherExclusive = NULL
+dataUlt$publisherKinect = NULL
 
 dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic","isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 
 dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltKNN = kNN(dplyr::select(dataUlt, -gameNameModded, -gameUrl, -highresboxart))[1:ncol(dplyr::select(dataUlt, -gameNameModded, -gameUrl, -highresboxart))]
+dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart))]
 write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')
