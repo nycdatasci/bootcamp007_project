@@ -14,19 +14,27 @@ class WikipediaXB360Exclusive(BaseSpider):
 
     def parse(self, response):
         base_link = 'https://en.wikipedia.org'
-        # rows_in_big_table = response.xpath("/table/tbody/tr[2]/td[1]/i/a")
-        # rows_in_big_table = response.xpath("/table/tbody")
         rows_in_big_table = response.xpath('//*[@id="mw-content-text"]/table[4]/tr')
         print "=" * 50
         for i, onerow in enumerate(rows_in_big_table):
             WXB360ExclusiveItem = WikipediaXB360ExclusiveItem()
 
-            gameName = onerow.xpath('td/i/a/text()').extract()
-            exclusiveType = onerow.xpath('td[4]/text()').extract()
-            print(gameName)
-            print(exclusiveType)
+            gameName = onerow.xpath('td/i/a/text()')
+            if len(gameName) != 0:
+                gameName = gameName[0].extract()
+            publisher = onerow.xpath('td[3]/a[1]/text()')
+            if len(publisher) != 0:
+                publisher = publisher[0].extract()
+            releaseDate = onerow.xpath('td[5]/span[1]/text()')
+            if len(releaseDate) != 0:
+                releaseDate = releaseDate[0].extract()[8:18]
+            exclusiveType = onerow.xpath('td[4]/text()')
+            if len(exclusiveType) != 0:
+                exclusiveType = exclusiveType[0].extract()
 
             WXB360ExclusiveItem['gameName'] = gameName
+            WXB360ExclusiveItem['publisher'] = publisher
+            WXB360ExclusiveItem['releaseDate'] = releaseDate
             WXB360ExclusiveItem['exclusiveType'] = exclusiveType
             print "=" * 50
             yield WXB360ExclusiveItem

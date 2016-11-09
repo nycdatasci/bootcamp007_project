@@ -17,6 +17,8 @@ class UserVoiceItem(scrapy.Item):
 
 class WikipediaXB360ExclusiveItem(scrapy.Item):
     gameName = scrapy.Field()
+    publisher = scrapy.Field()
+    releaseDate = scrapy.Field()
     exclusiveType = scrapy.Field()
 
 class RemastersItem(scrapy.Item):
@@ -28,6 +30,8 @@ class MetacriticXbox360Item(scrapy.Item):
 
 class WikipediaXB360KinectItem(scrapy.Item):
     gameName = scrapy.Field()
+    publisher = scrapy.Field()
+    releaseDate = scrapy.Field()
     kinectRequired = scrapy.Field()
     kinectSupport = scrapy.Field()
 

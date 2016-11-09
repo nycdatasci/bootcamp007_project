@@ -22,21 +22,33 @@ class WikipediaXB360Kinect(BaseSpider):
                 # //*[@id="mw-content-text"]/table/tbody/tr[6]/td[1]/i/a
             WXB360KinectItem = WikipediaXB360KinectItem()
 
-            gameName = onerow.xpath('td[1]/i/a/text()').extract()
+            gameName = onerow.xpath('td[1]/i/a/text()')
             if len(gameName) == 0:
-                gameName = onerow.xpath('td/i/text()').extract()
-            kinectRequired = onerow.xpath('td[9]/text()').extract()
+                gameName =  onerow.xpath('td/i/text()')
+            if len(gameName) != 0:
+                gameName = gameName[0].extract()
+            if len(gameName) == 0:
+                continue
+            publisher = onerow.xpath('td[3]/a/text()')
+            if len(publisher) != 0:
+                publisher = publisher[0].extract()
+            # //*[@id="mw-content-text"]/table/tbody/tr[2]/td[4]/span[2]
+            releaseDate = onerow.xpath('td/span[1]/text()')
+            if len(releaseDate) != 0:
+                releaseDate = releaseDate[0].extract()[8:18]
+            kinectRequired = onerow.xpath('td[9]/text()')
+            if len(kinectRequired) != 0:
+                kinectRequired = kinectRequired[0].extract()
             # if kinectRequired == 'Yes':
             #     kinectRequired = 'TRUE'
             # else:
                 # kinectRequired = 'FALSE'
             # td[9]
             kinectSupport = 'TRUE'
-            print(gameName)
-            print(kinectRequired)
-            print(kinectSupport)
 
             WXB360KinectItem['gameName'] = gameName
+            WXB360KinectItem['publisher'] = publisher
+            WXB360KinectItem['releaseDate'] = releaseDate
             WXB360KinectItem['kinectRequired'] = kinectRequired
             WXB360KinectItem['kinectSupport'] = kinectSupport
             print "=" * 50
