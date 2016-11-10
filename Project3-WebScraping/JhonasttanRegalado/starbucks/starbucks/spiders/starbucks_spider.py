@@ -8,7 +8,13 @@ class StarbucksSpider(Spider):
     name = 'starbucks_spider'
     allowed_urls = ['www.starbucks.com']
     #start_urls = ['https://www.starbucks.com/store-locator?map=40.714189,-74.01046,12z&place=New%20York,%20NY,%20USA']
-    start_urls = ['https://www.starbucks.com/store-locator?map=40.714189,-74.01046,12z']    
+    start_urls = ['https://www.starbucks.com/store-locator?map=40.714189,-74.01046,12z', \
+    'https://www.starbucks.com/store-locator?map=40.731492,-74.003937,13z', \
+    'https://www.starbucks.com/store-locator?map=40.758283,-73.966,13z', \
+    'https://www.starbucks.com/store-locator?map=40.768815,-74.004967,13z', \
+    'https://www.starbucks.com/store-locator?map=40.787663,-73.980591,13z', \
+    'https://www.starbucks.com/store-locator?map=40.819369,-73.945744,13z', \
+    'https://www.starbucks.com/store-locator?map=40.848332,-73.920509,13z']    
               
     def parse(self, response):
         bootstrap = response.xpath('//*[@id="bootstrapData"]').extract()
@@ -34,7 +40,10 @@ class StarbucksSpider(Spider):
             item['Longitude'] = coordinates[0][1]
             item['Address'] = row[4]            
             item['Amenities'] = str(amenitiesDict)            
+            item['AmenitiesCarto'] = '<ul>' + '<li>'.join(amenitiesDict.values()) + '</ul>'            
             item['Url'] = storeUrl
+            item['StoreNameUrl'] = '<a href="' + storeUrl + '">' + row[1]  + '</a>'
+
             
             '''Known amenities. All others will be counted in Other and will need to be processed manually by adding a new field
             {"code":"CL","name":"Starbucks Reserve-Clover Brewed"},
@@ -164,7 +173,29 @@ class StarbucksSpider(Spider):
                 item['AmeBA'] = 1
                 del amenitiesDict['BA']
             else:
-                item['AmeBA'] = 0            
+                item['AmeBA'] = 0  
+
+            if 'WT' in amenitiesDict.keys():
+                item['AmeWT'] = 1
+                del amenitiesDict['WT']
+            else:
+                item['AmeWT'] = 0  
+                
+            if 'hrs24' in amenitiesDict.keys():
+                item['Amehrs24'] = 1
+                del amenitiesDict['hrs24']
+            else:
+                item['Amehrs24'] = 0  
+                
+            if 'DT' in amenitiesDict.keys():
+                item['AmeDT'] = 1
+                del amenitiesDict['DT']
+            else:
+                item['AmeDT'] = 0  
+                
+                
+                
+                
             
             #capture amenities unaccounted for
             if len(amenitiesDict.keys()) > 0:

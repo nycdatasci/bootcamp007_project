@@ -18,6 +18,8 @@ class StarbucksItem(Item):
     Latitude = Field()
     Address = Field(serializer=str)
     Amenities = Field(serializer=str)
+    AmenitiesCarto = Field(serializer=str)
+    StoreNameUrl = Field(serializer=str)
     Url = Field(serializer=str)
     AmeCL = Field(serializer=int)
     AmeWA = Field(serializer=int)
@@ -38,6 +40,9 @@ class StarbucksItem(Item):
     AmeSQ = Field(serializer=int)
     AmeEM = Field(serializer=int)
     AmeBA = Field(serializer=int)
+    AmeWT = Field(serializer=int)
+    Amehrs24 = Field(serializer=int)
+    AmeDT = Field(serializer=int)
     
     AmeOther = Field(serializer=str)
     
@@ -61,4 +66,7 @@ class StarbucksItem(Item):
     {u'SQ': u'tbd'}
     {u'EM': u'Starbucks Evenings'}
     {u'BA': u'Bakery'}
+    {u'WT': u'tbd - Walk-T'}
+    {u'hrs24': u'Open 24 hours per day'}
+    {u'DT': u'Drive-Through'}
     '''
