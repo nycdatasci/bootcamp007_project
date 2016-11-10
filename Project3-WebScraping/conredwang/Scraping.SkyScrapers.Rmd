@@ -53,13 +53,13 @@ ggplot(tall100,aes(x=blgCountry,y=..count..)) +
 ##
 ct cc country        | ct cc country     | ct cc country
 ---------------------|-------------------|-------------------
-21 AE Arab Emirates  | 01 AU Australia   | 45 CN China
+<font color="red">21 AE Arab Emirates</font>  | 01 AU Australia   | <font color="red">45 CN China</font>
 01 GB United Kingdom | 01 KR South Korea | 01 KW Kuwait 
 03 MY Malaysia       | 03 RU Russia      | 02 SA Saudi Arabia
-02 TH Thailand       | 02 TW Taiwan      | 17 US USA
+02 TH Thailand       | 02 TW Taiwan      | <font color="red">17 US USA</font>
 01 VN Vietnam        |                   |
 
-## Statistics of these 100 buildings:
+## Statistics of these 100 skyscraperss:
 
 * Usages
     + `r length(tall100$isMultiPurpose[tall100$isMultiPurpose=='Y'])` are multipurpose.
@@ -80,12 +80,16 @@ ct cc country        | ct cc country     | ct cc country
     + Cannot compute `r sum(is.na(tall100$tmProposeStart))`.
     + Shortest took `r min(tall100$tmProposeStart[!is.na(tall100$tmProposeStart)])` year.
     + Longest  took `r max(tall100$tmProposeStart[!is.na(tall100$tmProposeStart)])` year.
-* From Construction Start To Complete.    
+* <font color="red">From Construction Start To Complete:</font> 
     + Cannot compute `r sum(is.na(tall100$tmStartComplete))`.    
-    + Shortest took `r min(tall100$tmStartComplete[!is.na(tall100$tmStartComplete)])` year.
+    + <font color="red">Shortest took<em> `r min(tall100$tmStartComplete[!is.na(tall100$tmStartComplete)])` </em>year.</font>
     + Longest  took `r max(tall100$tmStartComplete[!is.na(tall100$tmStartComplete)])` year.
 
-## A few thoughts
+<font color="red">One year to build a skyscraper! Really?</font>
+
+## No kidding. Actually there are 2 :
+
+<img src="assets/img/blgEmpSte" alt="output_option" width=300><img src="assets/img/blgBOA.png" alt="output_option" width=300>
 
 ??
 
