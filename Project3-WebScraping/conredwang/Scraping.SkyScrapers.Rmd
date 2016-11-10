@@ -1,6 +1,6 @@
 ---
 title: " "
-author: " "
+author: "Conred Wang"
 date: " "
 output:
   ioslides_presentation:
@@ -17,21 +17,21 @@ library(knitr)
 ```
 
 ## Let <font color="green">scrap</font>e the sky<font color="green">scrap</font>ers using <font color="green">Scrap</font>y
-<img src="assets/img/tall100aa.jpg" alt="output_option"><br>
+<img src="assets/img/tall100aa.jpg" alt="skyscraper"><br>
 [The Skyscraper Center](https://skyscrapercenter.com) publishes various information about world's skyscrapers.  For example,the [100 Tallest Completed Buildings in the World by Height to Architectural Top](https://skyscrapercenter.com/buildings).
 
 ## [100 Tallest Completed Buildings in the World by Height to Architectural Top](https://skyscrapercenter.com/buildings) 
 The page even includes a downloadable PDF: <br>
-<img src="assets/img/tall100b.jpg" alt="output_option">
+<img src="assets/img/tall100b.jpg" alt="skyscraper">
 
 ## Tallest now is [Burj Khalifa](https://skyscrapercenter.com/building/burj-khalifa/3)
 However, some data, like year Proposed and Construction Start, only available in secondary pages:<br>
-<img src="assets/img/tall100c.jpg" alt="output_option">
+<img src="assets/img/tall100c.jpg" alt="skyscraper">
 
 ## <font color="green">Scrapy</font> can help
-<img src="assets/img/scrapy.doo.jpg" alt="output_option"><br>
+<img src="assets/img/scrapy.doo.jpg" alt="ScrappyDoo"><br>
 Sorry, not that (above) <font color="green">Scrap</font>p<font color="green">y</font>, but this (below) <font color="green">Scrapy</font><br>
-<img src="assets/img/goscrape-logo.png" alt="output_option">
+<img src="assets/img/goscrape-logo.png" alt="scrapy">
 
 ```{r, echo=FALSE}
 tall100 = read.table('data/tall.txt', header=FALSE, sep='|', na.strings=(NA))
@@ -59,7 +59,7 @@ ct cc country        | ct cc country     | ct cc country
 02 TH Thailand       | 02 TW Taiwan      | <font color="red">17 US USA</font>
 01 VN Vietnam        |                   |
 
-## Statistics of these 100 skyscraperss:
+## Statistics about these 100 skyscrapers:
 
 * Usages
     + `r length(tall100$isMultiPurpose[tall100$isMultiPurpose=='Y'])` are multipurpose.
@@ -89,10 +89,8 @@ ct cc country        | ct cc country     | ct cc country
 
 ## No kidding. Actually there are 2 :
 
-<img src="assets/img/blgEmpSte" alt="output_option" width=300><img src="assets/img/blgBOA.png" alt="output_option" width=300>
+<img src="assets/img/blgEmpSte.jpg" alt="Empire State" align="top"><img src="assets/img/blgBOA.jpg" alt="BOA" align="tall">
 
-??
-
-Sincerely, Conred Wang.
-
-/Volumes/MACEXT/ext.NYC.DSA/bootcamp007_project/Project3-WebScraping/conredwang
+##
+<br>
+<img src="assets/img/scrapy.png" alt="skyscraper">
