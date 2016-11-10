@@ -30,7 +30,7 @@ However, some data, like year Proposed and Construction Start, only available in
 
 ## <font color="green">Scrapy</font> can help
 <img src="assets/img/scrapy.doo.jpg" alt="output_option"><br>
-Sorry, not that (above) <font color="green">Scrapy</font>, but this (below) <font color="green">Scrapy</font><br>
+Sorry, not that (above) <font color="green">Scrap</font>p<font color="green">y</font>, but this (below) <font color="green">Scrapy</font><br>
 <img src="assets/img/goscrape-logo.png" alt="output_option">
 
 ```{r, echo=FALSE}
@@ -42,30 +42,52 @@ colnames(tall100) = c(
 'tmProposeStart', 'tmProposeComplete', 'tmStartComplete'
 )
 ```
-## Statistics of these 100 buildings:
-- `r length(tall100$isMultiPurpose[tall100$isMultiPurpose=='Y'])` are multipurpose.
-- `r length(tall100$forOffice[tall100$forOffice=='Y'])` are used for office.
-- `r length(tall100$forHotel[tall100$forHotel=='Y'])` are used for hotel.
-- `r length(tall100$forResidential[tall100$forResidential=='Y'])` are used for residential.
-- `r length(tall100$forRetail[tall100$forRetail=='Y'])` are used for retail.
-- `r sum(is.na(tall100$yrPropose))` do not have Proposed Year listed.
-- `r sum(is.na(tall100$yrStart))` do not have Construction Start Year listed.
-
 ---
 ```{r}
 ggplot(tall100,aes(x=blgCountry,y=..count..)) + 
-  geom_bar(aes(fill=blgCountry)) + 
-  theme_economist() +
-  geom_text(stat="count", aes(label=..count..,y=..count..),vjust=-0.2)
-```
+  geom_bar(aes(fill=blgCountry)) + theme(legend.position="none") + xlab("Country") + 
+  geom_text(stat="count", aes(label=..count..,y=..count..),vjust=-0.2) +
+  ggtitle("Now, China (CN) has more tallest skyscrapers than other countries")
+```   
+
+##
+ct cc country        | ct cc country     | ct cc country
+---------------------|-------------------|-------------------
+21 AE Arab Emirates  | 01 AU Australia   | 45 CN China
+01 GB United Kingdom | 01 KR South Korea | 01 KW Kuwait 
+03 MY Malaysia       | 03 RU Russia      | 02 SA Saudi Arabia
+02 TH Thailand       | 02 TW Taiwan      | 17 US USA
+01 VN Vietnam        |                   |
+
+## Statistics of these 100 buildings:
+
+* Usages
+    + `r length(tall100$isMultiPurpose[tall100$isMultiPurpose=='Y'])` are multipurpose.
+    + `r length(tall100$forOffice[tall100$forOffice=='Y'])` are used for office.
+    + `r length(tall100$forHotel[tall100$forHotel=='Y'])` are used for hotel.
+    + `r length(tall100$forResidential[tall100$forResidential=='Y'])` are used for residential.
+    + `r length(tall100$forRetail[tall100$forRetail=='Y'])` are used for retail. 
+<br>    
+* Totals
+    + `r sum(tall100$blgFloor)` floors.
+    + `r sum(tall100$hgtFeet)` feets.
+<br>
+
+## Time
+* `r sum(is.na(tall100$yrPropose))` do not have Proposed Year listed.
+* `r sum(is.na(tall100$yrStart))` do not have Construction Start Year listed.
+* From Proposed To Construction Start:
+    + Cannot compute `r sum(is.na(tall100$tmProposeStart))`.
+    + Shortest took `r min(tall100$tmProposeStart[!is.na(tall100$tmProposeStart)])` year.
+    + Longest  took `r max(tall100$tmProposeStart[!is.na(tall100$tmProposeStart)])` year.
+* From Construction Start To Complete.    
+    + Cannot compute `r sum(is.na(tall100$tmStartComplete))`.    
+    + Shortest took `r min(tall100$tmStartComplete[!is.na(tall100$tmStartComplete)])` year.
+    + Longest  took `r max(tall100$tmStartComplete[!is.na(tall100$tmStartComplete)])` year.
 
 ## A few thoughts
 
-Two out of three ain't bad, right?  But, I won't conclude the formula is a fact, as I think the asian adult sample in 1994 *Adult* dataset (895) seems too small.  A conclusion should be drawn after explored more samples from multiple years.
-
-As an asian myself, I listen and obey my parents as they always want the best for me.  Most things change as time evolves; thus, it is reasonable to say very few things hold true forever.  But, parents' care for their children never change.  
-
-You may ask, "Are you sure?"  **"Yes, because I told you so!!!"**
+??
 
 Sincerely, Conred Wang.
 
