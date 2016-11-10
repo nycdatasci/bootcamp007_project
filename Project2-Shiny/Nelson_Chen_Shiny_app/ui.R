@@ -24,7 +24,7 @@ shinyUI(dashboardPage(
             menuItem("Introduction", tabName = "info", icon = icon('bolt')),
             menuItem("Map", tabName = "Map", icon = icon("map")),
             menuItem("Stats", tabName = "Stats", icon = icon("line-chart")),
-            #menuItem("Delay Causes", tabName = "delay_causes", icon = icon('clock-o')),
+            menuItem("Delay Causes", tabName = "delay_causes", icon = icon('clock-o')),
             menuItem("Future Improvements", tabName = "future", icon = icon("file"))
         )
     ),
@@ -125,16 +125,46 @@ shinyUI(dashboardPage(
                     ),
                 
                     # Plot bar chart and line graph 
-                    fluidRow(
-                      plotOutput("barchart", height = 300, width = 900),
-                      plotOutput("lineGraph", height = 300, width = 900)
-                    )
+                    fluidRow(column(width = 12, align="center",
+                      plotOutput("barchart", height = 300, width = 600),
+                      plotOutput("lineGraph", height = 300, width = 600)
+                    ))
               
             ),
-            #tabItem(tabName = 'delay_causes',
+            tabItem(tabName = 'delay_causes',
+                    column(width = 4,
+                           box(width = NULL, status = "warning",
+                               selectInput("airport_start2", "Origin Airport", selected = 'JFK',
+                                           c('All',airport_codes))
+                               
+                           )
+                    ),
+                    # Choose ending airport from drop down menu
+                    column(width = 4,
+                           box(width = NULL, status = "warning",
+                               selectInput("airport_end2", "Destination Airport", selected = 'SFO',
+                                           c('All',airport_codes))
+                               
+                           )
+                    ),
                     
+                    # Choose airline from drop down menu
+                    column(width = 4,
+                           box(width = NULL, status = "warning",
+                               selectInput("AirLine2", "Air Line Carrier", selected = 'Jetblue Airways',
+                                           c('All' = 'All', names(Airlines)))
+                               
+                           )
+                    ),
+                    fluidRow(column(width = 6, align="center",
+                      plotOutput("delayChart", height = 300, width = 500)),
+                      column(width = 6, align="center",
+                      plotOutput("delayTotal", height = 300, width = 500)
+                    )),
+                    fluidRow(column(width = 12, align = "center",
+                                   plotOutput("delayDist", height = 300, width = 500)))
               
-            #),
+            ),
             
             tabItem(tabName = 'future',
                     mainPanel(
@@ -142,7 +172,7 @@ shinyUI(dashboardPage(
                       h3(),
                       h3("- Include more data (i.e 2015 Flights)"),
                       h3("- Include delay times"),
-                      h3("- Include delay reasons"),
+                      h3("- More analysis of delay reasons"),
                       h3("- Find data of flight prices to study correlation with delays")
                     )
               

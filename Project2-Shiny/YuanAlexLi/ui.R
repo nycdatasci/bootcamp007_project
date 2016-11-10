@@ -44,23 +44,20 @@ dashboardPage(
     tabItems(
       tabItem(
         tabName="info",
-        h1("Pokemon Go Observer/Predictor", align="center"),
-        # h3("Motivation:"),
-        # p("This project originally started as an e"),
-        h3("Functionality:"),
-        p("Visualization: Displays all pokemon and their previous spawn location."),
+        img(src="pokemon-go.png", width=600),
+        h3("Pokemon Go Observer/Predictor", align="center"),
+        p('This App aims to visualize and predict pokemon spawn location of popular mobile app ', strong("Pokemon Go"), '.'),
+        h4("Functionality:"),
+        p("Visualization: Displays all pokemon and their previous spawn locations."),
         p("Prediction: Predicts the rarity of a pokemon spawning at a specific location using a k-nearest neighbor algorithm."),
-        p("Regional Density and Distribution: Generates the contour plot of major regions based on the pokemon density, and 
+        p("Regional Density and Distribution: Generates the contour plot of major cities/regions based on the pokemon spawning density, also
           provides the rarity distribution of that region."),
         h4("K-Nearest Neighbor Algorithm"),
-        # p("The k-NN classifier "),
-        p(img(src="KnnClassification.png")),
+        p("The k-NN classification algorithm takes k closest observations of data point x, and returns the class with the majority label."),
+        img(src="KnnClassification.png", align="center"),
         p("The reason k-NN model was chosen as the prediction model due to:"),
         p("k-NN is a non-parametric algorithm that is based on distance metrics, which is perfect for this data (Euclidean distance)."),
-        p('k-NN is better at multiclass classification, while other non-parametric models such as Support Vector Machine will
-          not be as accurate.'),
-        h3("Data Source: "),
-        p("The dataset is obtained from Kaggle")
+        p('Since this model is a multiclass classification, k-NN will perform better compared to other non-parametric algorithms.')
         ),
       tabItem(
         tabName="map",

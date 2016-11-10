@@ -6,7 +6,6 @@ library(caret)
 library(RSQLite)
 library(sp)
 
-# source("/data")
 
 load("./data/North America.RData")
 load("./data/South America.RData")

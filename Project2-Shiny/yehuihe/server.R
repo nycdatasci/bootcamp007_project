@@ -21,7 +21,11 @@ shinyServer(function(input, output){
   
   # plot(gvisMotionChart(country_stat, "Satisfied", "Dissatisfied", options = list(width = 500, height = 350)))
   
-  
+  df = select(country_stat, country.name, Satisfied, Dissatisfied)
+  output$bar <- renderGvis({
+    gvisBarChart(df, xvar = "country.name", yvar = c("Satisfied", "Dissatisfied"),
+                 options = list(title = "National Economy Optimism", height="1600px"))
+  })
   
   
   # show histogram using googleVis
