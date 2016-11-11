@@ -71,6 +71,7 @@ fixUserVoice = function(data) {
   data$isInProgress = as.logical(data$in_progress)
   data = data[data$gameName != "",]
   data$isOnUserVoice = TRUE
+  data = summarise(group_by(data, gameName), isInProgress, votes = sum(votes), comments = sum(comments), isOnUserVoice)
   return(data)
 }
 
@@ -185,10 +186,10 @@ namePrettier = function(dataX) {
                    "Up",'NPPL Championship Paintball 2009','NASCAR \'15','Naruto Shippuden: Ultimate Ninja Storm 3 Full Burst','Cabela\'s Dangerous Hunts 2009','Scott Pilgrim vs. The World','Scene It? Lights, Camera, Action','Scene It? Box Office Smash','Medal of Honor: Airborne',
                    'Monster Jam Path of Destruction','Orc Attack: Flatulent Rebellion','Lost Planet: Extreme Condition','FIFA 06 Road to FIFA World Cup','FIFA 06 Road to FIFA World Cup','FIFA 06 Road to FIFA World Cup','Yu-Gi-Oh! 5D\'s Decade Duels','Zumba Fitness: Join the Party','Pro Evolution Soccer 2007','Pro Evolution Soccer 2007',
                    'Voltron: Defender of the Universe','Viking: Battle for Asgard','Vancouver 2010 - The Official Video Game of the Olympic Winter Games','Universe at War: Earth Assault','UFC Personal Trainer: The Ultimate Fitness System','UFC Undisputed 2009','Devil May Cry HD Collection','Dragon Ball: Raging Blast','Dragon Ball: Raging Blast 2','Enslaved: Odyssey to the West',
-                   'Far Cry Instincts: Predator','Harry Potter and the Half-Blood Prince','Harry Potter and the Order of the Phoenix','Ice Age: Dawn of the Dinosaurs','Ice Age: Continental Drift - Arctic Games','Chronicles of Riddick: Assault on Dark Athena','Sid Meier\'s Civilization Revolution','Tomb Raider: Anniversary','Poker Night 2','Street Fighter III: Third Strike Online Edition','Pinball Hall of Fame: The Williams Collection',
+                   'Far Cry Instincts: Predator','Harry Potter and the Half-Blood Prince','Harry Potter and the Order of the Phoenix','Ice Age: Dawn of the Dinosaurs','Ice Age: Continental Drift - Arctic Games','Chronicles of Riddick: Assault on Dark Athena','Sid Meier\'s Civilization Revolution','Tomb Raider: Anniversary','Poker Night 2','Street Fighter III: Third Strike Online Edition',
                    'Super Street Fighter II Turbo HD Remix','The Serious Sam Collection','SBK X: Superbike World Championship','SBK SuperBike World Championship','Kingdom Under Fire: Circle of Doom','Red Johnson\'s Chronicles - One Against All','Penny Arcade Adventures: Episode Two','Panzer General Allied Assault','Ninety-Nine Nights II',
                    'NCAA Basketball 09 March Madness Edition','MUD - FIM Motocross World Championship','MXGP - The Official Motocross Videogame','Mortal Kombat vs. DC Universe','Mortal Kombat Arcade Kollection','Lord of the Rings: Battle for Middle-Earth II','Fist of the North Star: Ken\'s Rage',
-                   'Guncraft: Blocked and Loaded','Green Lantern: Rise of the Manhunters','Happy Tree Friends False Alarm','Tom Clancy\'s Ghost Recon: Future Soldier'
+                   'Guncraft: Blocked and Loaded','Green Lantern: Rise of the Manhunters','Happy Tree Friends False Alarm','Tom Clancy\'s Ghost Recon: Future Soldier','Pinball Hall of Fame: The Williams Collection'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -227,9 +228,9 @@ namePrettier = function(dataX) {
                           'MJ Path of Destruction','Orc Attack','Lost Planet','2006 FIFA World Cup','FIFA 06 RTFWC','FIFA 06: Road to FIFA World Cup','Yu-Gi-Oh! 5D\'s Decade Duels Plus','Zumba Fitness','Winning Eleven: Pro Evolution Soccer 2007','Winning Eleven 2007',
                           'Voltron','Viking: Battle for Asgard','Vancouver 2010','Universe at War','UFC Personal Trainer','UFC 2009 Undisputed','DMC HD Collection','DB: Raging Blast','DB: Raging Blast 2','Enslaved',
                           'FC Instincts Predator','Harry Potter HBP','Harry Potter OOTP','Ice Age 3','Ice Age 4','Assault on Dark Athena','Civilization Revolution','Lara Croft Tomb Raider Anniversary','Telltale Games\' Poker Night 2','Street Fighter III: Online Edition',
-                          'Super Street Fighter 2 Turbo HD','Serious Sam','SBK X','SBK','KUF: Circle of Doom','Red Johnson\'s Chronicles','Pinball Hall of Fame','Penny Arcade Episode 2','Panzer General','Ninety-Nine NightsⅡ/NA',
+                          'Super Street Fighter 2 Turbo HD','Serious Sam','SBK X','SBK','KUF: Circle of Doom','Red Johnson\'s Chronicles','Penny Arcade Episode 2','Panzer General','Ninety-Nine NightsⅡ/NA',
                           'NCAA Basketball March Madness Edition','MUD','MXGP','Mortal Kombat vs. DCU','Mortal Kombat Arcade','Lord of the Rings, BFME II','Fist of the North Star',
-                          'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier'
+                          'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame'
                           ))
   dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
   return(dataX)
@@ -276,6 +277,8 @@ synonymousPublishers = function(PublisherStrings) {
   defunct = c('cdv Software Entertainment','Conspiracy Entertainment', 'Aq Interactive', 'Crave Entertainment','Destineer','Dtp Entertainment','Midway Games','MTV Games','Oxygen Games','Playlogic Entertainment, Inc.','Southpeak Games','Xs Games', 'Gamecock Media Group')
   PublisherStrings[grepl(PublisherStrings, pattern = 'Action & Adventure')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'Family')] = NA
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'English')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = '2K')] = '2K Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'UFO.Interactive')] = 'UFO Interactive Games'
@@ -397,7 +400,7 @@ dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
 dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
-dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all","x")
+dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
 # Remasters
@@ -447,7 +450,7 @@ dataUlt$isKinectRequired[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case 
 dataUlt$priceGold = NULL
 dataUlt$kinectSupport = NULL
 dataUlt$onlineFeatures = NULL
-# dataUlt$gameNameModded = NULL
+dataUlt$gameNameModded = NULL
 dataUlt$isRemastered = NULL
 dataUlt$in_progress = NULL
 dataUlt$dayRecorded = NULL

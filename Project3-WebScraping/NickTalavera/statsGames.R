@@ -152,10 +152,10 @@ predict(logit.overall, newdata, type = "response")
 cbind(newdata, "Prob. Backwards Compatible" = predict(logit.overall, newdata, type = "response"))
 
 #Converting the fitted probabilities to binary:
-admitted.predicted = round(logit.overall$fitted.values)
+isBCpredicted = round(logit.overall$fitted.values)
 
 #Comparing the true values to the predicted values:
-table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
+table(truth = dataUltKNN$isBCCompatible, prediction = isBCpredicted)
 
 #It seems like this model made a lot of mistakes (116 out of 400)! This is quite
 #dreadful in this case. Let's do a little bit more exploring. We never looked at
@@ -177,9 +177,9 @@ pchisq(logit.overall$deviance, logit.overall$df.residual, lower.tail = FALSE)
 #graduate school.
 table(dataUltKNN$isBCCompatible) #Our data contains 273 unadmitted students and 127
 #admitted students.
-table(admitted.predicted) #The model we created predicts that 351 students will
-#not be admitted, and only 49 will be admitted.
-table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
+table(isBCpredicted) #The model we created predicts that 351 students will
+#not be admitted, and only 49 will be isBC
+table(truth = dataUltKNN$isBCCompatible, prediction = isBCpredicted)
 
 #The table of the truth against the prediction shows that we only have an accuracy
 #of (254 + 30)/400 = 71%; yet, if we were to simply predict "unadmitted" for
