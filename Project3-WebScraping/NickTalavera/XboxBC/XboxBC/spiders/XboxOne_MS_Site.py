@@ -24,6 +24,7 @@ class XboxOne_MS_Site(scrapy.Spider):
         print "=" * 50
         numberOfPages = response.xpath('//*[@id="productPlacementList"]/div/p[1]/small/text()').extract()[0]
         numberOfPages = int(math.floor(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
+        
         print "=" * 50
         for j in range(0,numberOfPages+1):
         # for j in range(0,1):
@@ -44,18 +45,15 @@ class XboxOne_MS_Site(scrapy.Spider):
 
             gameName = onerow.xpath('div/h3/text()').extract()[0]
             #     gamesOnDemandorArcade = onerow.xpath('').extract()[0]
-            gameUrl = baseURL + onerow.xpath('@href').extract()[0]
-            # //*[@id="productPlacementList"]/div/div/section[56]/a
-            #     developer = onerow.xpath('').extract()[0]
-            #     publisher = onerow.xpath('').extract()[0]
-            #     genre = onerow.xpath('').extract()[0]
-            #     highresboxart = onerow.xpath('').extract()[0]
-            #     features = onerow.xpath('').extract()[0]
-            #     onlineFeatures = onerow.xpath('').extract()[0]
-
-            price = onerow.xpath('div[2]/div[2]/span/text()').extract()[0].strip()#div[2]/div[2]/span[1]/s
+            gameUrl = onerow.xpath('@href')
+            if len(gameUrl) != 0:
+                gameUrl = gameUrl[0].extract().strip()
+                gameUrl = baseURL + gameUrl
+            price = onerow.xpath('div[2]/div[2]/span/text()')
             if len(price) == 0:
-                price = onerow.xpath('div[2]/div[2]/span[1]/s/text()').extract()[0].strip()#div[2]/div[2]/span[1]/s
+                price = onerow.xpath('div[2]/div[2]/span[1]/s/text()')
+            if len(price) != 0:
+                price = price[0].extract().strip()
             priceGold = onerow.xpath('div[2]/div[2]/span[1]/span[2]/text()').extract()#div[2]/div[2]/span[1]/span[2]
             if len(priceGold) > 0:
                 priceGold = priceGold[0]
