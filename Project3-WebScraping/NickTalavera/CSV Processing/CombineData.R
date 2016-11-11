@@ -71,6 +71,7 @@ fixUserVoice = function(data) {
   data$isInProgress = as.logical(data$in_progress)
   data = data[data$gameName != "",]
   data$isOnUserVoice = TRUE
+  data = summarise(group_by(data, gameName), isInProgress, votes = sum(votes), comments = sum(comments), isOnUserVoice)
   return(data)
 }
 
@@ -81,6 +82,16 @@ fixXbox360_MS_Site = function(data) {
   data = data[!is.na(data$ESRBRating) & tolower(data$ESRBRating) != tolower('RP (Rating Pending)') & data$numberOfReviews != 0,]
   data = unique(data)
   data$price = as.numeric(as.character(data$price))
+  data$features = gsub("</?ul>", "", data$features)
+  data$features = gsub("\n", "", data$features)
+  data$features = gsub("</?li>", ",", data$features)
+  data$features = gsub("^,", "", data$features)
+  data$features = gsub(",$", "", data$features)
+  data$features = gsub(",+", ",", data$features)
+  # data$features =  strsplit(data$features,",")
+  print(data$features)
+  data$genre = gsub(".*Other,","",data$genre, ignore.case = TRUE)
+  data$genre = gsub("\\,.*","",data$genre)
   # print(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
   data$numberOfReviews = as.numeric(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
   # data$Pricea = as.numeric(data$Price)
@@ -125,15 +136,18 @@ namePrettier = function(dataX) {
   dataX$gameName = gsub("Full.Version", "", dataX$gameName)
   dataX$gameName = gsub(".-.FREE OFFER", "", dataX$gameName)
   dataX$gameName = gsub(".-.Full", "", dataX$gameName)
-  dataX$gameName = gsub("Crime Scene Investigation:", "", dataX$gameName)
-  
+  dataX$gameName = gsub("Crime.Scene.Investigation:", "", dataX$gameName)
+  # dataX$gameName = gsub("A.Telltale.Games.Series", "", dataX$gameName)
+  dataX$gameName = gsub("DW:", "Dynasty Warriors:", dataX$gameName, ignore.case = FALSE)
+  dataX$gameName = gsub("PES", "Pro Evolution Soccer", dataX$gameName, ignore.case = FALSE)
+  dataX$gameName = gsub("LOTR", "Lord of the Rings", dataX$gameName, ignore.case = FALSE)
+  dataX$gameName = gsub("^KOF", "The King of Fighters", dataX$gameName, ignore.case = FALSE)
   # dataX$gameName = gsub("EA*Sports", "", dataX$gameName)
-  removeWords = tolower(c('Base Game','free to play','full game','(TM)$','NA$'))
+  removeWords = tolower(c('Base Game','free to play','full game','(TM)$'))
   for (i in removeWords) {
     dataX$gameName = gsub(i, "", dataX$gameName, ignore.case = TRUE)
   }
-  dataX$gameName = gsub("DW:", "Dynasty Warriors:", dataX$gameName, ignore.case = FALSE)
-  dataX$gameName = gsub("PES", "Pro Evolution Soccer", dataX$gameName, ignore.case = FALSE)
+  # dataX$gameName = gsub("FF\\s?", "Final Fantasy", dataX$gameName, ignore.case = FALSE)
   # dataX$gameName = gsub("^KR:*AI", "Karaoke Revolution: American Idol", dataX$gameName, ignore.case = FALSE)
   
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
@@ -169,7 +183,13 @@ namePrettier = function(dataX) {
                    'Spider-Man: Shattered Dimensions','Penny Arcade Adventures: Episode One','Penny Arcade Adventures: Episode Two','Project Gotham Racing 4','Viva Pinata: Party Animals','Ninety-Nine Nights II','Naruto Shippuden: Ultimate Ninja Storm 3 Full Burst','The Chronicles of Narnia: Prince Caspian',
                    'Need for Speed: Undercover','SpongeBob HeroPants','SpongeBob Squarepants: Plankton\'s Robotic Revenge','Leela','Diablo III: Reaper of Souls','Diablo III: Reaper of Souls','Destroy All Humans! Path of the Furon',
                    'Dead to Rights: Retribution','Brothers: a Tale of Two Sons','The Bureau: XCOM Declassified','Karaoke Revolution: American Idol Encore','Tony Hawk\'s Proving Ground','Disney Sing It HSM3','Sherlock Holmes vs Jack the Ripper','Samurai Shodown: Sen',
-                   "Up",'NPPL Championship Paintball 2009','NASCAR \'15','Naruto Shippuden: Ultimate Ninja Storm 3 Full Burst','Cabela\'s Dangerous Hunts 2009','Scott Pilgrim vs. The World','Scene It? Lights, Camera, Action','Scene It? Box Office Smash'
+                   "Up",'NPPL Championship Paintball 2009','NASCAR \'15','Naruto Shippuden: Ultimate Ninja Storm 3 Full Burst','Cabela\'s Dangerous Hunts 2009','Scott Pilgrim vs. The World','Scene It? Lights, Camera, Action','Scene It? Box Office Smash','Medal of Honor: Airborne',
+                   'Monster Jam Path of Destruction','Orc Attack: Flatulent Rebellion','Lost Planet: Extreme Condition','FIFA 06 Road to FIFA World Cup','FIFA 06 Road to FIFA World Cup','FIFA 06 Road to FIFA World Cup','Yu-Gi-Oh! 5D\'s Decade Duels','Zumba Fitness: Join the Party','Pro Evolution Soccer 2007','Pro Evolution Soccer 2007',
+                   'Voltron: Defender of the Universe','Viking: Battle for Asgard','Vancouver 2010 - The Official Video Game of the Olympic Winter Games','Universe at War: Earth Assault','UFC Personal Trainer: The Ultimate Fitness System','UFC Undisputed 2009','Devil May Cry HD Collection','Dragon Ball: Raging Blast','Dragon Ball: Raging Blast 2','Enslaved: Odyssey to the West',
+                   'Far Cry Instincts: Predator','Harry Potter and the Half-Blood Prince','Harry Potter and the Order of the Phoenix','Ice Age: Dawn of the Dinosaurs','Ice Age: Continental Drift - Arctic Games','Chronicles of Riddick: Assault on Dark Athena','Sid Meier\'s Civilization Revolution','Tomb Raider: Anniversary','Poker Night 2','Street Fighter III: Third Strike Online Edition',
+                   'Super Street Fighter II Turbo HD Remix','The Serious Sam Collection','SBK X: Superbike World Championship','SBK SuperBike World Championship','Kingdom Under Fire: Circle of Doom','Red Johnson\'s Chronicles - One Against All','Penny Arcade Adventures: Episode Two','Panzer General Allied Assault','Ninety-Nine Nights II',
+                   'NCAA Basketball 09 March Madness Edition','MUD - FIM Motocross World Championship','MXGP - The Official Motocross Videogame','Mortal Kombat vs. DC Universe','Mortal Kombat Arcade Kollection','Lord of the Rings: Battle for Middle-Earth II','Fist of the North Star: Ken\'s Rage',
+                   'Guncraft: Blocked and Loaded','Green Lantern: Rise of the Manhunters','Happy Tree Friends False Alarm','Tom Clancy\'s Ghost Recon: Future Soldier','Pinball Hall of Fame: The Williams Collection'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -204,7 +224,13 @@ namePrettier = function(dataX) {
                           'Spider-Man:Dimensions','Penny Arcade Episode 1','Penny Arcade Episode Two','PGR 4','Party Animals','N3II: Ninety-Nine Nights','Naruto Shippuden: Ultimate Ninja Storm 3','Narnia: Prince Caspian',
                           'NFS Undercover','SBHP','SB: Robotic Revenge','Deepak Chopras Leela','Diablo III: Reaper of Souls – Ultimate Evil Edition','Diablo III','DAH! Path of the Furon',
                           'DTR: Retribution','Brothers','The Bureau','Karaoke Revolution Presents: American Idol Encore','TH Proving Ground','High School Musical 3: Senior Year Dance','Sherlock Holmes','SAMURAI SHOWDOWN SEN',
-                          'DisneyPixar UP','Paintball 2009','NASCAR \'15 Victory Edition','Naruto Shippuden: Ultimate Ninja Storm 3','Dangerous Hunts 2009','SCOTT PILGRIM THE GAME','Scene It? LCA','Scene It? BOS!'
+                          'DisneyPixar UP','Paintball 2009','NASCAR \'15 Victory Edition','Naruto Shippuden: Ultimate Ninja Storm 3','Dangerous Hunts 2009','SCOTT PILGRIM THE GAME','Scene It? LCA','Scene It? BOS!','MOH Airborne',
+                          'MJ Path of Destruction','Orc Attack','Lost Planet','2006 FIFA World Cup','FIFA 06 RTFWC','FIFA 06: Road to FIFA World Cup','Yu-Gi-Oh! 5D\'s Decade Duels Plus','Zumba Fitness','Winning Eleven: Pro Evolution Soccer 2007','Winning Eleven 2007',
+                          'Voltron','Viking: Battle for Asgard','Vancouver 2010','Universe at War','UFC Personal Trainer','UFC 2009 Undisputed','DMC HD Collection','DB: Raging Blast','DB: Raging Blast 2','Enslaved',
+                          'FC Instincts Predator','Harry Potter HBP','Harry Potter OOTP','Ice Age 3','Ice Age 4','Assault on Dark Athena','Civilization Revolution','Lara Croft Tomb Raider Anniversary','Telltale Games\' Poker Night 2','Street Fighter III: Online Edition',
+                          'Super Street Fighter 2 Turbo HD','Serious Sam','SBK X','SBK','KUF: Circle of Doom','Red Johnson\'s Chronicles','Penny Arcade Episode 2','Panzer General','Ninety-Nine NightsⅡ/NA',
+                          'NCAA Basketball March Madness Edition','MUD','MXGP','Mortal Kombat vs. DCU','Mortal Kombat Arcade','Lord of the Rings, BFME II','Fist of the North Star',
+                          'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame'
                           ))
   dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
   return(dataX)
@@ -214,11 +240,11 @@ gameRemover = function(data) {
   gamesToRemove = c('Assassins Creed The Americas Collection','ACE COMBAT: AH Demo','Batman: AA GOTY',"XNA Creators Club", "Xbox 360 HD DVD Player", "Xbox 360 Summer Blockbusters", "Xbox 360 Team", "Xbox 360 Team", "Xbox LIVE Event Registrations",
                     'Photo Party','Deus Ex: Human Revolution – Director’s Cut','Xbox Live Arcade Unplugged Vol. 1','LEGO Lord of the Rings - Demo','Windows Media Center','World of Tanks Public Test',
                     'Black','Transformers: The Cybertron Experience','Burnout 3: Takedown','Command and Conquer 3','Bobble Head','Crimson Skies: High Road to Revenge','crimson dragon','Crash Bandicoot: Wrath of Cortex',
-                    'Cyber Troopers Virtual On Oratorio Tangram','DB: Raging Blast','DB: Raging Blast 2','DDR/DS Universe','Zuma\'s Revenge! Collection','This is Vegas','Vampires and Werewolves','Zapper','Max Payne',
+                    'Cyber Troopers Virtual On Oratorio Tangram','DDR/DS Universe','Zuma\'s Revenge! Collection','This is Vegas','Vampires and Werewolves','Zapper','Max Payne',
                     'Grabbed by the Ghoulies','Metal Arms: Glitch in the System','Max Payne 2: The Fall of Max Payne','Fable','Guilty Gear X2 #Reload','Psychonauts','Raze\'s Hell','Jade Empire','Sid Meier\'s Pirates!',
                     'Ninja Gaiden Black','Indigo Prophecy','Gauntlet: Seven Sorrows','Halo Waypoint','Halo Wars 2 Avatar Store','Boxing Fight','Build A Buddy','Darts Vs Zombies','Gears of War 4 Store','Gears of War: Ultimate Edition Store',
                     'Project Natal','Prey 2','PlayOnline Viewer','Ninety-Nine Nights/JP','Obut Ptanque 2','Destiny: The Taken King - Digital Collector\'s Edition','Destiny: The Taken King - Legendary Edition',
-                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides'
+                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies'
                     )
   keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)','Team DZN')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
@@ -250,10 +276,15 @@ synonymousPublishers = function(PublisherStrings) {
   # print(PublisherStrings)
   defunct = c('cdv Software Entertainment','Conspiracy Entertainment', 'Aq Interactive', 'Crave Entertainment','Destineer','Dtp Entertainment','Midway Games','MTV Games','Oxygen Games','Playlogic Entertainment, Inc.','Southpeak Games','Xs Games', 'Gamecock Media Group')
   PublisherStrings[grepl(PublisherStrings, pattern = 'Action & Adventure')] = NA
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Family')] = NA
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'English')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = '2K')] = '2K Games'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'UFO.Interactive')] = 'UFO Interactive Games'
   PublisherStrings[grepl(PublisherStrings, pattern = '345')] = '345 Games'
-  PublisherStrings[grepl(PublisherStrings, pattern = '505')] = '505 Games'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Arc.System.Works', ignore.case = TRUE)] = 'Arc System Works'
+  PublisherStrings[grepl(PublisherStrings, pattern = '505', ignore.case = TRUE)] = '505 Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Activision', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Blizzard', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Sierra', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Vivendi', ignore.case = TRUE)] = 'Activision Blizzard'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Aksys', ignore.case = TRUE)] = 'Aksys Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Cyberfront', ignore.case = TRUE)] = 'Cyberfront Corporation'
@@ -274,10 +305,10 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Ubisoft', ignore.case = TRUE)] = 'Ubisoft'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Konami', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Hudson', ignore.case = TRUE)] = 'Konami'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Tecmo', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Koei', ignore.case = TRUE)] = 'Tecmo Koei'
-  PublisherStrings[grepl(PublisherStrings, pattern = 'Eido', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Taito', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Square.Enix', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Eidos', ignore.case = TRUE)] = 'Square Enix'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Eido', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Taito', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Square.Enix', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Eidos', ignore.case = TRUE) | grepl(PublisherStrings, pattern = '^Square')] = 'Square-Enix'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Bandai', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Namco', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'Banpresto', ignore.case = TRUE)] = 'Bandai Namco Entertainment'
   PublisherStrings[grepl(PublisherStrings, pattern = 'SNK')] = 'SNK'
-  PublisherStrings[grepl(PublisherStrings, pattern = 'CAVE')] = 'CAVE Interactive'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'CAVE', ignore.case = TRUE)] = 'CAVE Interactive'
   PublisherStrings[grepl(PublisherStrings, pattern = 'SouthPeak', ignore.case = TRUE)] = 'SouthPeak Interactive'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Kalypso', ignore.case = TRUE)] = 'Kalypso Media'
   # PublisherStrings[grepl(PublisherStrings, pattern = 'Deep.Silver', ignore.case = TRUE)] = 'Deep Silver'
@@ -290,7 +321,13 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'D3')] = 'D3 Publisher'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Slitherine')] = 'Slitherine Software'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Telltale')] = 'Telltale Games'
-  PublisherStrings[grepl(PublisherStrings, pattern = 'Mastertronic')] = 'Mastertronic'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'AQ.Interactive', ignore.case = TRUE)] = 'AQ Interactive'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Spike')] = 'Spike Co'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Valcon')] = 'Valcon Games'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Majesco')] = 'Majesco Entertainment'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Telltale')] = 'Telltale Games'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'From\\s?Software')] = 'From Software'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Team\\s?17')] = 'Team 17 Software'
   PublisherStrings[grepl(PublisherStrings, pattern = 'DTP.*entertainment', ignore.case = TRUE)] = 'DTP entertainment'
   PublisherStrings[grepl(PublisherStrings, pattern = 'MTV',ignore.case = TRUE)] = 'MTV Games'
   return(PublisherStrings)
@@ -308,7 +345,7 @@ gameCorrections = function(PublisherStrings) {
 generousNameMerger = function(dataX,dataY,mergeType="all",keep = "x") {
   dataX$gameNameModded = tolower(dataX$gameName)
   dataY$gameNameModded = tolower(dataY$gameName)
-  removeWords = tolower(c("[^[:alnum:] ]"," ",'Videogame','WWE','EA*SPORTS','Soccer','&',"™","®",'DVD$','of','DX','disney','for','edition','standard','special','game', 'the','Base*Game','free*to*play','full*game', 'year','hd','movie','TM','Cabela\'s','and','NA$'," x$","s$"))
+  removeWords = tolower(c("[^[:alnum:] ]"," ",'Remastered','Videogame','WWE','EA*SPORTS','Soccer','&',"™","®",'DVD$','of','DX','disney','Deluxe','Complete','Ultimate','Encore','definitive','for','edition','standard','special','game', 'the','Gold','Legendary','Base*Game','free*to*play','full*game', 'year','hd','movie','TM','Cabela\'s','and'," x$","s$"))
   
   for (i in removeWords) {
     dataX$gameNameModded = gsub(i, "", dataX$gameNameModded, ignore.case = TRUE)
@@ -363,7 +400,7 @@ dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
 dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
 dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
-dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all","x")
+dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
 # Remasters
@@ -382,8 +419,8 @@ dataUlt$isKinectRequired[is.na(dataUlt$isKinectRequired)] = FALSE
 dataUlt$isDiscOnly[is.na(dataUlt$isDiscOnly)] = FALSE
 dataUlt$isInProgress[is.na(dataUlt$isInProgress)] = FALSE
 dataUlt$hasDemoAvailable[is.na(dataUlt$hasDemoAvailable)] = FALSE
-# dataUlt$isOnXboxOne[!is.na(dataUlt$isOnXboxOne)] = FALSE
-# dataUlt$isOnXboxOne[is.na(dataUlt$isOnXboxOne)] = FALSE
+dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
+dataUlt$isOnXboxOne[is.na(dataUlt$isOnXboxOne)] = FALSE
 dataUlt$isAvailableToPurchaseDigitally[is.na(dataUlt$isAvailableToPurchaseDigitally)] = FALSE
 # dataUlt$votes[is.na(dataUlt$votes)] = 0
 # dataUlt$comments[is.na(dataUlt$comments)] = 0
@@ -415,16 +452,20 @@ dataUlt$kinectSupport = NULL
 dataUlt$onlineFeatures = NULL
 dataUlt$gameNameModded = NULL
 dataUlt$isRemastered = NULL
+dataUlt$in_progress = NULL
 dataUlt$dayRecorded = NULL
 dataUlt$publisherExclusive = NULL
 dataUlt$publisherKinect = NULL
 dataUlt$releaseDateExclusive = NULL
 dataUlt$releaseDateKinect = NULL
-dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic","isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 na_count(dataUlt)
 dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+dataUltMetMS = dataUlt[dataUlt$isListedOnMSSite == TRUE  & dataUlt$isMetacritic != TRUE,]
+dataUltUVMS = dataUlt[dataUlt$isOnUserVoice == TRUE  & dataUlt$isListedOnMSSite != TRUE,]
 dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart))]
+setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')

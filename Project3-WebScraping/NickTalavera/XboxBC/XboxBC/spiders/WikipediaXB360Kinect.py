@@ -22,9 +22,7 @@ class WikipediaXB360Kinect(BaseSpider):
                 # //*[@id="mw-content-text"]/table/tbody/tr[6]/td[1]/i/a
             WXB360KinectItem = WikipediaXB360KinectItem()
 
-            gameName = onerow.xpath('td[1]/i/a/text()')
-            if len(gameName) == 0:
-                gameName =  onerow.xpath('td/i/text()')
+            gameName = onerow.xpath('td/i/a/text()')
             if len(gameName) != 0:
                 gameName = gameName[0].extract()
             if len(gameName) == 0:
