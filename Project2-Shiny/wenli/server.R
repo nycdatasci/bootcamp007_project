@@ -33,8 +33,8 @@ function(input, output) {
   
   output$bar = renderPlot({
     ggplot(bar(), aes_string(x = 'EVENT_TYPE', y = 'counts')) +
-      geom_bar(aes_string(fill = 'EVENT_TYPE'), stat = 'identity', width = 0.1, alpha = 0.6) +
-      # theme_economist() +
+      geom_bar(aes_string(fill = 'EVENT_TYPE'), stat = 'identity', width = 0.1, alpha = 0.6) + 
+      theme_economist() +
       scale_fill_economist() +
       ggtitle('Loss vs. Storm Events') +
       ylab('Counts or Damage (million $)') +
@@ -100,10 +100,11 @@ function(input, output) {
   output$barplt2 = renderPlot({
     ggplot(dths, aes(x = reorder(EVENT_TYPE, -DEATHS), y = DEATHS)) +
       geom_bar(aes(fill = EVENT_TYPE), stat = 'identity', alpha = 0.7, width = 0.6) +
-      # theme_economist() +
+      theme_economist() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
             legend.position = 'none') +
       theme_economist() +
+      scale_fill_economist() +
       ggtitle('Storm Types vs. Fatality') +
       xlab('') +
       ylab('Deaths')
@@ -112,9 +113,15 @@ function(input, output) {
   output$boxplt = renderPlot({
     ggplot(FatalLoc, aes(x = FATALITY_SEX, y = FATALITY_AGE)) +
       geom_boxplot(aes_string(fill = 'FATALITY_SEX'), color = 'lightgray', alpha = 0.7, width = 0.3) +                 
+<<<<<<< HEAD
+      theme_economist() +
+      scale_fill_economist(guide = 'none') +
+=======
       # theme_economist() +
       theme_economist() +
+>>>>>>> 376e535380b47a3cc3808ecbde4a96752621474d
       theme(axis.title.x=element_blank()) +
+      scale_fill_economist() +
       ylab('Age') +
       scale_x_discrete(labels = c('Female', 'Male', 'Unknown'))
   })

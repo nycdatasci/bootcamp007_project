@@ -51,17 +51,6 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 #available in all combinations of
 #the categorical variables.
 
-# plot(dataUltKNN, col = dataUltKNN$isBCCompatible + 2) #Basic graphical EDA.
-
-#Being naïve at first and fitting a multiple linear regression model.
-bad.model = lm(isBCCompatible ~ . -isBCCompatible -gameName -developer -features, data = dataUltKNN)
-
-summary(bad.model) #Looks like everything is significant, so what's bad?
-
-plot(bad.model) #Severe violations to the assumptions of linear regression.
-
-summary(bad.model$fitted.values)
-
 #Fitting the logistic regression with all variables; the family parameter
 #specifies the error distribution and link function to be used. For logistic
 #regression, this is binomial.
@@ -76,27 +65,16 @@ scatter.smooth(logit.overall$fit,
                ylab = "Deviance Residual Values",
                main = "Residual Plot for\nLogistic Regression of Admission Data")
 abline(h = 0, lty = 2)
-
 influencePlot(logit.overall) #Can still inspect the influence plot.
-
 summary(logit.overall) #Investigating the overall fit of the model.
-
-#Coefficient interpretations on the log odds scale:
-#-Intercept: The log odds of a student getting admitted to a graduate school
-#            when they attended a top tier undergraduate school and received a
-#            0 on the GRE and a 0 as their GPA is approximately -3.990.
-#-GRE: For every additional point a student scores on the GRE, their log odds
-#      of being admitted to graduate school increase by approximately 0.002,
-#      holding all other variables constant.
-#-GPA: For every additional point a student raises their GPA, their log odds of
-#      being admitted to graduate school increase by approximately 0.804, holding
-#      all other variables constant.
-#-Rank: The change in log odds associated with attending an undergraduate school
-#       with prestige of rank 2, 3, and 4, as compared to a school with prestige
-#       rank 1, is approximately -0.675, -1.340, and -1.552, respectively, holding
-#       all other variables constant.
-
 exp(logit.overall$coefficients)
+
+
+# Make a subeset of gauranteed games
+# make linear model without kinect variable
+# Use model to predict opposite subset
+
+
 
 #Coefficient interpretations on the odds scale:
 #-Intercept: The odds of a student getting admitted to a graduate school
@@ -114,8 +92,7 @@ exp(logit.overall$coefficients)
 #       all other variables constant.
 
 #Inspecting the relationship between log odds and odds.
-cbind("Log Odds" = logit.overall$coefficients,
-      "Odds" = exp(logit.overall$coefficients))
+cbind("Log Odds" = logit.overall$coefficients, "Odds" = exp(logit.overall$coefficients))
 
 confint(logit.overall) #For logistic regression objects, the confint() function
 #defaults to using the log likelihood to generate confidence
@@ -133,9 +110,7 @@ exp(confint.default(logit.overall))
 
 #Do the categories for rank add any predictive power to the model? Let's
 #conduct the drop in deviance test:
-logit.norank = glm(isBCCompatible ~ . -isBCCompatible -gameName -developer -features,
-                   family = "binomial",
-                   data = dataUltKNN)
+logit.norank = glm(isBCCompatible ~ . -isBCCompatible -gameName -developer -features, family = "binomial", data = dataUltKNN)
 
 reduced.deviance = logit.norank$deviance #Comparing the deviance of the reduced
 reduced.df = logit.norank$df.residual    #model (the one without rank) to...
@@ -177,10 +152,10 @@ predict(logit.overall, newdata, type = "response")
 cbind(newdata, "Prob. Backwards Compatible" = predict(logit.overall, newdata, type = "response"))
 
 #Converting the fitted probabilities to binary:
-admitted.predicted = round(logit.overall$fitted.values)
+isBCpredicted = round(logit.overall$fitted.values)
 
 #Comparing the true values to the predicted values:
-table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
+table(truth = dataUltKNN$isBCCompatible, prediction = isBCpredicted)
 
 #It seems like this model made a lot of mistakes (116 out of 400)! This is quite
 #dreadful in this case. Let's do a little bit more exploring. We never looked at
@@ -202,9 +177,9 @@ pchisq(logit.overall$deviance, logit.overall$df.residual, lower.tail = FALSE)
 #graduate school.
 table(dataUltKNN$isBCCompatible) #Our data contains 273 unadmitted students and 127
 #admitted students.
-table(admitted.predicted) #The model we created predicts that 351 students will
-#not be admitted, and only 49 will be admitted.
-table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
+table(isBCpredicted) #The model we created predicts that 351 students will
+#not be admitted, and only 49 will be isBC
+table(truth = dataUltKNN$isBCCompatible, prediction = isBCpredicted)
 
 #The table of the truth against the prediction shows that we only have an accuracy
 #of (254 + 30)/400 = 71%; yet, if we were to simply predict "unadmitted" for
