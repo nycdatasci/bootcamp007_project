@@ -104,6 +104,7 @@ function(input, output) {
       theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
             legend.position = 'none') +
       theme_economist() +
+      scale_fill_economist() +
       ggtitle('Storm Types vs. Fatality') +
       xlab('') +
       ylab('Deaths')
@@ -115,6 +116,7 @@ function(input, output) {
       # theme_economist() +
       theme_economist() +
       theme(axis.title.x=element_blank()) +
+      scale_fill_economist() +
       ylab('Age') +
       scale_x_discrete(labels = c('Female', 'Male', 'Unknown'))
   })
