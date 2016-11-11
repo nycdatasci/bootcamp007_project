@@ -1,0 +1,138 @@
+---
+title: "Spyder Project: Scrape and Visualize Starbucks Store Amenities"
+author: "Jhonasttan Regalado"
+date: "11/7/2016"
+output: html_document
+---
+
+## Problem: Multiple clicks are required to list Starbucks store amenities 
+
+### [Starbucks Store Locator page](https://www.starbucks.com/store-locator?map=39.635307,-101.337891,5z)
+
+## Goal: Visualize the Starbucks locations and their amenities
+
+### Toolset: 
+
+* Scrapy to capture stores and their amenities via Starbucks Store Locator website
+* CARTO / Leaflet for visualization
+* MCA (Multiple Correspondence Analysis) to determine commonalities between the stores and associated amenities
+* Would be nice: Map layer for Shiny Citibike Analysis app
+
+### Scrapy magic sauce:
+![](pythonSpyder.png) 
+
+
+### Data provides store geospatial information and associated amenities
+
+```{r echo=FALSE, warning=FALSE}
+#Load data rendered by Scrapy
+library(tidyverse)
+library(psych)
+
+df_sb <- read.csv('./starbucks/StarbucksStores.txt', stringsAsFactors = FALSE)
+df_sb_unique <- df_sb[!duplicated(df_sb), ]
+
+#PCA procedure to determine which amenities should be enabled for filtering on the map
+df_sb_pca <- df_sb_unique[,c(11:ncol(df_sb_unique))] #select the amenities columns
+df_sb_pca <- df_sb_pca[,-ncol(df_sb_pca)] #drop the last column 'AmeOther'
+
+head(df_sb_unique, 5)
+
+
+```
+### List of features:
+
+* LB: LaBoulange
+* WA: Oven-warmed Food
+* LU: Lunch
+* CL: Starbucks Reserve-Clover Brewed
+* WF: Wireless Hotspot
+* CD: Mobile Payment
+* DR: Digital Rewards
+* GO: Google Wi-Fi
+* FZ: Fizzio Handcrafted Sodas
+* XO: Mobile Order and Pay,
+* RW: My Starbucks Rewards,
+* PS: Playbook Store System
+* CS: tbd - Coffee Scale
+* MX: Music Experience
+* VS: Verismo
+* NB: Nitro Cold Brew
+* SQ: tbd
+* EM: Starbucks Evenings
+* BA: Bakery
+* WT: tbd - Walk-T
+* hrs24: Open 24 hours per day
+* DT: Drive-Through
+    
+```{r} List amenities and their sums
+```{r echo = FALSE, warning=FALSE}
+
+#df_sb_pca %>% count() #number of stores
+
+#amenMean <- map_dbl(df_sb_pca,sd)
+#amenMean <- sort(amenMean,decreasing = TRUE)
+#amenMean <- as.data.frame(amenMean, row.names = rownames(amenMean))
+#amenMean
+
+#amenSd <- map_dbl(df_sb_pca,sd)
+#amenSd <- sort(amenSd,decreasing = TRUE)
+#amenSd <- as.data.frame(amenSd, row.names = rownames(amenSd))
+#amenSd
+
+amenSums <- map_dbl(df_sb_pca, sum)
+amenSums <- sort(amenSums,decreasing = TRUE)
+amenSums <- as.data.frame(amenSums, row.names = rownames(amenSums))
+amenSums
+
+#amenStatsCombined <- cbind(amenSums,amenMean)
+#amenStatsCombined <- cbind(amenStatsCombined, amenSd)
+#menStatsCombined
+
+```
+### Based on frequency the Five most common amenities are:
+
+* LB: LaBoulange
+* WA: Oven-warmed Food
+* LU: Lunch
+* DR: Digital Rewards
+* XO: Mobile Order and Pay
+
+### The Five least common amenities are:
+
+* DT: Drive-Through
+* EM: Starbucks Evenings
+* WT: tbd - Walk-T
+* FZ: Fizzio Handcrafted Sodas
+* hrs24: Open 24 hours per day
+
+### In the middle:
+
+* CL: Starbucks Reserve-Clover Brewed
+* WF: Wireless Hotspot
+* CD: Mobile Payment
+* GO: Google Wi-Fi
+* RW: My Starbucks Rewards
+* PS: Playbook Store System
+* CS: tbd - Coffee Scale
+* MX: Music Experience
+* VS: Verismo
+* NB: Nitro Cold Brew
+* SQ: tbd
+* BA: Bakery
+
+### [Visual EDA TIME!!!](https://jhonasttan.carto.com/viz/69f64b70-a6c8-11e6-8d32-0e233c30368f/public_map)
+
+### Completed:
+
+  1. Completed ability to scrape for Starbucks locations in NYC via scraper 
+  2. Created new features having amenities as yes / no using binary (1: yes, 0: no) and store names with HTML hyperlink syntax to allow user to browse Starbucks store location site
+
+### Follow ups:
+
+  1. MCA (Multiple Correspondence Analysis) to determine commonalities between the stores and associated amenities
+  2. Would be nice: Create a Map Layer for Shiny Citibike Analysis app, allowing users to locate Starbucks stores based on amenities and proximity
+  
+  
+  
+  

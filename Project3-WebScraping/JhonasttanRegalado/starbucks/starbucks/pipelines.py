@@ -15,7 +15,7 @@ class WriteItemPipeline(object):
 
     def open_spider(self, spider):
             self.csvfile = open(self.filename, 'wb')
-            self.exporter = CsvItemExporter(self.csvfile)
+            self.exporter = CsvItemExporter(self.csvfile, fields_to_export = ['StoreId', 'Name', 'PhoneNumber', 'Longitude', 'Latitude', 'Address', 'Amenities', 'AmenitiesCarto', 'StoreNameUrl', 'Url',  'CL', 'WA', 'WF', 'CD', 'DR', 'LB', 'GO', 'FZ', 'XO', 'LU', 'RW', 'PS', 'CS', 'MX', 'VS', 'NB', 'SQ', 'EM', 'BA', 'WT', 'hrs24', 'DT', 'AmeOther'])
             self.exporter.start_exporting()
             
     def close_spider(self, spider):
@@ -26,4 +26,3 @@ class WriteItemPipeline(object):
             self.exporter.export_item(item)
             
             return item
-
