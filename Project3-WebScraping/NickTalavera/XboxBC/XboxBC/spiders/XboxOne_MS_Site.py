@@ -24,6 +24,7 @@ class XboxOne_MS_Site(scrapy.Spider):
         print "=" * 50
         numberOfPages = response.xpath('//*[@id="productPlacementList"]/div/p[1]/small/text()').extract()[0]
         numberOfPages = int(math.floor(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
+        
         print "=" * 50
         for j in range(0,numberOfPages+1):
         # for j in range(0,1):
