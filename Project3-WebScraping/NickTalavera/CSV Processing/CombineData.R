@@ -386,7 +386,7 @@ dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
 dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
-dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
+dataUlt = generousNameMerger(dataUlt, Remasters, "all","x")
 # Remasters
 # XboxOne_MS_Site
 dataUlt[dataUlt == ""] = NA
@@ -403,7 +403,7 @@ dataUlt$isKinectRequired[is.na(dataUlt$isKinectRequired)] = FALSE
 dataUlt$isDiscOnly[is.na(dataUlt$isDiscOnly)] = FALSE
 dataUlt$isInProgress[is.na(dataUlt$isInProgress)] = FALSE
 dataUlt$hasDemoAvailable[is.na(dataUlt$hasDemoAvailable)] = FALSE
-# dataUlt$isOnXboxOne[!is.na(dataUlt$isOnXboxOne)] = FALSE
+dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
 dataUlt$isOnXboxOne[is.na(dataUlt$isOnXboxOne)] = FALSE
 dataUlt$isAvailableToPurchaseDigitally[is.na(dataUlt$isAvailableToPurchaseDigitally)] = FALSE
 # dataUlt$votes[is.na(dataUlt$votes)] = 0
@@ -442,12 +442,12 @@ dataUlt$publisherExclusive = NULL
 dataUlt$publisherKinect = NULL
 dataUlt$releaseDateExclusive = NULL
 dataUlt$releaseDateKinect = NULL
-dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic","isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 na_count(dataUlt)
 dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart))]
+# dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
-write.csv(dataUltKNN,'dataUltKNN.csv')
+# write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')
