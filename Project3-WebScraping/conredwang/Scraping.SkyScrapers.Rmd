@@ -70,7 +70,7 @@ ct cc country        | ct cc country     | ct cc country
 <br>    
 * Totals
     + `r sum(tall100$blgFloor)` floors.
-    + `r sum(tall100$hgtFeet)` feets.
+    + `r sum(tall100$hgtFeet)` feet.
 <br>
 
 ## Time
