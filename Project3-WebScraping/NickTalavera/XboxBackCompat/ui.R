@@ -2,7 +2,7 @@
 
 library(shiny)
 
-programName = "Xbox One Backwards Compatiablity Predictor"
+programName = "Xbox One Backwards Compatability Predictor"
 sideBarWidth = 350
 dashboardPage(skin = "green",
               dashboardHeader(
