@@ -13,8 +13,9 @@ dashboardPage(
               dashboardSidebar(
                 width = sideBarWidth,
                 sidebarMenu(id = "sbm",
+                            menuItem("Lists", tabName = "Lists", icon = icon("search")),
                             menuItem("Games", tabName = "Games", icon = icon("dashboard")),
-                            menuItem("Lists", tabName = "Lists", icon = icon("search"))
+                            menuItem("Processing", tabName = "Processing", icon = icon("dashboard"))
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(
@@ -77,6 +78,21 @@ color: #000000;
 .box.box-solid.box-primary {
     border: 0.5px solid #3a3a3a;
 }
+.box-body {
+    border-radius: 0 0 3px 3px;
+padding: 10px;
+background-color: #f1f1f1;
+}
+.content {
+    min-height: 250px;
+padding: 10px;
+padding-top:0px;
+padding-right: 0px;
+padding-bottom: 0px;
+padding-left: 0px;
+margin-right: 0px;
+margin-left: 0px;
+}
                                           '))),
                 
                 
@@ -90,7 +106,6 @@ color: #000000;
                                        status = "primary",
                                        width = 12,
                                        solidHeader = TRUE,
-                                       background = "navy",
                                        # selectInput("marketName",
                                        #             "Choose your markets:",
                                        #             choices = str_title_case(sort(c(as.character(unique(xboxData$Market_Name))))),
@@ -147,26 +162,15 @@ color: #000000;
                           ) # End of fluidPage
                   ), # End of tabItem
                   tabItem(tabName = "Lists",
-                          fluidPage(
-                            title = "Lists",
-                            box(
-                              title = "Market Data",
-                              status = "primary",
-                              width = 12,
-                              solidHeader = TRUE,
-                              collapsible = FALSE,
-                              fluidRow(
-                                box(
-                                  title = "Data Table",
-                                  status = "primary",
-                                  width = 12,
-                                  solidHeader = FALSE,
-                                  collapsible = TRUE,
-                                  DT::dataTableOutput('dataTableViewOfDrugs')
-                                )# end of box
-                              )# end of fluidrow
-                            )# end of box
-                          ) # End of fluidPage
+                          navbarPage(
+                            title = 'Interesting Lists',
+                            tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
+                            tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('ex2')),
+                            tabPanel('Function callback',  DT::dataTableOutput('ex3')),
+                            tabPanel('Kinect Games',      DT::dataTableOutput('ex4')),
+                            tabPanel('Publishers - Many Games',        DT::dataTableOutput('ex5')),
+                            tabPanel('Publishers - Few Games',      DT::dataTableOutput('ex6'))
+                          )
                   ) # End of tabItem
                 ) # end of tabITems
               )# end of dashboard body

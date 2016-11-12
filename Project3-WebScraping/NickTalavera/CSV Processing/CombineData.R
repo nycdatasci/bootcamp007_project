@@ -149,7 +149,9 @@ namePrettier = function(dataX) {
   }
   # dataX$gameName = gsub("FF\\s?", "Final Fantasy", dataX$gameName, ignore.case = FALSE)
   # dataX$gameName = gsub("^KR:*AI", "Karaoke Revolution: American Idol", dataX$gameName, ignore.case = FALSE)
-  
+  # GALAGA
+  # GALAGA LEGIONS
+  # NARUTO
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
                    'Halo 3: ODST','Halo: Combat Evolved Anniversary', 'Lost Planet 2','Need for Speed: ProStreet','Plants vs Zombies: Garden Warfare','Resident Evil 5',
                    'World of Tanks','Tom Clancy\'s Ghost Recon Advanced Warfighter 2','Assassin\'s Creed: Revelations','Samurai Shodown: Sen','Prototype',

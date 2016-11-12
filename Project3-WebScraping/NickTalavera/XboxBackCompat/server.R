@@ -263,8 +263,8 @@ shinyServer(function(input, output, session) {
       )
       p$yAxis(tickFormat = "#! function(d) {return d3.format(',.0f')(d)} !#")
       return(p)
+    })
   })
-})
   
   # Render Top 10 States bar chart
   output$top10StatesBar <- renderPlot({
@@ -602,5 +602,61 @@ shinyServer(function(input, output, session) {
   })
   
   
+  output$List_BackwardsCompatibleGames <- DT::renderDataTable(
+    DT::datatable(
+      xboxData, options = list(
+        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+        pageLength = 15
+      )
+    )
+  )
   
-  })
+  # -1 means no pagination; the 2nd element contains menu labels
+  output$ex2 <- DT::renderDataTable(
+    DT::datatable(
+      xboxData, options = list(
+        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+  
+  # # you can also use paging = FALSE to disable pagination
+  # output$ex3 <- DT::renderDataTable(
+  #   DT::datatable(iris, options = list(paging = FALSE))
+  # )
+  
+  output$ex3 <- DT::renderDataTable(
+    DT::datatable(
+      xboxData, options = list(
+        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+  
+  output$ex4 <- DT::renderDataTable(
+    DT::datatable(
+      xboxData, options = list(
+        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+  output$ex5 <- DT::renderDataTable(
+    DT::datatable(
+      xboxData, options = list(
+        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+  output$ex6 <- DT::renderDataTable(
+    DT::datatable(
+      xboxData, options = list(
+        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+})
