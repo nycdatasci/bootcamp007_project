@@ -3,7 +3,7 @@
 library(shiny)
 
 programName = "Xbox One Backwards Compatability Predictor"
-sideBarWidth = 350
+sideBarWidth = 450
 dashboardPage(
               
               dashboardHeader(
@@ -44,6 +44,7 @@ dashboardPage(
                                           .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
                                           background-color: #f1f1f1;
 color: #000000;
+border-left-color: #c2c2c2
                                           }
                                           
                                           /* other links in the sidebarmenu */
@@ -56,6 +57,7 @@ color: #000000;
                                           .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
                                           background-color: #f1f1f1;
 color: #000000;
+border-left-color: #c2c2c2
                                           }
                                           /* toggle button when hovered  */                    
                                           .skin-blue .main-header .navbar .sidebar-toggle:hover{
@@ -69,6 +71,12 @@ color: #000000;
 .skin-blue .content-wrapper, .right-side{
   background-color: #c2c2c2;
 }
+.box.box-solid.box-primary>.box-header{
+  background-color: #107c10;
+}
+.box.box-solid.box-primary {
+    border: 0.5px solid #3a3a3a;
+}
                                           '))),
                 
                 
@@ -77,7 +85,6 @@ color: #000000;
                           fluidPage(
                             title = "Games",
                             fluidRow(
-                              column(width = 4,
                                      box(
                                        title = "Query Builder",
                                        status = "primary",
@@ -136,7 +143,6 @@ color: #000000;
                                        # helpText("Note: Leave a field empty to select all."),
                                        actionButton("query", label = "Search")
                                      )
-                              )
                             )# end of fluidrow
                           ) # End of fluidPage
                   ), # End of tabItem
