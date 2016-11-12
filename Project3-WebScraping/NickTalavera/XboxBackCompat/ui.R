@@ -63,6 +63,9 @@ dashboardPage(
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
   background-color: #ff69b4;
 }
+.skin-blue .content-wrapper, .right-side{
+  background-color: #ff00b4;
+}
                                           '))),
                 
                 
