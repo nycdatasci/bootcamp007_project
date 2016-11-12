@@ -51,7 +51,7 @@ df_sb_pca <- df_sb_pca[,-ncol(df_sb_pca)] #drop the last column 'AmeOther'
 
 #### Processed data provides store geospatial information and associated amenities
 
-* Regex (regular expressoins) for creating amenities features - used as filter criteria in CARTO map layers
+* Regex (regular expressoins) for feature engineering amenities data - used as filter criteria in CARTO map layers
 * HTML wrapper for store location - CARTO renders fields in HTML format out of the box
 * Duplicate rows!! Not an issue for CARTO which treats geospatial locations as unique
 
@@ -214,7 +214,7 @@ ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
 * DR: Digital Rewards
 * XO: Mobile Order and Pay
 
-##### MCA results shows amenitiesCD and MX are grouped with the five most common amenities.
+##### MCA results shows amenities CD (Mobile Payment) and MX (Music Experience) within the cluster having the five most common amenities.
 
 #### Five least common amenities:
 
