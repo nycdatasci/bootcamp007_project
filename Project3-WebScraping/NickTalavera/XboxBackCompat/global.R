@@ -97,7 +97,7 @@ exp(glogit.optimizedFoAIC$coefficients)
 
 admitted.predicted = round(glogit.optimizedFoAIC$fitted.values)
 xboxData = cbind(dataUlt,bcGuess = round(glogit.optimizedFoAIC$fitted.values), percentProb = round(glogit.optimizedFoAIC$fitted.values,3)*100)
-xboxData = moveMe(data = modelN, c("gameName", "isBCCompatible", "bcGuess", "percentProb"), "first")
+xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatible", "bcGuess", "percentProb"), "first")
 #Comparing the true values to the predicted values:
 table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)/nrow(dataUltKNN)
 #It seems like this model made a lot of mistakes (116 out of 400)! This is quite
