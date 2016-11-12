@@ -22,38 +22,40 @@ dashboardPage(
                 tags$head(tags$style(HTML('
                                           /* logo */
                                           .skin-blue .main-header .logo {
-                                          background-color: #f4b943;
+                                          background-color: #107c10;
                                           }
                                           
                                           /* logo when hovered */
                                           .skin-blue .main-header .logo:hover {
-                                          background-color: #f4b943;
+                                          background-color: #107c10;
                                           }
                                           
                                           /* navbar (rest of the header) */
                                           .skin-blue .main-header .navbar {
-                                          background-color: #f4b943;
+                                          background-color: #107c10;
                                           }        
                                           
                                           /* main sidebar */
                                           .skin-blue .main-sidebar {
-                                          background-color: #f4b943;
+                                          background-color: #3a3a3a;
                                           }
                                           
                                           /* active selected tab in the sidebarmenu */
                                           .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
-                                          background-color: #ff0000;
+                                          background-color: #f1f1f1;
+color: #000000;
                                           }
                                           
                                           /* other links in the sidebarmenu */
                                           .skin-blue .main-sidebar .sidebar .sidebar-menu a{
-                                          background-color: #00ff00;
-                                          color: #000000;
+                                          background-color: #3a3a3a;
+                                          color: #f1f1f1;
                                           }
                                           
                                           /* other links in the sidebarmenu when hovered */
                                           .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
-                                          background-color: #ff69b4;
+                                          background-color: #f1f1f1;
+color: #000000;
                                           }
                                           /* toggle button when hovered  */                    
                                           .skin-blue .main-header .navbar .sidebar-toggle:hover{
@@ -61,10 +63,11 @@ dashboardPage(
                                           }
 /* toggle button when hovered  */                    
 .skin-blue .main-header .navbar .sidebar-toggle:hover{
-  background-color: #ff69b4;
+  background-color: #f1f1f1;
+color: #000000;
 }
 .skin-blue .content-wrapper, .right-side{
-  background-color: #ff00b4;
+  background-color: #c2c2c2;
 }
                                           '))),
                 
