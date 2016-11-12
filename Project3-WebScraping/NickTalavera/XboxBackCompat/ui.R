@@ -1,33 +1,113 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-# 
-#    http://shiny.rstudio.com/
-#
+# Xbox One Backwards Compatiablity Predictor
 
 library(shiny)
 
-# Define UI for application that draws a histogram
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("Old Faithful Geyser Data"),
-  
-  # Sidebar with a slider input for number of bins 
-  sidebarLayout(
-    sidebarPanel(
-       sliderInput("bins",
-                   "Number of bins:",
-                   min = 1,
-                   max = 50,
-                   value = 30)
-    ),
-    
-    # Show a plot of the generated distribution
-    mainPanel(
-       plotOutput("distPlot")
-    )
-  )
-))
+programName = "Xbox One Backwards Compatiablity Predictor"
+sideBarWidth = 350
+dashboardPage(skin = "green",
+              dashboardHeader(
+                title = programName,
+                titleWidth = sideBarWidth
+              ),
+              dashboardSidebar(
+                width = sideBarWidth,
+                sidebarMenu(id = "sbm",
+                            menuItem("Games", tabName = "Games", icon = icon("dashboard")),
+                            menuItem("Lists", tabName = "Lists", icon = icon("search"))
+                )# end of sidebarMenu
+              ),#end of dashboardSidebar
+              dashboardBody(
+                includeCSS("www/custom.css"),
+                tabItems(
+                  tabItem(tabName = "Games",
+                          fluidPage(
+                            title = "Games",
+                            fluidRow(
+                              column(width = 4,
+                                     box(
+                                       title = "Query Builder",
+                                       status = "primary",
+                                       width = 12,
+                                       solidHeader = TRUE,
+                                       background = "navy",
+                                       # selectInput("marketName",
+                                       #             "Choose your markets:",
+                                       #             choices = str_title_case(sort(c(as.character(unique(xboxData$Market_Name))))),
+                                       #             multiple = TRUE),
+                                       # 
+                                       # selectInput("drugName",
+                                       #             "Choose your drugs:",
+                                       #             choices = str_title_case(sort(c(as.character(unique(xboxData$Drug_Type))))),
+                                       #             multiple = TRUE),
+                                       # selectInput("shippedFrom",
+                                       #             "Choose where the drugs are shipped from:",
+                                       #             choices = str_title_case(sort(c(as.character(unique(xboxData$Shipped_From))))),
+                                       #             multiple = TRUE),
+                                       # 
+                                       # selectInput("weightUnits",
+                                       #             "Choose your units of weight:",
+                                       #             choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
+                                       #             selected = "grams"
+                                       # ),
+                                       # 
+                                       # sliderInput("weightValue",
+                                       #             paste("Choose the the total weight of the drug in ", "grams", ":"),
+                                       #             min = 0, max = 1000, value = 1, step = 0.5,
+                                       #             post = " grams", sep = ",", animate=FALSE),
+                                       
+                                       # sliderInput("pricePerWeight",
+                                       #             paste("Choose the range of price per ", "grams", ":"),
+                                       #             min = 0, max = maxPricePerWeight, value = c(0,maxPricePerWeight), step = maxPricePerWeight/5,
+                                       #             pre = "$", sep = ",", animate=FALSE),
+                                       
+                                       
+                                       
+                                       # dateRangeInput('dataPostedDate',
+                                       #                label = paste('Choose the date range for when the item was posted:'),
+                                       #                start = timeAddedRange[1], end = timeAddedRange[2],
+                                       #                min = timeAddedRange[1], max = timeAddedRange[2],
+                                       #                separator = " - ", format = "mm/dd/yy",
+                                       #                startview = 'month', weekstart = 1
+                                       # ),
+                                       # 
+                                       # 
+                                       # dateRangeInput('dataAccessedDate',
+                                       #                label = paste('Choose the date range for when the item was accessed:'),
+                                       #                start = sheetDateRange[1], end = sheetDateRange[2],
+                                       #                min = sheetDateRange[1], max = sheetDateRange[2],
+                                       #                separator = " - ", format = "mm/dd/yy",
+                                       #                startview = 'month', weekstart = 1
+                                       # ),
+                                       
+                                       # helpText("Note: Leave a field empty to select all."),
+                                       actionButton("query", label = "Search")
+                                     )
+                              )
+                            )# end of fluidrow
+                          ) # End of fluidPage
+                  ), # End of tabItem
+                  tabItem(tabName = "Lists",
+                          fluidPage(
+                            title = "Lists",
+                            box(
+                              title = "Market Data",
+                              status = "primary",
+                              width = 12,
+                              solidHeader = TRUE,
+                              collapsible = FALSE,
+                              fluidRow(
+                                box(
+                                  title = "Data Table",
+                                  status = "primary",
+                                  width = 12,
+                                  solidHeader = FALSE,
+                                  collapsible = TRUE,
+                                  DT::dataTableOutput('dataTableViewOfDrugs')
+                                )# end of box
+                              )# end of fluidrow
+                            )# end of box
+                          ) # End of fluidPage
+                  ) # End of tabItem
+                ) # end of tabITems
+              )# end of dashboard body
+)# end of dashboard page
