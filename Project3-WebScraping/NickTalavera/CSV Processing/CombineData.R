@@ -149,7 +149,9 @@ namePrettier = function(dataX) {
   }
   # dataX$gameName = gsub("FF\\s?", "Final Fantasy", dataX$gameName, ignore.case = FALSE)
   # dataX$gameName = gsub("^KR:*AI", "Karaoke Revolution: American Idol", dataX$gameName, ignore.case = FALSE)
-  
+  # GALAGA
+  # GALAGA LEGIONS
+  # NARUTO
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
                    'Halo 3: ODST','Halo: Combat Evolved Anniversary', 'Lost Planet 2','Need for Speed: ProStreet','Plants vs Zombies: Garden Warfare','Resident Evil 5',
                    'World of Tanks','Tom Clancy\'s Ghost Recon Advanced Warfighter 2','Assassin\'s Creed: Revelations','Samurai Shodown: Sen','Prototype',
@@ -398,8 +400,8 @@ MetacriticXbox360 = namePrettier(fixMetacritic(namePrettier(read.csv('Metacritic
 
 dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
 dataUlt = generousNameMerger(dataUlt, MajorNelsionBCList)
-dataUlt = generousNameMerger(dataUlt, UserVoice)
 dataUlt = generousNameMerger(dataUlt, Xbox360_MS_Site, "all","x")
+dataUlt = generousNameMerger(dataUlt, UserVoice, "all","x")
 dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
@@ -434,17 +436,16 @@ dataUlt$gameUrl[is.na(dataUlt$gameUrl)] = 'http://marketplace.xbox.com/en-US/Pro
 dataUlt$isDiscOnly[is.na(dataUlt$gamesOnDemandorArcade)] = TRUE
 dataUlt$isAvailableToPurchasePhysically[!is.na(dataUlt$isAvailableToPurchaseDigitally) | dataUlt$gamesOnDemandorArcade != "Arcade"] = TRUE
 dataUlt$isAvailableToPurchasePhysically[is.na(dataUlt$isAvailableToPurchasePhysically)] == FALSE
+dataUlt$isKinectSupported[grepl(dataUlt$genre,pattern = "Kinect", ignore.case = TRUE)] = TRUE
+dataUlt$isKinectSupported[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
+dataUlt$isKinectRequired[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
 dataUlt$gamesOnDemandorArcade[is.na(dataUlt$gamesOnDemandorArcade)] = "Retail"
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(dataUlt$publisher)]
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
-
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.na(dataUlt$releaseDate)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateExclusive[is.na(dataUlt$releaseDate)]
 dataUlt = fixPublishers(dataUlt)
 dataUlt = dataUlt[!is.na(dataUlt$gameName),]
-dataUlt$isKinectSupported[grepl(dataUlt$genre,pattern = "Kinect", ignore.case = TRUE)] = TRUE
-dataUlt$isKinectSupported[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
-dataUlt$isKinectRequired[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
 # IF GENRE OR NAME CONTAINS KINECT
 # dataUlt = dataUlt[dataUlt$numberOfReviews >= 0,]
 dataUlt$priceGold = NULL
@@ -456,6 +457,7 @@ dataUlt$in_progress = NULL
 dataUlt$dayRecorded = NULL
 dataUlt$publisherExclusive = NULL
 dataUlt$publisherKinect = NULL
+dataUlt$isAvailableToPurchasePhysically = NULL
 dataUlt$releaseDateExclusive = NULL
 dataUlt$releaseDateKinect = NULL
 dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
@@ -465,7 +467,7 @@ dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic ==
 dataUltMetMS = dataUlt[dataUlt$isListedOnMSSite == TRUE  & dataUlt$isMetacritic != TRUE,]
 dataUltUVMS = dataUlt[dataUlt$isOnUserVoice == TRUE  & dataUlt$isListedOnMSSite != TRUE,]
 dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart))]
+dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')

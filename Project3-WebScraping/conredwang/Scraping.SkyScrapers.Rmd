@@ -94,3 +94,9 @@ ct cc country        | ct cc country     | ct cc country
 ##
 <br>
 <img src="assets/img/scrapy.png" alt="skyscraper">
+
+Please check my blog [Let Scrape the Skyscrapers using Scrapy](http://blog.nycdatascience.com/student-works/let-scrape-skyscrapers-using-scrapy/) for more information on using Scrapy.
+
+Best wishes, <br>
+Conred Wang.
+

@@ -6,7 +6,7 @@
 # 
 #    http://shiny.rstudio.com/
 #
-# setwd("C:/Users/James/Desktop/RSHINY")
+setwd("C:/Users/James/Desktop/RSHINY")
 library(shinydashboard)
 
 dashboardPage(
@@ -17,6 +17,7 @@ dashboardPage(
       menuItem("Introduction", tabName = "intro", icon = icon("fa fa-info-circle")),
       menuItem("Hobbies Over Time", tabName = "bar", icon = icon("fa fa-bar-chart")),
       menuItem("Data Frame", tabName = "DF", icon = icon("fa fa-database"))
+      
     ),
     selectInput("race", label = h4("Race"),
                 choices= list("White"= 1, 
@@ -47,7 +48,11 @@ dashboardPage(
                                "60K ~ 100K" = 4,
                                "Over 100K" = 5,
                                "All" = 6),
-                selected = 6)
+                selected = 6),
+    radioButtons("gen", label = h3("Generation"), 
+                       choices = list("Millenial" = 1, "Generation X" = 2, "Baby Boomers" = 3, "Silent Generation" =4),
+                       selected = 1)
+    
   ),
   dashboardBody(
     tabItems(
@@ -99,7 +104,7 @@ dashboardPage(
               tabsetPanel(
                 tabPanel("Bar Chart",
                          fluidRow(
-                           box(htmlOutput("barPlot", height = 1000,width = 50))
+                           box(htmlOutput("barPlot", height = "100%",width = "100%"))
                            
                          ),
                          fluidRow(
@@ -114,7 +119,7 @@ dashboardPage(
                 ),
                 tabPanel("Bar Chart ln(Minutes)",
                          fluidRow(
-                           box(htmlOutput("barPlot2", height = 1000,width = 50))
+                           box(htmlOutput("barPlot2", height = "100%",width = "100%"))
                            
                          ),
                          fluidRow(
@@ -128,17 +133,18 @@ dashboardPage(
                          )
                 )
               )),
-              #Third Tab
-              tabItem(tabName = "DF", h2("Chart"),
-                      fluidPage(
-                        titlePanel("Data Table"),
-                        
-                        # Create a new row for the table.
-                        fluidRow(
-                          DT::dataTableOutput("DataFrame")
+      #Third Tab
+      tabItem(tabName = "DF", h2("Chart"),
+              fluidPage(
+                titlePanel("Data Table"),
+                
+                # Create a new row for the table.
+                fluidRow(
+                  DT::dataTableOutput("DataFrame")
                         )
                       )
       )
+
     )
     
   )
