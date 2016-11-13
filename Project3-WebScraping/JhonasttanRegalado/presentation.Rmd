@@ -1,5 +1,5 @@
 ---
-title: "Web Scraping Project: Visualize and Analyze Starbucks Store Amenities"
+title: "Web Scraping Project: Visualize and Analyze Starbucks Coffee Store Amenities"
 author: "Jhonasttan Regalado"
 date: "11/12/2016"
 output: html_document
@@ -27,15 +27,15 @@ df_sb_pca <- df_sb_pca[,-ncol(df_sb_pca)] #drop the last column 'AmeOther'
 
 ```
 
-## Problem: Multiple clicks are required to list Starbucks store amenities 
+## Problem: Multiple clicks are required to list Starbucks Coffee store amenities 
 
 ### [Starbucks Store Locator page](https://www.starbucks.com/store-locator?map=39.635307,-101.337891,5z)
 
-## Goal: Visualize the Starbucks locations and their amenities
+## Goal: Visualize the Starbucks Coffee Store locations and their amenities
 
 ### Scope: 
 
-* Scrapy for web scraping stores and their amenities via Starbucks Store Locator website
+* Scrapy for web scraping stores and their amenities via Starbucks Coffee Store Locator website
 * R for numerical / visual EDA
 * CARTO for visual EDA
 * MCA (Multiple Correspondence Analysis) for analyzing commonalities between the amenities
@@ -51,7 +51,7 @@ df_sb_pca <- df_sb_pca[,-ncol(df_sb_pca)] #drop the last column 'AmeOther'
 
 #### Processed data provides store geospatial information and associated amenities
 
-* Regex (regular expressoins) for feature engineering amenities data - used as filter criteria in CARTO map layers
+* Regex (regular expressions) for feature engineering amenities data - used as filter criteria in CARTO map layers
 * HTML wrapper for store location - CARTO renders fields in HTML format out of the box
 * Duplicate rows!! Not an issue for CARTO which treats geospatial locations as unique
 
@@ -109,7 +109,7 @@ p1 <- ggplot(amenSums,aes(reorder(amenities,amenSums),amenSums)) + #, label = am
   geom_bar(stat = "identity", aes(fill=amenities)) + 
   ylab("Count") + 
   xlab("Amenities by Code") +
-  ggtitle("Starbucks Store Amenities") +
+  ggtitle("Starbucks Coffee Store Amenities") +
   theme(legend.position="none") +
   coord_flip()
 ggplotly(p1)
@@ -226,7 +226,8 @@ ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
 
 ### Follow ups:
 
-  1. Create a Map Layer for Shiny Citibike Analysis app, allowing users to locate Starbucks stores based on amenities and proximity
+  1. Highlight the Most / Least common amenities when the user hovers over a store location in CARTO
+  2. Create a Map Layer for Shiny Citibike Analysis app, allowing users to locate Starbucks Coffee stores based on amenities and proximity
   
 [LinkedIn: Jhonasttan Regalado](https://www.linkedin.com/in/jhonasttanregalado)
   

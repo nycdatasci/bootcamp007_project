@@ -112,20 +112,13 @@ function(input, output) {
   
   output$boxplt = renderPlot({
     ggplot(FatalLoc, aes(x = FATALITY_SEX, y = FATALITY_AGE)) +
-      geom_boxplot(aes_string(fill = 'FATALITY_SEX'), color = 'lightgray', alpha = 0.7, width = 0.3) +                 
-<<<<<<< HEAD
+      geom_boxplot(aes_string(fill = 'FATALITY_SEX'), color = 'lightgray', alpha = 0.7, width = 0.3) +
       theme_economist() +
-      scale_fill_economist(guide = 'none') +
-=======
-      # theme_economist() +
-      theme_economist() +
->>>>>>> 376e535380b47a3cc3808ecbde4a96752621474d
       theme(axis.title.x=element_blank()) +
       scale_fill_economist() +
       ylab('Age') +
       scale_x_discrete(labels = c('Female', 'Male', 'Unknown'))
   })
-  
   
   # tab-4 wordcloud data
   descr = reactive({desc_txt})
