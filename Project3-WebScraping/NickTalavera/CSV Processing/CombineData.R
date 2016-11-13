@@ -283,6 +283,7 @@ fixPublishers = function(data) {
   data$publisher = gsub("\\.", "", data$publisher)
   data$publisher = rm_white(str_trim(data$publisher))
   data$publisher = synonymousPublishers(data$publisher)
+  data = gameCorrections(data)
   print(paste(sort(unique(data$publisher))))
   return(data)
 }
@@ -334,6 +335,7 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Warner.bro', ignore.case = TRUE) | grepl(PublisherStrings, pattern = 'WB')] = 'Warner Brothers Interactive Entertainment'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Maximum')] = 'Maximum Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'D3')] = 'D3 Publisher'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Aspyr')] = 'Aspyr Media'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Slitherine')] = 'Slitherine Software'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Telltale')] = 'Telltale Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'AQ.Interactive', ignore.case = TRUE)] = 'AQ Interactive'
@@ -348,13 +350,9 @@ synonymousPublishers = function(PublisherStrings) {
   return(PublisherStrings)
 }
 
-gameCorrections = function(PublisherStrings) {
-  defunct = c('cdv Software Entertainment','Conspiracy Entertainment', 'Aq Interactive', 'Crave Entertainment','Destineer','Dtp Entertainment','Midway Games','MTV Games','Oxygen Games','Playlogic Entertainment, Inc.','Southpeak Games','Xs Games', 'Gamecock Media Group')
-  PublisherStrings[PublisherStrings == 'Tomy'] = 'Takara Tomy'
-  PublisherStrings[PublisherStrings == 'Xseed Gamesna'] = 'Marvelous Entertainment'
-  PublisherStrings[PublisherStrings == 'Playfirst'] = 'Glu Mobile'
-  PublisherStrings[PublisherStrings == 'Jowood'] = 'Nordic Games'
-  return(PublisherStrings)
+gameCorrections = function(data) {
+  data$publisher[grepl(data$developer, pattern = 'Valve')] = 'Valve Corporation'
+  return(data)
 }
 
 generousNameMerger = function(dataX,dataY,mergeType="all",keep = "x") {

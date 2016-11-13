@@ -14,7 +14,7 @@ dashboardPage(
     width = sideBarWidth,
     sidebarMenu(id = "sbm",
                 menuItem("Lists", tabName = "Lists", icon = icon("search")),
-                menuItem("Games", tabName = "Games", icon = icon("dashboard")),
+                # menuItem("Games", tabName = "Games", icon = icon("dashboard")),
                 menuItem("Processing", tabName = "Processing", icon = icon("dashboard"))
     )# end of sidebarMenu
   ),#end of dashboardSidebar
@@ -168,14 +168,28 @@ margin-left: 0px;
                 tabPanel('All Games',      DT::dataTableOutput('List_AllGames')),
                 tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
                 tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
-                navbarMenu("Publishers"
-                           # tabPanel('Top 20',        shiny::tableOutput('PublisherTop')),
-                           # tabPanel('Bottom 20',      shiny::tableOutput('PublisherBottom'))
-                           ),
+                navbarMenu("Publishers",
+                           tabPanel('Top 20',        shiny::tableOutput('PublisherTop')),
+                           tabPanel('Bottom 20',      shiny::tableOutput('PublisherBottom'))
+                ),
                 tabPanel('Exclusives',  DT::dataTableOutput('List_Exclusives')),
                 tabPanel('Has Xbox One Version',  DT::dataTableOutput('List_HasXboxOneVersion')),
                 tabPanel('Kinect Games',      DT::dataTableOutput('List_KinectGames'))
               )
+      ), # End of tabItem
+      tabItem(tabName = "Processing",
+              fluidPage(
+                title = 'Processing',
+                fluidRow(
+                  box(
+                    title = "Query Builder",
+                    status = "primary",
+                    width = 12,
+                    solidHeader = TRUE,
+                    shiny::includeMarkdown(rmarkdown::render("../Explanation.Rmd"))
+                  )
+                )
+              ) # End of fluidPage
       ) # End of tabItem
     ) # end of tabITems
   )# end of dashboard body

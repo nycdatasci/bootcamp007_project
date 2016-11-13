@@ -27,6 +27,7 @@ library(scales)
 library(RColorBrewer)
 library(MASS) #The Modern Applied Statistics library.
 library(car)
+library(rmarkdown)
 library(flexdashboard)
 ################################################################################
 #                                   FUNCTIONS                                 #
@@ -82,8 +83,13 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 model.empty = glm(isBCCompatible ~ 1, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
 glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN)
 scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
-forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
-glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
+# forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+# glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
+glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + reviewScorePro + releaseDate + 
+                              xbox360Rating + isOnXboxOne + isAvailableToPurchaseDigitally + 
+                              isConsoleExclusive + isKinectRequired + isMetacritic + price + 
+                              DLavatarItems + DLgameAddons + votes + numberOfReviews + 
+                              DLgameVideos, family = "binomial", data = dataUltKNN)
 summary(glogit.optimizedFoAIC)
 class(glogit.optimizedFoAIC)
 # #Residual plot for logistic regression with an added loess smoother; we would
@@ -133,4 +139,4 @@ table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
 # glogit.publisherOnly$fitted.values*100
 
 # sapply(xboxData, class) #Looking at the variable classes.
-
+includeMarkdown("../Explanation.Rmd")
