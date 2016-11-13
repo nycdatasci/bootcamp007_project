@@ -762,6 +762,7 @@ shinyServer(function(input, output, session) {
   )
   
   output$Explanation <- renderUI({
+    # shiny::includeMarkdown(rmarkdown::render("../Explanation.Rmd"))
     shiny::includeMarkdown(rmarkdown::render("../Explanation.Rmd"))
   })
 })
