@@ -750,22 +750,24 @@ shinyServer(function(input, output, session) {
   output$PublisherBottom <- shiny::renderTable(
     head({
       dataToPresent = getDataPresentable()
+      dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
       dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = dplyr::arrange(dataToPresent, Percent, desc(dataToPresent$"Games Published"))
       dataToPresent
     }, 
-    n = max(length(dataToPresent$"Percent"[dataToPresent$"Percent" == 0]),20))
+    n = max(length(dataToPresent$"Percent"[dataToPresent$"Percent" == 0]),25))
   )
 
 
   output$PublisherTop <- shiny::renderTable(
     head({
       dataToPresent = getDataPresentable()
+      dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
       dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent
       }, 
-      n = 20)
+      n = 25)
   )
   
   output$Explanation <- renderUI({

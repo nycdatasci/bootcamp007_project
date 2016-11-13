@@ -176,7 +176,7 @@ margin-left: 0px;
                                        selected = 1),
                     checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Kinect Required:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = 1),
+                                       selected = 1),  
                     checkboxGroupInput("Is_Backwards_Compatible", label = h3("Does it Need Special Peripherals:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
                                        selected = 1),
@@ -277,8 +277,12 @@ margin-left: 0px;
                 tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
                 tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
                 navbarMenu("Publishers",
-                           tabPanel('Most Likely 20',        shiny::tableOutput('PublisherTop')),
-                           tabPanel('Least Likely',      shiny::tableOutput('PublisherBottom'))
+                           tabPanel('Most Likely 25',
+                                    helpText('Not including Games that Require Kinect or Peripherals'),
+                                    shiny::tableOutput('PublisherTop')),
+                           tabPanel('Least Likely',
+                                    helpText('Not including Games that Require Kinect or Peripherals'),
+                                    shiny::tableOutput('PublisherBottom'))
                 ),
                 tabPanel('Exclusives',  DT::dataTableOutput('List_Exclusives')),
                 tabPanel('Has Xbox One Version',  DT::dataTableOutput('List_HasXboxOneVersion')),
