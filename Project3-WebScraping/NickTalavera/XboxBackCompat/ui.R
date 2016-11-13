@@ -100,6 +100,32 @@ margin-left: 0px;
       tabItem(tabName = "Games",
               fluidPage(
                 title = "Games",
+                tags$head(tags$style(HTML('
+                                          .skin-blue .content-wrapper, .right-side{
+                                          background-color: #c2c2c2;
+                                          }
+                                          .box.box-solid.box-primary>.box-header{
+                                          background-color: #107c10;
+                                          }
+                                          .box.box-solid.box-primary {
+                                          border: 0.5px solid #3a3a3a;
+                                          }
+                                          .box-body {
+                                          border-radius: 0 0 3px 3px;
+                                          padding: 10px;
+                                          background-color: #f1f1f1;
+                                          }
+                                          .content {
+                                          min-height: 250px;
+                                          padding: 0px;
+                                          padding-top:0px;
+                                          padding-right: 0px;
+                                          padding-bottom: 0px;
+                                          padding-left: 0px;
+                                          margin-right: 0px;
+                                          margin-left: 0px;
+                                          }
+                                          '))),
                 fluidRow(
                   box(
                     title = "Query Builder",
@@ -164,7 +190,7 @@ margin-left: 0px;
       tabItem(tabName = "Lists",
               navbarPage(
                 title = 'Interesting Lists',
-                position = "static-top",
+                # position = "static-top",
                 tabPanel('All Games',      DT::dataTableOutput('List_AllGames')),
                 tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
                 tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
@@ -179,15 +205,41 @@ margin-left: 0px;
       ), # End of tabItem
       tabItem(tabName = "Processing",
               fluidPage(
+                tags$head(tags$style(HTML('
+                                          .skin-blue .content-wrapper, .right-side{
+                                          background-color: #f1f1f1;
+                                          }
+                                          .box.box-solid.box-primary>.box-header{
+                                          background-color: #f1f1f1;
+                                          }
+                                          .box.box-solid.box-primary {
+                                          border: 0.5px solid #f1f1f1;
+                                          }
+                                          .box-body {
+                                          border-radius: 0 0 3px 3px;
+                                          padding: 10px;
+                                          background-color: #f1f1f1;
+                                          }
+                                          .content {
+                                          min-height: 250px;
+                                          padding: 0px;
+                                          padding-top:0px;
+                                          padding-right: 0px;
+                                          padding-bottom: 0px;
+                                          padding-left: 0px;
+                                          margin-right: 0px;
+                                          margin-left: 0px;
+                                          }
+                                          '))),
                 title = 'Processing',
                 fluidRow(
-                  box(
-                    title = "Query Builder",
-                    status = "primary",
-                    width = 12,
-                    solidHeader = TRUE,
-                    shiny::includeMarkdown(rmarkdown::render("../Explanation.Rmd"))
-                  )
+                  # # box(
+                  #   title = "Query Builder",
+                  #   status = "primary",
+                  #   width = 12,
+                  #   solidHeader = TRUE,
+                    uiOutput("Explanation")
+                  # # )
                 )
               ) # End of fluidPage
       ) # End of tabItem

@@ -1,11 +1,8 @@
 ---
 title: "Xbox One Backwards Compatability With The Xbox 360"
 runtime: shiny
-output: html_document
+# output: html_document
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 ## Background
 I am a huge fan of the Xbox and Microsoft has made a lot of money off of me since they made the Xbox One backwards compatible with Xbox 360 games. I have a back catalog of games I've bought through Microsoft's weekly sales that has now put my Steam catalog to shame. My problem is that during these sales, sometimes it's hard to guess which ones may become backwards compatible in the future. Last Friday was the one year anniversary of the backwards compatibility update and I felt compelled to use my skills as a Data Scientist to make something fun, and hopefully useful.
 Please take a moment to check it out. It's very much in the alpha stage and I have plenty more I'd like to add which I'll detail further down.
@@ -120,7 +117,7 @@ This is the list I used to convert the remaining games. I included this because 
 ### Wrangling Publishers
 Microsoft has said they need publishers and rights owners to agree to make their games backwards compatible, so it is important to ensure publishers are up to date. Publishers also are often written inconsitently, but luckily many use unique names that make it easy like "Konami" or "Namco Bandai." This was mostly a matter of finding matching words in the name to update them to be consistent. However, it has been a decade since some of these games have been released and some publishers have fallen and others have risen from their ashes while others have been acquired. I researched and updated publishers and game to be closer to their modern day states as Microsoft would need to do. This is difficult and while I tried, there are probably a few mistakes or polishing that could still be done. 
 ```{r eruptions, echo=FALSE}
-paste(sum(!is.na(dataUlt)),"missing values")
+print(paste(sum(!is.na(dataUlt)),"missing values"))
 ```
 ### Missing values
 As I got toward the end of polishing, I realized I was still missing quite a few data points. I went back through my scrapers and grabbed even more information so I could fill in missing spots. However, that still left many missing values.

@@ -54,12 +54,12 @@ moveMe <- function(data, tomove, where = "last", ba = NULL) {
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
 
-if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')) {
+if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data' 
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')) {
   setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')
   dataLocale = '../Data/'
-} else if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data')) {
-  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data' 
-} else if (dir.exists('/home/bc7_ntalavera/Data/Xbox')) {
+}  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox')) {
   dataLocale = '/home/bc7_ntalavera/Data/Xbox'
 }
 dataUltKNN  = read.csv(paste0(dataLocale,'dataUltKNN.csv'), stringsAsFactors = TRUE)
