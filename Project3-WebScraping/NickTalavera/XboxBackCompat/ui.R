@@ -165,14 +165,15 @@ margin-left: 0px;
               navbarPage(
                 title = 'Interesting Lists',
                 position = "static-top",
+                tabPanel('All Games',      DT::dataTableOutput('List_AllGames')),
                 tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
-                navbarMenu("Publishers",
-                           tabPanel('Top 10',        DT::dataTableOutput('ex5')),
-                           tabPanel('Bottom 10',      DT::dataTableOutput('ex6'))),
                 tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
-                tabPanel('Exclusives',  DT::dataTableOutput('ex3')),
-                # tabPanel('Has Xbox One Version',  DT::dataTableOutput('ex3')),
-                tabPanel('Kinect Supported on Xbox 360',      DT::dataTableOutput('ex4'))
+                navbarMenu("Publishers",
+                           tabPanel('Top 20',        DT::dataTableOutput('PublisherTop')),
+                           tabPanel('Bottom 20',      DT::dataTableOutput('PublisherBottom'))),
+                tabPanel('Exclusives',  DT::dataTableOutput('List_Exclusives')),
+                tabPanel('Has Xbox One Version',  DT::dataTableOutput('List_HasXboxOneVersion')),
+                tabPanel('Kinect Games',      DT::dataTableOutput('List_KinectGames'))
               )
       ) # End of tabItem
     ) # end of tabITems

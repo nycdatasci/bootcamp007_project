@@ -67,6 +67,7 @@ fixMSXBone = function(data) {
 
 fixUserVoice = function(data) {
   data$gameName = str_trim(data$gameName)
+  # data = namePrettier(data)
   data$in_progress[data$in_progress == 'In-Progress'] = TRUE
   data$isInProgress = as.logical(data$in_progress)
   data = data[data$gameName != "",]
@@ -113,6 +114,12 @@ fixXbox360_MS_Site = function(data) {
   return(data)
 }
 
+fixRequiredPeripherals = function(data) {
+  data$usesRequiredPeripheral = TRUE
+  data=unique(data)
+  return(data)
+}
+
 fixMetacritic = function(data) {
   data$gameName = str_trim(as.character(data$gameName))
   data$isMetacritic = TRUE
@@ -152,6 +159,11 @@ namePrettier = function(dataX) {
   # GALAGA
   # GALAGA LEGIONS
   # NARUTO
+  # YES
+  # SOULCALIBUR
+  # Pac-Man: Championship Edition DX+
+  # NIN2-JUMP
+  # Gunstar Heroes
   gameNameDict = c('Call of Duty: Modern Warfare 2','Call of Duty: Modern Warfare 3','Call of Duty 4: Modern Warfare','Battlefield: Bad Company 2','Call of Duty: Black Ops II','Dead Rising',
                    'Halo 3: ODST','Halo: Combat Evolved Anniversary', 'Lost Planet 2','Need for Speed: ProStreet','Plants vs Zombies: Garden Warfare','Resident Evil 5',
                    'World of Tanks','Tom Clancy\'s Ghost Recon Advanced Warfighter 2','Assassin\'s Creed: Revelations','Samurai Shodown: Sen','Prototype',
@@ -246,7 +258,7 @@ gameRemover = function(data) {
                     'Grabbed by the Ghoulies','Metal Arms: Glitch in the System','Max Payne 2: The Fall of Max Payne','Fable','Guilty Gear X2 #Reload','Psychonauts','Raze\'s Hell','Jade Empire','Sid Meier\'s Pirates!',
                     'Ninja Gaiden Black','Indigo Prophecy','Gauntlet: Seven Sorrows','Halo Waypoint','Halo Wars 2 Avatar Store','Boxing Fight','Build A Buddy','Darts Vs Zombies','Gears of War 4 Store','Gears of War: Ultimate Edition Store',
                     'Project Natal','Prey 2','PlayOnline Viewer','Ninety-Nine Nights/JP','Obut Ptanque 2','Destiny: The Taken King - Digital Collector\'s Edition','Destiny: The Taken King - Legendary Edition',
-                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies'
+                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies','Rock Band Classic Rock'
                     )
   keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)','Team DZN')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
@@ -396,6 +408,7 @@ Xbox360_MS_Site = namePrettier(fixXbox360_MS_Site(as.data.frame(read.csv('Xbox36
 XboxOne_MS_Site = namePrettier(fixMSXBone(read.csv('XboxOne_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE)))
 Remasters = namePrettier(fixRemasters(read.csv('RemastersXB.csv', stringsAsFactors = FALSE, header = TRUE)))
 MetacriticXbox360 = namePrettier(fixMetacritic(namePrettier(read.csv('MetacriticXbox360.csv', stringsAsFactors = FALSE))))
+RequiredPeripherals = fixRequiredPeripherals(read.csv('Special_Peripherals.csv', stringsAsFactors = FALSE))
 
 
 dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
@@ -405,6 +418,7 @@ dataUlt = generousNameMerger(dataUlt, UserVoice, "all","x")
 dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
+dataUlt = generousNameMerger(dataUlt, RequiredPeripherals, "all.x","x")
 # Remasters
 # XboxOne_MS_Site
 dataUlt[dataUlt == ""] = NA

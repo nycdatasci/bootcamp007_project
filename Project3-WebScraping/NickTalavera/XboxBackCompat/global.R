@@ -74,12 +74,8 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 model.empty = glm(isBCCompatible ~ 1, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
 glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features, family = "binomial", data = dataUltKNN)
 scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
-# forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
-glogit.optimizedFoAIC = glm(formula = isBCCompatible ~ isOnUserVoice + gamesOnDemandorArcade + 
-                              isMetacritic + reviewScorePro + isKinectRequired + isOnXboxOne + 
-                              isAvailableToPurchaseDigitally + xbox360Rating + releaseDate + 
-                              DLavatarItems + DLgameAddons + isInProgress + hasDemoAvailable + 
-                              price, family = "binomial", data = dataUltKNN)
+forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
 summary(glogit.optimizedFoAIC)
 class(glogit.overall)
 # #Residual plot for logistic regression with an added loess smoother; we would
@@ -98,33 +94,34 @@ exp(glogit.optimizedFoAIC$coefficients)
 admitted.predicted = round(glogit.optimizedFoAIC$fitted.values)
 xboxData = cbind(dataUlt,bcGuess = round(glogit.optimizedFoAIC$fitted.values), percentProb = round(glogit.optimizedFoAIC$fitted.values,3)*100)
 xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatible", "bcGuess", "percentProb"), "first")
-#Comparing the true values to the predicted values:
+# #Comparing the true values to the predicted values:
 table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)/nrow(dataUltKNN)
-#It seems like this model made a lot of mistakes (116 out of 400)! This is quite
-#dreadful in this case. Let's do a little bit more exploring. We never looked at
-#the overall test of deviance:
+# #It seems like this model made a lot of mistakes (116 out of 400)! This is quite
+# #dreadful in this case. Let's do a little bit more exploring. We never looked at
+# #the overall test of deviance:
 pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.tail = FALSE)
 
-#The p-value for the overall test of deviance is <.05, indicating that this model
-#is not a good overall fit!
-
-#What about checking the McFadden's pseudo R^2 based on the deviance?
-1 - glogit.optimizedFoAIC$deviance/glogit.optimizedFoAIC$null.deviance
-
-#Only about 8.29% of the variability in admission appears to be explained by
-#the predictors in our model; while the model is valid, it seems as though it
-#isn't extremely informative.
-
-#What have we found out? The overall model we created doesn't give us much
-#predictive power in determining whether a student will be admitted to
-#graduate school.
-table(dataUltKNN$isBCCompatible) #Our data contains 273 unadmitted students and 127
-#admitted students.
-table(admitted.predicted) #The model we created predicts that 351 students will
-#not be admitted, and only 49 will be admitted.
-table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
-
-glogit.publisherOnly = glm(isBCCompatible ~ publisher, family = "binomial", data = dataUltKNN)
-summary(glogit.publisherOnly)
-glogit.publisherOnly$fitted.values*100
+# #The p-value for the overall test of deviance is <.05, indicating that this model
+# #is not a good overall fit!
+# 
+# #What about checking the McFadden's pseudo R^2 based on the deviance?
+# 1 - glogit.optimizedFoAIC$deviance/glogit.optimizedFoAIC$null.deviance
+# 
+# #Only about 8.29% of the variability in admission appears to be explained by
+# #the predictors in our model; while the model is valid, it seems as though it
+# #isn't extremely informative.
+# 
+# #What have we found out? The overall model we created doesn't give us much
+# #predictive power in determining whether a student will be admitted to
+# #graduate school.
+# table(dataUltKNN$isBCCompatible) #Our data contains 273 unadmitted students and 127
+# #admitted students.
+# table(admitted.predicted) #The model we created predicts that 351 students will
+# #not be admitted, and only 49 will be admitted.
+# table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
+# 
+# glogit.publisherOnly = glm(isBCCompatible ~ as.factor(publisher), family = "binomial", data = dataUltKNN)
+# summary(glogit.publisherOnly)
+# glogit.publisherOnly$fitted.values*100
 setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')
+# sapply(xboxData, class) #Looking at the variable classes.
