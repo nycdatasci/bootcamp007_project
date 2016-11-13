@@ -477,12 +477,12 @@ dataUlt$releaseDateExclusive = NULL
 dataUlt$releaseDateKinect = NULL
 dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 na_count(dataUlt)
-dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltMetMS = dataUlt[dataUlt$isListedOnMSSite == TRUE  & dataUlt$isMetacritic != TRUE,]
-dataUltUVMS = dataUlt[dataUlt$isOnUserVoice == TRUE  & dataUlt$isListedOnMSSite != TRUE,]
-dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
+# dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+# dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+# dataUltMetMS = dataUlt[dataUlt$isListedOnMSSite == TRUE  & dataUlt$isMetacritic != TRUE,]
+# dataUltUVMS = dataUlt[dataUlt$isOnUserVoice == TRUE  & dataUlt$isListedOnMSSite != TRUE,]
+# dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')

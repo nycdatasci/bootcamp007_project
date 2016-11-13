@@ -4,7 +4,8 @@ runtime: shiny
 output: html_document
 ---
 ## Background
-I am a huge fan of the Xbox and Microsoft has made a lot of money off of me since they made the Xbox One backwards compatible with Xbox 360 games. I have a back catalog of games I've bought through Microsoft's weekly sales that has now put my Steam catalog to shame. My problem is that during these sales, sometimes it's hard to guess which ones may become backwards compatible in the future. Last Friday was the one year anniversary of the backwards compatibility update and I felt compelled to use my skills as a Data Scientist to make something fun, and hopefully useful.
+I am a huge fan of the Xbox and Microsoft has made a lot of money off of me since they made the Xbox One backwards compatible with Xbox 360 games. I have a back catalog of games I've bought through Microsoft's weekly sales that has now put my Steam catalog to shame ([Steam Analysis](http://blog.nycdatascience.com/student-works/factors-affecting-sales-steams-2016-summer-sale/)). My problem is that during these sales, sometimes it's hard to guess which ones may become backwards compatible in the future. Last Friday was the one year anniversary of the backwards compatibility update and I felt compelled to use my skills as a Data Scientist to make something fun, and hopefully useful.
+
 Please take a moment to check it out. It's very much in the alpha stage and I have plenty more I'd like to add which I'll detail further down.
 
 ## Scraping
@@ -27,7 +28,7 @@ The most time consuming part of this project involved the game's names.
 + Wikipedia articles sometimes used the international name of a game
 + Punctuation, trademark/copyright marks, and differences in spelling prevent one to one matching
 
-The solution was to make a new column of names where I would remove as many obstacles as I could so that when datasets are merged, there are the fewest differences possible. Through my past experiences with more difficult datasets, I knew this would require the use of my regular expression skills. I began by removing words including "the," "edition," "special," "full game," "free to play" and many more. I then removed pluralization and possession from words and converted numbers to roman numerals ("Assassin's Creed 2 to "Assassin Creed II". I also removed all non alphanumeric letters as well as spacing and capitalization. For many games, the differences were too great and had to be renamed before any of these processes were done ("COD:MW2" to "Call of Duty: Modern Warfare 2"). 
+The solution was to make a new column of names where I would remove as many obstacles as I could so that when datasets are merged, there are the fewest differences possible. Through [my past experiences](http://blog.nycdatascience.com/student-works/shining-light-darknet/) with more difficult datasets, I knew this would require the use of my regular expression skills. I began by removing words including "the," "edition," "special," "full game," "free to play" and many more. I then removed pluralization and possession from words and converted numbers to roman numerals ("Assassin's Creed 2 to "Assassin Creed II". I also removed all non alphanumeric letters as well as spacing and capitalization. For many games, the differences were too great and had to be renamed before any of these processes were done ("COD:MW2" to "Call of Duty: Modern Warfare 2"). 
 
 This is the list I used to convert the remaining games. I included this because it was a labor of love.
 
@@ -44,11 +45,14 @@ Microsoft has said they need publishers and rights owners to agree to make their
 As I got toward the end of polishing, I realized I was still missing quite a few data points. I went back through my scrapers and grabbed even more information so I could fill in missing spots. However, that still left many missing values. There are `r sum(is.na(dataUlt))` missing values out of `r sum(!is.na(dataUlt))` values (`r round(sum(is.na(dataUlt))/sum(!is.na(dataUlt))*100,1)`%) though some are less important than others, because I found later that I would not be needing them (developers). This results in missingness, which occurs when at least some of an observation’s values are not present within the dataset. This messes up statistical and machine techniques because the algorithm won't understand how to crunch the numbers. Deleting games with a missing value doesn't help because it severely limits the amount of data we have for analysis. In this problem, we would lose `r sum(complete.cases(dataUlt))` out of `r nrow(dataUlt)` lines of data. 
 
 #### Imputation
-To solve this, we use imputation to fill in the missing values. There isn't a linear pattern to fill in the numerical values and it would be inappropriate to assign an average score where review scores are missing. I used K nearest neeighbors (KNN) to fill in missing values. KNN makes a tesselated boundary using existing data points and judges where in the boundary the missing point is. The formula uses the K closest observations to the missing data point, and predicts the majority class as the outcome. I used the square root of the number of rows as a K value to strike a balance of being robust to outliers, stable boundaries and local variations.
+To solve this, we use imputation to fill in the missing values. There isn't a linear pattern to fill in the numerical values and it would be inappropriate to assign an average score where review scores are missing. I used K nearest neeighbors (KNN) to fill in missing values. KNN makes a tesselated boundary using existing data points and judges where in the boundary the missing point is. The formula uses the K closest observations to the missing data point, and predicts the majority class as the outcome. I used the square root of the number of rows (`r round(sqrt(nrow(dataUlt)),1)`) as a K value to strike a balance of being robust to outliers, stable boundaries and local variations.
 
-#### Future Processing
-In the near future, I will be looking at a method of machine learning called "clustering" to examine the data. Clustering may be better because XXX. I may also attempt a neural network given the time. As far as the website goes, I intend to set it up to automatically perform update scrape data and machine learning predictions. I also intend to look at scraping sales and provide their predictions to give consumers advice on which Xbox 360 games to buy that week.
-
+## Future Work
+* Implementing a method of machine learning called clustering to examine the data
+* Implementing a neural network if given the time
+* Automatically perform update scrape data and machine learning predictions
+* Scraping sales to give consumers advice on which Xbox 360 games to buy that week
+* Game covers are scraped but not implemented, which I feel would make the website prettier
 
 <!-- This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately.  -->
 

@@ -231,16 +231,7 @@ margin-left: 0px;
                                           margin-left: 0px;
                                           }
                                           '))),
-                title = 'Processing',
-                fluidRow(
-                  # # box(
-                  #   title = "Query Builder",
-                  #   status = "primary",
-                  #   width = 12,
-                  #   solidHeader = TRUE,
                     uiOutput("Explanation")
-                  # # )
-                )
               ) # End of fluidPage
       ) # End of tabItem
     ) # end of tabITems

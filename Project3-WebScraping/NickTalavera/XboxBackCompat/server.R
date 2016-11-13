@@ -731,7 +731,13 @@ shinyServer(function(input, output, session) {
   
   
   output$PublisherTop <- shiny::renderTable(
-    head(getDataPresentable(), n = input$obs)
+    head({
+      dataToPresent = getDataPresentable()
+      dataToPresent = summarise(group_by(dataToPresent, publisher), gamesMadeBackwardsCompatible = length(isBCCompatible[isBCCompatible==TRUE]), gamesPublished = length(gameName), ratio = gamesMadeBackwardsCompatible/gamesPublished)
+      dataToPresent = arrange(dataToPresent, ratio)
+      dataToPresent
+    }, 
+    n = 20)
   )
 
 
@@ -743,22 +749,6 @@ shinyServer(function(input, output, session) {
       dataToPresent
       }, 
       n = 20)
-    # DT::datatable(
-    #   {
-        # dataToPresent = getDataPresentable()
-    #     dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
-    #     dataToPresent = select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally,
-    #                            "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-    #                            "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro,
-    #                            "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-    #                            'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
-    #     dataToPresent
-    #   }, selection = "none",
-    #   options = list(
-    #     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-    #     pageLength = 15
-    #   )
-    # )
   )
   
   output$Explanation <- renderUI({
