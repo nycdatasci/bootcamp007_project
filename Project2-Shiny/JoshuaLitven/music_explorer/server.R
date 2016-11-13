@@ -156,9 +156,6 @@ shinyServer(function(input, output, session){
     network = 
       visNetwork(nodes, edges) %>%
       visInteraction(hover = TRUE) %>%
-      #visEvents(selectNode = "function(nodes) {
-      #          Shiny.onInputChange('current_node_id', nodes);
-      #          ;}")
       visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, selectedBy = "group")
     return(network)
   })
@@ -340,7 +337,6 @@ shinyServer(function(input, output, session){
         max = filter$rows[2]
         dataSet <<- dataSet[which(dataSet[[filter$col]] >= min & dataSet[[filter$col]] <= max), ]
       }))
-      dataSet
       
       scatter = dataSet[, c(input$scatter_xcol, input$scatter_ycol)]
       scatter$pop.html.tooltip=paste0(dataSet$artist, ' - ', dataSet$name, '<br>',
@@ -360,7 +356,7 @@ shinyServer(function(input, output, session){
                                                       var tooltip = data.getValue(row_index, 2);
                                                       Shiny.onInputChange('tooltip',tooltip);
                                                       }else{Shiny.onInputChange('tooltip', '');}"))
-      tracks_feautures_scatter
+      tracks_features_scatter
   })
 })
   
