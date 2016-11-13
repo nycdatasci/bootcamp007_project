@@ -558,37 +558,37 @@ shinyServer(function(input, output, session) {
   
   # Return the requested dataset
   getDataSetToUse <- eventReactive(input$query, {
-    dataToDisplay = xboxData
-    if (!is.null(input$marketName)) {
-      dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
-    }
-    
-    if (!is.null(input$drugName)) {
-      dataToDisplay = dataToDisplay[which((dataToDisplay$Drug_Type%in%input$drugName)),]
-    }
-    if (!is.null(input$shippedFrom)) {
-      dataToDisplay = dataToDisplay[which((dataToDisplay$Shipped_From%in%input$shippedFrom)),]
-    }
-    # switch(input$weightUnits)
-    if (!is.null(input$weightUnits)) {
-      drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
-      names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
-      dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
-    }
-    if (!is.null(input$weightValue)) {
-      dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
-    }
-    # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
-    if (!is.null(input$pricePerWeight)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
-    }
-    if (!is.null(input$dataAccessedDate)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]
-    }
-    if (!is.null(input$dataPostedDate)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Time_Added >= input$dataPostedDate[1] & dataToDisplay$Time_Added <= input$dataPostedDate[2],]
-    }
-    dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
+    dataToDisplay = getDataPresentable()
+    # if (!is.null(input$marketName)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
+    # }
+    # 
+    # if (!is.null(input$drugName)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Drug_Type%in%input$drugName)),]
+    # }
+    # if (!is.null(input$shippedFrom)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Shipped_From%in%input$shippedFrom)),]
+    # }
+    # # switch(input$weightUnits)
+    # if (!is.null(input$weightUnits)) {
+    #   drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
+    #   names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
+    #   dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
+    # }
+    # if (!is.null(input$weightValue)) {
+    #   dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
+    # }
+    # # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
+    # if (!is.null(input$pricePerWeight)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
+    # }
+    # if (!is.null(input$dataAccessedDate)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]
+    # }
+    # if (!is.null(input$dataPostedDate)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$Time_Added >= input$dataPostedDate[1] & dataToDisplay$Time_Added <= input$dataPostedDate[2],]
+    # }
+    # dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
   
@@ -610,6 +610,23 @@ shinyServer(function(input, output, session) {
     # dataToPresent[dataToPresent == FALSE] = FALSE
     return(dataToPresent)
   }
+  output$List_SearchResults <- DT::renderDataTable(
+    DT::datatable(
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+        pageLength = 15
+      )
+    )
+  )
   
   output$List_BackwardsCompatibleGames <- DT::renderDataTable(
     DT::datatable(

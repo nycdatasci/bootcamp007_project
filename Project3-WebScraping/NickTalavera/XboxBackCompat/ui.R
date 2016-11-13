@@ -14,7 +14,7 @@ dashboardPage(
     width = sideBarWidth,
     sidebarMenu(id = "sbm",
                 menuItem("Lists", tabName = "Lists", icon = icon("search")),
-                # menuItem("Games", tabName = "Games", icon = icon("dashboard")),
+                menuItem("Game Search", tabName = "Games", icon = icon("dashboard")),
                 menuItem("Processing", tabName = "Processing", icon = icon("dashboard"))
     )# end of sidebarMenu
   ),#end of dashboardSidebar
@@ -100,90 +100,172 @@ margin-left: 0px;
       tabItem(tabName = "Games",
               fluidPage(
                 title = "Games",
-                tags$head(tags$style(HTML('
-                                          .skin-blue .content-wrapper, .right-side{
-                                          background-color: #c2c2c2;
-                                          }
-                                          .box.box-solid.box-primary>.box-header{
-                                          background-color: #107c10;
-                                          }
-                                          .box.box-solid.box-primary {
-                                          border: 0.5px solid #3a3a3a;
-                                          }
-                                          .box-body {
-                                          border-radius: 0 0 3px 3px;
-                                          padding: 10px;
-                                          background-color: #f1f1f1;
-                                          }
-                                          .content {
-                                          min-height: 250px;
-                                          padding: 0px;
-                                          padding-top:0px;
-                                          padding-right: 0px;
-                                          padding-bottom: 0px;
-                                          padding-left: 0px;
-                                          margin-right: 0px;
-                                          margin-left: 0px;
-                                          }
-                                          '))),
+                # tags$head(tags$style(HTML('
+                #                           .skin-blue .content-wrapper, .right-side{
+                #                           background-color: #c2c2c2;
+                #                           }
+                #                           .box.box-solid.box-primary>.box-header{
+                #                           background-color: #107c10;
+                #                           }
+                #                           .box.box-solid.box-primary {
+                #                           border: 0.5px solid #3a3a3a;
+                #                           }
+                #                           .box-body {
+                #                           border-radius: 0 0 3px 3px;
+                #                           padding: 10px;
+                #                           background-color: #f1f1f1;
+                #                           }
+                #                           .content {
+                #                           min-height: 250px;
+                #                           padding: 10px;
+                #                           padding-top:10px;
+                #                           padding-right: 10px;
+                #                           padding-bottom: 10px;
+                #                           padding-left: 10px;
+                #                           margin-right: 10px;
+                #                           margin-left: 10px;
+                #                           }
+                #                           '))),
                 fluidRow(
                   box(
-                    title = "Query Builder",
+                    title = "Search",
                     status = "primary",
                     width = 12,
-                    solidHeader = TRUE,
-                    # selectInput("marketName",
-                    #             "Choose your markets:",
-                    #             choices = str_title_case(sort(c(as.character(unique(xboxData$Market_Name))))),
-                    #             multiple = TRUE),
-                    # 
-                    # selectInput("drugName",
-                    #             "Choose your drugs:",
-                    #             choices = str_title_case(sort(c(as.character(unique(xboxData$Drug_Type))))),
-                    #             multiple = TRUE),
-                    # selectInput("shippedFrom",
-                    #             "Choose where the drugs are shipped from:",
-                    #             choices = str_title_case(sort(c(as.character(unique(xboxData$Shipped_From))))),
-                    #             multiple = TRUE),
-                    # 
-                    # selectInput("weightUnits",
-                    #             "Choose your units of weight:",
-                    #             choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
-                    #             selected = "grams"
-                    # ),
-                    # 
-                    # sliderInput("weightValue",
-                    #             paste("Choose the the total weight of the drug in ", "grams", ":"),
-                    #             min = 0, max = 1000, value = 1, step = 0.5,
-                    #             post = " grams", sep = ",", animate=FALSE),
-                    
-                    # sliderInput("pricePerWeight",
-                    #             paste("Choose the range of price per ", "grams", ":"),
-                    #             min = 0, max = maxPricePerWeight, value = c(0,maxPricePerWeight), step = maxPricePerWeight/5,
-                    #             pre = "$", sep = ",", animate=FALSE),
-                    
-                    
-                    
-                    # dateRangeInput('dataPostedDate',
-                    #                label = paste('Choose the date range for when the item was posted:'),
-                    #                start = timeAddedRange[1], end = timeAddedRange[2],
-                    #                min = timeAddedRange[1], max = timeAddedRange[2],
-                    #                separator = " - ", format = "mm/dd/yy",
-                    #                startview = 'month', weekstart = 1
-                    # ),
-                    # 
-                    # 
-                    # dateRangeInput('dataAccessedDate',
-                    #                label = paste('Choose the date range for when the item was accessed:'),
-                    #                start = sheetDateRange[1], end = sheetDateRange[2],
-                    #                min = sheetDateRange[1], max = sheetDateRange[2],
-                    #                separator = " - ", format = "mm/dd/yy",
-                    #                startview = 'month', weekstart = 1
-                    # ),
-                    
-                    # helpText("Note: Leave a field empty to select all."),
+                    # solidHeader = TRUE,
+                    collapsible = TRUE,
+                    helpText("Note: Leave a field empty to select all."),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Backwards Compatible:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Predicted_to_become_Backwards_Compatible", label = h3("Predicted to become Backwards Compatible:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    sliderInput("bcProb",
+                                label = h3("Backwards Compatability Probability Percent:"),
+                                min = 0, max = 100, value = 1, step = 1,
+                                post = "%", sep = ",", animate=FALSE),
+                    dateRangeInput('dataAccessedDate',
+                                   label = h3("Release Date:"),
+                                   start = range(xboxData$releaseDate)[1], end = range(xboxData$releaseDate)[2],
+                                   min = range(xboxData$releaseDate)[1], max = range(xboxData$releaseDate)[2],
+                                   separator = " - ", format = "mm/dd/yy",
+                                   startview = 'month', weekstart = 1
+                    ),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Listed on Xbox.com:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Exclusive:"), 
+                                       choices = list("Only on Xbox 360" = "Only on Xbox 360", "Also Available on PC" = "PC", "No" = "No"),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Xbox One Version Available:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is on Uservoice"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    sliderInput("bcProb",
+                                label = h3("Uservoice Votes:"),
+                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Uservoice Comments:"),
+                                min = 0, max = max(xboxData$comments, na.rm = TRUE), value = 1, step = 1,
+                                post = " comments", sep = ",", animate=FALSE),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Kinect Supported:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Kinect Required:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Does it Need Special Peripherals:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is it Retail Only:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Available to Purchase a Digital Copy on Xbox.com:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    checkboxGroupInput("Is_Backwards_Compatible", label = h3("Has a Demo Available:"), 
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
+                    sliderInput("bcProb",
+                                label = h3("Xbox User Review Score:"),
+                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Xbox User Review Counts:"),
+                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Metacritic Review Score:"),
+                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Metacritic User Review Score:"),
+                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Price on Xbox.com:"),
+                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    selectInput("shippedFrom",
+                                "Publisher:",
+                                choices = str_title_case(sort(c(as.character(unique(xboxData$publisher))))),
+                                multiple = TRUE),
+                    selectInput("shippedFrom",
+                                "Developer:",
+                                choices = str_title_case(sort(c(as.character(unique(xboxData$developer))))),
+                                multiple = TRUE),
+                    selectInput("shippedFrom",
+                                "Genre:",
+                                choices = str_title_case(sort(c(as.character(unique(xboxData$genre))))),
+                                multiple = TRUE),
+                    selectInput("shippedFrom",
+                                "ESRB Rating:",
+                                choices = str_title_case(sort(c(as.character(unique(xboxData$ESRBRating))))),
+                                multiple = TRUE),
+                    selectInput("shippedFrom",
+                                "Features:",
+                                choices = str_title_case(sort(c(as.character(unique(xboxData$features))))),
+                                multiple = TRUE),
+                    sliderInput("bcProb",
+                                label = h3("Smartglass Compatable:"),
+                                min = 0, max = max(xboxData$DLsmartglass, na.rm = TRUE), value = 1, step = 1,
+                                post = " votes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Number of Game Add-Ons:"),
+                                min = 0, max = max(xboxData$DLgameAddons, na.rm = TRUE), value = 1, step = 1,
+                                post = " Add-Ons", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Number of Avatar Items:"),
+                                min = 0, max = max(xboxData$DLavatarItems, na.rm = TRUE), value = 1, step = 1,
+                                post = " Avatar Items", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Number of GamerPics:"),
+                                min = 0, max = max(xboxData$DLgamerPictures, na.rm = TRUE), value = 1, step = 1,
+                                post = " GamerPics", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Number of Themes:"),
+                                min = 0, max = max(xboxData$DLthemes, na.rm = TRUE), value = 1, step = 1,
+                                post = " Themes", sep = ",", animate=FALSE),
+                    sliderInput("bcProb",
+                                label = h3("Number of Game Videos:"),
+                                min = 0, max = max(xboxData$DLgameVideos, na.rm = TRUE), value = 1, step = 1,
+                                post = " Game Videos", sep = ",", animate=FALSE),
                     actionButton("query", label = "Search")
+                  ),
+                  # conditionalPanel(
+                  #   condition = "input.query",
+                  box(
+                    title = "Results",
+                    # status = "primary",
+                    width = 12,
+                    # solidHeader = TRUE,
+                    collapsible = FALSE,
+                    DT::dataTableOutput('List_SearchResults')
                   )
+              # )
                 )# end of fluidrow
               ) # End of fluidPage
       ), # End of tabItem
@@ -231,7 +313,7 @@ margin-left: 0px;
                                           margin-left: 0px;
                                           }
                                           '))),
-                    uiOutput("Explanation")
+                uiOutput("Explanation")
               ) # End of fluidPage
       ) # End of tabItem
     ) # end of tabITems

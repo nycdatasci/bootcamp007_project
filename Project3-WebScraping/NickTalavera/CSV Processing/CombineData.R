@@ -259,7 +259,8 @@ gameRemover = function(data) {
                     'Grabbed by the Ghoulies','Metal Arms: Glitch in the System','Max Payne 2: The Fall of Max Payne','Fable','Guilty Gear X2 #Reload','Psychonauts','Raze\'s Hell','Jade Empire','Sid Meier\'s Pirates!',
                     'Ninja Gaiden Black','Indigo Prophecy','Gauntlet: Seven Sorrows','Halo Waypoint','Halo Wars 2 Avatar Store','Boxing Fight','Build A Buddy','Darts Vs Zombies','Gears of War 4 Store','Gears of War: Ultimate Edition Store',
                     'Project Natal','Prey 2','PlayOnline Viewer','Ninety-Nine Nights/JP','Obut Ptanque 2','Destiny: The Taken King - Digital Collector\'s Edition','Destiny: The Taken King - Legendary Edition',
-                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies','Rock Band Classic Rock'
+                    'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies','Rock Band Classic Rock',
+                    'Halo: Combat Evolved Anniversary'
                     )
   keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)','Team DZN')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
@@ -457,6 +458,7 @@ dataUlt$isKinectSupported[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case
 dataUlt$isKinectRequired[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
 dataUlt$gamesOnDemandorArcade[dataUlt$isAvailableToPurchaseDigitally == TRUE] = "Games on Demand"
 dataUlt$gamesOnDemandorArcade[dataUlt$gamesOnDemandorArcade == "Xbox 360 Games"] = "Retail Only"
+dataUlt$gamesOnDemandorArcade[dataUlt$isDiscOnly == TRUE] = "Retail Only"
 dataUlt$gamesOnDemandorArcade[is.na(dataUlt$gamesOnDemandorArcade)] = "Retail Only"
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(dataUlt$publisher)]
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
@@ -472,6 +474,7 @@ dataUlt$onlineFeatures = NULL
 dataUlt$gameNameModded = NULL
 dataUlt$isRemastered = NULL
 dataUlt$in_progress = NULL
+dataUlt$isDiscOnly = NULL
 dataUlt$dayRecorded = NULL
 dataUlt$publisherExclusive = NULL
 dataUlt$publisherKinect = NULL
