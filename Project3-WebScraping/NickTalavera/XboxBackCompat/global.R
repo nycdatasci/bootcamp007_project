@@ -8,7 +8,7 @@
 ###############################################################################
 #                         LOAD PACKAGES AND MODULES                          #
 ###############################################################################
-# rm(list = setdiff(ls(), lsf.str()))
+rm(list = setdiff(ls(), lsf.str()))
 #require(rCharts)
 #options(RCHART_LIB = 'polycharts')
 # library(datasets)
@@ -52,9 +52,17 @@ moveMe <- function(data, tomove, where = "last", ba = NULL) {
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
-setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
-dataUltKNN  = read.csv('dataUltKNN.csv', stringsAsFactors = TRUE)
-dataUlt = read.csv('dataUlt.csv', stringsAsFactors = TRUE)
+
+if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')) {
+  setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')
+  dataLocale = '../Data/'
+} else if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data' 
+} else if (dir.exists('/home/bc7_ntalavera/Data/Xbox')) {
+  dataLocale = '/home/bc7_ntalavera/Data/Xbox'
+}
+dataUltKNN  = read.csv(paste0(dataLocale,'dataUltKNN.csv'), stringsAsFactors = TRUE)
+dataUlt = read.csv(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE)
 dataUltKNN$X = NULL
 dataUltKNN$gameName = as.character(dataUltKNN$gameName)
 dataUltKNN$releaseDate = as.Date(dataUltKNN$releaseDate)
@@ -73,9 +81,9 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 # FINDING MODEL
 model.empty = glm(isBCCompatible ~ 1, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
 glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN)
-forwardAIC = step(glogit.overall, scope, direction = "forward", k = 2)
+scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
+forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
 glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
-scope = list(lower = formula(model.empty), upper = formula(glogit.optimizedFoAIC))
 summary(glogit.optimizedFoAIC)
 class(glogit.optimizedFoAIC)
 # #Residual plot for logistic regression with an added loess smoother; we would
@@ -105,8 +113,8 @@ pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.
 # #is not a good overall fit!
 # 
 # #What about checking the McFadden's pseudo R^2 based on the deviance?
-# 1 - glogit.optimizedFoAIC$deviance/glogit.optimizedFoAIC$null.deviance
-# 
+1 - glogit.optimizedFoAIC$deviance/glogit.optimizedFoAIC$null.deviance
+
 # #Only about 8.29% of the variability in admission appears to be explained by
 # #the predictors in our model; while the model is valid, it seems as though it
 # #isn't extremely informative.
@@ -114,14 +122,15 @@ pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.
 # #What have we found out? The overall model we created doesn't give us much
 # #predictive power in determining whether a student will be admitted to
 # #graduate school.
-# table(dataUltKNN$isBCCompatible) #Our data contains 273 unadmitted students and 127
+table(dataUltKNN$isBCCompatible) #Our data contains 273 unadmitted students and 127
 # #admitted students.
-# table(admitted.predicted) #The model we created predicts that 351 students will
+table(admitted.predicted) #The model we created predicts that 351 students will
 # #not be admitted, and only 49 will be admitted.
-# table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
+table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)
 # 
 # glogit.publisherOnly = glm(isBCCompatible ~ as.factor(publisher), family = "binomial", data = dataUltKNN)
 # summary(glogit.publisherOnly)
 # glogit.publisherOnly$fitted.values*100
-setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')
+
 # sapply(xboxData, class) #Looking at the variable classes.
+

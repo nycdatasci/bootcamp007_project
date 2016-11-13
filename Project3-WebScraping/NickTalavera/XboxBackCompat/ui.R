@@ -168,9 +168,10 @@ margin-left: 0px;
                 tabPanel('All Games',      DT::dataTableOutput('List_AllGames')),
                 tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
                 tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
-                navbarMenu("Publishers",
-                           tabPanel('Top 20',        DT::dataTableOutput('PublisherTop')),
-                           tabPanel('Bottom 20',      DT::dataTableOutput('PublisherBottom'))),
+                navbarMenu("Publishers"
+                           # tabPanel('Top 20',        shiny::tableOutput('PublisherTop')),
+                           # tabPanel('Bottom 20',      shiny::tableOutput('PublisherBottom'))
+                           ),
                 tabPanel('Exclusives',  DT::dataTableOutput('List_Exclusives')),
                 tabPanel('Has Xbox One Version',  DT::dataTableOutput('List_HasXboxOneVersion')),
                 tabPanel('Kinect Games',      DT::dataTableOutput('List_KinectGames'))
