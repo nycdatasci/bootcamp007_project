@@ -1,0 +1,17 @@
+"","Date","Region","SalesGrowth","ChangeTrx","ChangeTicket"
+"1","FY2015","Americas",7,4,4
+"2","FY2014","Americas",6,2,3
+"3","FY2013","Americas",7,5,2
+"4","FY2012","Americas",8,6,2
+"5","FY2015","CAP",9,8,1
+"6","FY2014","CAP",7,6,NA
+"7","FY2013","CAP",9,7,2
+"8","FY2012","CAP",15,11,3
+"9","FY2015","EMEA",4,2,1
+"10","FY2014","EMEA",5,3,2
+"11","FY2013","EMEA",NA,2,-2
+"12","FY2012","EMEA",NA,NA,NA
+"13","FY2015","Consolidated",7,3,4
+"14","FY2014","Consolidated",6,3,3
+"15","FY2013","Consolidated",7,5,2
+"16","FY2012","Consolidated",7,6,1

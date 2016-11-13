@@ -26,17 +26,21 @@ load("data/desc_txt.RData")
 LatLngTime = LatLngTime %>% 
   mutate(., EVENT_DATE = as.Date(BEGIN_DATE_TIME, format = '%d-%b-%y %H:%M:%S'))
 LatLngTime$DATE_YM = as.yearmon(as.character(LatLngTime$YEARMONTH), format = '%Y%m')
-# dygraph: time vs. event type
+# bar chart: storm type vs deaths
+dths = LatLngTime %>% group_by(., EVENT_TYPE) %>%
+  summarise(., DEATHS = sum(DEATHS_DIRECT + DEATHS_INDIRECT)) %>%
+  arrange(., DEATHS)
+# dygraph: time vs. fatality
 fata = LatLngTime %>% 
   select(., DEATHS_DIRECT, DEATHS_INDIRECT, DATE_YM) %>%
   group_by(., DATE_YM) %>% 
   summarise(., Direct = sum(DEATHS_DIRECT), Indirect = sum(DEATHS_INDIRECT))
 fata_xt = xts(fata[, -1], order.by = fata$DATE_YM)
-# dygraph: time vs. fatality
+# dygraph: time vs. event type
 types = LatLngTime %>% group_by(., DATE_YM, EVENT_TYPE) %>% 
   summarise(., TYPE_NUM = n())
 types_tran = dcast(types, DATE_YM ~ EVENT_TYPE, value.var = 'TYPE_NUM')
-types_xt = xts(types_tran, types_tran$DATE_YM)
+types_xt = xts(types_tran[, -1], order.by = types_tran$DATE_YM)
 
 # tab/panel choices variable
 top6 = c('Flash Flood' = 'Flash Flood',

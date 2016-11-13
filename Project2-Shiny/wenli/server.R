@@ -26,7 +26,7 @@ function(input, output) {
     else {
       leafletProxy('map', data = points()) %>% clearShapes() %>%
         addCircles(lat = ~ LATITUDE, lng = ~ LONGITUDE,
-                   radius = 100, stroke = F, fillOpacity = 0.5, 
+                   radius = 500, stroke = F, fillOpacity = 0.5, 
                    color = ~ colpal(EVENT_TYPE), 
                    popup = ~ paste(sep = '<br/>','Event Type:', EVENT_TYPE))}
   })
@@ -48,7 +48,7 @@ function(input, output) {
   
   # tab-2 output
   output$dygraph1 = renderDygraph({
-    dygraph(types_xt, main = 'Storm Events in U.S.: 2007 - 2016', group = 'SE') %>%
+    dygraph(types_xt, main = 'Storm Events in U.S. 2007 - 2016', group = 'SE') %>%
       dyOptions(colors = RColorBrewer::brewer.pal(6, 'Paired'), fillGraph = T, fillAlpha = 0.2,
                 includeZero = T, axisLineColor = '#386cb0') %>%
       dyHighlight(highlightCircleSize = 2, 
@@ -83,7 +83,7 @@ function(input, output) {
   
   
   # tab-3 output
-  output$boxplt1 = renderPlot({
+  output$barplt1 = renderPlot({
     ggplot(FatalLoc,
            aes(x = reorder(FATALITY_LOCATION, FATALITY_LOCATION, function(x)-length(x)))) +
       geom_bar(aes(fill = FATALITY_SEX), alpha = 0.7) +
@@ -97,16 +97,28 @@ function(input, output) {
       ylab('Deaths')
   })
   
-  output$boxplt2 = renderPlot({
-    ggplot(FatalLoc, aes(x = FATALITY_SEX, y = FATALITY_AGE)) +
-      geom_boxplot(aes_string(fill = 'FATALITY_SEX'), color = 'lightgray', alpha = 0.7, width = 0.3) +                 
+  output$barplt2 = renderPlot({
+    ggplot(dths, aes(x = reorder(EVENT_TYPE, -DEATHS), y = DEATHS)) +
+      geom_bar(aes(fill = EVENT_TYPE), stat = 'identity', alpha = 0.7, width = 0.6) +
       theme_economist() +
-      scale_fill_economist(guide = 'none') +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1),
+            legend.position = 'none') +
+      theme_economist() +
+      scale_fill_economist() +
+      ggtitle('Storm Types vs. Fatality') +
+      xlab('') +
+      ylab('Deaths')
+  })
+  
+  output$boxplt = renderPlot({
+    ggplot(FatalLoc, aes(x = FATALITY_SEX, y = FATALITY_AGE)) +
+      geom_boxplot(aes_string(fill = 'FATALITY_SEX'), color = 'lightgray', alpha = 0.7, width = 0.3) +
+      theme_economist() +
       theme(axis.title.x=element_blank()) +
+      scale_fill_economist() +
       ylab('Age') +
       scale_x_discrete(labels = c('Female', 'Male', 'Unknown'))
   })
-  
   
   # tab-4 wordcloud data
   descr = reactive({desc_txt})
@@ -116,7 +128,7 @@ function(input, output) {
     par(bg = "#2B3E4F") 
     wordcloud(words = descr()$word, freq = descr()$freq, min.freq = input$min_freq,
               max.words = input$max_wds, random.order = FALSE, rot.per = 0.35, 
-              colors = brewer.pal(8, 'Blues'))
+              colors = brewer.pal(8, 'Pastel1'))
   })
   
 }

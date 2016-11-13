@@ -12,8 +12,11 @@
 ./Project4-MachineLearning/*.csv
 ./Project5-Capstone/*.csv
 
+
 *.png
 
-*.eps
+*.xlsx
 
 *.jpeg
+
+Project2-Shiny/NickTalavera/importBucket.R
