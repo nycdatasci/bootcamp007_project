@@ -100,32 +100,32 @@ margin-left: 0px;
       tabItem(tabName = "Games",
               fluidPage(
                 title = "Games",
-                # tags$head(tags$style(HTML('
-                #                           .skin-blue .content-wrapper, .right-side{
-                #                           background-color: #c2c2c2;
-                #                           }
-                #                           .box.box-solid.box-primary>.box-header{
-                #                           background-color: #107c10;
-                #                           }
-                #                           .box.box-solid.box-primary {
-                #                           border: 0.5px solid #3a3a3a;
-                #                           }
-                #                           .box-body {
-                #                           border-radius: 0 0 3px 3px;
-                #                           padding: 10px;
-                #                           background-color: #f1f1f1;
-                #                           }
-                #                           .content {
-                #                           min-height: 250px;
-                #                           padding: 10px;
-                #                           padding-top:10px;
-                #                           padding-right: 10px;
-                #                           padding-bottom: 10px;
-                #                           padding-left: 10px;
-                #                           margin-right: 10px;
-                #                           margin-left: 10px;
-                #                           }
-                #                           '))),
+                tags$head(tags$style(HTML('
+                                          .skin-blue .content-wrapper, .right-side{
+                                          background-color: #c2c2c2;
+                                          }
+                                          .box.box-solid.box-primary>.box-header{
+                                          background-color: #107c10;
+                                          }
+                                          .box.box-solid.box-primary {
+                                          border: 0.5px solid #3a3a3a;
+                                          }
+                                          .box-body {
+                                          border-radius: 0 0 3px 3px;
+                                          padding: 10px;
+                                          background-color: #f1f1f1;
+                                          }
+                                          .content {
+                                          min-height: 250px;
+                                          padding: 10px;
+                                          padding-top:10px;
+                                          padding-right: 10px;
+                                          padding-bottom: 10px;
+                                          padding-left: 10px;
+                                          margin-right: 10px;
+                                          margin-left: 10px;
+                                          }
+                                          '))),
                 fluidRow(
                   box(
                     title = "Search",
@@ -210,29 +210,29 @@ margin-left: 0px;
                                 min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 1, step = 1,
                                 post = " votes", sep = ",", animate=FALSE),
                     selectInput("shippedFrom",
-                                "Publisher:",
+                                label = h3("Publisher:"),
                                 choices = str_title_case(sort(c(as.character(unique(xboxData$publisher))))),
                                 multiple = TRUE),
                     selectInput("shippedFrom",
-                                "Developer:",
+                                label = h3("Developer:"),
                                 choices = str_title_case(sort(c(as.character(unique(xboxData$developer))))),
                                 multiple = TRUE),
                     selectInput("shippedFrom",
-                                "Genre:",
+                                label = h3("Genre:"),
                                 choices = str_title_case(sort(c(as.character(unique(xboxData$genre))))),
                                 multiple = TRUE),
                     selectInput("shippedFrom",
-                                "ESRB Rating:",
+                                label = h3("ESRB Rating:"),
                                 choices = str_title_case(sort(c(as.character(unique(xboxData$ESRBRating))))),
                                 multiple = TRUE),
                     selectInput("shippedFrom",
-                                "Features:",
+                                label = h3("Features:"),
                                 choices = str_title_case(sort(c(as.character(unique(xboxData$features))))),
                                 multiple = TRUE),
-                    sliderInput("bcProb",
+                    checkboxGroupInput("bcProb",
                                 label = h3("Smartglass Compatable:"),
-                                min = 0, max = max(xboxData$DLsmartglass, na.rm = TRUE), value = 1, step = 1,
-                                post = " votes", sep = ",", animate=FALSE),
+                                choices = list("Yes" = TRUE, "No" = FALSE),
+                                selected = 1),
                     sliderInput("bcProb",
                                 label = h3("Number of Game Add-Ons:"),
                                 min = 0, max = max(xboxData$DLgameAddons, na.rm = TRUE), value = 1, step = 1,
