@@ -14,7 +14,7 @@ class UserVoice(scrapy.Spider):
     allowed_domains = ["xbox.uservoice.com"]
 
     start_urls = (
-    # 'https://xbox.uservoice.com/forums/298503-backwards-compatibility?filter=top&page=1',
+    'https://xbox.uservoice.com/forums/298503-backwards-compatibility?filter=top&page=1',
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility/status/1222799?page=1',
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility/status/1222800?page=1'
     )

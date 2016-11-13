@@ -72,12 +72,12 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 #regression, this is binomial.
 # FINDING MODEL
 model.empty = glm(isBCCompatible ~ 1, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
-glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features, family = "binomial", data = dataUltKNN)
-scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
-forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN)
+forwardAIC = step(glogit.overall, scope, direction = "forward", k = 2)
 glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
+scope = list(lower = formula(model.empty), upper = formula(glogit.optimizedFoAIC))
 summary(glogit.optimizedFoAIC)
-class(glogit.overall)
+class(glogit.optimizedFoAIC)
 # #Residual plot for logistic regression with an added loess smoother; we would
 # #hope that, on average, the residual values are 0.
 scatter.smooth(glogit.optimizedFoAIC$fit,

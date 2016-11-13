@@ -69,6 +69,7 @@ fixUserVoice = function(data) {
   data$gameName = str_trim(data$gameName)
   # data = namePrettier(data)
   data$in_progress[data$in_progress == 'In-Progress'] = TRUE
+  data$UVclosed[data$in_progress == 'Closed'] = TRUE
   data$isInProgress = as.logical(data$in_progress)
   data = data[data$gameName != "",]
   data$isOnUserVoice = TRUE
