@@ -601,21 +601,67 @@ shinyServer(function(input, output, session) {
     DT::datatable(dataSet, options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 10))
   })
   
+  getDataPresentable = function(){
+    dataToPresent = xboxData
+    dataToPresent = dataToPresent[dataToPresent$gameName != "TRUE",]
+    # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100
+    dataToPresent$bcGuess = as.logical(dataToPresent$bcGuess)
+    # dataToPresent[dataToPresent == TRUE] = TRUE
+    # dataToPresent[dataToPresent == FALSE] = FALSE
+    return(dataToPresent)
+  }
   
   output$List_BackwardsCompatibleGames <- DT::renderDataTable(
     DT::datatable(
-      xboxData, options = list(
-        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = dataToPresent[dataToPresent$isBCCompatible == TRUE,]
+        dataToPresent = select(dataToPresent, Name = gameName, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+  options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
       )
     )
   )
   
-  # -1 means no pagination; the 2nd element contains menu labels
-  output$ex2 <- DT::renderDataTable(
+  output$List_AllGames <- DT::renderDataTable(
     DT::datatable(
-      xboxData, options = list(
-        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+  
+  output$List_PredictedBackwardsCompatible <- DT::renderDataTable(
+    DT::datatable(
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
+        dataToPresent = select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = as.numeric(price), 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+      dataToPresent
+        }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
       )
     )
@@ -626,35 +672,90 @@ shinyServer(function(input, output, session) {
   #   DT::datatable(iris, options = list(paging = FALSE))
   # )
   
-  output$ex3 <- DT::renderDataTable(
+  output$List_KinectGames <- DT::renderDataTable(
     DT::datatable(
-      xboxData, options = list(
-        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = dataToPresent[dataToPresent$isKinectSupported == TRUE | dataToPresent$isKinectRequired == TRUE,]
+        dataToPresent = select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = percentProb, "Uservoice Votes" = votes, 
+                               "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
+                               "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
       )
     )
   )
   
-  output$ex4 <- DT::renderDataTable(
+  output$List_HasXboxOneVersion <- DT::renderDataTable(
     DT::datatable(
-      xboxData, options = list(
-        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = dataToPresent[dataToPresent$isOnXboxOne == TRUE | dataToPresent$isKinectRequired == TRUE,]
+        dataToPresent = select(dataToPresent, Name = gameName, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
       )
     )
   )
-  output$ex5 <- DT::renderDataTable(
+  output$List_Exclusives <- DT::renderDataTable(
     DT::datatable(
-      xboxData, options = list(
-        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+      {
+        dataToPresent = getDataPresentable()        
+        dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
+        dataToPresent = select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                               "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
       )
     )
   )
-  output$ex6 <- DT::renderDataTable(
+  
+  
+  output$PublisherTop <- shiny::renderTable(
     DT::datatable(
-      xboxData, options = list(
-        lengthMenu = list(c(5, 15, -1), c('5', '15', 'All')),
+      {
+        dataToPresent = getDataPresentable()
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+        pageLength = 15
+      )
+    )
+  )
+  
+  
+  output$PublisherBottom <- shiny::renderTable(
+    DT::datatable(
+      {
+        dataToPresent = getDataPresentable()        
+        dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
+        dataToPresent = select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                               "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
+                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
       )
     )

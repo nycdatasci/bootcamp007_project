@@ -2,25 +2,25 @@
 
 library(shiny)
 
-programName = "Xbox One Backwards Compatability Predictor"
+programName = "Xbox One Backwards Compatibility Predictor"
 sideBarWidth = 450
 dashboardPage(
-              
-              dashboardHeader(
-                title = programName,
-                titleWidth = sideBarWidth
-              ),
-              dashboardSidebar(
-                width = sideBarWidth,
-                sidebarMenu(id = "sbm",
-                            menuItem("Lists", tabName = "Lists", icon = icon("search")),
-                            menuItem("Games", tabName = "Games", icon = icon("dashboard")),
-                            menuItem("Processing", tabName = "Processing", icon = icon("dashboard"))
-                )# end of sidebarMenu
-              ),#end of dashboardSidebar
-              dashboardBody(
-                # includeCSS("www/custom.css"),
-                tags$head(tags$style(HTML('
+  
+  dashboardHeader(
+    title = programName,
+    titleWidth = sideBarWidth
+  ),
+  dashboardSidebar(
+    width = sideBarWidth,
+    sidebarMenu(id = "sbm",
+                menuItem("Lists", tabName = "Lists", icon = icon("search")),
+                menuItem("Games", tabName = "Games", icon = icon("dashboard")),
+                menuItem("Processing", tabName = "Processing", icon = icon("dashboard"))
+    )# end of sidebarMenu
+  ),#end of dashboardSidebar
+  dashboardBody(
+    # includeCSS("www/custom.css"),
+    tags$head(tags$style(HTML('
                                           /* logo */
                                           .skin-blue .main-header .logo {
                                           background-color: #107c10;
@@ -85,7 +85,7 @@ background-color: #f1f1f1;
 }
 .content {
     min-height: 250px;
-padding: 10px;
+padding: 0px;
 padding-top:0px;
 padding-right: 0px;
 padding-bottom: 0px;
@@ -94,84 +94,88 @@ margin-right: 0px;
 margin-left: 0px;
 }
                                           '))),
-                
-                
-                tabItems(
-                  tabItem(tabName = "Games",
-                          fluidPage(
-                            title = "Games",
-                            fluidRow(
-                                     box(
-                                       title = "Query Builder",
-                                       status = "primary",
-                                       width = 12,
-                                       solidHeader = TRUE,
-                                       # selectInput("marketName",
-                                       #             "Choose your markets:",
-                                       #             choices = str_title_case(sort(c(as.character(unique(xboxData$Market_Name))))),
-                                       #             multiple = TRUE),
-                                       # 
-                                       # selectInput("drugName",
-                                       #             "Choose your drugs:",
-                                       #             choices = str_title_case(sort(c(as.character(unique(xboxData$Drug_Type))))),
-                                       #             multiple = TRUE),
-                                       # selectInput("shippedFrom",
-                                       #             "Choose where the drugs are shipped from:",
-                                       #             choices = str_title_case(sort(c(as.character(unique(xboxData$Shipped_From))))),
-                                       #             multiple = TRUE),
-                                       # 
-                                       # selectInput("weightUnits",
-                                       #             "Choose your units of weight:",
-                                       #             choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
-                                       #             selected = "grams"
-                                       # ),
-                                       # 
-                                       # sliderInput("weightValue",
-                                       #             paste("Choose the the total weight of the drug in ", "grams", ":"),
-                                       #             min = 0, max = 1000, value = 1, step = 0.5,
-                                       #             post = " grams", sep = ",", animate=FALSE),
-                                       
-                                       # sliderInput("pricePerWeight",
-                                       #             paste("Choose the range of price per ", "grams", ":"),
-                                       #             min = 0, max = maxPricePerWeight, value = c(0,maxPricePerWeight), step = maxPricePerWeight/5,
-                                       #             pre = "$", sep = ",", animate=FALSE),
-                                       
-                                       
-                                       
-                                       # dateRangeInput('dataPostedDate',
-                                       #                label = paste('Choose the date range for when the item was posted:'),
-                                       #                start = timeAddedRange[1], end = timeAddedRange[2],
-                                       #                min = timeAddedRange[1], max = timeAddedRange[2],
-                                       #                separator = " - ", format = "mm/dd/yy",
-                                       #                startview = 'month', weekstart = 1
-                                       # ),
-                                       # 
-                                       # 
-                                       # dateRangeInput('dataAccessedDate',
-                                       #                label = paste('Choose the date range for when the item was accessed:'),
-                                       #                start = sheetDateRange[1], end = sheetDateRange[2],
-                                       #                min = sheetDateRange[1], max = sheetDateRange[2],
-                                       #                separator = " - ", format = "mm/dd/yy",
-                                       #                startview = 'month', weekstart = 1
-                                       # ),
-                                       
-                                       # helpText("Note: Leave a field empty to select all."),
-                                       actionButton("query", label = "Search")
-                                     )
-                            )# end of fluidrow
-                          ) # End of fluidPage
-                  ), # End of tabItem
-                  tabItem(tabName = "Lists",
-                          navbarPage(
-                            title = 'Interesting Lists',
-                            tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
-                            tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('ex2')),
-                            tabPanel('Function callback',  DT::dataTableOutput('ex3')),
-                            tabPanel('Kinect Games',      DT::dataTableOutput('ex4')),
-                            tabPanel('Publishers - Many Games',        DT::dataTableOutput('ex5')),
-                            tabPanel('Publishers - Few Games',      DT::dataTableOutput('ex6'))
-                          )
-                  ) # End of tabItem
-                ) # end of tabITems
-              )# end of dashboard body
+    
+    
+    tabItems(
+      tabItem(tabName = "Games",
+              fluidPage(
+                title = "Games",
+                fluidRow(
+                  box(
+                    title = "Query Builder",
+                    status = "primary",
+                    width = 12,
+                    solidHeader = TRUE,
+                    # selectInput("marketName",
+                    #             "Choose your markets:",
+                    #             choices = str_title_case(sort(c(as.character(unique(xboxData$Market_Name))))),
+                    #             multiple = TRUE),
+                    # 
+                    # selectInput("drugName",
+                    #             "Choose your drugs:",
+                    #             choices = str_title_case(sort(c(as.character(unique(xboxData$Drug_Type))))),
+                    #             multiple = TRUE),
+                    # selectInput("shippedFrom",
+                    #             "Choose where the drugs are shipped from:",
+                    #             choices = str_title_case(sort(c(as.character(unique(xboxData$Shipped_From))))),
+                    #             multiple = TRUE),
+                    # 
+                    # selectInput("weightUnits",
+                    #             "Choose your units of weight:",
+                    #             choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
+                    #             selected = "grams"
+                    # ),
+                    # 
+                    # sliderInput("weightValue",
+                    #             paste("Choose the the total weight of the drug in ", "grams", ":"),
+                    #             min = 0, max = 1000, value = 1, step = 0.5,
+                    #             post = " grams", sep = ",", animate=FALSE),
+                    
+                    # sliderInput("pricePerWeight",
+                    #             paste("Choose the range of price per ", "grams", ":"),
+                    #             min = 0, max = maxPricePerWeight, value = c(0,maxPricePerWeight), step = maxPricePerWeight/5,
+                    #             pre = "$", sep = ",", animate=FALSE),
+                    
+                    
+                    
+                    # dateRangeInput('dataPostedDate',
+                    #                label = paste('Choose the date range for when the item was posted:'),
+                    #                start = timeAddedRange[1], end = timeAddedRange[2],
+                    #                min = timeAddedRange[1], max = timeAddedRange[2],
+                    #                separator = " - ", format = "mm/dd/yy",
+                    #                startview = 'month', weekstart = 1
+                    # ),
+                    # 
+                    # 
+                    # dateRangeInput('dataAccessedDate',
+                    #                label = paste('Choose the date range for when the item was accessed:'),
+                    #                start = sheetDateRange[1], end = sheetDateRange[2],
+                    #                min = sheetDateRange[1], max = sheetDateRange[2],
+                    #                separator = " - ", format = "mm/dd/yy",
+                    #                startview = 'month', weekstart = 1
+                    # ),
+                    
+                    # helpText("Note: Leave a field empty to select all."),
+                    actionButton("query", label = "Search")
+                  )
+                )# end of fluidrow
+              ) # End of fluidPage
+      ), # End of tabItem
+      tabItem(tabName = "Lists",
+              navbarPage(
+                title = 'Interesting Lists',
+                position = "static-top",
+                tabPanel('All Games',      DT::dataTableOutput('List_AllGames')),
+                tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
+                tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
+                navbarMenu("Publishers",
+                           tabPanel('Top 20',        DT::dataTableOutput('PublisherTop')),
+                           tabPanel('Bottom 20',      DT::dataTableOutput('PublisherBottom'))),
+                tabPanel('Exclusives',  DT::dataTableOutput('List_Exclusives')),
+                tabPanel('Has Xbox One Version',  DT::dataTableOutput('List_HasXboxOneVersion')),
+                tabPanel('Kinect Games',      DT::dataTableOutput('List_KinectGames'))
+              )
+      ) # End of tabItem
+    ) # end of tabITems
+  )# end of dashboard body
 )# end of dashboard page
