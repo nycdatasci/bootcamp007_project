@@ -226,7 +226,7 @@ ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
 
 ### Follow ups:
 
-  1. Highlight most / least common amenities when user hovers over a store location
+  1. Highlight the Most / Least common amenities when the user hovers over a store location in CARTO
   2. Create a Map Layer for Shiny Citibike Analysis app, allowing users to locate Starbucks Coffee stores based on amenities and proximity
   
 [LinkedIn: Jhonasttan Regalado](https://www.linkedin.com/in/jhonasttanregalado)
