@@ -14,8 +14,8 @@
 library(dplyr)
 library(httr)
 library(jsonlite)
-library(RLastFM)
-
+library(XML)
+library(RCurl)
 
 # Settings ----------------------------------------------------------------
 
@@ -26,10 +26,29 @@ MAX_NUM_TRACKS = 50
 MAX_NUM_ARTISTS = 50
 NUM_PLAYLISTS = 1
 PLAYLIST_FILE = 'playlists.csv'
+baseurl = "http://ws.audioscrobbler.com/2.0/"
 
+lastkey = "65c24b2135eaf5df0e883d1274ca11ae"
 
 # Functions ---------------------------------------------------------------
-
+artist.getInfo = function(artist, mbid=NA, key = lastkey, parse = FALSE){
+  
+  params = list(method="artist.getinfo", artist = artist,
+                mbid=mbid, api_key=key)
+  
+  params = params[!as.logical(lapply(params, is.na))]
+  
+  if(!is.na(mbid))
+    params=params[c(1, length(params), (which(names(params)=="mbid")))]
+  
+  ret = getForm(baseurl, .params=params)
+  doc = xmlParse(ret, asText = TRUE)
+  
+  if(parse)
+    doc = p.art.getinfo(doc)
+  
+  return(doc)
+}
 
 # Look up artist on last.fm and scrape their bio
 # Arguments:
