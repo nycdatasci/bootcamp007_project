@@ -4,34 +4,16 @@
 # Date: October 25, 2016
 
 # global.R
-
-###############################################################################
-#                         LOAD PACKAGES AND MODULES                          #
-###############################################################################
 rm(list = setdiff(ls(), lsf.str()))
-#require(rCharts)
-#options(RCHART_LIB = 'polycharts')
-# library(datasets)
-# library(forecast)
-library(ggplot2)
-library(plotly)
-# library(plyr)
-library(rCharts)
-#library(reshape)
-library(shiny)
-library(shinydashboard)
-library(TTR)
-library(lettercase)
-library(dplyr)
-library(scales)
-library(RColorBrewer)
-library(MASS) #The Modern Applied Statistics library.
-library(car)
-library(rmarkdown)
-library(flexdashboard)
 ################################################################################
 #                                   FUNCTIONS                                 #
 ################################################################################
+usePackage <- function(p) {
+  if (!is.element(p, installed.packages()[,1]))
+    install.packages(p, dep = TRUE)
+  require(p, character.only = TRUE)
+}
+
 moveMe <- function(data, tomove, where = "last", ba = NULL) {
   temp <- setdiff(names(data), tomove)
   x <- switch(
@@ -50,6 +32,25 @@ moveMe <- function(data, tomove, where = "last", ba = NULL) {
     })
   x
 }
+###############################################################################
+#                         LOAD PACKAGES AND MODULES                          #
+###############################################################################
+#require(rCharts)
+#options(RCHART_LIB = 'polycharts')
+usePackage("ggplot2")
+usePackage("plotly")
+usePackage("rCharts")
+usePackage("shiny")
+usePackage("shinydashboard")
+usePackage("TTR")
+usePackage("lettercase")
+usePackage("dplyr")
+usePackage("scales")
+usePackage("RColorBrewer")
+usePackage("MASS")
+usePackage("car")
+usePackage("rmarkdown")
+usePackage("flexdashboard")
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
@@ -83,13 +84,12 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 model.empty = glm(isBCCompatible ~ -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
 glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN)
 scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
-forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
-glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
-# glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + reviewScorePro + releaseDate + 
-#                               xbox360Rating + isOnXboxOne + isAvailableToPurchaseDigitally + 
-#                               isConsoleExclusive + isKinectRequired + isMetacritic + price + 
-#                               DLavatarItems + DLgameAddons + votes + numberOfReviews + 
-#                               DLgameVideos, family = "binomial", data = dataUltKNN)
+# forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+# glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
+glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + reviewScorePro + releaseDate +
+                              xbox360Rating + isOnXboxOne + isConsoleExclusive + isAvailableToPurchaseDigitally + 
+                              isKinectRequired + isMetacritic + DLavatarItems + votes + 
+                              price + numberOfReviews + DLgameAddons + isInProgress + DLgameVideos, family = "binomial", data = dataUltKNN)
 summary(glogit.optimizedFoAIC)
 class(glogit.optimizedFoAIC)
 # #Residual plot for logistic regression with an added loess smoother; we would

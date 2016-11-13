@@ -336,6 +336,7 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Maximum')] = 'Maximum Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'D3')] = 'D3 Publisher'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Aspyr')] = 'Aspyr Media'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'Moss', ignore.case = TRUE)] = 'MOSS Co.'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Slitherine')] = 'Slitherine Software'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Telltale')] = 'Telltale Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'AQ.Interactive', ignore.case = TRUE)] = 'AQ Interactive'
@@ -345,7 +346,7 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Telltale')] = 'Telltale Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'From\\s?Software')] = 'From Software'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Team\\s?17')] = 'Team 17 Software'
-  PublisherStrings[grepl(PublisherStrings, pattern = 'DTP.*entertainment', ignore.case = TRUE)] = 'DTP entertainment'
+  PublisherStrings[grepl(PublisherStrings, pattern = 'DTP.*entertainment', ignore.case = TRUE)] = 'DTP Entertainment'
   PublisherStrings[grepl(PublisherStrings, pattern = 'MTV',ignore.case = TRUE)] = 'MTV Games'
   return(PublisherStrings)
 }
