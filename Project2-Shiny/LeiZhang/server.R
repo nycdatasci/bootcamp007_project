@@ -30,10 +30,12 @@ function(input, output) {
             setView(lng = -73.965242, lat = 40.780610, zoom = input$size)%>% addProviderTiles(input$map)#%>%addMarkers(~longitude, ~latitude)
         }
         else {
+          position<-geocode(input$ct)
           leaflet(data=df_select) %>%
-            addCircles(lat = ~latitude, lng = ~longitude, radius=~(num*1000))%>%
-            addProviderTiles(input$map,options = providerTileOptions(noWrap = FALSE))%>%
-            addMarkers(~longitude, ~latitude, popup = ~as.character(pokemonName))
+            addCircles(lat = ~latitude, lng = ~longitude, radius=~(num))%>%
+            setView(lng = position[1,1], lat = position[1,2], zoom = input$size)%>%
+            addProviderTiles(input$map,options = providerTileOptions(noWrap = FALSE))#%>%
+#            addMarkers(~longitude, ~latitude, popup = ~as.character(pokemonName))
           }
         
         })

@@ -48,22 +48,10 @@ printCurrency <- function(value, currency.sym="$", digits=2, sep=",", decimal=".
 #                               LOAD DATA                                     #
 ###############################################################################
 #Delete the following line before deploying this to shiny.io
-home <- "~/Drug_Project"
 options(scipen=999)
 
-ec2 = TRUE
-if (ec2 == TRUE) {
-  home <- "~/Drug_Project"
-  darknetDirectory = "~/s3/Data/Darknet"
-  processedCSVDirectory = '~/Drug_Project/Data'
-} else {
-  home <- "~/Coding/NYC_Data_Science_Academy/Projects/Drug_Project"
-  darknetDirectory = "/Volumes/SDExpansion/Data Files/Darknet Data"
-  processedCSVDirectory = '/Users/nicktalavera/Coding/NYC_Data_Science_Academy/Projects/Drug_Project/Data'
-}
-setwd(processedCSVDirectory)
 # Read model data
-dnmData <- read.csv("DNMdata.csv", header = TRUE)
+dnmData <- read.csv("./Data/DNMdata.csv", header = TRUE)
 dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
 dnmData$Time_Added = as.Date(dnmData$Time_Added)
 dnmData$X = NULL

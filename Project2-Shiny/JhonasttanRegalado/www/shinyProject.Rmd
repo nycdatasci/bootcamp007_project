@@ -22,6 +22,7 @@ User options
 Would be nice:
 1. Show available bikes and docking counts within radius of the from / to address - MODIFIED: used slider feature to view surrounding bike / dock capacity
 2. When mapping station / destination, show alternative stations on the map if user goes past the alloted times (Day: 30 mins, Subscriber: 45 min) 
+3. Remove gauges and add bar charts
 
 To do: DROPPED on final version to reduce latency on web page loading
 1. Download monthly citibike use data to:

@@ -10,7 +10,7 @@ library(data.table)
 library(stringr)
 library(lettercase)
 library(qdapRegex)
-# library(sqldf)
+
 anonymiseColumns <- function(df, colIDs) {
   id <- if(is.character(colIDs)) match(colIDs, names(df)) else colIDs
   for(id in colIDs) {
@@ -33,7 +33,6 @@ cleanupCSV = function(data) {
   print(1)
   data = select(data, Market_Name = market_name, Price = price, Item_Name_Full_Text = name, Time_Added = add_time, Shipped_From = ship_from, Sheet_Date)
   data = data[!is.na(data$Market_Name),]
-
   data$X = NULL
   data$Shipped_From = (as.character(data$Shipped_From))
   data$Item_Name_Full_Text = (as.character(data$Item_Name_Full_Text))
@@ -76,51 +75,6 @@ formatter = function(data) {
   return(data)
 }
 
-# removeStrangeCountries = function(data) {
-#   countryList = c("argentina", "australia","austria", "bangladesh", "belgium", "bulgaria", "canada", "china","colombia","czech republic", "denmark", "finland", "france", "georgia", 
-#                   "germany", "germany ", "germany ", "guatemala","guernsey", "holland", "hong kong sar china", "hungary", "india", "ireland", "italy",  "latvia", "luxembourg", "mexico", "netherland", 
-#                   "netherlands", "new zealand", "nl", "norway", "peru", "poland", "serbia", "singapore","slovakia", "slovenia", "south africa", "spain", "sweden", "switzerland", 
-#                   "thailand", "the netherlands", "uk", "united kingdom", "united states", "united states of ame", "united states of america", "unknown", "us", "usa", "usa and canada", "usa only", "venezuela")
-#   countryNamesActual = c("argentina", "australia","austria", "bangladesh", "belgium", "bulgaria", "canada", "china","colombia","czech republic", "denmark", "finland", "france", "georgia", 
-#                          "germany", "germany ", "germany ", "guatemala","guernsey", "netherlands", "china", "hungary", "india", "ireland", "italy",  "latvia", "luxembourg", "mexico", "netherlands", 
-#                          "netherlands", "new zealand", "netherlands", "norway", "peru", "poland", "serbia", "singapore","slovakia", "slovenia", "south africa", "spain","sweden", "switzerland", 
-#                          "thailand", "netherlands", "united kingdom", "united kingdom", "united states", "united states", "united states", "unknown", "united states", "united states", "united states", "united states", "venezuela")
-#   names(countryNamesActual) = countryList
-#   data$Shipped_FromTemp = countryNamesActual[data$Shipped_From]
-#   
-#   
-#   keywords = c("n/a","Internet","Torland","Undeclared","Somewhere","eu","my pm","christmas","China or EU","World","anywhere","not specified", "undisclosed", "the united snakes of captivity", "the underground")
-#   for (i in 1:length(data$Shipped_From)) {
-#     print(data$Shipped_From[i])
-#     for (j in keywords) {
-#       if (grepl(j, data$Shipped_From[i], ignore.case=TRUE) == TRUE) {
-#         data$Shipped_From[i] = "unknown"
-#         break
-#       }
-#     }
-#     if (data$Shipped_From[i] != "unknown") {
-#       for (j in countryList) {
-#         if (grepl(j, data$Shipped_From[i], ignore.case=TRUE) == TRUE) {
-#           data$Shipped_From[i] = j
-#           break
-#         }
-#       }
-#     }
-#   }
-#   return(data)
-# }
-
-# removeStrangeCountries = function(data) {
-#   keywords = c("n/a","Internet","Torland","Undeclared","Somewhere","eu","my pm","christmas","China or EU","World","anywhere","not specified", "undisclosed", "the united snakes of captivity", "the underground")
-#   drugFoundMatrix = sapply(keywords, regexpr, data$Shipped_From, ignore.case=TRUE)
-#   data$Shipped_From[apply(drugFoundMatrix > -1, 1, any)] = "Unknown"
-#   data$Shipped_From[data$Shipped_From == ""] = "Unknown"
-#   data$Shipped_From = tolower(data$Shipped_From)
-#   # data$Shipped_From = simpleCap(data$Shipped_From)
-#   return(data)
-# }
-
-
 renameCountries = function(data) {
   countryList = tolower(c("argentina", "australia","austria", "bangladesh", "belgium", "bulgaria", "canada", "china","colombia","czech republic", "denmark", "finland", "france", "georgia", 
                           "germany", "germany ", "germany ", "guatemala","guernsey", "holland", "hong kong sar china", "hungary", "india", "ireland", "italy",  "latvia", "luxembourg", "mexico", "netherland", 
@@ -146,40 +100,6 @@ renameCountries = function(data) {
   # print(Shipped_FromTemp)
   return(data)
 }
-
-
-
-# labelDrugs = function(data) {
-#   drugNames <- unique(tolower(c("Spice","Speed","LSD","MDMA","Crystal Meth","Kush","Cocaine","Hash","Heroin","Methadone","Ketamin","Weed","Xanax","Ritalin","Adderal","Mushroom",
-#                                 "Psilocybe","Bud","GHB","Cannabis","Hashish","Mast","Mephedrone","DMT","Methylone","Ethylone","alprazolam","methAmphetamin","Amphetamin","Opium","Ecstasy","Tren","Durabolin","Clomid",
-#                                 "Testosterone Enanthate","Ambien","Morphine","Salvia","Cialis","Suboxone","Marijuana","Diazepam","Hydrocodone","Tramadol","Nitrazepam","Viagra",
-#                                 "OxyContin", "Sustanon", "buprenorphine", "T3", "Restoril", "Ativan", "Codeine","Lorazepam","Levitra","Molly","Testosterone Cypionate",
-#                                 "Test C","Test E","Test P","Prozac","Xenical","Celebrex","Cymbalta","Azulfidine","Flagyl","Zyban","Propecia","Imovane","Soma",
-#                                 "METHOXPHENIDINE","Paxil","Zithromax","DNP","Alli","Valium","PCP","Amfetamin","Dianabol","HYDROMORPHONE","Sativa","Coke","Lysergic","Acid",
-#                                 "Shrooms","Oxycodon","Vicodin","Concerta","Carisoprodol","Zopiclone","Finasteride","modafin","provigil","Nandrolone",
-#   )))
-#   keywordsToRemove <- sort(c("Brownie","Gummi","tobacco","x7c0mp4ny","kisses","home test","exemption","stronger than","butter","vape pen","Hashoel","sample","cookie","pollen","wax","Sachet","likes","seeds","gatorade","sampler","half price","pack","boxes"))
-#   
-#   for (i in 1:length(data$Item_Name_Full_Text)) {
-#     print(data$Item_Name_Full_Text[i])
-#     for (j in keywordsToRemove) {
-#       if (grepl(j, data$Item_Name_Full_Text[i], ignore.case=TRUE) == TRUE) {
-#         data$Drug_Type[i] = "Remove"
-#         break
-#       }
-#     }
-#     if (data$Drug_Type[i] != "Remove" | is.na(data$Drug_Type[i])) {
-#       for (j in drugNames) {
-#         if (grepl(j, data$Item_Name_Full_Text[i], ignore.case=TRUE) == TRUE) {
-#           data$Drug_Type[i] = j
-#           break
-#         }
-#       }
-#     }
-#   }
-#   data = data[data$Drug_Type != "Remove",]
-#   return(data)
-# }
 
 labelDrugs = function(data) {
   drugNames <- unique(tolower(c("Spice","Speed","LSD","MDMA","Crystal Meth","Kush","Cocaine","Hash","Heroin","Methadone","Ketamin","Weed","Xanax","Ritalin","Adderal","Mushroom",
@@ -231,7 +151,6 @@ renameDrugs = function(data) {
  Drug_Temp = data$Item_Name_Full_Text
   data$Drug_Type = drugNamesActual[data$Drug_Type]
   Drug_Temp = unique(Drug_Temp[is.na(data$Drug_Type) | data$Drug_Type == ""])
-  # data$Drug_Type = drugNamesActual[data$Drug_Type]
   write.csv(Drug_Temp,"Unique_Drug_Type.csv")
   data = data[!is.na(data$Drug_Type) & data$Drug_Type != "",]
   return(data)
@@ -353,56 +272,26 @@ find1g = function(data){
   return(data)
 }
 
-addSheetDate = function(data,fName) {
-  data$Sheet_Date = as.Date(substr(fName,9,18),'%Y-%m-%d')
-  print(fName)
-  return(data)
-}
-
-mround <- function(x,base){ 
-  base*round(x/base) 
-} 
-
 addBTC = function(data) {
   if (!file.exists('Bitcoin.csv')) {
     download.file(url = 'http://www.quandl.com/api/v1/datasets/BAVERAGE/USD.csv', destfile = 'Bitcoin.csv')
   } 
-  bitcoinData = fread('Bitcoin.csv')
+  bitcoinData = fread('./Data/Bitcoin.csv')
   colnames(bitcoinData)[colnames(bitcoinData) == 'Date'] = "Sheet_Date"
   colnames(bitcoinData)[colnames(bitcoinData) == '24h Average'] = "BitcoinPriceUSD"
   colnames(bitcoinData)[colnames(bitcoinData) == 'Total Volume'] = "BitcoinVolume"
-  # bitcoinData = select(bitcoinData, Sheet_Date = Date, BitcoinPriceUSD =  "24h Average", BitcoinVolume = "Total Volume")
   bitcoinData$Sheet_Date = as.Date(bitcoinData$Sheet_Date,'%Y-%m-%d')
   data$Sheet_Date = as.Date(data$Sheet_Date,'%Y-%m-%d')
-  # print(class(data$Sheet_Date))
-  # print(class(bitcoinData$Sheet_Date))
-  # print(bitcoinData)
-  # print(bitcoinData$Sheet_Date)
-  # dnmData$BitcoinPriceUSD = as.numeric(dnmData$BitcoinPriceUSD)
-  #Merge Bitcoin data into Darknet Data
   data = merge(x = data, y = bitcoinData, by = "Sheet_Date", all.x = TRUE)
-  # print(head(data))
   data$Price_Per_Gram_BTC = data$Price_Per_Gram/data$BitcoinPriceUSD
   return(data)
 }
 
 rm(list = setdiff(ls(), lsf.str()))
-ec2 = FALSE
-if (ec2 == TRUE) {
-  darknetDirectory = "~/Data/Darknet"
-  processedCSVDirectory = '~/Drug_Project/Data'
-} else {
-  darknetDirectory = "/Volumes/SDExpansion/Data Files/Darknet Data"
-  processedCSVDirectory = '~/Coding/NYC_Data_Science_Academy/Projects/Drug_Project/Data'
-}
-
 countryList = c("argentina", "australia","austria", "bangladesh", "belgium", "bulgaria", "canada", "china","colombia","czech republic", "denmark", "finland", "france", "georgia", 
                 "germany", "germany ", "germany ", "guatemala","guernsey", "holland", "hong kong sar china", "hungary", "india", "ireland", "italy",  "latvia", "luxembourg", "mexico", "netherland", 
                 "netherlands", "new zealand", "nl", "norway", "peru", "poland", "serbia", "singapore","slovakia", "slovenia", "south africa", "spain", "sweden", "switzerland", 
                 "thailand", "the netherlands", "uk", "united kingdom", "united states", "united states of ame", "united states of america", "unknown", "us", "usa", "usa and canada", "usa only", "venezuela")
-
-setwd(processedCSVDirectory)
-dnmData = as.data.frame(read.csv('DNMdataSomewhatSorted.csv'))
+dnmData = as.data.frame(read.csv('./Data/DNMdataSomewhatSorted.csv'))
 dnmData = cleanupCSV(dnmData)
-setwd(darknetDirectory)
-write.csv(dnmData, 'DNMdata.csv')
+write.csv(dnmData, './Data/DNMdata.csv')

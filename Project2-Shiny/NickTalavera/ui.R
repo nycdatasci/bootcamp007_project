@@ -233,17 +233,6 @@ dashboardPage(skin = "green",
                                            plotOutput("pricePerDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
-#                                        fluidRow(
-#                                          box(
-#                                            title = "Most active country each day",
-#                                            status = "primary",
-#                                            width = 12,
-#                                            height = 700,
-#                                            solidHeader = FALSE,
-#                                            collapsible = TRUE,
-#                                            plotOutput("mostActiveCountryDaily")
-#                                          ) #End of Box
-#                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
                                            title = "Average prices of drugs for each market",
@@ -265,17 +254,6 @@ dashboardPage(skin = "green",
                                            collapsible = TRUE,
                                            plotOutput("pricesComparedToBicoinPrice")
                                          ) #End of Box
-                                       ),# end of fluidRow
-                                       fluidRow(
-#                                          box(
-#                                            title = "Number of posts compared to bitcoin price (colored by country)",
-#                                            status = "primary",
-#                                            width = 12,
-#                                            height = 700,
-#                                            solidHeader = FALSE,
-#                                            collapsible = TRUE,
-#                                            plotOutput("postsComparedToBicoinPrice")
-#                                          ) #End of Box
                                        )# end of fluidRow
                                      )# end of box
                               )#end of column
