@@ -170,65 +170,59 @@ names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Wa
 <h4>Model Summary</h4>
 <pre><code>
 Call:
-glm(formula = isBCCompatible ~ gamesOnDemandorArcade + reviewScorePro + 
-    releaseDate + xbox360Rating + isOnXboxOne + isConsoleExclusive + 
-    isAvailableToPurchaseDigitally + isKinectRequired + isMetacritic + 
-    DLavatarItems + votes + price + numberOfReviews + DLgameAddons + 
-    isInProgress + DLgameVideos, family = &quot;binomial&quot;, data = dataUltKNN)
+glm(formula = forwardAIC$formula, family = &quot;binomial&quot;, data = dataUltKNN)
 
 Deviance Residuals: 
     Min       1Q   Median       3Q      Max  
--2.7204  -0.5098  -0.2281  -0.0976   3.5645  
+-2.3382  -0.5525  -0.2432  -0.0997   3.6794  
 
 Coefficients:
                                        Estimate Std. Error z value
-(Intercept)                          -4.055e+00  2.258e+00  -1.796
-gamesOnDemandorArcadeGames on Demand -1.311e+00  2.630e-01  -4.983
-gamesOnDemandorArcadeRetail          -4.773e-01  8.732e-01  -0.547
-gamesOnDemandorArcadeXbox 360 Games  -1.836e+00  8.271e-01  -2.220
-reviewScorePro                        3.183e-02  7.607e-03   4.184
-releaseDate                          -2.879e-04  1.306e-04  -2.204
-xbox360Rating                         9.256e-01  2.303e-01   4.019
-isOnXboxOneTRUE                      -1.279e+00  3.859e-01  -3.315
-isConsoleExclusiveTRUE                1.397e+00  5.010e-01   2.789
-isAvailableToPurchaseDigitallyTRUE    1.846e+00  7.447e-01   2.479
-isKinectRequiredTRUE                 -1.466e+01  3.814e+02  -0.038
-isMetacriticTRUE                      7.013e-01  2.851e-01   2.460
-DLavatarItems                         2.233e-02  1.088e-02   2.052
-votes                                -4.939e-05  1.730e-05  -2.855
-price                                -3.207e-02  1.602e-02  -2.002
-numberOfReviews                       3.219e-06  1.916e-06   1.680
-DLgameAddons                         -2.533e-02  1.330e-02  -1.904
-isInProgressTRUE                      2.370e+00  1.310e+00   1.809
-DLgameVideos                          3.771e-02  2.509e-02   1.503
+(Intercept)                          -1.977e+00  2.124e+00  -0.930
+gamesOnDemandorArcadeGames on Demand  9.952e-01  7.591e-01   1.311
+gamesOnDemandorArcadeRetail Only     -1.872e+00  8.259e-01  -2.267
+price                                -7.606e-02  1.304e-02  -5.834
+reviewScorePro                        3.858e-02  7.707e-03   5.006
+isOnXboxOneTRUE                      -1.407e+00  3.743e-01  -3.760
+isKinectRequiredTRUE                 -1.495e+01  3.727e+02  -0.040
+isConsoleExclusiveTRUE                1.285e+00  5.023e-01   2.558
+hasDemoAvailableTRUE                  7.237e-01  1.962e-01   3.689
+xbox360Rating                         8.189e-01  2.240e-01   3.655
+isListedOnMSSiteTRUE                 -1.423e+00  5.663e-01  -2.512
+DLgameAddons                         -3.109e-02  1.344e-02  -2.313
+DLavatarItems                         2.609e-02  1.090e-02   2.393
+votes                                -5.345e-05  1.765e-05  -3.029
+numberOfReviews                       4.366e-06  1.786e-06   2.444
+releaseDate                          -2.581e-04  1.211e-04  -2.132
+DLgamerPictures                      -8.492e-02  5.227e-02  -1.625
+isInProgressTRUE                      2.230e+00  1.350e+00   1.653
                                      Pr(&gt;|z|)    
-(Intercept)                          0.072565 .  
-gamesOnDemandorArcadeGames on Demand 6.27e-07 ***
-gamesOnDemandorArcadeRetail          0.584639    
-gamesOnDemandorArcadeXbox 360 Games  0.026428 *  
-reviewScorePro                       2.87e-05 ***
-releaseDate                          0.027529 *  
-xbox360Rating                        5.84e-05 ***
-isOnXboxOneTRUE                      0.000916 ***
-isConsoleExclusiveTRUE               0.005287 ** 
-isAvailableToPurchaseDigitallyTRUE   0.013186 *  
-isKinectRequiredTRUE                 0.969345    
-isMetacriticTRUE                     0.013913 *  
-DLavatarItems                        0.040156 *  
-votes                                0.004297 ** 
-price                                0.045295 *  
-numberOfReviews                      0.093050 .  
-DLgameAddons                         0.056937 .  
-isInProgressTRUE                     0.070385 .  
-DLgameVideos                         0.132916    
+(Intercept)                          0.352114    
+gamesOnDemandorArcadeGames on Demand 0.189859    
+gamesOnDemandorArcadeRetail Only     0.023407 *  
+price                                5.40e-09 ***
+reviewScorePro                       5.55e-07 ***
+isOnXboxOneTRUE                      0.000170 ***
+isKinectRequiredTRUE                 0.967998    
+isConsoleExclusiveTRUE               0.010542 *  
+hasDemoAvailableTRUE                 0.000225 ***
+xbox360Rating                        0.000257 ***
+isListedOnMSSiteTRUE                 0.012003 *  
+DLgameAddons                         0.020720 *  
+DLavatarItems                        0.016698 *  
+votes                                0.002457 ** 
+numberOfReviews                      0.014525 *  
+releaseDate                          0.032969 *  
+DLgamerPictures                      0.104217    
+isInProgressTRUE                     0.098432 .  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 (Dispersion parameter for binomial family taken to be 1)
 
     Null deviance: 1613.4  on 1849  degrees of freedom
-Residual deviance: 1138.9  on 1831  degrees of freedom
-AIC: 1176.9
+Residual deviance: 1161.4  on 1832  degrees of freedom
+AIC: 1197.4
 
 Number of Fisher Scoring iterations: 16</code></pre>
 </div>
@@ -236,9 +230,14 @@ Number of Fisher Scoring iterations: 16</code></pre>
 <h4>Truth Table</h4>
 <pre><code>       prediction
 truth            0          1
-  FALSE 0.81405405 0.02810811
-  TRUE  0.10756757 0.05027027</code></pre>
+  FALSE 0.81891892 0.02324324
+  TRUE  0.11783784 0.04000000</code></pre>
 </div>
+</div>
+<div id="conclusions" class="section level2">
+<h2>Conclusions</h2>
+<p>Metacritic, having a version on Xbox One, a lower price, higher user reviews on Xbox’s website, and having a demo are the most significant predictors with Uservoice votes lagging slightly behind. There was also moderate help by having a newer release date, more avatar items, less game add ons and more reviews. Retail only games are also negatively related and has a somewhat significant relation. Also, having a Kinect requirement or required peripherals brought the probablity to zero.</p>
+<p>This makes me wonder if it is easier to test and approve games by usiner their demos. I am also glad that Uservoice votes positively significantly influenced their priorites. I am also not suprised they try to get higher reviewed games approved first. I imagine having a lower price and being available on their site makes them want to prioritize games people are likeliest to buy digitally on impulse.</p>
 </div>
 <div id="future-work" class="section level2">
 <h2>Future Work</h2>
@@ -249,37 +248,6 @@ truth            0          1
 <li>Scraping sales to give consumers advice on which Xbox 360 games to buy that week</li>
 <li>Game covers are scraped but not implemented, which I feel would make the website prettier</li>
 </ul>
-<!-- This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately.  -->
-<!-- To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html). -->
-<!-- ## Inputs and Outputs -->
-<!-- You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot. -->
-<!-- # ```{r eruptions, echo=FALSE} -->
-<!-- inputPanel( -->
-<!--   selectInput("n_breaks", label = "Number of bins:", -->
-<!--               choices = c(10, 20, 35, 50), selected = 20), -->
-<!--   sliderInput("bw_adjust", label = "Bandwidth adjustment:", -->
-<!--               min = 0.2, max = 2, value = 1, step = 0.2) -->
-<!-- ) -->
-<!-- renderPlot({ -->
-<!--   hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks), -->
-<!--        xlab = "Duration (minutes)", main = "Geyser eruption duration") -->
-<!--   dens <- density(faithful$eruptions, adjust = input$bw_adjust) -->
-<!--   lines(dens, col = "blue") -->
-<!-- }) -->
-<!-- ``` -->
-<!-- ## Embedded Application -->
-<!-- It's also possible to embed an entire Shiny application within an R Markdown document using the `shinyAppDir` function. This example embeds a Shiny application located in another directory: -->
-<!-- ```{r tabsets, echo=FALSE} -->
-<!-- shinyAppDir( -->
-<!--   system.file("examples/06_tabsets", package = "shiny"), -->
-<!--   options = list( -->
-<!--     width = "100%", height = 550 -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
-<!-- Note the use of the `height` parameter to determine how much vertical space the embedded application should occupy. -->
-<!-- You can also use the `shinyApp` function to define an application inline rather then in an external directory. -->
-<!-- In all of R code chunks above the `echo = FALSE` attribute is used. This is to prevent the R code within the chunk from rendering in the document alongside the Shiny components. -->
 </div>
 
 

@@ -81,15 +81,15 @@ table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see 
 #specifies the error distribution and link function to be used. For logistic
 #regression, this is binomial.
 # FINDING MODEL
-model.empty = glm(isBCCompatible ~ -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
-glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice, family = "binomial", data = dataUltKNN)
+model.empty = glm(isBCCompatible ~ -isBCCompatible -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
+glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN)
 scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
-# forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
-# glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
-glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + reviewScorePro + releaseDate +
-                              xbox360Rating + isOnXboxOne + isConsoleExclusive + isAvailableToPurchaseDigitally + 
-                              isKinectRequired + isMetacritic + DLavatarItems + votes + 
-                              price + numberOfReviews + DLgameAddons + isInProgress + DLgameVideos, family = "binomial", data = dataUltKNN)
+forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
+# glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + price + reviewScorePro + 
+#                               isOnXboxOne + isMetacritic + isKinectRequired + isConsoleExclusive + 
+#                               xbox360Rating + hasDemoAvailable + isListedOnMSSite + votes + 
+#                               numberOfReviews + DLgameAddons + DLavatarItems + ESRBRating, family = "binomial", data = dataUltKNN)
 summary(glogit.optimizedFoAIC)
 class(glogit.optimizedFoAIC)
 # #Residual plot for logistic regression with an added loess smoother; we would

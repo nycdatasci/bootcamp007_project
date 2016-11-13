@@ -455,7 +455,9 @@ dataUlt$isAvailableToPurchasePhysically[is.na(dataUlt$isAvailableToPurchasePhysi
 dataUlt$isKinectSupported[grepl(dataUlt$genre,pattern = "Kinect", ignore.case = TRUE)] = TRUE
 dataUlt$isKinectSupported[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
 dataUlt$isKinectRequired[grepl(dataUlt$gameName,pattern = "Kinect", ignore.case = TRUE)] = TRUE
-dataUlt$gamesOnDemandorArcade[is.na(dataUlt$gamesOnDemandorArcade)] = "Retail"
+dataUlt$gamesOnDemandorArcade[dataUlt$isAvailableToPurchaseDigitally == TRUE] = "Games on Demand"
+dataUlt$gamesOnDemandorArcade[dataUlt$gamesOnDemandorArcade == "Xbox 360 Games"] = "Retail Only"
+dataUlt$gamesOnDemandorArcade[is.na(dataUlt$gamesOnDemandorArcade)] = "Retail Only"
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(dataUlt$publisher)]
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.na(dataUlt$releaseDate)]
