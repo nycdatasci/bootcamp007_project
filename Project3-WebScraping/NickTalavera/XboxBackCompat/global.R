@@ -32,6 +32,8 @@ moveMe <- function(data, tomove, where = "last", ba = NULL) {
     })
   x
 }
+
+roundUp <- function(x) 10^ceiling(log10(x))
 ###############################################################################
 #                         LOAD PACKAGES AND MODULES                          #
 ###############################################################################

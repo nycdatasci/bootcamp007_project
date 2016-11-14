@@ -260,7 +260,7 @@ gameRemover = function(data) {
                     'Ninja Gaiden Black','Indigo Prophecy','Gauntlet: Seven Sorrows','Halo Waypoint','Halo Wars 2 Avatar Store','Boxing Fight','Build A Buddy','Darts Vs Zombies','Gears of War 4 Store','Gears of War: Ultimate Edition Store',
                     'Project Natal','Prey 2','PlayOnline Viewer','Ninety-Nine Nights/JP','Obut Ptanque 2','Destiny: The Taken King - Digital Collector\'s Edition','Destiny: The Taken King - Legendary Edition',
                     'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies','Rock Band Classic Rock',
-                    'Halo: Combat Evolved Anniversary'
+                    'Halo: Combat Evolved Anniversary','Tom Clancy\'s Splinter Cell Chaos Theory'
                     )
   keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)','Team DZN')))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")

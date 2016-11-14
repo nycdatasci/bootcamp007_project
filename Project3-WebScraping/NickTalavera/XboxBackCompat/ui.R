@@ -1,6 +1,7 @@
 # Xbox One Backwards Compatiablity Predictor
 
 library(shiny)
+roundUp <- function(x) 10^ceiling(log10(x))
 
 programName = "Xbox One Backwards Compatibility Predictor"
 sideBarWidth = 450
@@ -166,11 +167,11 @@ margin-left: 0px;
                                        selected = 1),
                     sliderInput("bcProb",
                                 label = h3("Uservoice Votes:"),
-                                min = 0, max = max(xboxData$votes, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$votes, na.rm = TRUE)), value = 0, step = 1,
                                 post = " votes", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Uservoice Comments:"),
-                                min = 0, max = max(xboxData$comments, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$comments, na.rm = TRUE)), value = 0, step = 1,
                                 post = " comments", sep = ",", animate=FALSE),
                     checkboxGroupInput("Is_Backwards_Compatible", label = h3("Is Kinect Supported:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
@@ -196,7 +197,7 @@ margin-left: 0px;
                                 post = "", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Xbox User Review Counts:"),
-                                min = 0, max = max(xboxData$numberOfReviews, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$numberOfReviews, na.rm = TRUE)), value = 0, step = 1,
                                 post = " reviews", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Metacritic Review Score:"),
@@ -208,7 +209,7 @@ margin-left: 0px;
                                 post = "", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Price on Xbox.com:"),
-                                min = 0, max = max(xboxData$price, na.rm = TRUE), value = 10, step = 1, pre = "$",
+                                min = 0, max = roundUp(max(xboxData$price, na.rm = TRUE)), value = 10, step = 1, pre = "$",
                                 post = "", sep = ",", animate=FALSE),
                     selectInput("shippedFrom",
                                 label = h3("Publisher:"),
@@ -236,23 +237,23 @@ margin-left: 0px;
                                 selected = 1),
                     sliderInput("bcProb",
                                 label = h3("Number of Game Add-Ons:"),
-                                min = 0, max = max(xboxData$DLgameAddons, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$DLgameAddons, na.rm = TRUE)), value = 0, step = 1,
                                 post = " Add-Ons", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Number of Avatar Items:"),
-                                min = 0, max = max(xboxData$DLavatarItems, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$DLavatarItems, na.rm = TRUE)), value = 0, step = 1,
                                 post = " Avatar Items", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Number of GamerPics:"),
-                                min = 0, max = max(xboxData$DLgamerPictures, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$DLgamerPictures, na.rm = TRUE)), value = 0, step = 1,
                                 post = " GamerPics", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Number of Themes:"),
-                                min = 0, max = max(xboxData$DLthemes, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$DLthemes, na.rm = TRUE)), value = 0, step = 1,
                                 post = " Themes", sep = ",", animate=FALSE),
                     sliderInput("bcProb",
                                 label = h3("Number of Game Videos:"),
-                                min = 0, max = max(xboxData$DLgameVideos, na.rm = TRUE), value = 0, step = 1,
+                                min = 0, max = roundUp(max(xboxData$DLgameVideos, na.rm = TRUE)), value = 0, step = 1,
                                 post = " Game Videos", sep = ",", animate=FALSE),
                     actionButton("query", label = "Search")
                   ),
