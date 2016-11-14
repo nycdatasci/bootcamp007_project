@@ -1,0 +1,130 @@
+---
+title: "Scraping Great Thinkers"
+author: "Joshua Litven"
+date: "11/13/2016"
+output: ioslides_presentation
+---
+
+##
+<center>
+*"Wisdom is nothing more profound than an ability to follow one's own advice."*
+
+*- Sam Harris*
+</center>
+
+## Great Thinkers
+
+- Expose us to new ideas
+- Lead progress
+- Change the world
+
+## Question
+
+What do great thinkers think about?
+
+## Data
+
+```{r echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("images/pantheon.png")
+grid.raster(img)
+```
+11,341 People spanning 2800 years across the globe.
+
+## Data
+
+```{r, echo=FALSE}
+img <- readPNG("images/biases.png")
+grid.raster(img)
+```
+
+## Data
+Combine pantheon data set with quotes scraped from brainyquotes.com
+```{r, echo=FALSE}
+img <- readPNG("images/brainyquote.png")
+grid.raster(img)
+```
+
+## Data
+- Results in 4295 individuals
+- Now doubly biased!
+```{r, echo=FALSE}
+img <- readPNG("images/missingness.png")
+grid.raster(img)
+```
+
+## Insights
+```{r, echo=FALSE}
+img <- readPNG("images/tfidf_domain_1.png")
+grid.raster(img)
+```
+
+## Insights
+```{r, echo=FALSE}
+img <- readPNG("images/tfidf_domain_2.png")
+grid.raster(img)
+```
+
+## Insights
+```{r, echo=FALSE}
+img <- readPNG("images/tfidf_century_1.png")
+grid.raster(img)
+```
+
+## Insights
+```{r, echo=FALSE}
+img <- readPNG("images/tfidf_century_2.png")
+grid.raster(img)
+```
+
+## Vector Space Model
+Use Vector representation of words to create a similarity matrix
+```{r, eval=FALSE}
+# Get most similar authors
+author = "Donald Trump"
+
+most_similar = sort(similarity_matrix[author, ], decreasing=TRUE)
+most_similar = most_similar[-1] # exclude top element
+most_similar[1:10]
+
+> most_similar[1:10]
+      Barack Obama        Mitt Romney  Michael Bloomberg      Rush Limbaugh          Joe Biden 
+         0.3946898          0.3838377          0.3516579          0.3513637          0.3312210 
+Madeleine Albright      Michael Moore      Newt Gingrich          Paul Ryan         Rick Perry 
+         0.3190586          0.3116183          0.3104181          0.3067323          0.3036870
+```
+
+## Vector Space Model
+Accuracy?
+
+- Ran 1 NN Alg on author industry
+- Results: 60 % accuracy (baseline is 30%)
+- Conclusion: Some confidence similarity metric works
+
+```{r, eval=FALSE}
+> unique(pantheon$industry)
+ [1] "GOVERNMENT"        "PHILOSOPHY"        "LANGUAGE"          "INDIVIDUAL SPORTS" "FILM AND THEATRE" 
+ [6] "NATURAL SCIENCES"  "MILITARY"          "INVENTION"         "FINE ARTS"         "MATH"             
+[11] "DESIGN"            "RELIGION"          "MEDICINE"          "COMPUTER SCIENCE"  "MUSIC"            
+[16] "COMPANIONS"        "OUTLAWS"           "SOCIAL SCIENCES"   "BUSINESS"          "EXPLORERS"        
+[21] "ACTIVISM"          "ENGINEERING"       "HISTORY"           "TEAM SPORTS"       "MEDIA PERSONALITY"
+[26] "LAW"               "DANCE" 
+```
+## Shiny App
+Demo: Ralph Waldo Emerson, William James, Donald Trump
+```{r, echo=FALSE}
+img <- readPNG("images/shiny.png")
+grid.raster(img)
+```
+
+## Future Work
+- Combine sentiment analysis with occupation, nationality and year to improve similarity metric
+- Create a recommendation system
+
+## Acknowledgements
+- Fred and Nick for bouncing ideas
+- Jhonasttan for project management
+- CPM for telling me to go home
+- Yu, A. Z., et al. (2016). Pantheon 1.0, a manually verified dataset of globally famous biographies. Scientific Data 2:150075. doi: 10.1038/sdata.2015.75
+

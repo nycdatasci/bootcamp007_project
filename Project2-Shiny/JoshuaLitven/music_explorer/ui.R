@@ -42,7 +42,7 @@ shinyUI(dashboardPage(skin="black",
                                         tags$h3("Track features, track previews, artist images, and artist tags are pulled from the Spotify Web API and artist biographies are pulled from the Last.fm API. All plots are made using Googlevis, an R package for creating Google Charts."),
                                         tags$h3("The source code is available on",  tags$a("Github.", 
                                                                                            href="https://github.com/nycdatasci/bootcamp007_project/tree/master/Project2-Shiny/JoshuaLitven/music_explorer")),
-                                        tags$h3("Click 'Select a Playlist' on the right to begin!"),
+                                        tags$h3("Click 'Select a Playlist' on the left to begin!"),
                                         tags$p("Powered by ", tags$a("Spotify", href="http://www.spotify.com/"), icon("spotify"),
                                                 "and ", tags$a("Last.fm", href="http://www.last.fm/"), icon("lastfm")),
                                         tags$p("Created by", tags$a("Joshua Litven", href="http://joshualitven.com/"))
@@ -83,7 +83,7 @@ shinyUI(dashboardPage(skin="black",
                                   
                                   fluidRow(
                                     box(width=12,
-                                        selectInput("Focus", "Focus on node :", ""),
+                                        #selectInput("Focus", "Focus on node :", ""),
                                         visNetworkOutput("network", height="800")
                                     )
                                     

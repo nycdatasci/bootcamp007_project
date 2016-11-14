@@ -27,10 +27,6 @@ navbarPage("NYC Public High Schools", id="nav",
         plotOutput("survey_2011_hist", height = 150),
         plotOutput("student_number", height = 150),
         htmlOutput("School_Info")
-      ),
-
-      tags$div(id="cite",
-        'Data from ', tags$em('NYC Dept. of Education'), '2016'
       )
     )
   ),
@@ -97,18 +93,22 @@ navbarPage("NYC Public High Schools", id="nav",
   ),
   tabPanel("About",
            fluidRow(
-               column(8, 
-                      tags$div(align = "right",
+               column(2),
+               column(6, 
+                      tags$div(align = "left",
                    "This shiny app is completed for the second project of NYC Data Science Academy bootcamp #7.",
                    tags$br(),tags$br(),
-                   "All data sets are downloaded from NYC OpenData.",
+                   HTML("All data sets are compiled by NYC Department of Education and downloaded from <a href='https://nycopendata.socrata.com/data?cat=education'>NYC OpenData portal.</a>"),
                    tags$br(),
                    tags$br(),
-                   HTML(paste0("The app is hosted on <a href='https://yisongtao.shinyapps.io/NYC_HS/'>Shinyapps.io. </a>")),
+                   HTML("The app is hosted on <a href='https://yisongtao.shinyapps.io/NYC_HS/'>Shinyapps.io. </a>" ),
                    tags$br(),tags$br(),
                    "Yisong Tao",
                    tags$br(),
-                   "10-30-2016"
+                   "10-30-2016" 
+                   #,
+                   #tags$br(),
+                   #plotOutput("figure_aca_SAT")
                    )  
                )
            )

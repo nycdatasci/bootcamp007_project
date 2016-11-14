@@ -156,30 +156,27 @@ shinyServer(function(input, output, session){
     network = 
       visNetwork(nodes, edges) %>%
       visInteraction(hover = TRUE) %>%
-      visEvents(selectNode = "function(nodes) {
-                Shiny.onInputChange('current_node_id', nodes);
-                ;}") %>% 
-      visPhysics(stabilization = FALSE)
+      visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE, selectedBy = "group")
     return(network)
   })
   
   # Artist selection in network
-  output$network_sidebar = renderUI({
-    selectInput("Focus", "Select Artist:", nodes$name)
-  })
+  #output$network_sidebar = renderUI({
+  #  selectInput("Focus", "Select Artist:", nodes$name)
+  #})
   
   # Focus on the artist node when a user selects (clicks) that node
-  observe({
-    updateSelectInput(session, "Focus", selected=nodes[nodes$id==input$current_node_id[[1]], ][['name']])
-  })
+  #observe({
+  #  updateSelectInput(session, "Focus", selected=nodes[nodes$id==input$current_node_id[[1]], ][['name']])
+  #})
   
   # Focus on a selected artist node
-  observeEvent(input$Focus, {
-    if(input$Focus[1]!=""){
-      visNetworkProxy("network") %>%
-        visFocus(id = nodes[nodes['name']==input$Focus, 'id'], scale = 4)
-    }
-  })
+  #observeEvent(input$Focus, {
+  #  if(input$Focus[1]!=""){
+  #    visNetworkProxy("network") %>%
+  #      visFocus(id = nodes[nodes['name']==input$Focus, 'id'], scale = 4)
+  #  }
+  #})
   
   # Get the audio tag (autoplay version)
   get_audio_tag_autoplay = function(src){
@@ -191,10 +188,11 @@ shinyServer(function(input, output, session){
   # Display the Artist details
   # This includes image, bio and top genres
   output$artist_details = renderUI({
-    if(input$Focus != "" ){
-      name = nodes[nodes['name']==input$Focus, 'name']
+    print(input$network_selected)
+    if(input$network_selected != "" ){
+      name = nodes[nodes['id']==input$network_selected, 'name']
       bio = get_artist_bio(name)
-      id = nodes[nodes['name']==input$Focus, 'id']
+      id = nodes[nodes['id']==input$network_selected, 'id']
       preview_url = get_top_track(id)[3]
       tags$div(
         tags$h2(name),
@@ -279,7 +277,7 @@ shinyServer(function(input, output, session){
       shinyjs::hide(id="filter_panel", anim=TRUE)
     }
     if(input$tabs=='artist_network'){
-      updateSelectInput(session, "Focus", label="Select Artist:", choices=sort(nodes$name))
+      #updateSelectInput(session, "Focus", label="Select Artist:", choices=sort(nodes$name))
       shinyjs::show(id ="artist_details", anim=TRUE)
     }else{
       shinyjs::hide(id="artist_details", anim=FALSE)
@@ -339,7 +337,6 @@ shinyServer(function(input, output, session){
         max = filter$rows[2]
         dataSet <<- dataSet[which(dataSet[[filter$col]] >= min & dataSet[[filter$col]] <= max), ]
       }))
-      dataSet
       
       scatter = dataSet[, c(input$scatter_xcol, input$scatter_ycol)]
       scatter$pop.html.tooltip=paste0(dataSet$artist, ' - ', dataSet$name, '<br>',
@@ -359,7 +356,7 @@ shinyServer(function(input, output, session){
                                                       var tooltip = data.getValue(row_index, 2);
                                                       Shiny.onInputChange('tooltip',tooltip);
                                                       }else{Shiny.onInputChange('tooltip', '');}"))
-      tracks_feautures_scatter
+      tracks_features_scatter
   })
 })
   
@@ -509,8 +506,8 @@ shinyServer(function(input, output, session){
   })
   output$popularity_box = renderUI({
     median_popularity = median(tracks$popularity)
-    popularity_level = cut(median_popularity, breaks=c(0, 25, 50, 75, 100), include.lowest=TRUE, 
-                           labels=c("Music Snob", "Uknown", "Popular", "Very Popular"))
+    popularity_level = cut(median_popularity, breaks=c(0, 50, 75, 100), include.lowest=TRUE, 
+                           labels=c("Music Snob", "Popular", "Mainstream"))
     valueBox(popularity_level, "Popularity", icon = icon("users"))
   })
   

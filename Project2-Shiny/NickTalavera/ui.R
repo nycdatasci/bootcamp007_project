@@ -163,7 +163,7 @@ dashboardPage(skin = "green",
                             
                             conditionalPanel(
                               condition = "input.query",
-                              column(width = 10,
+                              # column(width = 10,
                                      box(
                                        title = "Market Data",
                                        status = "primary",
@@ -256,7 +256,7 @@ dashboardPage(skin = "green",
                                          ) #End of Box
                                        )# end of fluidRow
                                      )# end of box
-                              )#end of column
+                              # )#end of column
                             ) # end of conditionalpanel
                           ) # End of fluidPage
                   ) # End of tabItem

@@ -19,7 +19,7 @@ function(input, output, session) {
       ) %>% 
       setView(lng = -73.887141, lat = 40.701037, zoom = 11) %>%
     addPolygons(data = sd, stroke = T, smoothFactor = 0.5, 
-    	fill = F, weight = 2, color = "orange", group = "School District", layerId= ~sd@data$school_dis) 
+    	fill = F, weight = 2, color = "black", group = "School District", layerId= ~sd@data$school_dis) 
 
   })
   output$SAT_2012_hist <- renderPlot({
@@ -118,7 +118,7 @@ function(input, output, session) {
       value2 <- hs_SAT_survey$total_students[hs_SAT_survey$ID == ID]
       output$student_number <- renderPlot({
           ggplot(hs_SAT_survey) + geom_histogram(aes(x=total_students), bins = 50,
-                                                 fill = "green", alpha = 0.2) +
+                                                 fill = "green", alpha = 0.8) +
               theme_minimal() + ggtitle("2016 Number of Students Distribution") +
               xlab("Number of Students") + ylab("Number of Schools") +
               geom_vline(xintercept = value2, color = 'red')
@@ -249,6 +249,22 @@ function(input, output, session) {
 
   
 ########################################################################
+  showHsPopupfromTable <- function(ID, lat, lng) {
+      selectedHS <- hs_SAT_survey[hs_SAT_survey$ID == ID,]
+      sname <- paste0("<a href='http://",selectedHS$Website, "'>", selectedHS$school_name,"</a>")
+      content <- as.character(tagList(
+          tags$h4(HTML(sname)),
+          tags$strong(HTML(sprintf("%s", selectedHS$addr_1
+          ))), tags$br(), 
+          tags$strong(HTML(sprintf("%s", selectedHS$addr_2
+          ))) 
+      ))
+      leafletProxy("map") %>% 
+          setView(lng = lng, lat = lat, zoom = 14) %>%
+          addPopups(lng, lat, content, 
+                    layerId = ID, popupOptions(keepInView = T))
+  }
+  
   observe({
     if (is.null(input$goto))
       return()
@@ -259,7 +275,8 @@ function(input, output, session) {
       ID1 <- input$goto$ID
       lat <- input$goto$lat
       lng <- input$goto$lng
-      showHsPopup(ID1, lat, lng)
+      
+      showHsPopupfromTable(ID1, lat, lng)
       updatePlots(ID1)
       updatehtml(ID1)
     })
@@ -309,7 +326,7 @@ function(input, output, session) {
         email <- paste0("<a href='mailto:",selected_hs$Email, "'>", selected_hs$Email,"</a>")
         tagList(
             tags$h4("School Name:", HTML(sname)), tags$br(), 
-            tags$strong(sprintf("School District: %s", selected_sd)),
+            tags$strong(sprintf("School District: %s", selected_sd)),tags$br(),
             tags$strong(sprintf("Grades: %s", selected_grades)), tags$br(),
             tags$strong(HTML(sprintf("Address: %s, %s", selected_hs$addr_1, selected_hs$addr_2))),
             tags$br(), 
@@ -562,6 +579,13 @@ output$note <- renderUI({
         tags$li("The participants of NYC School Surveys are students, their parents and teachers at each school. The survey rates a school on a 0-10 scale in four aspects: safety and respect, communication, engagement and academic expectation. This is not a standardized test for schools. However, it presents the satisfaction level whether the school meets the expectation of students, parents and teachers."), tags$br()
     )
 })
-
+#output$figure_aca_SAT <- renderPlot({
+#    fig <- ggplot(hs_SAT_survey) + 
+#        geom_point(aes(x=SAT_2012, y=aca_tot_11), na.rm = T) + 
+#        geom_smooth(aes(x=SAT_2012, y=aca_tot_11), method = "lm", na.rm = T) +
+#        xlab("2012 SAT Score") + ylab("2011 School Survey - Academic Expectation") +
+#        geom_label(x = 1700, y = 6, label = "Adjusted R-squared:  0.04308 \n Coefficients: Pr(>|t|) 7.15e-05")
+#    fig
+#})
 
 }

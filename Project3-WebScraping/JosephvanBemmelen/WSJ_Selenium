@@ -1,0 +1,158 @@
+from selenium import webdriver
+import selenium.webdriver.support.ui as ui
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
+
+# ==========================================================
+## Loading URL
+
+extractItems = []
+print 'Loading script'
+browser = webdriver.Chrome("C:\Users\y_vb\Downloads\chromedriver_win32\chromedriver")
+browser.get('http://www.wsj.com/')
+print 'Starting..'
+
+# ==========================================================
+## Searcing for articles
+
+browser.execute_script("window.scrollTo(0, 0)")
+xpath = '//*[@id="Home"]/header/div/div[2]/div[1]'
+elem = browser.find_element_by_xpath(xpath)                             # navidate to search box 
+# elem = browser.find_element_by_class_name('wsj-search')
+elem.click()
+search_box = browser.find_element_by_id("wsjSearchInput")
+search_box.send_keys('the')                                             # searches keyword "the"
+search_button = browser.find_element_by_class_name('searchButton')
+search_button.click()
+print 'Searching for articles'
+toggleMenu = browser.find_element_by_link_text("ADVANCED SEARCH")       # advanced search
+toggleMenu.click()
+uncheck_blogs = browser.find_element_by_link_text("WSJ Blogs")          # do not search blogs
+uncheck_blogs.click()
+uncheck_videos = browser.find_element_by_link_text("WSJ Videos")        # do not search videos
+uncheck_videos.click()
+uncheck_site = browser.find_element_by_link_text("WSJ Site Search")     # do not search the full site
+uncheck_site.click()
+browser.execute_script("window.scrollTo(0, 0)")
+searchArchive = browser.find_element_by_class_name('keywordSearchBar')
+searchArchive.find_element_by_class_name("searchButton").click()
+print 'Refining search'
+
+# ==========================================================
+## Login Credentials
+
+login = browser.find_element_by_link_text("Sign In").click()
+loginID = browser.find_element_by_id("username").send_keys('yosefvb@gmail.com')     # Input username
+loginPass = browser.find_element_by_id("password").send_keys('yvb123')              # Input password
+loginReady = browser.find_element_by_class_name("login_submit")
+loginReady.submit()
+print 'login successful'
+
+# ==============================================================================
+
+def getPageUrl(elementLinks):
+    extractLinks = []
+    for element in elementLinks:
+        links = element.get_attribute('href')
+        f = open("WSJ_links", "a")
+        f.write(links+'\n')
+        f.close()
+        extractLinks.append(links)
+    return(extractLinks)
+    print 'extracting and saving search page links'
+
+
+# def extractElements(url): ---- --- -- rename this if use it
+#     second_browser = webdriver.Chrome("C:\Users\y_vb\Downloads\chromedriver_win32\chromedriver")
+#     extractItems=[]
+#     for extracted_url in getPageUrl(elementLinks):
+#         second_browser.get(extracted_url)
+#         # try:
+#         data_article = {}
+#         data_article['title'] = second_browser.find_element_by_xpath('//h1[@class="wsj-article-headline"]').text
+#         data_article['sections'] = second_browser.find_element_by_xpath('//a[contains(@itemprop, "item")]').text
+#         data_article['authors'] = second_browser.find_element_by_xpath('//span[contains(@class, "name")]').text
+#         data_article['date'] = second_browser.find_element_by_xpath('//time[contains(@class, "timestamp")]').text
+#         data_article['blurb'] = second_browser.find_element_by_xpath('//h2[contains(@class, "sub-head")]').text
+#         #add comments!
+#         data_article['paragraphs'] = second_browser.find_element_by_xpath('//p').text
+#         # except NoSuchElementException:
+#         #     pass
+#         extractItems.append(data_article)
+#         g = open("WSJ_articles", "a")
+#         g.write(title)
+#         g.write(sections)
+#         g.write(authors)
+#         g.write(date)
+#         g.write(blurb)
+#         g.write('\n')
+#         g.close()
+#     second_browser.close()
+
+
+def extractElements(url):
+    second_browser = webdriver.Chrome("C:\Users\y_vb\Downloads\chromedriver_win32\chromedriver")
+    for extracted_url in getPageUrl(elementLinks):
+        second_browser.get(extracted_url)
+        try:
+            title = second_browser.find_element_by_xpath('//h1[@class="wsj-article-headline"]').text
+            sections = second_browser.find_element_by_xpath('//a[contains(@itemprop, "item")]').text
+            authors = second_browser.find_element_by_xpath('//span[contains(@class, "name")]').text
+            date = second_browser.find_element_by_xpath('//time[contains(@class, "timestamp")]').text
+            blurb = second_browser.find_element_by_xpath('//h2[contains(@class, "sub-head")]').text
+            #add comments!
+            paragraphs = second_browser.find_element_by_xpath('//p').text
+        except Exception:
+            pass
+        try:
+            g = open("WSJ_articles", "a")
+            g.write(title.encode('utf-8')+'??????')
+            g.write(sections.encode('utf-8')+'??????')
+            g.write(authors.encode('utf-8')+'??????')
+            g.write(date.encode('utf-8')+'??????')
+            g.write(blurb.encode('utf-8')+'??????')
+            g.write(paragraphs.encode('utf-8')+'??????')
+            g.write('\n')
+            g.close()
+        except Exception:
+            pass
+# def extractElements(url):
+#     second_browser = webdriver.Chrome("C:\Users\y_vb\Downloads\chromedriver_win32\chromedriver")
+#     for extracted_url in getPageUrl(elementLinks):
+#         second_browser.get(extracted_url)
+#         title = second_browser.find_element_by_xpath('//h1[@class="wsj-article-headline"]').text
+#         sections = second_browser.find_element_by_xpath('//a[contains(@itemprop, "item")]').text
+#         authors = second_browser.find_element_by_xpath('//span[contains(@class, "name")]').text
+#         date = second_browser.find_element_by_xpath('//time[contains(@class, "timestamp")]').text
+#         blurb = second_browser.find_element_by_xpath('//h2[contains(@class, "sub-head")]').text
+#         #add comments!
+#         paragraphs = second_browser.find_element_by_xpath('//p').text
+#         # try:
+#         # except NoSuchElementException:
+#         #     pass
+#         g = open("WSJ_articles", "a")
+#         g.write(title.encode('utf-8')+'??????')
+#         g.write(sections.encode('utf-8')+'??????')
+#         g.write(authors.encode('utf-8')+'??????')
+#         g.write(date.encode('utf-8')+'??????')
+#         g.write(blurb.encode('utf-8')+'??????')
+#         g.write(paragraphs.encode('utf-8')+'??????')
+#         g.write('\n')
+#         g.close()
+    print 'saving article data'
+    second_browser.close()
+
+
+# Start iterating links in search results
+while True:
+    try:
+        browser.find_element_by_class_name('next-page')
+        elementLinks = browser.find_elements_by_xpath('//h3[@class="headline"]/a')      # article links in search results
+        extractElements(getPageUrl(elementLinks))
+        element = browser.find_element_by_link_text('Next')
+        element.click()
+        print 'next page'
+    except NoSuchElementException:
+        break
+        second_browser.close()
+        browser.close()

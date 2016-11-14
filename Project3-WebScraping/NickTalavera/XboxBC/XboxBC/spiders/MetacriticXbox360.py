@@ -39,7 +39,11 @@ class MetacriticXbox360(scrapy.Spider):
                 print(gameName)
                 print(reviewScorePro)
                 print(reviewScoreUser)
-#
+                # releaseDate
+                # isOnXboxOne
+                # publisher
+                # developer
+                # ESRBRating
                 metacriticGameItem['gameName'] = gameName
                 metacriticGameItem['reviewScorePro'] = reviewScorePro
                 metacriticGameItem['reviewScoreUser'] = reviewScoreUser
