@@ -558,37 +558,37 @@ shinyServer(function(input, output, session) {
   
   # Return the requested dataset
   getDataSetToUse <- eventReactive(input$query, {
-    dataToDisplay = xboxData
-    if (!is.null(input$marketName)) {
-      dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
-    }
-    
-    if (!is.null(input$drugName)) {
-      dataToDisplay = dataToDisplay[which((dataToDisplay$Drug_Type%in%input$drugName)),]
-    }
-    if (!is.null(input$shippedFrom)) {
-      dataToDisplay = dataToDisplay[which((dataToDisplay$Shipped_From%in%input$shippedFrom)),]
-    }
-    # switch(input$weightUnits)
-    if (!is.null(input$weightUnits)) {
-      drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
-      names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
-      dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
-    }
-    if (!is.null(input$weightValue)) {
-      dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
-    }
-    # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
-    if (!is.null(input$pricePerWeight)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
-    }
-    if (!is.null(input$dataAccessedDate)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]
-    }
-    if (!is.null(input$dataPostedDate)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$Time_Added >= input$dataPostedDate[1] & dataToDisplay$Time_Added <= input$dataPostedDate[2],]
-    }
-    dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
+    dataToDisplay = getDataPresentable()
+    # if (!is.null(input$marketName)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
+    # }
+    # 
+    # if (!is.null(input$drugName)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Drug_Type%in%input$drugName)),]
+    # }
+    # if (!is.null(input$shippedFrom)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Shipped_From%in%input$shippedFrom)),]
+    # }
+    # # switch(input$weightUnits)
+    # if (!is.null(input$weightUnits)) {
+    #   drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
+    #   names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
+    #   dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
+    # }
+    # if (!is.null(input$weightValue)) {
+    #   dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
+    # }
+    # # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
+    # if (!is.null(input$pricePerWeight)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
+    # }
+    # if (!is.null(input$dataAccessedDate)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]
+    # }
+    # if (!is.null(input$dataPostedDate)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$Time_Added >= input$dataPostedDate[1] & dataToDisplay$Time_Added <= input$dataPostedDate[2],]
+    # }
+    # dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
   
@@ -610,13 +610,30 @@ shinyServer(function(input, output, session) {
     # dataToPresent[dataToPresent == FALSE] = FALSE
     return(dataToPresent)
   }
+  output$List_SearchResults <- DT::renderDataTable(
+    DT::datatable(
+      {
+        dataToPresent = getDataPresentable()
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
+      options = list(
+        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+        pageLength = 15
+      )
+    )
+  )
   
   output$List_BackwardsCompatibleGames <- DT::renderDataTable(
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isBCCompatible == TRUE,]
-        dataToPresent = select(dataToPresent, Name = gameName, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -634,7 +651,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -653,7 +670,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
-        dataToPresent = select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = as.numeric(price), 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -677,7 +694,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isKinectSupported == TRUE | dataToPresent$isKinectRequired == TRUE,]
-        dataToPresent = select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = percentProb, "Uservoice Votes" = votes, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = percentProb, "Uservoice Votes" = votes, 
                                "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
                                "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -696,7 +713,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isOnXboxOne == TRUE | dataToPresent$isKinectRequired == TRUE,]
-        dataToPresent = select(dataToPresent, Name = gameName, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -714,13 +731,14 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()        
         dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
-        dataToPresent = select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
                                "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
                                'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
         dataToPresent
       }, selection = "none",
+      height = NULL,
       options = list(
         lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
         pageLength = 15
@@ -729,35 +747,34 @@ shinyServer(function(input, output, session) {
   )
   
   
-  # output$PublisherTop <- shiny::renderTable(
-  #   # DT::datatable(
-  #   #   {
-  #       dataToPresent = getDataPresentable()
-  #   #   }, selection = "none",
-  #   #   options = list(
-  #   #     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-  #   #     pageLength = 15
-  #   #   )
-  #   # )
-  # )
-  # 
-  # 
-  # output$PublisherBottom <- shiny::renderTable(
-  #   # DT::datatable(
-  #   #   {
-  #       dataToPresent = getDataPresentable()        
-  #   #     dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
-  #   #     dataToPresent = select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
-  #   #                            "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-  #   #                            "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
-  #   #                            "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-  #   #                            'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
-  #   #     dataToPresent
-  #   #   }, selection = "none",
-  #   #   options = list(
-  #   #     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-  #   #     pageLength = 15
-  #   #   )
-  #   # )
-  # )
+  output$PublisherBottom <- shiny::renderTable(
+    head({
+      dataToPresent = getDataPresentable()
+      dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
+      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = dplyr::arrange(dataToPresent, Percent, desc(dataToPresent$"Games Published"))
+      dataToPresent
+    }, 
+    n = max(length(dataToPresent$"Percent"[dataToPresent$"Percent" == 0]),25))
+  )
+
+
+  output$PublisherTop <- shiny::renderTable(
+    head({
+      dataToPresent = getDataPresentable()
+      dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
+      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
+      dataToPresent
+      }, 
+      n = 25)
+  )
+  
+  output$Explanation <- renderUI({
+    shiny::includeMarkdown(rmarkdown::render("../Explanation.Rmd"))
+  })
+  
+  output$AboutMe <- renderUI({
+    shiny::includeMarkdown(rmarkdown::render("../AboutMe.Rmd"))
+  })
 })
