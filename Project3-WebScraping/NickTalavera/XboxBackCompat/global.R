@@ -105,6 +105,10 @@ abline(h = 0, lty = 2)
 influencePlot(glogit.optimizedFoAIC, labels = glogit.optimizedFoAIC$data$gameName) #Can still inspect the influence plot.
 summary(glogit.optimizedFoAIC) #Investigating the overall fit of the model.
 exp(glogit.optimizedFoAIC$coefficients)
+influencePlot(glogit.optimizedFoAIC)
+avPlots(glogit.optimizedFoAIC)
+confint(glogit.optimizedFoAIC)
+
 
 admitted.predicted = round(glogit.optimizedFoAIC$fitted.values)
 xboxData = cbind(dataUlt,bcGuess = round(glogit.optimizedFoAIC$fitted.values), percentProb = round(glogit.optimizedFoAIC$fitted.values,3)*100)
