@@ -149,7 +149,7 @@ ggplot(Permem, aes(country, pcpermem)) +
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 print(paste("Correlation: ", cor(log(country$postcards + 1), log(country$members + 1))))
 ggplot(country, aes(x=log(members+1), y=log(postcards+1))) + geom_point() +
-  xlab("#Postcrosser") + ylab("#Postcard") +
+  xlab("log(#Postcrosser)") + ylab("log(#Postcard)") +
     ggtitle("Scatter Plot of Postcrossers and Postcards (2005-2016)")
 ```
 
@@ -217,7 +217,6 @@ routes = gcIntermediate(routes_all[,c('from_lng', 'from_lat')],
 
 fortifiedroutes = fortify.SpatialLinesDataFrame(routes) 
 
-#### merge to form great circles
 
 #### creat the backgroud urbanworld map
 
@@ -243,26 +242,24 @@ ggplot() + wrld + urb +
         legend.position="none") + 
   guides(fill = guide_legend(keywidth = 20, keyheight = 20))
 
-
 ```
 
 ## Distance vs. Travel Time Scatterplot
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-print(paste("Correlation:", cor(postcard$distance, postcard$travel_time)))
+print(paste("Correlation:", cor(log(postcard$distance+1), log(postcard$travel_time+1))))
 ```
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(postcard, aes(distance, travel_time)) + 
+ggplot(postcard, aes(log(distance+1), log(travel_time+1))) + 
   geom_point(color = ifelse(postcard$from_country == postcard$to_country,
                             "#3279BA", "#DA2349"),
              alpha = ifelse(postcard$from_country == postcard$to_country,
                             .5, .1)) +
-  xlab("Travel Distance") + ylab("Travel Time") +
+  xlab("log(Travel Distance)") + ylab("log(Travel Time)") +
   ggtitle("Postcards Travel Distance vs. Travel Time") +
   theme_bw()
 ```
-
 
 
 
