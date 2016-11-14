@@ -12,6 +12,8 @@ knitr::opts_chunk$set(echo = FALSE)
 library(plotly)
 library(dplyr)
 library(DT)
+library(png)
+library(grid)
 setwd("~/Documents/bootcamp007_project/Project3-WebScraping/ReganYee/Wayback")
 reddit = readRDS("reddit.RDS")
 
@@ -43,14 +45,25 @@ df_unique_hour = df_unique_hour %>%
 - When is the best time to submit content?
 
 ## Data 
-<a href="https://archive.org/web/"> The Wayback Machine </a> is a site that allows us to browse historical snapshots of any websites crawled by the site. 
-I scraped the data of top 10 Reddit posts from 06/30/2016 - 11/11/2016:
+<a href="https://archive.org/web/"> The Wayback Machine </a> is a site that allows us to browse historical snapshots of any websites crawled by the site.
+
+I <a href="https://raw.githubusercontent.com/nycdatasci/bootcamp007_project/master/Project3-WebScraping/ReganYee/Wayback/wayback.csv">scraped</a> ~211k rows of data about the top 10 Reddit posts from 06/30/2016 - 11/11/2016:
 
 ```{r reddit_snippet, echo=TRUE}
 colnames(reddit)
 ```
 
+<div>
+<font size="-1">Upvotes had data randomly imputed whenever there was an upvote value of '•'.</font>
+<br/>
+<font size="-1">Comments for threads which restricted comments had a value of 0 imputed.</font>
+</div>
+
 ## Scraping Workflow
+```{r workflow}
+img = readPNG("./assets/img/snap1.png")
+grid.raster(img)
+```
 
 ## {.flexbox .vcenter}
 <div class="centered">
@@ -84,6 +97,9 @@ plot_ly (
     yaxis = y
   )
 ```
+<div>
+<font size="-1">Only including subreddits with >= 10 posts in the top 10</font>
+</div>
 
 ## Comments vs Upvotes
 ```{r reddit_comment_ratio, cache = FALSE, echo = FALSE, message=FALSE}
@@ -103,7 +119,7 @@ datatable(head(comment_analysis1, 8),
   formatStyle('Ratio', `font-size` = '14px')
 ```
 
-## Hottest Upvote Time (by Month)
+## Hottest Upvote Time (by Date)
 ```{r reddit_score_plot, cache = FALSE, echo = FALSE, message=FALSE}
 reddit_score_mean = df_unique_hour %>% 
   select(snapshot_date,upvotes) %>% 
@@ -126,7 +142,7 @@ plot_ly (
   )
 ```
 
-## Hottest Upvote Time (by Snapshot)
+## Hottest Upvote Time (by Snapshot Hr)
 ```{r reddit_score_hour, cache = FALSE, echo = FALSE, message=FALSE}
 reddit_score_by_hour = df_unique_hour %>% 
   group_by(snapshot_hour) %>% summarize(score_mean = mean(upvotes), score_median = median(upvotes))
@@ -182,8 +198,6 @@ plot_ly(
     yaxis = y
   )
 ```
-
-
 
 ## How can I get to the front page?
 
