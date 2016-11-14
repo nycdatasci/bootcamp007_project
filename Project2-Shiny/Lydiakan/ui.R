@@ -68,7 +68,7 @@ shinyUI(
                                  h4("Bed Type"),
                                  choices = ratio,
                                  selected = 'General Bed'),
-                     selectInput("year",
+                     selectInput("year2",
                                   h4('By Year:'),
                                   choices = unique(hp$Year),
                                   selected = '2006')),

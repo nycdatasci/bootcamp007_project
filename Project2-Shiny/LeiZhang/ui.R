@@ -7,7 +7,7 @@ fluidPage(
   
   fluidRow(column(width = 4,
                   br(),br(),br(),
-                  img(src="pokemon_go_2.png", height = 170.6, width = 290),
+                  img(src="pokemon_go_2.jpg", height = 170.6, width = 290),
                   br(),br(),br(),
                   ## select continuous column
                   selectizeInput(inputId = "ct", 

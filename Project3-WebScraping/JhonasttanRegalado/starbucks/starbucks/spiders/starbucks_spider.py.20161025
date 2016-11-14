@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+from scrapy import Spider
+from starbucks.items import StarbucksItem
+from scrapy.selector import Selector
+import re
+
+class StarbucksSpider(Spider):
+    name = 'starbucks_spider'
+    allowed_urls = ['www.starbucks.com']
+    #start_urls = ['https://www.starbucks.com/store-locator?map=40.714189,-74.01046,12z&place=New%20York,%20NY,%20USA']
+    start_urls = ['https://www.starbucks.com/store-locator?map=40.714189,-74.01046,12z']    
+              
+    def parse(self, response):
+        bootstrap = response.xpath('//*[@id="bootstrapData"]').extract()
+        
+        print type(bootstrap), len(bootstrap)
+        
+        rows = re.findall('"id":"(.*?)",\
+        "name":"(.*?)",\
+        "phoneNumber":"(.*?)",\
+        "coordinates":\{(.*?)\}\
+        .*?,\
+        "addressLines":\[(.*?)\]\
+        .*?,\
+        "features":\[(.*?)\],\
+        "slug":"(.*?)"',bootstrap[0], re.IGNORECASE)           
+        
+        for row in rows:
+            print row[1], '\n'
+            item = StarbucksItem
+            item['StoreId'] = row[0]            
+            item['Name'] = row[1]            
+            item['PhoneNumber'] = row[2]            
+            item['Coordinates'] = row[3]            
+            item['Address'] = row[4]            
+            item['Features'] = row[5]            
+            item['Slug'] = row[6]            
+            
+            yield item
+        
+

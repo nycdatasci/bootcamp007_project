@@ -36,6 +36,7 @@ ui <- bootstrapPage(
                                checkboxInput('active','Active Sites', FALSE),
                                actionButton("reset_button", "Reset view"))
   )
+  #tableOutput('table')
 
 )
 
@@ -54,7 +55,12 @@ server <- shinyServer(function(input, output, session) {
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
       setView(lng = -93.85, lat = 37.45, zoom = 4) %>%
-      addMarkers(data = filteredData, lng = ~Longitude, lat = ~Latitude, popup = paste0(filteredData$Name,'<br/>',filteredData$Reason))
+      addMarkers(data = filteredData, 
+                 lng = ~Longitude, 
+                 lat = ~Latitude, 
+                 layerId = filteredData$ID,
+                 popup = paste0(filteredData$Name,'<br/>',filteredData$Reason),
+                 clusterOptions = markerClusterOptions())
   })
   observe({
     input$reset_button
@@ -62,8 +68,12 @@ server <- shinyServer(function(input, output, session) {
   })
   
   observe({
-    click <- input$mymap_marker_click
-    print(click$lng)
+    click <<- input$mymap_marker_click
+    print(click$id)
+    #contams <- filter(select(working, c( Contaminant , Environment , Chem_type )),working$ID == click$id )
+    #output$table <- renderDataTable(contams)
+                                      
+
               })
 })
 shinyApp(ui, server)

@@ -78,7 +78,20 @@ shinyUI(dashboardPage(
                                "Other",
                                "Pacific-Islander",
                                "Refused"),
-                selected = "All")), 
+                selected = "All"),
+  
+  selectInput(inputId = "Income",
+              label = "Income:",
+              choices = list("All", "Analyze", "$150,000 or more", "100 to under $150,000",
+                             "75 to under $100,000",
+                             "50 to under $75,000",
+                             "40 to under $50,000",
+                             "30 to under $40,000",
+                             "20 to under $30,000",
+                             "10 to under $20,000",
+                             "Less than $10,000",
+                             "Don't know/Refused"),
+              selected = "All")), 
   
   dashboardBody(
        tabsetPanel(type = "tabs",
@@ -88,9 +101,3 @@ shinyUI(dashboardPage(
        )
   )
 ))
-dashboardSidebar(
-  sidebarUserPanel("Your Name"),
-  sidebarMenu(
-    menuItem("Map", tabName = "map", icon = icon("map")),
-    menuItem("Data", tabName = "data", icon = icon("database")))
-)

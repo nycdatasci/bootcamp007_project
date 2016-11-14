@@ -36,6 +36,7 @@ shinyServer(function(input, output) {
     else {
       FilterTable4 = FilterTable3
     }
+    FilterTable4 = filter(FilterTable4, Generation == input$gen)
     
     melted = FilterTable4 %>% gather(Activity, values,HouseHold:Sleeping)
     Table1 = melted %>% group_by(TUYEAR, Activity) %>% summarise(Time=mean(values))
@@ -43,7 +44,7 @@ shinyServer(function(input, output) {
     
     
     Bar = gvisColumnChart(data = YTable1, xvar = "Activity", yvar = "Time", options =list(
-      vAxes="[{viewWindowMode:'explicit',viewWindow:{min:0, max:350}}]", width=1000, height=600))
+      vAxes="[{viewWindowMode:'explicit',viewWindow:{min:0, max:350}}]", width=1200, height=700))
     return (Bar)
     })
   output$barPlot2 = renderGvis({
@@ -73,6 +74,7 @@ shinyServer(function(input, output) {
     else {
       FilterTable4 = FilterTable3
     }
+    FilterTable4 = filter(FilterTable4, Generation == input$gen)
     
     melted = FilterTable4 %>% gather(Activity, values,HouseHold:Sleeping)
     Table3 = melted %>% group_by(TUYEAR, Activity) %>% summarise(Time=log(mean(values)))
@@ -80,7 +82,7 @@ shinyServer(function(input, output) {
     
     
     Bar2 = gvisColumnChart(data = YTable3, xvar = "Activity", yvar = "Time", options =list(
-                           vAxes="[{viewWindowMode:'explicit',viewWindow:{min:-5, max:8}}]", width=1000, height=600))
+                           vAxes="[{viewWindowMode:'explicit',viewWindow:{min:-5, max:8}}]", width=1200, height=700))
     return (Bar2)
   })
   
@@ -110,8 +112,9 @@ shinyServer(function(input, output) {
     else {
       FilterTable4 = FilterTable3
     }
+    FilterTable4 = filter(FilterTable4, Generation == input$gen)
     
-    melted = FilterTable4 %>% gather(Activity, values,HouseHold:Sleeping)
+    melted = FilterTable4 %>% gather(Activity, values, c(HouseHold:WSports, Sleeping))
     Table1 = melted %>% group_by(TUYEAR, Activity) %>% summarise(Time=mean(values))
     Table1 = Table1 %>% 
       arrange(TUYEAR,desc(Time))
@@ -121,6 +124,10 @@ shinyServer(function(input, output) {
     
 
     
-})})
+  })
+  
+
+    
+})
 
 
