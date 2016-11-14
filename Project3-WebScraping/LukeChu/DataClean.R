@@ -25,7 +25,7 @@
 
 
 
-flightdeal.data <- read.csv('FlightDealPrettified.txt', sep = '|', stringsAsFactors = FALSE)
+flightdeal.data <- read.csv('FlightDealCleaned.txt', sep = '|', stringsAsFactors = FALSE)
 
 
 # Routing -----------------------------------------------------------------
