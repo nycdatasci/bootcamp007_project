@@ -1,14 +1,17 @@
 ---
-title: "Reddit"
+title: "What's Hot?"
+subtitle: "Analysis of Top 10 Reddit Posts"
 author: "Regan Yee"
 date: "November 12, 2016"
 output: ioslides_presentation
+css: assets/css/ioslides.css
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(plotly)
 library(dplyr)
+library(DT)
 setwd("~/Documents/bootcamp007_project/Project3-WebScraping/ReganYee/Wayback")
 reddit = readRDS("reddit.RDS")
 
@@ -29,11 +32,23 @@ df_unique_hour = df_unique_hour %>%
 ```
 
 ## Questions
-- What is the best time to submit content?
+<b>Scraping:</b>
+
+- How can I scrape historical data for time-series data?
+
+<b>Data:</b>
+
 - What subreddits produce the most front-page content?
+- What are people talking about on Reddit?
+- When is the best time to submit content?
 
 ## Data 
-- Wayback Machine
+<a href="https://archive.org/web/"> The Wayback Machine </a> is a site that allows us to browse historical snapshots of any websites crawled by the site. 
+I scraped the data of top 10 Reddit posts from 06/30/2016 - 11/11/2016:
+
+```{r reddit_snippet, echo=TRUE}
+colnames(reddit)
+```
 
 ## Scraping Workflow
 
@@ -68,6 +83,24 @@ plot_ly (
   layout(
     yaxis = y
   )
+```
+
+## Comments vs Upvotes
+```{r reddit_comment_ratio, cache = FALSE, echo = FALSE, message=FALSE}
+comment_analysis1 = reddit %>% 
+  group_by(Titles=titles,Subreddit=subreddit) %>% 
+  summarize(Ratio = max(signif(comment_ratio, 5))) %>% 
+  arrange(desc(Ratio)) 
+
+datatable(head(comment_analysis1, 8),
+          extensions = 'FixedColumns',
+          options = list(
+            dom = 't',
+            scrollX = TRUE,
+            scrollCollapse = TRUE)) %>% 
+  formatStyle('Titles', `font-size` = '14px') %>% 
+  formatStyle('Subreddit', `font-size` = '14px') %>% 
+  formatStyle('Ratio', `font-size` = '14px')
 ```
 
 ## Hottest Upvote Time (by Month)
@@ -149,6 +182,8 @@ plot_ly(
     yaxis = y
   )
 ```
+
+
 
 ## How can I get to the front page?
 
