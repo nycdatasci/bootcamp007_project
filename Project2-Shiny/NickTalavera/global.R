@@ -9,22 +9,23 @@
 #                         LOAD PACKAGES AND MODULES                          #
 ###############################################################################
 rm(list = setdiff(ls(), lsf.str()))
-#require(rCharts)
+usePackage <- function(p) {
+  if (!is.element(p, installed.packages()[,1]))
+    install.packages(p, dep = TRUE)
+  require(p, character.only = TRUE)
+}
+
 #options(RCHART_LIB = 'polycharts')
-# library(datasets)
-# library(forecast)
-library(ggplot2)
-library(plotly)
-# library(plyr)
-library(rCharts)
-#library(reshape)
-library(shiny)
-library(shinydashboard)
-library(TTR)
-library(lettercase)
-library(dplyr)
-library(scales)
-library(RColorBrewer)
+usePackage("ggplot2")
+usePackage("plotly")
+# usePackage("rCharts")
+usePackage("shiny")
+usePackage("shinydashboard")
+usePackage("TTR")
+usePackage("lettercase")
+usePackage("dplyr")
+usePackage("scales")
+usePackage("RColorBrewer")
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
@@ -69,7 +70,6 @@ dnmData$Drug_Weight = NULL
 dnmData$Price = NULL
 dnmData$Drug_Weight_Unit = NULL
 unitString = "grams"
-#dnmData$Price_Per_Gram = as.numeric(dnmData$Price_Per_Gram)
 dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
 dnmData = dnmData[!is.na(dnmData$Market_Name),]
 dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
@@ -77,4 +77,3 @@ dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
 timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
 sheetDateRange = range(dnmData$Sheet_Date, na.rm = TRUE)
 maxPricePerWeight = roundUpNice(max(dnmData$Price_Per_Gram, na.rm = TRUE))
-setwd(home)
