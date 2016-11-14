@@ -31,7 +31,7 @@ ROBOTSTXT_OBEY = False
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 0.2
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
@@ -70,6 +70,7 @@ ITEM_PIPELINES = {
 #    'XboxBC.pipelines.SomePipeline': 300,
 'scrapy.pipelines.images.ImagesPipeline': 1
 }
+FILES_STORE = '/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/Images'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

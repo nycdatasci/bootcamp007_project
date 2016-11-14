@@ -97,6 +97,8 @@ shinyUI(dashboardPage(
                                                            <li>GitHub repository for source code version control 
                                                            <li>shinyapps.io by RStudio provides PaaS (Platform as a Service) solution for a smooth change release process from my RStudio IDE running on a MacBook Pro to Docker containers that include all the required libraries
                                                            </ul>"))),
+                       
+                       column(12, div(align = "left", HTML("<br><h3><u><b>Blog Post<b></u>: <a href='http://blog.nycdatascience.com/student-works/bikes-go-analysis-nyc-citi-bike-station-capacity/'>Where Did All the Bikes Go? An Analysis on NYC Citi Bike Station Capacity</a><h3>"))),
                        column(12, div(align = "left", HTML("<br><h3><u><b>Feedback<b></u>: <a href='mailto:jhonasttan@gmail.com?Subject=[Shiny%20App%20Feedback]%20NYC%20Citi%20Bike%20Availability%20Analysis' target='_top'>Constructive feedback is welcomed!</a><h3>"))),
                        column(12, div(align = "left", HTML("<br><h3><u><b>LinkedIn Profile<b></u>: <a href='https://www.linkedin.com/in/jhonasttanregalado'>Jhonasttan Regalado, PMP</a><h3>")))
                        ))

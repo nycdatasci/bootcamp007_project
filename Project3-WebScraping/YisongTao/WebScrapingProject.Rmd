@@ -1,0 +1,208 @@
+---
+title: "Web Scraping Project"
+author: "Yisong Tao"
+date: "11/13/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Web scraping MyAnimeList.net 
+
+MyAnimelist.net scraped reviews and info of 5953 animes.
+1. web scraping
+2. reviews: EDA
+3. anime info: network graph eda
+4. predict anime score
+
+
+
+1. web scraping
+Done with scrapy. Scraped 2 parts of MyAnimelist.net: anime reviews and anime info.
+89244 reviews, 5953 anime info downloaded.
+Lesson learned:  
+- clean up data while scraping, 
+- store data in correct format -- Json vs. csv -> list vs. data.frame.
+
+
+2. reviews EDA
+```{r load data and library, warning=F, message=F}
+library(ggplot2)
+library(dplyr)
+AnimeReviews <- readRDS("AnimeReviews/AnimeReviews.RDS")
+summary(AnimeReviews)
+#head(AnimeReviews)
+summ_review <- AnimeReviews %>%
+    select(anime_title) %>% 
+    group_by(anime_title) %>%
+    summarise(Count = n()) %>% 
+    arrange(desc(Count))
+summary(summ_review$Count)
+head(summ_review, 3)
+```
+
+```{r plot1}
+p1 <- ggplot(AnimeReviews) +
+    geom_freqpoly(aes(x=date), bins = 60) +
+    xlab("Review Date") + ylab("Number of Reviews") +
+    theme_bw()
+p1
+```
+
+```{r plot2}
+review1 <- AnimeReviews[AnimeReviews$anime_title == "Sword Art Online", ]
+p2 <- ggplot(review1) +
+    geom_freqpoly(aes(x=date), bins = 30) +
+    xlab("Review Date") + ylab("Number of Reviews") +
+    theme_bw() + ggtitle("Reviews of 'Sword Art Online'") 
+p2
+```
+
+3. anime info network graph
+```{r load data2, warning=F, message=F}
+library(visNetwork)
+library(car)
+AnimeInfo <- readRDS("AnimeInfo/AnimeInfo.RDS")
+length(AnimeInfo)
+names(AnimeInfo[[1]])
+```
+```{r plot3}
+set.seed(0)
+graph_list <- sample(AnimeInfo, 100)  ##randomly choose 100 anime for network graph
+mklink_lst <- function(lst){
+	link_list <- data.frame(from = numeric(), to = numeric(), 
+	                        value = numeric(), title = character())
+	l <- length(lst)
+	#########check common elements in staff and cast members #####################################
+	actor_lst <-lapply(lst, function(x) x$anime_mainactors)
+	staff_lst <-lapply(lst, function(x) unlist(x$anime_staff))
+	for (i in c(1:l-1)){
+		for (j in c(i+1:l)){
+			temp_actor <- intersect(unlist(actor_lst[i]), unlist(actor_lst[j]))
+			temp_staff <- intersect(unlist(staff_lst[i]), unlist(staff_lst[j]))
+			if (length(temp_actor) > 0 | length(temp_staff) > 0){
+				if (length(temp_actor) > 0){
+				    title_actor_temp <- paste0("Cast: ", temp_actor, collapse = '<br>')
+				}
+				if (length(temp_staff) > 0){
+				    title_staff_temp <- paste0("Staff: ", temp_staff, collapse = '<br>')
+				}
+				if (length(temp_actor) > 0 & length(temp_staff) > 0){
+				    title_temp <- paste0(title_staff_temp,'<br>', title_actor_temp)
+				    value_t <- length(temp_staff) + length(temp_actor)
+				}else if (length(temp_actor) > 0){
+				    title_temp <- title_actor_temp
+				    value_t <- length(temp_actor)
+				}else{
+				        title_temp <- title_staff_temp
+				        value_t <- length(temp_staff)
+				        }
+				row <- data.frame(from = i, to = j,
+				                  value = value_t, title = title_temp)
+			    link_list <- rbind(link_list, row)
+			}
+		}
+	}
+	return(link_list)
+}
+
+mknode_lst <- function(lst){
+    node_list <- data.frame(ID = c(1:length(lst)))
+    titles <- unlist(lapply(lst, function(x) x$anime_title))
+    node_list$Titles <- titles
+    types <- unlist(lapply(lst, function(x) x$anime_type))
+    node_list$Types <- types
+    members <- unlist(lapply(lst, function(x) x$anime_members))
+    members <- as.numeric(gsub("\\,", "", members))
+    node_list$Members <- members
+    colnames(node_list) <- c("id", "title", "group", "size")
+    node_list$size <- 2*sqrt(sqrt(node_list$size))
+    node_list$label <- NA
+    return(node_list)
+}
+link_list <- mklink_lst(graph_list)
+node_list<- mknode_lst(graph_list)
+graph <- visNetwork(nodes = node_list, edges = link_list, main = "Network of 100 Anime") %>%
+    visNodes(label = NULL) %>% 
+    visLegend(enabled = TRUE, useGroups = TRUE, addNodes = NULL,
+              addEdges = NULL, width = 0.2, position = "left", main = NULL) %>% 
+    visOptions(selectedBy = "group", highlightNearest = TRUE)
+graph
+```
+
+
+4. predict anime score
+```{r reconstructing data frame from list}
+Title <- unlist(lapply(AnimeInfo, function(x) x$anime_title))
+Type <- unlist(lapply(AnimeInfo, function(x) x$anime_type))
+Rating <- unlist(lapply(AnimeInfo, function(x) x$anime_rating))
+Viewer <-unlist(lapply(AnimeInfo, function(x) as.numeric(gsub("\\,", "", x$anime_members))))
+Score <- unlist(lapply(AnimeInfo, function(x) as.numeric(x$anime_score)))
+Favorite <- unlist(lapply(AnimeInfo, function(x) as.numeric(gsub("\\,", "", x$anime_favorites))))
+Actor1_lst <- lapply(AnimeInfo, function(x) x$anime_mainactor[1])
+flag <- unlist(lapply(Actor1_lst, function(x) is.null(x[[1]])))
+Actor1_lst[flag] <- NA
+Actor1 <- unlist(Actor1_lst)
+Actor2_lst <- lapply(AnimeInfo, function(x) x$anime_mainactor[2])
+flag <- unlist(lapply(Actor2_lst, function(x) is.null(x[[1]])))
+Actor2_lst[flag] <- NA
+Actor2 <- unlist(Actor2_lst)
+Actor3_lst <- lapply(AnimeInfo, function(x) x$anime_mainactor[3])
+flag <- unlist(lapply(Actor3_lst, function(x) is.null(x[[1]])))
+Actor3_lst[flag] <- NA
+Actor3 <- unlist(Actor3_lst)
+Actor4_lst <- lapply(AnimeInfo, function(x) x$anime_mainactor[4])
+flag <- unlist(lapply(Actor4_lst, function(x) is.null(x[[1]])))
+Actor4_lst[flag] <- NA
+Actor4 <- unlist(Actor4_lst)
+Director_lst <- lapply(AnimeInfo, function(x) x$anime_staff$Director)
+flag <- unlist(lapply(Director_lst, function(x) is.null(x[[1]])))
+Director_lst[flag] <- NA
+Director <- unlist(Director_lst)
+Musician_lst <- lapply(AnimeInfo, function(x) x$anime_staff$Music)
+flag <- unlist(lapply(Musician_lst, function(x) is.null(x[[1]])))
+Musician_lst[flag] <- NA
+Musician <- unlist(Musician_lst)
+AnimeInfo_df <- data.frame(Title = Title, Type = Type, Rating = Rating,
+                           Director = Director, Actor1 = Actor1, 
+                           Actor2 = Actor2, Actor3 = Actor3,
+                           Actor4 = Actor4, Musician = Musician,
+                           Score = Score,
+                           Viewer = Viewer, Favorite = Favorite
+                           )
+table(AnimeInfo_df$Rating)
+
+#Upon investigation, all animes missing 'Rating' are old animes produced before rating system came and they all look #like "G"-rating animes.
+#Set all their ratings to "G - All Ages".
+AnimeInfo_df$Rating[AnimeInfo_df$Rating== "None"] <- "G - All Ages"
+AnimeInfo_df$Rating <- as.character(AnimeInfo_df$Rating)
+AnimeInfo_df$Rating <- as.factor(AnimeInfo_df$Rating)
+
+# dummify director variable
+# list of anime directors who won awards in last 15-20 years at Tokyo Anime Award or Animation Kobe
+direct_award <- c("Daichi, Akitaro", "Miyazaki, Hayao", "Hara, Keiichi", "Kon, Satoshi", 
+                  "Miyazaki, Hayao", "Tomino, Yoshiyuki", "Hosoda, Mamoru", "Anno, Hideaki",
+                  "Miyazaki, Hayao", "Hosoda, Mamoru", "Yonebayashi, Hiromasa", "Shinbo, Akiyuki",
+                  "Hosoda, Mamoru", "Araki, Tetsuro", "Takahata, Isao", "Fujita, Yōichi",
+                  "Anno, Hideaki", "Miyazaki, Hayao", "Watanabe, Shinichi", "Daichi, Akitaro",
+                  "Okiura, Hiroyuki", "Kitakubo, Hiroyuki", "Hara, Keiichi", "Kuroda, Yosuke",
+                  "Kamiyama, Kenji", "Yoshida, Kenichi", "Nagahama, Hiroshi", "Imaishi, Hiroyuki",
+                  "Iso, Mitsuo", "Kato, Kunio", "Hosoda, Mamoru", "Okada, Mari",
+                  "Agematsu, Noriyasu", "Mizushima, Tsutomu","Kishi, Seiji", "Mizushima, Seiji")
+direct_award <- unique(direct_award)
+AnimeInfo_df$Award_Director <- ifelse(AnimeInfo_df$Director %in% direct_award, TRUE, FALSE)
+## didn't have enough time to do the same thing on actors and musicians
+##multi-variable linear regression
+model <- glm(Score ~ Award_Director + Viewer + Favorite + Type + Rating, data = AnimeInfo_df)
+summary(model)
+plot(model)
+avPlots(model)
+vif(model)
+```
+
+
+Significant coeffiecients: (Intercept), Award_DirectorTRUE, Favorite, Viewer, TypeMusic, TypeONA, TypeOVA, RatingPG-13 - Teens 13 or older, RatingR - 17+ (violence & profanity), RatingR+ - Mild Nudity, RatingRx - Hentai.
+
+Adjusted R-squared:  0.289  only explains 28.9% of the variance in scores of animes.

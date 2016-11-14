@@ -1,6 +1,6 @@
 ## server.R ##
-library(googleVis)
 library(dplyr)
+library(googleVis)
 
 shinyServer(function(input, output){
   

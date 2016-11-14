@@ -48,7 +48,7 @@ shinyUI(
                   box(
                     h2("Welcome to the Kickstarter Explorer"),
                     p('This app is built off a dataset from:', a('webrobots.io', href="http://webrobots.io/kickstarter-datasets/"), 
-                      '. It contains data scraped from Kickstarter up to 2016-10-15. I limited the scope of data to only ', strong('U.S Kickstarter projects'), 'who have at least some money pledged to it.'))
+                      '. It contains data scraped from Kickstarter up to 2016-10-15. I limited the scope of data to only ', strong('U.S Kickstarter projects'), 'that have at least some money pledged to it.'))
                   ),
                 column(width=4, DT::dataTableOutput("sumTable"))
                 #column(width=12),

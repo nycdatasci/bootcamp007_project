@@ -5,9 +5,11 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
+from scrapy.exceptions import DropItem
+from scrapy.exporters import CsvItemExporter
 
 class XboxbcPipeline(object):
-def process_item(self, item, spider):
+    def process_item(self, item, spider):
         return item
 
     def get_media_requests(self, item, info):

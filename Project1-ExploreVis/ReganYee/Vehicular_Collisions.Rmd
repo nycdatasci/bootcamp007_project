@@ -143,6 +143,14 @@ g2016 + scale_fill_continuous(
 
 Generated using choroplethrZip library
 
+
+## Vehicular Crashes by Hour of Day
+
+```{r hours, cache = TRUE, echo = FALSE, fig.height=3, fig.ext='png'}
+g_hour=ggplot(data=common_times)
+g_hour+geom_bar(aes(x=hour, y=count),stat="identity") + xlab("Hour of Day") + ylab("Count Crashes")
+```
+
 ## Changes from 2013 to 2014
 
 ```{r diff2014, cache = FALSE, echo = FALSE, message=FALSE}
@@ -193,45 +201,6 @@ Year | Count of Fatalities
 ``` {r by_borough, echo = FALSE}
 ggplot(people_killed_by_borough %>% filter(BOROUGH != "") %>% filter(year %in% c(2013,2014,2015))) + geom_bar(aes(x=year,y=total),stat="identity") + facet_wrap( ~ BOROUGH)
 ```
-
-## Vehicular Crashes by Hour of Day
-
-```{r hours, cache = TRUE, echo = FALSE, fig.height=3, fig.ext='png'}
-g_hour=ggplot(data=common_times)
-g_hour+geom_bar(aes(x=hour, y=count),stat="identity") + xlab("Hour of Day") + ylab("Count Crashes")
-```
-
-## Vehicular Crashes by Month
-```{r months, cache = TRUE, echo = FALSE, fig.height=3, fig.ext='png'}
-g_month=ggplot(data=common_months)
-g_month+geom_bar(aes(x=month, y=count),stat="identity") + xlab("Month") + ylab("Count Crashes")
-```
-
-Data from full years of 2013, 2014, 2015
-
-
-## Top 5 Contributing Factors
-Number | Reason | Count
-------------- | ------------- | -------------
-1 | Unspecified | 500826
-2 | Driver Inattention/Distraction | 106757
-3 | Fatigued/Drowsy | 48153
-4 | Failure to Yield Right-of-Way | 36776
-5 | Other Vehicular | 27953
-
-15 - Alcohol Involvement  
-20 - Aggressive Driving/Road Rage  
-42 - Cell Phone (hands-free)  
-43 - Cell Phone (hand-held)
-
-## Top 5 Contributing Factors - Fatal Collisions
-Number | Reason | Count
-------------- | ------------- | -------------
-1|Unspecified|536
-2|Traffic Control Disregarded|124
-3|Driver Inattention/Distraction|95
-4|Failure to Yield Right-of-Way|75
-5|Passenger Distraction|52
 
 ## Conclusions
 - Vehicular collisions are on the rise, but fatalities have been decreasing since 2013.

@@ -1,6 +1,6 @@
 #This is the server to my UI 
 
-setwd("~/Dropbox/Projects_NYCDSA7/Shiny/Test Project")
+# setwd("~/Dropbox/Projects_NYCDSA7/Shiny/Test Project")
 library(dplyr)
 library(shinydashboard)
 library(googleVis)

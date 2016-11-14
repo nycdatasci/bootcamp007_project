@@ -1,0 +1,67 @@
+#nextsteps {
+   color: blue;
+}
+
+.emphasized {
+   font-size: 1.8em;
+   font-weight: bold;
+}
+
+.sub-section {
+   font-size: 1.8em;
+   font-weight: bold;
+   text-align:center; 
+   height:500px; 
+   line-height:500px;
+}
+
+.gdbar img {
+  width: 675px !important;
+  height: 135px !important;
+  margin: 8px 8px;
+}
+
+.gdbar {
+  width: 700px !important;
+  height: 150px !important;
+}
+
+
+slides > slide:not(.nobackground):before {
+  width: 150px;
+  height: 35px;
+  background-size: 150px 35px;
+}
+
+.title-slide {
+     background-image: url(../img/tall100a.jpg);
+}
+
+.body {
+  font-family: Helvetica;
+  font-size: 10pr;
+}
+
+.h6{
+  font-size: 12pr;
+}
+
+.h6{
+  font-size: 14pr;
+}
+
+.h4{
+  font-size: 16pr;
+}
+
+h3{
+  font-size: 18pr;
+}
+
+h2{
+  font-size: 20pr;
+}
+
+h1{
+  font-size: 22pr;
+}

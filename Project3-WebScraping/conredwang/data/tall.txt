@@ -1,0 +1,100 @@
+1|2717|Burj Khalifa|Dubai|AE|163|office / residential / hotel|Y|Y|Y|Y|N|2003|2004|2010|1|7|6
+4|1776|One World Trade Center|New York City|US|94|office|N|Y|N|N|N|2005|2006|2014|1|9|8
+3|1972|Makkah Royal Clock Tower|Mecca|SA|120|other / hotel|Y|N|N|Y|N|2002|2002|2012|0|10|10
+2|2073|Shanghai Tower|Shanghai|CN|128|hotel / office|Y|Y|N|Y|N|2008|2009|2015|1|7|6
+6|1667|TAIPEI 101|Taipei|TW|101|office|N|Y|N|N|N|1997|1999|2004|2|7|5
+5|1739|Guangzhou CTF Finance Centre|Guangzhou|CN|111|hotel / residential / office|Y|Y|Y|Y|N|2009|2010|2016|1|7|6
+8|1588|International Commerce Centre|Hong Kong|CN|108|hotel / office|Y|Y|N|Y|N|2000|2002|2010|2|10|8
+7|1614|Shanghai World Financial Center|Shanghai|CN|101|hotel / office|Y|Y|N|Y|N|1994|1997|2008|3|14|11
+9|1483|Petronas Twin Tower 2|Kuala Lumpur|MY|88|office|N|Y|N|N|N|NA|1992|1998|NA|NA|6
+9|1483|Petronas Twin Tower 1|Kuala Lumpur|MY|88|office|N|Y|N|N|N|NA|1992|1998|NA|NA|6
+13|1449|KK100|Shenzhen|CN|100|hotel / office|Y|Y|N|Y|N|2004|2007|2011|3|7|4
+12|1451|Willis Tower|Chicago|US|108|office|N|Y|N|N|N|NA|1970|1974|NA|NA|4
+11|1476|Zifeng Tower|Nanjing|CN|66|hotel / office|Y|Y|N|Y|N|2004|2005|2010|1|6|5
+16|1389|Trump International Hotel & Tower|Chicago|US|98|residential / hotel|Y|N|Y|Y|N|2001|2005|2009|4|8|4
+15|1396|432 Park Avenue|New York City|US|85|residential|N|N|Y|N|N|2011|2011|2015|0|4|4
+14|1439|Guangzhou International Finance Center|Guangzhou|CN|103|hotel / office|Y|Y|N|Y|N|2004|2006|2010|2|6|4
+100|992|Wells Fargo Plaza|Houston|US|71|office|N|Y|N|N|N|NA|1979|1983|NA|NA|4
+99|993|Leatop Plaza|Guangzhou|CN|64|office|N|Y|N|N|N|2006|2008|2012|2|6|4
+97|994|Jiangxi Nanchang Greenland Central Plaza, Par|Nanchang|CN|59|office|N|Y|N|N|N|2010|2012|2015|2|5|3
+97|994|Jiangxi Nanchang Greenland Central Plaza, Par|Nanchang|CN|59|office|N|Y|N|N|N|2010|2012|2015|2|5|3
+96|994|Greenland Puli Center|Jinan|CN|61|office|N|Y|N|N|N|2010|2011|2014|1|4|3
+95|994|Diwang International Fortune Center|Liuzhou|CN|72|office / hotel|Y|Y|N|Y|N|NA|2010|2015|NA|NA|5
+94|995|Two Prudential Plaza|Chicago|US|64|office|N|Y|N|N|N|NA|1988|1990|NA|NA|2
+92|997|Wuxi Maoye City - Marriott Hotel|Wuxi|CN|68|hotel|N|N|N|Y|N|NA|2008|2014|NA|NA|6
+92|997|Shenzhen CFC Changfu Centre|Shenzhen|CN|68|office|N|Y|N|N|N|2007|2011|2016|4|9|5
+91|997|Baiyoke Tower II|Bangkok|TH|85|hotel|N|N|N|Y|N|NA|1990|1997|NA|NA|7
+90|1001|Northeast Asia Trade Tower|Incheon|KR|68|residential / hotel / office|Y|Y|Y|Y|N|2005|2006|2011|1|6|5
+89|1002|Etihad Towers T2|Abu Dhabi|AE|80|residential|N|N|Y|N|N|2006|2007|2011|1|5|4
+88|1002|JPMorgan Chase Tower|Houston|US|75|office|N|Y|N|N|N|1977|1978|1982|1|5|4
+87|1004|The Shard|London|GB|73|residential / hotel / office|Y|Y|Y|Y|N|2000|2009|2013|9|13|4
+86|1004|East Pacific Center Tower A|Shenzhen|CN|85|residential|N|N|Y|N|N|NA|2008|2013|NA|NA|5
+85|1004|One57|New York City|US|75|residential / hotel|Y|N|Y|Y|N|2005|2009|2014|4|9|5
+84|1005|Cayan Tower|Dubai|AE|73|residential|N|N|Y|N|N|2005|2006|2013|1|8|7
+83|1007|The Franklin - North Tower|Chicago|US|60|office|N|Y|N|N|N|NA|1987|1989|NA|NA|2
+81|1008|Wanda Plaza 2|Kunming|CN|67|office|N|Y|N|N|N|2012|2013|2016|1|4|3
+81|1008|Wanda Plaza 1|Kunming|CN|67|office|N|Y|N|N|N|2012|2013|2016|1|4|3
+80|1010|Burj Rafal|Riyadh|SA|68|residential / hotel|Y|N|Y|Y|N|2009|2010|2014|1|5|4
+79|1013|Stalnaya Vershina|Moscow|RU|72|residential / hotel / office|Y|Y|Y|Y|N|2003|2006|2015|3|12|9
+78|1014|Emirates Tower Two|Dubai|AE|56|hotel|N|N|N|Y|N|NA|NA|2000|NA|NA|NA
+77|1015|Fortune Center|Guangzhou|CN|68|office|N|Y|N|N|N|2008|2011|2015|3|7|4
+76|1015|Pearl River Tower|Guangzhou|CN|71|office|N|Y|N|N|N|2005|2006|2013|1|8|7
+75|1017|Menara TM|Kuala Lumpur|MY|55|office|N|Y|N|N|N|NA|1998|2001|NA|NA|3
+74|1017|Ocean Heights|Dubai|AE|83|residential|N|N|Y|N|N|2005|2007|2010|2|5|3
+73|1018|U.S. Bank Tower|Los Angeles|US|73|office|N|Y|N|N|N|NA|1987|1990|NA|NA|3
+72|1020|Moi Center Tower A|Shenyang|CN|75|hotel / office|Y|Y|N|Y|N|NA|2008|2014|NA|NA|6
+71|1023|Bank of America Plaza|Atlanta|US|55|office|N|Y|N|N|N|NA|1991|1992|NA|NA|1
+70|1031|MahaNakhon|Bangkok|TH|75|residential / hotel|Y|N|Y|Y|N|2009|2011|2016|2|7|5
+69|1032|Nanjing International Youth Cultural Centre T|Nanjing|CN|68|hotel / office|Y|Y|N|Y|N|NA|2012|2015|NA|NA|3
+68|1042|HHHR Tower|Dubai|AE|72|residential|N|N|Y|N|N|NA|2006|2010|NA|NA|4
+67|1046|New York Times Tower|New York City|US|52|office|N|Y|N|N|N|NA|2004|2007|NA|NA|3
+66|1046|Global City Square|Guangzhou|CN|67|office|N|Y|N|N|N|2009|2011|2016|2|7|5
+65|1046|Chrysler Building|New York City|US|77|office|N|Y|N|N|N|NA|1928|1930|NA|NA|2
+64|1051|Nina Tower|Hong Kong|CN|80|hotel / office|Y|Y|N|Y|N|1997|1999|2006|2|9|7
+63|1053|Burj Al Arab|Dubai|AE|56|hotel|N|N|N|Y|N|1993|1994|1999|1|6|5
+62|1056|Wenzhou Trade Center|Wenzhou|CN|68|hotel / office|Y|Y|N|Y|N|NA|2002|2011|NA|NA|9
+61|1058|Q1 Tower|Gold Coast|AU|78|residential|N|N|Y|N|N|NA|2002|2005|NA|NA|3
+60|1060|Yantai Shimao No. 1 The Harbour|Yantai|CN|59|residential / hotel / office|Y|Y|Y|Y|N|NA|2008|2016|NA|NA|8
+59|1063|Deji Plaza|Nanjing|CN|62|hotel / office|Y|Y|N|Y|N|NA|2009|2013|NA|NA|4
+58|1063|The Landmark|Abu Dhabi|AE|72|residential / office|Y|Y|Y|N|N|2004|2006|2013|2|9|7
+57|1070|The Index|Dubai|AE|80|residential / office|Y|Y|Y|N|N|2003|2005|2010|2|7|5
+56|1076|Wuxi Suning Plaza 1|Wuxi|CN|67|hotel / serviced apartments / office|Y|Y|N|Y|N|NA|2010|2014|NA|NA|4
+55|1076|Al Yaqoub Tower|Dubai|AE|69|hotel / office|Y|Y|N|Y|N|NA|2006|2013|NA|NA|7
+54|1076|Longxi International Hotel|Jiangyin|CN|72|residential / hotel|Y|N|Y|Y|N|NA|2007|2011|NA|NA|4
+53|1078|Keangnam Hanoi Landmark Tower|Hanoi|VN|72|hotel / residential / office|Y|Y|Y|Y|N|NA|2008|2012|NA|NA|4
+52|1083|China World Tower|Beijing|CN|74|hotel / office|Y|Y|N|Y|N|2003|2005|2010|2|7|5
+51|1086|Minsheng Bank Building|Wuhan|CN|68|office|N|Y|N|N|N|NA|2001|2008|NA|NA|7
+50|1093|Rose Rayhaan by Rotana|Dubai|AE|71|hotel|N|N|N|Y|N|NA|2004|2007|NA|NA|3
+49|1094|Shimao International Plaza|Shanghai|CN|60|hotel / office / retail|Y|Y|N|Y|Y|NA|2001|2006|NA|NA|5
+48|1105|Tianjin World Financial Center|Tianjin|CN|75|office|N|Y|N|N|N|2006|2007|2011|1|5|4
+47|1109|Tianjin Modern City Office Tower|Tianjin|CN|65|office|N|Y|N|N|N|2010|2011|2016|1|6|5
+46|1112|Mercury City Tower|Moscow|RU|75|residential / office|Y|Y|Y|N|N|2006|2006|2013|0|7|7
+45|1112|Chongqing World Financial Center|Chongqing|CN|72|hotel / office|Y|Y|N|Y|N|2007|2010|2015|3|8|5
+44|1112|Wuxi International Finance Square|Wuxi|CN|68|hotel / office|Y|Y|N|Y|N|NA|2011|2014|NA|NA|3
+43|1122|ADNOC Headquarters|Abu Dhabi|AE|65|office|N|Y|N|N|N|NA|2009|2015|NA|NA|6
+42|1128|John Hancock Center|Chicago|US|100|residential / office|Y|Y|Y|N|N|NA|1965|1969|NA|NA|4
+41|1135|The Center|Hong Kong|CN|73|office|N|Y|N|N|N|NA|1995|1998|NA|NA|3
+40|1136|Aon Center|Chicago|US|83|office|N|Y|N|N|N|NA|1970|1973|NA|NA|3
+39|1140|T & C Tower|Kaohsiung|TW|85|hotel / office / retail|Y|Y|N|Y|Y|NA|1994|1997|NA|NA|3
+38|1149|The Pinnacle|Guangzhou|CN|60|office|N|Y|N|N|N|2007|2008|2012|1|5|4
+37|1150|Forum 66 Tower 1|Shenyang|CN|68|hotel / office|Y|Y|N|Y|N|NA|2008|2015|NA|NA|7
+36|1155|The Torch|Dubai|AE|86|residential|N|N|Y|N|N|2005|2005|2011|0|6|6
+35|1160|OKO - Residential Tower|Moscow|RU|90|residential / serviced apartments / hotel|Y|N|Y|Y|N|NA|2011|2015|NA|NA|4
+34|1163|Emirates Tower One|Dubai|AE|54|office|N|Y|N|N|N|NA|NA|2000|NA|NA|NA
+32|1166|JW Marriott Marquis Hotel Dubai Tower 2|Dubai|AE|82|hotel|N|N|N|Y|N|2005|2006|2013|1|8|7
+32|1166|JW Marriott Marquis Hotel Dubai Tower 1|Dubai|AE|82|hotel|N|N|N|Y|N|2005|2006|2012|1|7|6
+31|1181|Almas Tower|Dubai|AE|68|office|N|Y|N|N|N|NA|2005|2008|NA|NA|3
+30|1200|Bank of America Tower|New York City|US|55|office|N|Y|N|N|N|2003|2004|2009|1|6|5
+29|1205|Bank of China Tower|Hong Kong|CN|72|office|N|Y|N|N|N|1977|1985|1990|8|13|5
+28|1227|Central Plaza|Hong Kong|CN|78|office|N|Y|N|N|N|1989|1989|1992|0|3|3
+27|1248|Elite Residence|Dubai|AE|87|residential|N|N|Y|N|N|NA|2007|2012|NA|NA|5
+26|1250|Empire State Building|New York City|US|102|office|N|Y|N|N|N|NA|1930|1931|NA|NA|1
+25|1251|Burj Mohammed Bin Rashid|Abu Dhabi|AE|88|residential|N|N|Y|N|N|2006|2007|2014|1|8|7
+24|1257|Eton Place Dalian Tower 1|Dalian|CN|80|hotel / office|Y|Y|N|Y|N|NA|NA|2016|NA|NA|NA
+23|1260|Shun Hing Square|Shenzhen|CN|69|office|N|Y|N|N|N|NA|1993|1996|NA|NA|3
+22|1280|CITIC Plaza|Guangzhou|CN|80|office|N|Y|N|N|N|NA|1993|1996|NA|NA|3
+21|1287|23 Marina|Dubai|AE|88|residential|N|N|Y|N|N|2005|2006|2012|1|7|6
+20|1352|Two International Finance Centre|Hong Kong|CN|88|office|N|Y|N|N|N|1996|2000|2003|4|7|3
+19|1354|Al Hamra Tower|Kuwait City|KW|80|office|N|Y|N|N|N|2005|2005|2011|0|6|6
+18|1356|Princess Tower|Dubai|AE|101|residential|N|N|Y|N|N|2005|2006|2012|1|7|6
+17|1380|Jin Mao Tower|Shanghai|CN|88|hotel / office|Y|Y|N|Y|N|NA|1994|1999|NA|NA|5

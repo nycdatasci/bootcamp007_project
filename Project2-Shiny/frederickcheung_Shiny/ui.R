@@ -1,6 +1,6 @@
 #This is the UI to my project
 
-setwd("~/Dropbox/Projects_NYCDSA7/Shiny/Test Project")
+
 library(shinydashboard)
 
 dashboardPage(

@@ -1,0 +1,258 @@
+---
+title: "Spyder Project: Visualize Starbucks Store Amenities"
+author: "Jhonasttan Regalado"
+date: "11/7/2016"
+output: html_document
+---
+
+Visualize the Starbucks locations and their amenities.
+1. Scrapy to capture stores and their amenities via Starbucks Store Locator website
+2. CARTO / Leaflet for visualization
+3. PCA for descriptive power to determine which amenities stand out
+4. Would be nice: Map layer for Shiny Citibike Analysis app
+
+Notes:
+
+1. Completed ability to scrape for Starbucks locations in NYC via scraper. Am getting duplicate entries, but leaving to Carto to locate based on unique geospatial info for now.
+2. Created new features having amenities as yes / no using binary (1: yes, 0: no) and store names with HTML hyperlink syntax to allow user to browse Starbucks store location site
+
+```{r}
+#Load data rendered by Scrapy
+library(tidyverse)
+library(psych)
+
+df_sb <- read.csv('./starbucks/StarbucksStores.txt', stringsAsFactors = FALSE)
+df_sb_unique <- df_sb[!duplicated(df_sb), ]
+
+#PCA procedure to determine which amenities should be enabled for filtering on the map
+df_sb_pca <- df_sb_unique[,c(11:ncol(df_sb_unique))] #select the amenities columns
+df_sb_pca <- df_sb_pca[,-ncol(df_sb_pca)] #drop the last column 'AmeOther'
+
+head(df_sb_pca)
+
+
+```
+List of features:
+    {"code":"LB","name":"LaBoulange"},
+    {"code":"WA","name":"Oven-warmed Food"},
+    {"code":"LU","name":"Lunch"},
+    {"code":"CL","name":"Starbucks Reserve-Clover Brewed"},
+    {"code":"WF","name":"Wireless Hotspot"},
+    {"code":"CD","name":"Mobile Payment"},
+    {"code":"DR","name":"Digital Rewards"},
+    {"code":"GO","name":"Google Wi-Fi"},
+    {"code":"FZ","name":"Fizzio Handcrafted Sodas"},
+    {"code":"XO","name":"Mobile Order and Pay"},
+    {"code":"RW","name":"My Starbucks Rewards"},
+    {"code":"PS","name":"Playbook Store System"},
+    {"code":"CS","name":"tbd - Coffee Scale"}
+    {"code":"MX","name":"Music Experience"}
+    {u'VS': u'Verismo'}
+    {u'NB': u'Nitro Cold Brew'}
+    {u'SQ': u'tbd'}
+    {u'EM': u'Starbucks Evenings'}
+    {u'BA': u'Bakery'}
+    {u'WT': u'tbd - Walk-T'}
+    {u'hrs24': u'Open 24 hours per day'}
+    {u'DT': u'Drive-Through'}
+    
+```{r} List amenities and their sums
+```{r}
+
+df_sb_pca %>% count() #number of stores
+
+amenMean <- map_dbl(df_sb_pca,sd)
+amenMean <- sort(amenMean,decreasing = TRUE)
+amenMean <- as.data.frame(amenMean, row.names = rownames(amenMean))
+amenMean
+
+amenSd <- map_dbl(df_sb_pca,sd)
+amenSd <- sort(amenSd,decreasing = TRUE)
+amenSd <- as.data.frame(amenSd, row.names = rownames(amenSd))
+amenSd
+
+amenSums <- map_dbl(df_sb_pca, sum)
+amenSums <- sort(amenSums,decreasing = TRUE)
+amenSums <- as.data.frame(amenSums, row.names = rownames(amenSums))
+amenSums
+
+amenStatsCombined <- cbind(amenSums,amenMean)
+amenStatsCombined <- cbind(amenStatsCombined, amenSd)
+amenStatsCombined
+
+```
+Based on frequency the: 
+ - Top five most common amenities are: LB, WA, LU, DR, XO
+  {"code":"LB","name":"LaBoulange"}
+  {"code":"WA","name":"Oven-warmed Food"}
+  {"code":"LU","name":"Lunch"}
+  {"code":"DR","name":"Digital Rewards"}
+  {"code":"XO","name":"Mobile Order and Pay"}
+
+ - Bottom five least common amenities are: DT, EM, WT, hrs24, FZ
+  {u'DT': u'Drive-Through'}
+  {u'EM': u'Starbucks Evenings'}
+  {u'WT': u'tbd - Walk-T'}
+  {"code":"FZ","name":"Fizzio Handcrafted Sodas"}
+  {u'hrs24': u'Open 24 hours per day'}
+
+In the middle:
+
+    {"code":"CL","name":"Starbucks Reserve-Clover Brewed"},
+    {"code":"WF","name":"Wireless Hotspot"},
+    {"code":"CD","name":"Mobile Payment"},
+    {"code":"GO","name":"Google Wi-Fi"},
+    {"code":"RW","name":"My Starbucks Rewards"},
+    {"code":"PS","name":"Playbook Store System"},
+    {"code":"CS","name":"tbd - Coffee Scale"}
+    {"code":"MX","name":"Music Experience"}
+    {u'VS': u'Verismo'}
+    {u'NB': u'Nitro Cold Brew'}
+    {u'SQ': u'tbd'}
+    {u'BA': u'Bakery'}
+
+Visual EDA: https://jhonasttan.carto.com/viz/69f64b70-a6c8-11e6-8d32-0e233c30368f/public_map 
+[Visual EDA](https://jhonasttan.carto.com/viz/69f64b70-a6c8-11e6-8d32-0e233c30368f/public_map)
+<<--Stop here-->>
+    
+PCA analysis:
+
+```{r}
+plot(df_sb_pca) # meaningless?
+
+fa.parallel(df_sb_pca, #The data in question.
+            fa = "pc", #Display the eigenvalues for PCA.
+            n.iter = 100) #Number of simulated analyses to perform.
+abline(h = 1)
+```
+
+Running PCA for suggested 8 PCs.
+```{r}
+pc_df_sb = principal(df_sb_pca, #The data in question.
+                    nfactors = 8,
+                    rotate = "none") #The number of PCs to extract.
+pc_df_sb
+
+```
+
+Plotting for 8 PC does not provide a clear view of the amenities.
+```{r}
+factor.plot(pc_df_sb,
+            labels = colnames(df_sb_pca)) #Add variable names to the plot.
+
+plot(pc_df_sb$scores)
+```
+
+Running PCA for 3 PCs which account for 42% of the cumulative variance.
+```{r}
+pc_df_sb = principal(df_sb_pca, #The data in question.
+                    nfactors = 3,
+                    rotate = "none") #The number of PCs to extract.
+pc_df_sb
+
+```
+
+Plotting for 3 PC does not provide a clear view of the amenities.
+```{r}
+factor.plot(pc_df_sb,
+            labels = colnames(df_sb_pca)) #Add variable names to the plot.
+
+plot(pc_df_sb$scores)
+
+```
+
+Selecting MX (Music Experience), GO (Google Wi-Fi), WF (Wireless Hotspot), RW (My Starbucks Rewards) for list of stores worth mapping.
+
+
+    {"code":"CL","name":"Starbucks Reserve-Clover Brewed"},
+    {"code":"WA","name":"Oven-warmed Food"},
+    {"code":"WF","name":"Wireless Hotspot"},
+    {"code":"CD","name":"Mobile Payment"},
+    {"code":"DR","name":"Digital Rewards"},
+    {"code":"LB","name":"LaBoulange"},
+    {"code":"GO","name":"Google Wi-Fi"},
+    {"code":"FZ","name":"Fizzio Handcrafted Sodas"},
+    {"code":"XO","name":"Mobile Order and Pay"},
+    {"code":"LU","name":"Lunch"},
+    {"code":"RW","name":"My Starbucks Rewards"},
+    {"code":"PS","name":"Playbook Store System"},
+    {"code":"CS","name":"tbd - Coffee Scale"}
+    {"code":"MX","name":"Music Experience"}
+    {u'VS': u'Verismo'}
+    {u'NB': u'Nitro Cold Brew'}
+    {u'SQ': u'tbd'}
+    {u'EM': u'Starbucks Evenings'}
+    {u'BA': u'Bakery'}
+    {u'WT': u'tbd - Walk-T'}
+    {u'hrs24': u'Open 24 hours per day'}
+    {u'DT': u'Drive-Through'}
+
+
+Multiple Correspondence Analysis instead of PCA
+http://gastonsanchez.com/how-to/2012/10/13/MCA-in-R/ 
+
+```{r}
+
+# load packages
+require(FactoMineR)
+require(ggplot2)
+
+# load data tea
+data(tea)
+
+# select these columns
+newtea = tea[, c("Tea", "How", "how", "sugar", "where", "always")]
+
+# take a peek
+head(newtea)
+
+# number of categories per variable
+cats = apply(newtea, 2, function(x) nlevels(as.factor(x)))
+cats
+
+ameCats = apply(df_sb_pca, 2, function(x) nlevels(as.factor(x)))
+ameCats
+
+# apply MCA
+mca1 = MCA(newtea, graph = FALSE)
+# list of results
+mca1
+
+#convert to factors
+df_sb_pca[] <- lapply( df_sb_pca, factor )
+
+# apply MCA
+mcaAme = MCA(df_sb_pca, graph = FALSE)
+# list of results
+mcaAme
+mcaAme$eig
+
+# data frame with variable coordinates
+mca1_vars_df = data.frame(mcaAme$var$coord, Variable = rep(names(ameCats), ameCats))
+
+# data frame with observation coordinates
+mca1_obs_df = data.frame(mcaAme$ind$coord)
+
+# plot of variable categories
+ggplot(data=mca1_vars_df, 
+       aes(x = Dim.1, y = Dim.2, label = rownames(mca1_vars_df))) +
+ geom_hline(yintercept = 0, colour = "gray70") +
+ geom_vline(xintercept = 0, colour = "gray70") +
+ geom_text(aes(colour=Variable)) +
+ ggtitle("MCA plot of variables using R package FactoMineR")
+
+
+# MCA plot of observations and categories
+ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
+  geom_hline(yintercept = 0, colour = "gray70") +
+  geom_vline(xintercept = 0, colour = "gray70") +
+  geom_point(colour = "gray50", alpha = 0.7) +
+  geom_density2d(colour = "gray80") +
+  geom_text(data = mca1_vars_df, 
+            aes(x = Dim.1, y = Dim.2, 
+                label = rownames(mca1_vars_df), colour = Variable)) +
+  ggtitle("MCA plot of variables using R package FactoMineR") +
+  scale_colour_discrete(name = "Variable")
+
+```
+

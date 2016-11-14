@@ -6,21 +6,90 @@
 # http://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy.item import Item, Field
 
 
 class UserVoiceItem(scrapy.Item):
-    num_rows = scrapy.Field()
-    name = scrapy.Field()
+    gameName = scrapy.Field()
     votes = scrapy.Field()
+    comments = scrapy.Field()
+    in_progress = scrapy.Field()
+
+class WikipediaXB360ExclusiveItem(scrapy.Item):
+    gameName = scrapy.Field()
+    publisher = scrapy.Field()
+    releaseDate = scrapy.Field()
+    exclusiveType = scrapy.Field()
+
+class RemastersItem(scrapy.Item):
+    gameName = scrapy.Field()
+class MetacriticXbox360Item(scrapy.Item):
+    gameName = scrapy.Field()
+    reviewScorePro = scrapy.Field()
+    reviewScoreUser = scrapy.Field()
+
+class WikipediaXB360KinectItem(scrapy.Item):
+    gameName = scrapy.Field()
+    publisher = scrapy.Field()
+    releaseDate = scrapy.Field()
+    kinectRequired = scrapy.Field()
+    kinectSupport = scrapy.Field()
 
 class MajorNelsonItem(scrapy.Item):
-    num_rows = scrapy.Field()
-    release_date = scrapy.Field()
-    movie_link = scrapy.Field()
-    movie_name = scrapy.Field()
-    production_budget = scrapy.Field()
-    domestic_gross = scrapy.Field()
-    worldwide_gross = scrapy.Field()
+    gameName = scrapy.Field()
+    BCCompatible = scrapy.Field()
+
+class XboxOne_MS_Site_Item(scrapy.Item):
+    gameName = scrapy.Field()
+    # gamesOnDemandorArcade = scrapy.Field()
+    gameUrl = scrapy.Field()
+    developer = scrapy.Field()
+    publisher = scrapy.Field()
+    genre = scrapy.Field()
+    highresboxart = scrapy.Field()
+    features = scrapy.Field()
+    onlineFeatures = scrapy.Field()
+    price = scrapy.Field()
+    priceGold = scrapy.Field()
+    dayRecorded = scrapy.Field()
+    releaseDate = scrapy.Field()
+    # ESRBRating = scrapy.Field()
+    xboxRating = scrapy.Field()
+    # Number of Reviews = scrapy.Field()
+    # smartglass = scrapy.Field()
+    # Avatar Items = scrapy.Field()
+    # demos = scrapy.Field()
+    # Game Videos = scrapy.Field()
+    # Game Addons = scrapy.Field()
+    # themes = scrapy.Field()
+    # Gamer Pictures = scrapy.Field()
+    # Content Links = scrapy.Field()
+
+class Xbox360_MS_Site_Item(scrapy.Item):
+    gameName = scrapy.Field()
+    gamesOnDemandorArcade = scrapy.Field()
+    gameUrl = scrapy.Field()
+    developer = scrapy.Field()
+    publisher = scrapy.Field()
+    genre = scrapy.Field()
+    highresboxart = scrapy.Field()
+    features = scrapy.Field()
+    onlineFeatures = scrapy.Field()
+    price = scrapy.Field()
+    priceGold = scrapy.Field()
+    gameCount = scrapy.Field()
+    dayRecorded = scrapy.Field()
+    releaseDate = scrapy.Field()
+    ESRBRating = scrapy.Field()
+    xbox360Rating = scrapy.Field()
+    numberOfReviews = scrapy.Field()
+    DLsmartglass = scrapy.Field()
+    DLavatarItems = scrapy.Field()
+    DLdemos = scrapy.Field()
+    DLgameVideos = scrapy.Field()
+    DLgameAddons = scrapy.Field()
+    DLthemes = scrapy.Field()
+    DLgamerPictures = scrapy.Field()
 
 class MovieItem(scrapy.Item):
     movie_imdb_link = scrapy.Field()
@@ -46,22 +115,6 @@ class MovieItem(scrapy.Item):
     num_facebook_like = scrapy.Field()
     image_urls = scrapy.Field()
     images = scrapy.Field()
-
-
-class MovieBudgetItem(scrapy.Item):
-    num_rows = scrapy.Field()
-    release_date = scrapy.Field()
-    movie_link = scrapy.Field()
-    movie_name = scrapy.Field()
-    production_budget = scrapy.Field()
-    domestic_gross = scrapy.Field()
-    worldwide_gross = scrapy.Field()
-
-
-class ImdbUrlItem(scrapy.Item):
-    movie_name = scrapy.Field()
-    movie_imdb_link = scrapy.Field()
-
 
 class PosterImageItem(scrapy.Item):
     image_urls = scrapy.Field()
