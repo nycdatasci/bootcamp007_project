@@ -26,6 +26,8 @@ usePackage("lettercase")
 usePackage("dplyr")
 usePackage("scales")
 usePackage("RColorBrewer")
+usePackage("flexdashboard")
+usePackage("DT")
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
