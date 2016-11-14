@@ -2,7 +2,6 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 library(DT)
-library()
 
 ## Import and read data
 setwd("~/Documents/bootcamp007_project/Project3-WebScraping/ReganYee/Wayback/")
@@ -216,10 +215,8 @@ g = ggplot(reddit, aes(x=comments_num, y=upvotes))
 g + geom_point()
 
 reddit$comments_num
-reddit[10000,]
 reddit[reddit$comments_num == max(reddit$comments_num),]
 reddit[reddit$upvotes == max(reddit$upvotes),]
-
 
 
 # Upvotes = Subreddit + submit_time

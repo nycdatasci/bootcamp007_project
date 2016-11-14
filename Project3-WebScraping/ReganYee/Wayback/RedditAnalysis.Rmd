@@ -106,7 +106,7 @@ plot_ly (
 comment_analysis1 = reddit %>% 
   group_by(Titles=titles,Subreddit=subreddit) %>% 
   summarize(Ratio = max(signif(comment_ratio, 5))) %>% 
-  arrange(desc(Ratio)) 
+  arrange(desc(Ratio))
 
 datatable(head(comment_analysis1, 8),
           extensions = 'FixedColumns',
@@ -199,6 +199,20 @@ plot_ly(
   )
 ```
 
-## How can I get to the front page?
-
 ## Conclusions
+- Reddit users gravitate towards r/funny, r/pics, r/gifs, r/todayilearned, r/aww, and r/gaming.
+- r/AskReddit is the subreddit that generates the most discussion via the comments.
+- There appears to be a positive trend in upvotes as the days go by in my dataset.
+- The best time to submit content to Reddit to get the most amount of coverage is 13:00 - 19:00 UTC.
+- The posts on reddit are most likely to have the most upvotes from 17:00 - 20:00 UTC.
+
+## Retrospective
+- Scraping Wayback Machine site is only good for sites which have enough snapshots per day.
+- Website layouts change and hence need to be able to handle different tag name changes in the spider.
+- Data became missing at random due to HTTP 429. Would like to find a way to try again for all the items that reach a 429 status.
+
+##
+<div class="centered">
+<font size="+5">Questions?</font>
+</div>
+
