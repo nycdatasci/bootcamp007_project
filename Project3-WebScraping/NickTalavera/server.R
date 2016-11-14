@@ -778,7 +778,8 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     }
-    htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
+    # htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
+    htmlFile = rmarkdown::render(file)
     print(htmlFile)
     shiny::includeHTML(htmlFile)
   })
@@ -791,7 +792,8 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     }
-    htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
+    # htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
+    htmlFile = rmarkdown::render(file)
     print(htmlFile)
     shiny::includeHTML(htmlFile)
   })
