@@ -1,10 +1,9 @@
-# shinyHome
-# Real Estate Analytics and Forecasting
+# Xbox One Backwards Compatability Predictor
 # Nick Talavera
-# Date: October 25, 2016
+# Created on November 14, 2016
 
 # global.R
-rm(list = setdiff(ls(), lsf.str()))
+rm(list = ls())
 ################################################################################
 #                                   FUNCTIONS                                 #
 ################################################################################
@@ -63,8 +62,10 @@ usePackage("flexdashboard")
 
 if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/' 
+  # rmarkdowns = 
 } else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
+  setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/')
 }  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }

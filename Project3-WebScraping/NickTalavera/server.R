@@ -771,10 +771,10 @@ shinyServer(function(input, output, session) {
   )
   
   output$Explanation <- renderUI({
-    shiny::includeMarkdown(rmarkdown::render("../Explanation.Rmd"))
+    shiny::includeMarkdown(rmarkdown::render("./Markdowns/Explanation.Rmd"))
   })
   
   output$AboutMe <- renderUI({
-    shiny::includeMarkdown(rmarkdown::render("../AboutMe.Rmd"))
+    shiny::includeMarkdown(rmarkdown::render("./Markdowns/AboutMe.Rmd"))
   })
 })

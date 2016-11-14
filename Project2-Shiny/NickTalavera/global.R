@@ -8,7 +8,7 @@
 ###############################################################################
 #                         LOAD PACKAGES AND MODULES                          #
 ###############################################################################
-rm(list = setdiff(ls(), lsf.str()))
+rm(list = ls())
 usePackage <- function(p) {
   if (!is.element(p, installed.packages()[,1]))
     install.packages(p, dep = TRUE)
@@ -18,7 +18,7 @@ usePackage <- function(p) {
 #options(RCHART_LIB = 'polycharts')
 usePackage("ggplot2")
 usePackage("plotly")
-# usePackage("rCharts")
+usePackage("rCharts")
 usePackage("shiny")
 usePackage("shinydashboard")
 usePackage("TTR")
