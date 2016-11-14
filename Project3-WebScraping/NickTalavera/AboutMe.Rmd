@@ -4,8 +4,7 @@ runtime: shiny
 output: html_document
 ---
 ## Written By Nick Talavera
-
-Currently looking for opportunities in Data Science.
+###Currently looking for opportunities in Data Science.
 
 [Linkedin](LinkedIn.com/in/NickTalavera)
 
