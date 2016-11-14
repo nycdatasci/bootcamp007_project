@@ -174,8 +174,8 @@ Block Party                 -0.0003188052 0.606769555 0.000000005628263
 Mass Effect 3                3.7046709632 0.003345569 0.075589127053815
 Minecraft: Xbox 360 Edition -3.4431001668 0.224805853 0.372444511014010</code></pre>
 </div>
-<div id="vif" class="section level4">
-<h4>VIF</h4>
+<div id="variance-factors" class="section level4">
+<h4>Variance Factors</h4>
 <pre><code>                          GVIF Df GVIF^(1/(2*Df))
 gamesOnDemandorArcade 1.802576  2        1.158706
 price                 1.326528  1        1.151750
@@ -192,32 +192,39 @@ numberOfReviews       1.929083  1        1.388914
 DLgameAddons          1.132330  1        1.064110
 DLavatarItems         1.453709  1        1.205698
 ESRBRating            1.376910  4        1.040790</code></pre>
-<p>Variance factors are 1 &lt; VIF &lt; 5, and only very slightly correlated.</p>
+<p>Variance factors are slightly more than 1 and thus only slightly correlated.</p>
 </div>
-<div id="confidence-intervals" class="section level4">
-<h4>Confidence Intervals</h4>
-<pre><code>Waiting for profiling to be done...</code></pre>
-<pre><code>                                                2.5 %            97.5 %
-(Intercept)                            -9.18671282072   -4.356688331749
-gamesOnDemandorArcadeGames on Demand   -0.18592428073    2.965161960164
-gamesOnDemandorArcadeRetail Only       -3.12057763201    0.288170130836
-price                                  -0.10102381119   -0.049105418987
-reviewScorePro                          0.01459950057    0.044384720798
-isOnXboxOneTRUE                        -2.23241404639   -0.721468078742
-isMetacriticTRUE                        0.37212896062    1.490030447190
-isKinectRequiredTRUE                 -172.39093024062 -252.061699004957
-isConsoleExclusiveTRUE                  0.50239473448    2.542672852046
-xbox360Rating                           0.54442476202    1.467651714425
-hasDemoAvailableTRUE                    0.24588437436    1.030929235909
-isListedOnMSSiteTRUE                   -2.51406969655   -0.098125308361
-votes                                  -0.00007586330   -0.000017547375
-numberOfReviews                         0.00000158451    0.000008516978
-DLgameAddons                           -0.06211053783   -0.008949554084
-DLavatarItems                           0.00134867643    0.042251381770
-ESRBRatingE10 (Everyone 10+)           -0.86850637403    0.011872149767
-ESRBRatingeC (Early Childhood)                     NA  424.170283625132
-ESRBRatingM (Mature)                   -1.08653228232   -0.147534920585
-ESRBRatingT (Teen)                     -0.76682688870    0.008135958614</code></pre>
+<div id="coefficients" class="section level4">
+<h4>Coefficients</h4>
+<pre><code>                         (Intercept) gamesOnDemandorArcadeGames on Demand 
+                     0.0013279726740                      3.0099840436411 
+    gamesOnDemandorArcadeRetail Only                                price 
+                     0.1920507107084                      0.9282630532734 
+                      reviewScorePro                      isOnXboxOneTRUE 
+                     1.0297037412642                      0.2400422745988 
+                    isMetacriticTRUE                 isKinectRequiredTRUE 
+                     2.4697904687776                      0.0000002689372 
+              isConsoleExclusiveTRUE                        xbox360Rating 
+                     4.5333326413723                      2.7178809446866 
+                hasDemoAvailableTRUE                 isListedOnMSSiteTRUE 
+                     1.8838672196364                      0.2584519681379 
+                               votes                      numberOfReviews 
+                     0.9999574599692                      1.0000046620590 
+                        DLgameAddons                        DLavatarItems 
+                     0.9678867469717                      1.0222958224628 
+        ESRBRatingE10 (Everyone 10+)       ESRBRatingeC (Early Childhood) 
+                     0.6548336185722                      0.0000041319592 
+                ESRBRatingM (Mature)                   ESRBRatingT (Teen) 
+                     0.5421648416164                      0.6855116295489 </code></pre>
+</div>
+<div id="mcfaddens-pseudo-r2-value" class="section level4">
+<h4>McFadden’s Pseudo R^2 Value</h4>
+<pre><code>28.8%</code></pre>
+<p>28.8% of the variability in the backwards compatability set appears to be explained by the predictors in our model</p>
+<!-- #### Confidence Intervals -->
+<!-- ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA, warning=FALSE}  -->
+<!-- confint(glogit.optimizedFoAIC) -->
+<!-- ``` -->
 </div>
 <div id="model-summary" class="section level4">
 <h4>Model Summary</h4>
