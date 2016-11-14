@@ -61,7 +61,7 @@ influencePlot(glogit.optimizedFoAIC, labels = glogit.optimizedFoAIC$data$gameNam
 ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA, warning=FALSE} 
 vif(glogit.optimizedFoAIC)
 ```
-Variance factors are slightly more than 1 and thus only slightly correlated.
+Variance factors are slightly more than 1 which proves the predictors are only slightly correlated but not enough to worry about colinearity.
 
 #### Coefficients
 ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA, warning=FALSE} 
@@ -69,7 +69,7 @@ exp(glogit.optimizedFoAIC$coefficients)
 ```
 
 #### McFadden's Pseudo R^2 Value
-`r paste0(round((1 - glogit.optimizedFoAIC$deviance/glogit.optimizedFoAIC$null.deviance)*100,1),"%")` of the variability in the backwards compatability set appears to be explained by the predictors in our model
+`r paste0(round((1 - glogit.optimizedFoAIC$deviance/glogit.optimizedFoAIC$null.deviance)*100,1),"%")` of the variability in the backwards compatability variable appears to be explained by the predictors in the model.
 
 <!-- #### Confidence Intervals -->
 <!-- ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA, warning=FALSE}  -->
