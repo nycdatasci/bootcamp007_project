@@ -52,6 +52,11 @@ I started by making a subset of the data that was either never going to be backw
 
 Once I had a model, I applied it to the entire dataset. Unfortunately, the truth table marked a much larger value of the true backwards compatable values as false.
 
+#### Influence Plot
+```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA} 
+influencePlot(glogit.optimizedFoAIC, labels = glogit.optimizedFoAIC$data$gameName)
+```
+
 #### Model Summary
 ```{r eval=TRUE, echo=FALSE, comment=NA} 
 summary(glogit.optimizedFoAIC)
@@ -61,6 +66,7 @@ summary(glogit.optimizedFoAIC)
 ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA} 
 table(truth = dataUltKNN$isBCCompatible, prediction = admitted.predicted)/nrow(dataUltKNN)
 ```
+
 
 ## Conclusions
 Metacritic, having a version on Xbox One, a lower price, higher user reviews on Xbox's website, and having a demo are the most significant predictors with Uservoice votes lagging slightly behind. There was also moderate help by having a newer release date, more avatar items, less game add ons and more reviews. Retail only games are also negatively related and has a somewhat significant relation. Also, having a Kinect requirement or required peripherals brought the probablity to zero.

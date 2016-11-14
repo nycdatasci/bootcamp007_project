@@ -102,7 +102,7 @@ scatter.smooth(glogit.optimizedFoAIC$fit,
                ylab = "Deviance Residual Values",
                main = "Residual Plot for\nLogistic Regression of Admission Data")
 abline(h = 0, lty = 2)
-influencePlot(glogit.optimizedFoAIC) #Can still inspect the influence plot.
+influencePlot(glogit.optimizedFoAIC, labels = glogit.optimizedFoAIC$data$gameName) #Can still inspect the influence plot.
 summary(glogit.optimizedFoAIC) #Investigating the overall fit of the model.
 exp(glogit.optimizedFoAIC$coefficients)
 
