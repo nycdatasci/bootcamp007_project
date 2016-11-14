@@ -1,2 +1,0 @@
-scrapy crawl whospider -o listing.csv
-scrapy shell http://www.who.int/countries/arm/en/
