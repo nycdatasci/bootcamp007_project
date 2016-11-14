@@ -33,7 +33,7 @@ moveMe <- function(data, tomove, where = "last", ba = NULL) {
   x
 }
 
-roundUp <- <- function(x, nice=c(1,2,4,5,6,8,10)) {
+roundUp <- function(x, nice=c(1,2,4,5,6,8,10)) {
   if(length(x) != 1) stop("'x' must be of length 1")
   10^floor(log10(x)) * nice[[which(x <= 10^floor(log10(x)) * nice)[[1]]]]
 }
@@ -61,13 +61,12 @@ usePackage("flexdashboard")
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
 
-if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data')) {
-  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data' 
-} else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')) {
-  setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBackCompat')
-  dataLocale = '../Data/'
-}  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox')) {
-  dataLocale = '/home/bc7_ntalavera/Data/Xbox'
+if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/' 
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
+  dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
+}  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
+  dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }
 dataUltKNN  = read.csv(paste0(dataLocale,'dataUltKNN.csv'), stringsAsFactors = TRUE)
 dataUlt = read.csv(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE)
