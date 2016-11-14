@@ -76,12 +76,12 @@ dataUltKNN$releaseDate = as.Date(dataUltKNN$releaseDate)
 dataUlt$X = NULL
 dataUlt$gameName = as.character(dataUltKNN$gameName)
 dataUlt$releaseDate = as.Date(dataUltKNN$releaseDate)
-head(dataUltKNN)
-summary(dataUltKNN) #Looking at the five number summary information.
-sapply(dataUltKNN, sd) #Looking at the individual standard deviations.
-sapply(dataUltKNN, class) #Looking at the variable classes.
-table(dataUltKNN$isBCCompatible)/nrow(dataUltKNN) #Manually calculating the proportions.
-table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see that we have data
+# head(dataUltKNN)
+# summary(dataUltKNN) #Looking at the five number summary information.
+# sapply(dataUltKNN, sd) #Looking at the individual standard deviations.
+# sapply(dataUltKNN, class) #Looking at the variable classes.
+# table(dataUltKNN$isBCCompatible)/nrow(dataUltKNN) #Manually calculating the proportions.
+# table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see that we have data
 #Fitting the logistic regression with all variables; the family parameter
 #specifies the error distribution and link function to be used. For logistic
 #regression, this is binomial.
@@ -95,33 +95,33 @@ glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + price + rev
                               isOnXboxOne + isMetacritic + isKinectRequired + isConsoleExclusive +
                               xbox360Rating + hasDemoAvailable + isListedOnMSSite + votes +
                               numberOfReviews + DLgameAddons + DLavatarItems + ESRBRating, family = "binomial", data = dataUltKNN)
-summary(glogit.optimizedFoAIC)
-class(glogit.optimizedFoAIC)
+# summary(glogit.optimizedFoAIC)
+# class(glogit.optimizedFoAIC)
 # #Residual plot for logistic regression with an added loess smoother; we would
 # #hope that, on average, the residual values are 0.
-scatter.smooth(glogit.optimizedFoAIC$fit,
-               residuals(glogit.optimizedFoAIC, type = "deviance"),
-               lpars = list(col = "red"),
-               xlab = "Fitted Probabilities",
-               ylab = "Deviance Residual Values",
-               main = "Residual Plot for\nLogistic Regression of Admission Data")
-abline(h = 0, lty = 2)
-summary(glogit.optimizedFoAIC)
-exp(glogit.optimizedFoAIC$coefficients)
-influencePlot(glogit.optimizedFoAIC)
-# avPlots(glogit.optimizedFoAIC)
-confint(glogit.optimizedFoAIC)
+# scatter.smooth(glogit.optimizedFoAIC$fit,
+#                residuals(glogit.optimizedFoAIC, type = "deviance"),
+#                lpars = list(col = "red"),
+#                xlab = "Fitted Probabilities",
+#                ylab = "Deviance Residual Values",
+#                main = "Residual Plot for\nLogistic Regression of Admission Data")
+# abline(h = 0, lty = 2)
+# summary(glogit.optimizedFoAIC)
+# exp(glogit.optimizedFoAIC$coefficients)
+# influencePlot(glogit.optimizedFoAIC)
+# # avPlots(glogit.optimizedFoAIC)
+# confint(glogit.optimizedFoAIC)
 
 isBC.predicted = round(glogit.optimizedFoAIC$fitted.values)
 xboxData = cbind(dataUlt,bcGuess = round(glogit.optimizedFoAIC$fitted.values), percentProb = round(glogit.optimizedFoAIC$fitted.values,3)*100)
-xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatible", "bcGuess", "percentProb"), "first")
+# xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatible", "bcGuess", "percentProb"), "first")
 # #Comparing the true values to the predicted values:
-table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted)/nrow(dataUltKNN)
+# table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted)/nrow(dataUltKNN)
 
-pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.tail = FALSE)
+# pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.tail = FALSE)
 # #The p-value for the overall test of deviance is <.05, indicating that this model
 # #is not a good overall fit!
 
-table(dataUltKNN$isBCCompatible)
-table(isBC.predicted)
-table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted)
+# table(dataUltKNN$isBCCompatible)
+# table(isBC.predicted)
+# table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted)
