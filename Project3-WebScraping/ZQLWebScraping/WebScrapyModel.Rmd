@@ -1,0 +1,55 @@
+---
+title: "Project3WebScrapying"
+author: "ZQL"
+date: "11/14/2016"
+output: html_document
+---
+
+## Data Loading Airbnb
+```{r}
+airbnb <- read.csv("~/Downloads/airbnb_final.csv")    
+head(airbnb)
+
+
+```
+
+## Data Loading TripAdvisor
+```{r}
+tripadvisor <-
+  read.csv("~/Downloads/tripadvisor_final.csv") 
+head(tripadvisor)
+
+```
+
+## Multiple Linear Model with Airbnb 
+
+```{r}
+  drops_model_a <- c("X",
+                "instant_book",
+                "tax",
+                "host_id",
+                "hosting_id",
+                "url",
+                "nightly_price",
+                "lon",
+                "lat")
+airbnb_model <- airbnb[,!(names(airbnb) %in% drops_model_a)]
+model.airbnb = lm(price~ ., data = airbnb_model)
+summary(model.airbnb)
+```
+
+## Moltiple Linear Regression with TripAdvisor based on the Max Price
+```{r}
+drops_model_t <- c("hotel_name",
+                   "address",
+                   "review_tag",
+                   "price_high")
+tripadvisor_model <- tripadvisor[,!(names(tripadvisor) %in% drops_model_t)]
+model.tripadvisor_low = lm(price_low~ ., data = tripadvisor_model)
+summary(model.tripadvisor_low)
+
+#model.tripadvisor_high = lm(price_high~ ., data = tripadvisor_model)
+#summary(model.tripadvisor_high)
+```
+
+
