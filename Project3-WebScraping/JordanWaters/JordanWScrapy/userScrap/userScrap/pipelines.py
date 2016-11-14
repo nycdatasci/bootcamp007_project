@@ -18,10 +18,10 @@ class ValidateItemPipeline(object):
 class WriteItemPipeline(object):
 
     def __init__(self):
-        self.filename = 'reviews.csv'
+        self.filename = 'userReviews.csv'
 
     def open_spider(self, spider):
-        self.csvfile = open(self.filename, 'wb')
+        self.csvfile = open(self.filename, 'w')
         self.exporter = CsvItemExporter(self.csvfile)
         self.exporter.start_exporting()
 
