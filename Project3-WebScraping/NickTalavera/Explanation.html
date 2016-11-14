@@ -156,7 +156,7 @@ names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Wa
 </div>
 <div id="missing-values" class="section level2">
 <h2>Missing values</h2>
-<p>As I got toward the end of polishing, I realized I was still missing quite a few data points. I went back through my scrapers and grabbed even more information so I could fill in missing spots. However, that still left many missing values. There are 4128 missing values out of 62220 values (6.6%) though some are less important than others, because I found later that I would not be needing them (developers). This results in missingness, which occurs when at least some of an observation’s values are not present within the dataset. This messes up statistical and machine techniques because the algorithm won’t understand how to crunch the numbers. Deleting games with a missing value doesn’t help because it severely limits the amount of data we have for analysis. In this problem, we would lose 499 out of 1843 lines of data.</p>
+<p>As I got toward the end of polishing, I realized I was still missing quite a few data points. I went back through my scrapers and grabbed even more information so I could fill in missing spots. However, that still left many missing values. There are 4128 missing values out of 66348 values (6.2%) though some are less important than others, because I found later that I would not be needing them (developers). This results in missingness, which occurs when at least some of an observation’s values are not present within the dataset. This messes up statistical and machine techniques because the algorithm won’t understand how to crunch the numbers. Deleting games with a missing value doesn’t help because it severely limits the amount of data we have for analysis. In this problem, we would lose 499 out of 1843 lines of data.</p>
 <div id="imputation" class="section level4">
 <h4>Imputation</h4>
 <p>To solve this, we use imputation to fill in the missing values. There isn’t a linear pattern to fill in the numerical values and it would be inappropriate to assign an average score where review scores are missing. I used K nearest neeighbors (KNN) to fill in missing values. KNN makes a tesselated boundary using existing data points and judges where in the boundary the missing point is. The formula uses the K closest observations to the missing data point, and predicts the majority class as the outcome. I used the square root of the number of rows (42.9) as a K value to strike a balance of being robust to outliers, stable boundaries and local variations.</p>
@@ -192,7 +192,7 @@ numberOfReviews       1.929083  1        1.388914
 DLgameAddons          1.132330  1        1.064110
 DLavatarItems         1.453709  1        1.205698
 ESRBRating            1.376910  4        1.040790</code></pre>
-<p>Variance factors are slightly more than 1 and thus only slightly correlated.</p>
+<p>Variance factors are slightly more than 1 which proves the predictors are only slightly correlated but not enough to worry about colinearity.</p>
 </div>
 <div id="coefficients" class="section level4">
 <h4>Coefficients</h4>
@@ -219,8 +219,7 @@ ESRBRating            1.376910  4        1.040790</code></pre>
 </div>
 <div id="mcfaddens-pseudo-r2-value" class="section level4">
 <h4>McFadden’s Pseudo R^2 Value</h4>
-<pre><code>28.8%</code></pre>
-<p>28.8% of the variability in the backwards compatability set appears to be explained by the predictors in our model</p>
+<p>28.8% of the variability in the backwards compatability variable appears to be explained by the predictors in the model.</p>
 <!-- #### Confidence Intervals -->
 <!-- ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA, warning=FALSE}  -->
 <!-- confint(glogit.optimizedFoAIC) -->
