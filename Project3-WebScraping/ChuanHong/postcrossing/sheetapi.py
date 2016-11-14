@@ -1,7 +1,6 @@
 from __future__ import print_function
 import sys
 sys.path.append('./')
-sys.path.append('/Users/chuan/anaconda/lib/python2.7/site-packages')
 import httplib2
 import os
 
