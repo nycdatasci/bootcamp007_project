@@ -1,0 +1,135 @@
+---
+title: Quotes EDA
+author: "Joshua Litven"
+date: "11/10/2016"
+output: html_document
+---
+
+* Goal: Explore quotes of historical figures *
+
+In this EDA we want to find the sentiments characteristic of different occupations, geographical locations and
+times.
+
+We will use term frequency inverse document frequency (TF-IDF) to distinguish between groups.
+
+```{r setup, include=FALSE}
+# knitr options
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+
+# Required libraries
+library(dplyr)
+library(tidytext)
+require(ggplot2)
+library(ggstance)
+library(viridis)
+library(ggthemes)
+```
+
+The data used for this project: 
+quotes.csv - a file scraped from brainyquotes.com containing quotes of historical figures
+pantheon.csv - from the pantheon website, see https://pantheon.media.mit.edu
+
+```{r loading data, cache=TRUE}
+# Load in the quotes data set
+setwd('~/Courses/nyc_data_science_academy/projects/web_scraping/data/cleaned_data')
+quotes = read.csv('quotes.csv', stringsAsFactors=FALSE)
+```
+
+First we will clean the data
+```{r clean, eval=FALSE }
+quotes = quotes  %>% filter(author != "Lot", author !="Job", author!="Hide")
+write.csv(quotes, 'quotes.csv')
+```
+
+```{r merge, cache=TRUE}
+# Merge with pantheon
+pantheon = read.csv('pantheon.csv', stringsAsFactors=FALSE)
+
+quotes = merge(pantheon, quotes, by.x="name", by.y="author")
+
+# Select columns we care about
+quotes = quotes %>% 
+  select(name, countryCode, continentName, birthyear, gender, occupation, industry, domain,
+         body, century)
+```
+
+After loading the data, we can get the list of words using tidytext's "unnest_token" function
+```{r, cache=FALSE}
+# Get a list of words
+words = quotes %>% unnest_tokens(word, body)
+```
+
+Now we can break up quotes into different categories to compare them.
+```{r cache=TRUE}
+facet_plot_tf_idf = function(group, levels_to_plot=character()){
+
+  if(length(levels_to_plot)==0){
+    levels_to_plot = unique(words[, group])
+  }
+  # Group words to get the counts for each group
+  criteria <- lazyeval::interp(~x %in% vals, .values = list(x = as.name(group),
+                                                            vals = levels_to_plot))
+  words_by_group = words %>% 
+    filter_(criteria) %>% 
+    group_by_(group) %>% 
+    count(word, sort=TRUE) %>%
+    ungroup()
+  
+  # Combine with the total number of words in each group
+  total_words = words_by_group %>% group_by_(group) %>% summarise(total = sum(n))
+  words_by_group = left_join(words_by_group, total_words)
+  
+  # Get the TF-IDF scores of each word
+  words_by_group = words_by_group %>% bind_tf_idf_(term_col="word", document_col=group, n_col="n")
+  
+  # Set words to factor and order by TF_IDF scores
+  words_by_group =
+    words_by_group %>%
+    arrange(desc(tf_idf)) %>%
+    mutate(word = factor(word, levels = rev(unique(word))))
+  
+  # Plot the top words for each group
+  num_words = 10
+  top_words_by_group = 
+    words_by_group %>% 
+    group_by_(group) %>% 
+    top_n(num_words) %>% 
+    ungroup
+  
+  ggplot(top_words_by_group, aes_string("tf_idf", "word", fill = group, alpha = "tf_idf")) +
+    geom_barh(stat = "identity", show.legend = FALSE) +
+    labs(title = paste("Highest TF-IDF Words by", group),
+         y = NULL, x = "TF-IDF Scores") +
+    facet_wrap(as.formula(paste("~", group)), ncol = 2, scales = "free") +
+    theme_tufte(base_family = "Arial", base_size = 16, ticks = FALSE) +
+    scale_alpha_continuous(range = c(0.6, 1)) +
+    scale_x_continuous(expand=c(0,0)) +
+    scale_fill_viridis(end = 0.85, discrete=TRUE) +
+    theme(strip.text=element_text(hjust=0)) +
+    theme(strip.text = element_text(face = "italic")) +
+    theme(axis.text.x=element_blank())
+}
+```
+
+View Plots of Gender, Domain, East vs. West, and millenium
+```{r gender, fig.width=10, fig.height=6}
+# Plot by Gender
+facet_plot_tf_idf("gender")
+```
+
+```{r domain, fig.width=10, fig.height=8}
+# Plot by Domain
+facet_plot_tf_idf("domain")
+```
+
+
+```{r location, fig.width=10, fig.height=20}
+# Plot by East vs West
+facet_plot_tf_idf("continentName")
+```
+
+```{r time, fig.width=10, fig.height=20}
+# Plot by East vs West
+facet_plot_tf_idf("century")
+```
+

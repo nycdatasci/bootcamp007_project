@@ -1,0 +1,457 @@
+---
+title: "Assets Correlations"
+author: "Connie Zhang"
+date: "November 13, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+                                      OverView 
+
+1 Compare some mutual funds with typical investment theme: growth, dividend and balance.
+2.Compare some mutual funds with specialty industries
+3.compare some bond mutual funds: long-, intermeidate-, and short-terms.
+
+                                     Data
+
+The data was collected from finance.yahoo.com and morningstar.com. 
+The following mutual fund data are used for this project:
+
+  Name:                                                        Expense:
+  VFINX  --  500 index Fund                                      0.16%
+  VMRGX -- large- and mid- cap growth in US companies            0.40%
+  VDEQX --  fund of fund: growth and income                      0.40%
+  VDIGX --    fun for income                                     0.33%
+  VGENX -- energy fund                                           0.37%
+  VGHCX  -- healthcare fund                                      0.36%
+  VGSLX -- REIT real estate trust fund                           0.12%
+  VBLTX  - long-term bond index fund                             0.16%
+  VBIIX - intermediate-term bond index fund                      0.16%
+  VBISX -- short-term bond index fund                            0.16%
+  
+Monthly, Quarterly and Annual data has been collected through scraping those website.
+
+
+                                     
+````{r   }
+library(zoo)
+library(dplyr)
+library(varhandle)
+library(dygraphs)
+library(scales)
+library(ggplot2)
+library(zoo)
+library(xts)
+# load data into R from '~/AssetCorrelations/data
+# first s&p 500 index fund VFINX for annual and quartly
+VFINX_Q = read.table('~/AssetCorrelations/data/VFINX_QY_Data.txt')
+VFINX_Q = (VFINX_Q %>% arrange(V1))[-42,]  # cleanup the header
+VFINX_Q = VFINX_Q[-1,]      # clean up the beginning year due to missing
+colnames(VFINX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VFINX_A = read.table('~/AssetCorrelations/data/VFINX_Annual_Data.txt')
+VFINX_A = (VFINX_A%>% arrange(V1))[-42,]
+VFINX_A = VFINX_A[-1,]
+VFINX_A = VFINX_A[-40,]
+colnames(VFINX_A) = c('year','VFINX','Categ')
+VFINX_M = read.table('~/AssetCorrelations/data/VFINX_M_Data.txt')
+colnames(VFINX_M) = c('year12-16', 'VFINX','SP500','Cat')
+
+#load VMRGX growth for mid-and large- cap
+VMRGX_Q = read.table('~/AssetCorrelations/data/VMRGX_QY_Data.txt')
+VMRGX_Q = (VMRGX_Q %>% arrange(V1))[-49,]  # cleanup the header
+
+colnames(VMRGX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VMRGX_A = read.table('~/AssetCorrelations/data/VMRGX_Annual_Data.txt')
+VMRGX_A = (VMRGX_A%>% arrange(V1))[-49,]
+VMRGX_A = VMRGX_A[-48,]
+
+colnames(VMRGX_A) = c('year','VMRGX','Categ')
+VMRGX_M = read.table('~/AssetCorrelations/data/VMRGX_M_Data.txt')
+colnames(VMRGX_M) = c('year12-16', 'VMRGX','SP500','Cat')
+
+# load VDEQX fund of funds for growth and income
+VDEQX_Q = read.table('~/AssetCorrelations/data/VDEQX_QY_Data.txt')
+VDEQX_Q = (VDEQX_Q %>% arrange(V1))[-13,]  # cleanup the header
+VDEQX_Q = VDEQX_Q[-1,]
+colnames(VDEQX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+
+VDEQX_A = read.table('~/AssetCorrelations/data/VDEQX_Annual_Data.txt')
+VDEQX_A = (VDEQX_A%>% arrange(V1))[-13,]
+VDEQX_A = VDEQX_A[-12,]
+VDEQX_A = VDEQX_A[-1,]
+
+colnames(VDEQX_A) = c('year','VDEQX','Categ')
+VDEQX_M = read.table('~/AssetCorrelations/data/VDEQX_M_Data.txt')
+colnames(VDEQX_M) = c('year12-16', 'VDEQX','SP500','Cat')
+
+#load VDIGX income fund
+VDIGX_Q = read.table('~/AssetCorrelations/data/VDIGX_QY_Data.txt')
+VDIGX_Q = (VDIGX_Q %>% arrange(V1))[-26,]  # cleanup the header
+VDIGX_Q = VDIGX_Q[-1,]
+colnames(VDIGX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+
+VDIGX_A = read.table('~/AssetCorrelations/data/VDIGX_Annual_Data.txt')
+VDIGX_A = (VDIGX_A%>% arrange(V1))[-26,]
+VDIGX_A = VDIGX_A[-25,]
+VDIGX_A = filter(VDIGX_A, V2 != 'N/A')
+colnames(VDIGX_A) = c('year','VDIGX','Categ')
+
+VDIGX_M = read.table('~/AssetCorrelations/data/VDIGX_M_Data.txt')
+colnames(VDIGX_M) = c('year12-16', 'VDIGX','SP500','Cat')
+
+#load specialty funds:
+#VGENX  energy fund
+VGENX_Q = read.table('~/AssetCorrelations/data/VGENX_QY_Data.txt')
+lastRow = nrow(VGENX_Q)
+VGENX_Q = (VGENX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+VGENX_Q = VGENX_Q[-1,]
+colnames(VGENX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VGENX_A = read.table('~/AssetCorrelations/data/VGENX_Annual_Data.txt')
+lastRow = nrow(VGENX_A)
+VGENX_A = (VGENX_A%>% arrange(V1))[-lastRow,]
+VGENX_A = VGENX_A %>% filter(V2 != 'N/A')
+
+colnames(VGENX_A) = c('year','VGENX','Categ')
+
+VGENX_M = read.table('~/AssetCorrelations/data/VGENX_M_Data.txt')
+colnames(VGENX_M) = c('year12-16', 'VGENX','SP500','Cat')
+
+#VGHCX healthcare fund
+VGHCX_Q = read.table('~/AssetCorrelations/data/VGHCX_QY_Data.txt')
+lastRow = nrow(VGHCX_Q)
+VGHCX_Q = (VGHCX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+VGHCX_Q = VGHCX_Q[-1,]
+colnames(VGHCX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VGHCX_A = read.table('~/AssetCorrelations/data/VGHCX_Annual_Data.txt')
+lastRow = nrow(VGHCX_A)
+VGHCX_A = (VGHCX_A%>% arrange(V1))[-lastRow,]
+VGHCX_A = VGHCX_A %>% filter(V2 != 'N/A')
+colnames(VGHCX_A) = c('year','VGHCX','Categ')
+
+VGHCX_M = read.table('~/AssetCorrelations/data/VGHCX_M_Data.txt')
+colnames(VGHCX_M) = c('year12-16', 'VGHCX','SP500','Cat')
+
+# VGSLX REIT real estate trust fund
+VGSLX_Q = read.table('~/AssetCorrelations/data/VGSLX_QY_Data.txt')
+lastRow = nrow(VGSLX_Q)
+VGSLX_Q = (VGSLX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+colnames(VGSLX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+
+VGSLX_A = read.table('~/AssetCorrelations/data/VGSLX_Annual_Data.txt')
+lastRow = nrow(VGSLX_A)
+VGSLX_A = (VGSLX_A%>% arrange(V1))[-lastRow,]
+VGSLX_A = VGSLX_A %>% filter(V2 != 'N/A')
+colnames(VGSLX_A) = c('year','VGSLX','Categ')
+
+VGSLX_M = read.table('~/AssetCorrelations/data/VGSLX_M_Data.txt')
+colnames(VGSLX_M) = c('year12-16', 'VGSLX','SP500','Cat')
+
+# load VSEQX  growth of small- and mid- cap
+VSEQX_Q = read.table('~/AssetCorrelations/data/VSEQX_QY_Data.txt')
+lastRow = nrow(VSEQX_Q)
+VSEQX_Q = (VSEQX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+VSEQX_Q = VSEQX_Q[-1,]
+colnames(VSEQX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VSEQX_A = read.table('~/AssetCorrelations/data/VSEQX_Annual_Data.txt')
+lastRow = nrow(VSEQX_A)
+VSEQX_A = (VSEQX_A%>% arrange(V1))[-lastRow,]
+VSEQX_A = VSEQX_A %>% filter(V2 != 'N/A')
+colnames(VSEQX_A) = c('year','VSEQX','Categ')
+
+VSEQX_M = read.table('~/AssetCorrelations/data/VSEQX_M_Data.txt')
+colnames(VSEQX_M) = c('year12-16', 'VSEQX','SP500','Cat')
+
+#load VBLTX long-term bond index
+VBLTX_Q = read.table('~/AssetCorrelations/data/VBLTX_QY_Data.txt')
+lastRow = nrow(VBLTX_Q)
+VBLTX_Q = (VBLTX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+VBLTX_Q = VBLTX_Q[-1,]
+colnames(VBLTX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VBLTX_A = read.table('~/AssetCorrelations/data/VBLTX_Annual_Data.txt')
+lastRow = nrow(VBLTX_A)
+VBLTX_A = (VBLTX_A%>% arrange(V1))[-lastRow,]
+VBLTX_A = VBLTX_A %>% filter(V2 != 'N/A')
+colnames(VBLTX_A) = c('year','VBLTX','Categ')
+
+VBLTX_M = read.table('~/AssetCorrelations/data/VBLTX_M_Data.txt')
+colnames(VBLTX_M) = c('year12-16', 'VBLTX','SP500','Cat')
+
+#load VBIIX intermediate-term Bond index
+VBIIX_Q = read.table('~/AssetCorrelations/data/VBIIX_QY_Data.txt')
+lastRow = nrow(VBIIX_Q)
+VBIIX_Q = (VBIIX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+VBIIX_Q = VBIIX_Q[-1,]
+colnames(VBIIX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VBIIX_A = read.table('~/AssetCorrelations/data/VBIIX_Annual_Data.txt')
+lastRow = nrow(VBIIX_A)
+VBIIX_A = (VBIIX_A%>% arrange(V1))[-lastRow,]
+VBIIX_A = VBIIX_A %>% filter(V2 != 'N/A')
+colnames(VBIIX_A) = c('year','VBIIX','Categ')
+
+VBIIX_M = read.table('~/AssetCorrelations/data/VBIIX_M_Data.txt')
+colnames(VBIIX_M) = c('year12-16', 'VBIIX','SP500','Cat')
+
+#load VBISX short-term Bond index
+VBISX_Q = read.table('~/AssetCorrelations/data/VBISX_QY_Data.txt')
+lastRow = nrow(VBISX_Q)
+VBISX_Q = (VBISX_Q %>% arrange(V1))[-lastRow,]  # cleanup the header
+VBISX_Q = VBISX_Q[-1,]
+colnames(VBISX_Q) = c('Year','Q1','Q2','Q3','Q4')  ## add col names
+VBISX_A = read.table('~/AssetCorrelations/data/VBISX_Annual_Data.txt')
+lastRow = nrow(VBISX_A)
+VBISX_A = (VBISX_A%>% arrange(V1))[-lastRow,]
+VBISX_A = VBISX_A %>% filter(V2 != 'N/A')
+colnames(VBISX_A) = c('year','VBISX','Categ')
+
+VBISX_M = read.table('~/AssetCorrelations/data/VBISX_M_Data.txt')
+colnames(VBISX_M) = c('year12-16', 'VBISX','SP500','Cat')
+
+## build time series for Quartly, Annual and monthly
+QName = data.frame()
+QTemp = data.frame()
+
+build_ts = function(QName,startY, freq){
+       QTemp = t(QName)
+       QTempV = c(QTemp[-1, ])
+       QTempV = QTempV[1:length(QTempV) - 1]
+
+       QTempV = as.numeric(gsub("%","",QTempV,fixed=TRUE)) *.01
+       
+    return(ts(QTempV, start=c(startY, 1), frequency = freq))
+}
+StartY = unfactor(VDEQX_Q[[1]][1])
+VDEQX_Q_ts = build_ts(VDEQX_Q,StartY,4)
+ATemp = unfactor(VDEQX_A$VDEQX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VDEQX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VDEQX_M$VDEQX * 0.01
+VDEQX_M_ts = ts(ATempM,2012, frequency = 12)
+VDEQX_tsList = list(VDEQX_M_ts, VDEQX_Q_ts, VDEQX_A_ts)
+
+StartY = unfactor(VFINX_Q[[1]][1])
+VFINX_Q_ts = build_ts(VFINX_Q,StartY, 4 )
+ATemp = unfactor(VFINX_A$VFINX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VFINX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VFINX_M$VFINX * 0.01
+VFINX_M_ts = ts(ATempM,2012, frequency = 12)
+VFINX_tsList = list(VFINX_M_ts, VFINX_Q_ts, VFINX_A_ts)
+
+StartY = unfactor(VMRGX_Q[[1]][1])
+VMRGX_Q_ts = build_ts(VMRGX_Q,StartY, 4)
+ATemp = unfactor(VMRGX_A$VMRGX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VMRGX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VMRGX_M$VMRGX * 0.01
+VMRGX_M_ts = ts(ATempM,2012, frequency = 12)
+VMRGX_tsList = list(VMRGX_M_ts, VMRGX_Q_ts, VMRGX_A_ts)
+
+StartY = unfactor(VDIGX_Q[[1]][1])
+VDIGX_Q_ts = build_ts(VDIGX_Q,StartY, 4)
+ATemp = unfactor(VDIGX_A$VDIGX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VDIGX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VDIGX_M$VDIGX * 0.01
+VDIGX_M_ts = ts(ATempM,2012, frequency = 12)
+VDIGX_tsList = list(VDIGX_M_ts, VDIGX_Q_ts, VDIGX_A_ts)
+
+StartY = unfactor(VGENX_Q[[1]][1])
+VGENX_Q_ts = build_ts(VGENX_Q,StartY, 4)
+ATemp = unfactor(VGENX_A$VGENX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VGENX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VGENX_M$VGENX * 0.01
+VGENX_M_ts = ts(ATempM,2012, frequency = 12)
+VGENX_tsList = list(VGENX_M_ts, VGENX_Q_ts, VGENX_A_ts)
+
+StartY = unfactor(VGHCX_Q[[1]][1])
+VGHCX_Q_ts = build_ts(VGHCX_Q,StartY, 4)
+ATemp = unfactor(VGHCX_A$VGHCX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VGHCX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VGHCX_M$VGHCX * 0.01
+VGHCX_M_ts = ts(ATempM,2012, frequency = 12)
+VGHCX_tsList = list(VGHCX_M_ts, VGHCX_Q_ts, VGHCX_A_ts)
+
+StartY = unfactor(VGSLX_Q[[1]][1])
+VGSLX_Q_ts = build_ts(VGSLX_Q,StartY, 4)
+ATemp = unfactor(VGSLX_A$VGSLX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VGSLX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VGSLX_M$VGSLX * 0.01
+VGSLX_M_ts = ts(ATempM,2012, frequency = 12)
+VGSLX_tsList = list(VGSLX_M_ts, VGSLX_Q_ts, VGSLX_A_ts)
+
+StartY = unfactor(VBLTX_Q[[1]][1])
+VBLTX_Q_ts = build_ts(VBLTX_Q,StartY, 4)
+ATemp = unfactor(VBLTX_A$VBLTX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VBLTX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VBLTX_M$VBLTX * 0.01
+VBLTX_M_ts = ts(ATempM,2012, frequency = 12)
+VBLTX_tsList = list(VBLTX_M_ts, VBLTX_Q_ts, VBLTX_A_ts)
+
+StartY = unfactor(VBIIX_Q[[1]][1])
+VBIIX_Q_ts = build_ts(VBIIX_Q,StartY, 4)
+ATemp = unfactor(VBIIX_A$VBIIX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VBIIX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VBIIX_M$VBIIX * 0.01
+VBIIX_M_ts = ts(ATempM,2012, frequency = 12)
+VBIIX_tsList = list(VBIIX_M_ts, VBIIX_Q_ts, VBIIX_A_ts)
+
+StartY = unfactor(VBISX_Q[[1]][1])
+VBISX_Q_ts = build_ts(VBISX_Q,StartY, 4)
+ATemp = unfactor(VBISX_A$VBISX)
+ATemp = as.numeric(gsub("%","",ATemp,fixed=TRUE)) *.01
+VBISX_A_ts = ts(ATemp,StartY, frequency = 1)
+ATempM = VBISX_M$VBISX * 0.01
+VBISX_M_ts = ts(ATempM,2012, frequency = 12)
+VBISX_tsList = list(VBISX_M_ts, VBISX_Q_ts, VBISX_A_ts)
+`````
+                   The results
+ 
+```{r   }
+# for large cap fund comparesion of the return
+VMRGXQ = window(VMRGX_Q_ts, start =2006, end = 2016)
+VDEQXQ = window(VDEQX_Q_ts, start = 2006, end = 2016)
+VDIGXQ = window(VDIGX_Q_ts, start = 2006, end = 2016)
+## baseline
+VFINXQ = window(VFINX_Q_ts, start = 2006, end = 2016)
+## specialty funds
+VGENXQ = window(VGENX_Q_ts, start = 2006, end = 2016)
+VGHCXQ = window(VGHCX_Q_ts, start = 2006, end = 2016)
+VGSLXQ = window(VGSLX_Q_ts, start = 2006, end = 2016)
+## bond funds
+VBLTXQ = window(VBLTX_Q_ts, start = 2006, end = 2016)
+VBIIXQ = window(VBIIX_Q_ts, start = 2006, end = 2016)
+VBISXQ = window(VBISX_Q_ts, start = 2006, end = 2016)
+## Annual Returns
+VMRGXA = window(VMRGX_A_ts, start =2006, end = 2015)
+VDEQXA = window(VDEQX_A_ts, start = 2006, end = 2015)
+VDIGXA = window(VDIGX_A_ts, start = 2006, end = 2015)
+## baseline
+VFINXA = window(VFINX_A_ts, start = 2006, end = 2015)
+## specialty funds
+VGENXA = window(VGENX_A_ts, start = 2006, end = 2015)
+VGHCXA = window(VGHCX_A_ts, start = 2006, end = 2015)
+VGSLXA = window(VGSLX_A_ts, start = 2006, end = 2015)
+## bond funds
+VBLTXA = window(VBLTX_A_ts, start = 2006, end = 2015)
+VBIIXA = window(VBIIX_A_ts, start = 2006, end = 2015)
+VBISXA = window(VBISX_A_ts, start = 2006, end = 2015)
+
+
+
+```
+
+               Growth, Dividend, Balance vs Index Fund Quartly Return
+``````{r  }
+LargeCapQReturn = cbind(VFINXQ,VMRGXQ,VDEQXQ,VDIGXQ )
+dygraph(LargeCapQReturn)
+
+```
+
+                  
+              Growth, Dividend, Balance vs Index Fund Annual Return
+`````{r  }
+LargCapAReturn = cbind(VFINXA= as.xts(VFINXA),VMRGXA=as.xts(VMRGXA),
+                       VDEQXA= as.xts(VDEQXA),VDIGXA = as.xts(VDIGXA))
+dygraph(LargCapAReturn)
+``````
+
+             Specialty Funds vs Index Funds Quartly Return
+```{r}
+SpecialtyQReturn = cbind(VFINXQ,VGENXQ,VGHCXQ, VGSLXQ)
+dygraph(SpecialtyQReturn)
+```
+
+             Specialty Funds vs Index Funds Annual Return
+````{r  }
+SpecialtyAReturn = cbind(VFINXA= as.xts(VFINXA),VGENXA =as.xts(VGENXA),
+                         VGHCXA = as.xts(VGHCXA), VGSLXA = as.xts(VGSLXA))
+dygraph(SpecialtyAReturn)
+````
+
+
+            Bond Fund vs Index Fund Quartly
+```{r  }
+BondQReturn = cbind(VFINXQ,VBLTXQ,VBIIXQ,VBISXQ )
+dygraph(BondQReturn)
+
+BondAReturn = cbind(VFINXA = as.xts(VFINXA),VBLTXA = as.xts(VBLTXA),
+                    VBIIXA = as.xts(VBIIXA),VBISXA = as.xts(VBISXA))
+dygraph(BondAReturn)
+```
+
+            The correlations of the returns vs Index Funds
+````{r }
+
+df = data.frame(VFINXQ, VMRGXQ)
+
+````
+
+````{r  }
+dfa = data.frame(VFINXA,VMRGXA)
+
+VMRGXBaseline =rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+VMRGXB = ts(VMRGXBaseline,start=2009, frequency = 4)
+
+
+df = data.frame(VFINXQ,VDEQXQ )
+VDEQXQBaseline =rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+VDEQXQB = ts(VDEQXQBaseline, start=2009, frequency = 4)
+
+df = data.frame(VFINXQ,VDIGXQ)
+VDIGXQBaseline= rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+VDIGXQB = ts(VDIGXQBaseline,start=2009, frequency = 4)
+
+
+LargCapQCorr = cbind(VMRGXB,VDEQXQB,VDIGXQB)
+dygraph(LargCapQCorr)
+```
+
+               Specialty Funds Correlations vs Index Fund
+
+````````{r  }
+df = data.frame(VFINXQ,VGENXQ)
+VGENXQBaseline= rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+VGENXQB = ts(VGENXQBaseline,start=2009, frequency = 4)
+
+df = data.frame(VFINXQ,VGHCXQ)
+VGHCXQBaseline= rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+VGHCXQB = ts(VGHCXQBaseline,start=2009, frequency = 4)
+
+
+df = data.frame(VFINXQ,VGSLXQ)
+VGSLXQBaseline= rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+VGSLXQB = ts(VGSLXQBaseline,start=2009, frequency = 4)
+SpecialtyQcorr = cbind(VGENXQB, VGHCXQB,VGSLXQB)
+dygraph(SpecialtyQcorr)
+
+``````
+                          Bond Correlations
+
+``````{r }
+df = data.frame(VBLTXQ,VBIIXQ)
+BondLI= rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+BondLI = ts(BondLI,start=2009, frequency = 4)
+
+df = data.frame(VBLTXQ,VBISXQ)
+bondLS= rollapply(df, 4, function(x) cor(x[,1],x[,2]),by.column = FALSE)
+bondLS = ts(bondLS,start=2009, frequency = 4)
+
+BondQCorr = cbind(BondLI,bondLS )
+
+dygraph(BondQCorr)
+
+````````
+
+                              Conclusion
+1. Returns of growth, balance, devidend is highly correlated with Index.
+2. Returns of Specialty funds have lower correlation with index compared with the funds in the first group.
+3. Short-term bond has lower correlation with long-term compared with intermediate-term bond.
+4. After counting the fund expense, the index fund might have chance to outperform overtime.
+

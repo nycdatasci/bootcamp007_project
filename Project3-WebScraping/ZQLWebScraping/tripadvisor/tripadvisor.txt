@@ -1,0 +1,94 @@
+price_range,location,address
+"
+$102 - $156 (Based on Average Rates for a Standard Room)
+",,32826-2706 12101 Challenger Pkwy
+"
+$151 - $373 (Based on Average Rates for a Standard Room)
+",,"9801 International Drive, Orlando, FL 32819-8104"
+"
+$113 - $276 (Based on Average Rates for a Standard Room)
+",,"8745 International Drive, Orlando, FL 32819-9318"
+"
+$581 - $990 (Based on Average Rates for a Standard Room)
+",,32830-8413 4600 North World Drive
+"
+$115 - $198 (Based on Average Rates for a Standard Room)
+",,"3450 Quadrangle Blvd, Orlando, FL 32817-1492"
+"
+$169 - $363 (Based on Average Rates for a Standard Room)
+",,"14100 Bonnet Creek Resort Lane, Orlando, FL 32821-4023"
+"
+$179 - $394 (Based on Average Rates for a Standard Room)
+",,"One Grand Cypress Boulevard, Orlando, FL 32836-6799"
+"
+$615 - $1,058 (Based on Average Rates for a Standard Room)
+",,32830-8451 4401 Floridian Way
+"
+$123 - $310 (Based on Average Rates for a Standard Room)
+",,"8480 International Dr, Orlando, FL 32819-9329"
+"
+$278 - $711 (Based on Average Rates for a Standard Room)
+",,"4012 Central Florida Parkway, Orlando, FL 32837-7662"
+"
+$107 - $211 (Based on Average Rates for a Standard Room)
+",,"7389 Universal Blvd, Orlando, FL 32819-8322"
+"
+$152 - $398 (Based on Average Rates for a Standard Room)
+",,"12562 International Drive, Orlando, FL 32821-6946"
+"
+$133 - $231 (Based on Average Rates for a Standard Room)
+",,"8751 Suiteside Drive, Orlando, FL 32836-6443"
+"
+$105 - $164 (Based on Average Rates for a Standard Room)
+",,"12125 High Tech Avenue, Orlando, FL 32817-1426"
+"
+$166 - $332 (Based on Average Rates for a Standard Room)
+",,"730 N Magnolia Ave, Orlando, FL 32803-3809"
+"
+$130 - $345 (Based on Average Rates for a Standard Room)
+",,"7102 Grand Horizons Boulevard, Orlando, FL 32821-7378"
+"
+$346 - $621 (Based on Average Rates for a Standard Room)
+",,32830-8410 2901 Osceola Parkway
+"
+$119 - $221 (Based on Average Rates for a Standard Room)
+",,32830 (Formerly Holiday Inn Orlando - Lake Buena Vista)1805 Hotel Plaza Blvd
+"
+$122 - $211 (Based on Average Rates for a Standard Room)
+",,"3028 N Alafaya Trl, Orlando, FL 32826-3206"
+"
+$121 - $254 (Based on Average Rates for a Standard Room)
+",,"1500 Sand Lake Road, Orlando, FL 32809-7081"
+"
+$103 - $226 (Based on Average Rates for a Standard Room)
+",,"7500 Futures Dr, Orlando, FL 32819-9090"
+"
+$99 - $188 (Based on Average Rates for a Standard Room)
+",,"8150 Palm Parkway, Orlando, FL 32836-6428"
+"
+$120 - $244 (Based on Average Rates for a Standard Room)
+",,"5425 Gateway Village Cir, Orlando, FL 32812-4004"
+"
+$130 - $236 (Based on Average Rates for a Standard Room)
+",,"43 Columbia St, Orlando, FL 32806-1123"
+"
+$188 - $428 (Based on Average Rates for a Standard Room)
+",,"11251 Harbour Villa Road, Orlando, FL 32821-9302"
+"
+$109 - $242 (Based on Average Rates for a Standard Room)
+",,"7301 West Sand Lake Road, Orlando, FL 32819-5207"
+"
+$207 - $492 (Based on Average Rates for a Standard Room)
+",,"11248 Lakeshore Reserve Dr, Orlando, FL 32837-4102"
+"
+$109 - $230 (Based on Average Rates for a Standard Room)
+",,"5460 Gateway Village Circle, Orlando, FL 32812-4036"
+"
+$492 - $1,167 (Based on Average Rates for a Standard Room)
+",,"10100 Dream Tree Blvd, Orlando, FL 32836-4012"
+"
+$129 - $173 (Based on Average Rates for a Standard Room)
+",,"12250 E Colonial Dr, Orlando, FL 32826-4709"
+"
+$272 - $758 (Based on Average Rates for a Standard Room)
+",,"One North Jacaranda, Orlando, FL 32836-6699"
