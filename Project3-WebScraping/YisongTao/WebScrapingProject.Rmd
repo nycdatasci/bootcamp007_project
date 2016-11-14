@@ -124,7 +124,7 @@ mknode_lst <- function(lst){
 }
 link_list <- mklink_lst(graph_list)
 node_list<- mknode_lst(graph_list)
-graph <- visNetwork(nodes = node_list, edges = link_list, main = "Anime") %>%
+graph <- visNetwork(nodes = node_list, edges = link_list, main = "Network of 100 Anime") %>%
     visNodes(label = NULL) %>% 
     visLegend(enabled = TRUE, useGroups = TRUE, addNodes = NULL,
               addEdges = NULL, width = 0.2, position = "left", main = NULL) %>% 
@@ -202,25 +202,7 @@ avPlots(model)
 vif(model)
 ```
 
-```{r model2}
-model_2 <- glm(Score ~ Award_Director + Favorite + Type + Rating, data = AnimeInfo_df)
-summary(model_2)
-plot(model_2)
-avPlots(model_2)
-vif(model_2)
-```
 
-```{r compare models}
-model_dev <- model$deviance
-model_df <- model$df.residual
-model_2_dev <- model_2$deviance
-model_2_df <- model_2$df.residual
-pchisq(model_2_dev - model_dev, model_2_df - model_df, lower.tail = FALSE)
-anova(model_2, model, test = "Chisq")
-R2 <- 1-model$deviance/model$null.deviance
-R2
-```
-The partial F-test yields p-value of < 2.2e-16, variable "Viewer" does add information to the model.
 Significant coeffiecients: (Intercept), Award_DirectorTRUE, Favorite, Viewer, TypeMusic, TypeONA, TypeOVA, RatingPG-13 - Teens 13 or older, RatingR - 17+ (violence & profanity), RatingR+ - Mild Nudity, RatingRx - Hentai.
 
 Adjusted R-squared:  0.289  only explains 28.9% of the variance in scores of animes.
