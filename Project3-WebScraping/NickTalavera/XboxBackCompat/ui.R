@@ -13,9 +13,10 @@ dashboardPage(
   dashboardSidebar(
     width = sideBarWidth,
     sidebarMenu(id = "sbm",
-                menuItem("Lists", tabName = "Lists", icon = icon("search")),
-                menuItem("Game Search", tabName = "Games", icon = icon("dashboard")),
-                menuItem("Processing", tabName = "Processing", icon = icon("dashboard"))
+                menuItem("Lists", tabName = "Lists", icon = icon("gamepad")),
+                menuItem("Game Search", tabName = "Games", icon = icon("search")),
+                menuItem("Processing", tabName = "Processing", icon = icon("list-ol")),
+                menuItem("About Me", tabName = "AboutMe", icon = icon("user"))
     )# end of sidebarMenu
   ),#end of dashboardSidebar
   dashboardBody(
@@ -319,6 +320,11 @@ margin-left: 0px;
                                           '))),
                 uiOutput("Explanation")
               ) # End of fluidPage
+      ), # End of tabItem
+      tabItem(tabName = "AboutMe",
+              fluidPage(
+                uiOutput("AboutMe")
+              )
       ) # End of tabItem
     ) # end of tabITems
   )# end of dashboard body
