@@ -62,14 +62,13 @@ usePackage("flexdashboard")
 dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
 if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
-  markdownFolder = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns'
 } else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
-  markdownFolder = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns'
   setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/')
 }  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }
+markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
 dataUltKNN  = read.csv(paste0(dataLocale,'dataUltKNN.csv'), stringsAsFactors = TRUE)
 dataUlt = read.csv(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE)
 dataUltKNN$X = NULL
