@@ -24,7 +24,7 @@ function(input, output){
   tedbar = reactive({
     df = tedtalk %>% select_(.dots = c('total_views', topic1 = input$topics1))
     df %>% group_by(., topic1) %>%
-      summarise(., views = sum(total_views, na.rm = T)/1e6)
+      summarise(., views = sum(total_views/1e6, na.rm = T))
   })
   output$barchart = renderPlot({
     ggplot(tedbar(), aes_string(x = 'topic1', y = 'views')) +
