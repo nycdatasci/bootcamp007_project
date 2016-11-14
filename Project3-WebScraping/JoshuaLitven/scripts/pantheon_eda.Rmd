@@ -1,0 +1,75 @@
+---
+title: "Pantheon Eda"
+author: "Joshua Litven"
+date: "11/7/2016"
+output: html_document
+---
+
+* Goal: Exploratory data analysis on the pantheon set of historical figures *
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+
+library(dplyr)
+library(ggplot2)
+
+setwd('~/Courses/nyc_data_science_academy/projects/web_scraping/data/cleaned_data/')
+pantheon = read.csv('pantheon.csv')
+summary(pantheon)
+```
+
+11,341 Great thinkers. It is overwhelmingly men. The top occupation is politician. Mostly European. 
+
+```{r categorical variables}
+categoricals = c('occupation', 'industry', 'domain')
+
+for(cat_var in categoricals){
+  lvls = levels(pantheon[ , cat_var])
+  
+  # Top 10
+  top_ten = pantheon %>% 
+    group_by_(cat_var) %>% 
+    tally() %>% 
+    arrange(desc(n)) %>% 
+    top_n(10, n)
+  print(top_ten)
+  print(paste('Number of', cat_var, ': ', length(lvls)))
+}
+```
+
+There are 88 occupations, 27 industries, and 8 domains.
+
+```{r investigate domains}
+ggplot(pantheon, aes(x=reorder(domain, domain, function(x) length(x)))) +
+  geom_bar(aes(y=100 * (..count..)/sum(..count..), fill=domain)) + 
+  coord_flip() + 
+  labs(x="Domain", y="Percent") + ggtitle("Historical Figures by Domain")
+```
+
+Number one domain is 'Institution' at 30%. Presumably these are politicians.
+
+```{r investigate industries}
+ggplot(pantheon, aes(x=reorder(industry, industry, function(x) length(x)))) +
+  geom_bar(aes(y=100 * (..count..)/sum(..count..), fill=industry)) + 
+  coord_flip() + 
+  labs(x="Domain", y="Percent") + ggtitle("Historical Figures by Industry")
+
+# Compare post/pre 1900
+ggplot(pantheon %>% filter(birthyear<1900), 
+       aes(x=reorder(industry, industry, function(x) length(x)))) +
+  geom_bar(aes(y=100 * (..count..)/sum(..count..), fill=industry)) + 
+  coord_flip() + 
+  labs(x="Domain", y="Percent") + ggtitle("Historical Figures by Industry (Pre 1900)")
+
+ggplot(pantheon %>% filter(birthyear>1900), 
+       aes(x=reorder(industry, industry, function(x) length(x)))) +
+  geom_bar(aes(y=100 * (..count..)/sum(..count..), fill=industry)) + 
+  coord_flip() + 
+  labs(x="Domain", y="Percent") + ggtitle("Historical Figures by Industry (Post 1900")
+```
+
+```{r investigate occupations}
+ggplot(pantheon, aes(x=reorder(occupation, occupation, function(x) length(x)))) +
+  geom_bar(aes(y=100 * (..count..)/sum(..count..), fill=industry)) +
+  coord_flip() +
+  labs(x="Occupation", y="Percentage") + ggtitle("Historical Figures by Occupation")
