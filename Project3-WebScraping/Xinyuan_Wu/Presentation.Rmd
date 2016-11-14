@@ -1,5 +1,5 @@
 ---
-title: "Exploring CPUs and GPUs on Newegg.com"
+title: "Exploring Computer Components on Newegg.com"
 author: "Xinyuan Wu (Andrew)"
 date: "Monday November 14, 2016"
 output: ioslides_presentation
@@ -13,8 +13,9 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction {.build}
 
-Newegg.com is a vault for many computer fans and PC gamers. Among all computer parts, CPU and Graphic card mainly determine how fast a desktop can run. 
-Today, we are going to explore CPUs and graphic cards that are selling on Newegg.com
+Newegg.com is a vault for many computer fans and PC gamers.  
+  
+Among all computer parts, CPU and Graphic Card mainly determine how fast a desktop can run. Today, we are going to explore CPUs and graphic cards that are selling on Newegg.com  
 
 Data scientists need good desktop!
 <img src="image/cpugpu.png" alt="output_option" width="643" height="200">
@@ -22,22 +23,34 @@ Data scientists need good desktop!
 
 ## Contents
 
-- Web Scraping
+- Web Scraping  
 - Exploratory Analysis
 
 
-## [Getting Data Using Scrapy](http://en.wikipedia.org/wiki/YAML) 
+## [Getting Data Using Scrapy](https://github.com/nycdatasci/bootcamp007_project/tree/master/Project3-WebScraping/Xinyuan_Wu/Newegg%20scrapy/Newegg) 
 
 <img src="image/scraping.png" alt="output_option" width="700" height="500">
 
 
 ## Getting Data Using Scrapy
 
-Data are cleaned using R
+There are 200 CPU products and 400 GPU products in total.  
 
 ```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
 source('cleaning.R')
 ```
+
+Variables of CPU data:
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+colnames(cpu)
+```
+
+Variables of GPU data:
+```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
+colnames(gpu)
+```
+  
+Data are cleaned using R
 
 ## Exploratory Analysis
 
@@ -143,7 +156,7 @@ g <- g + xlab("Number of Cores") + ylab("Price ($)") + ggtitle("Price vs. Core N
 g
 ```
 
-## Exploratory Analysis{.smaller}
+## Exploratory Statistical Analysis {.smaller}
 
 ```{r echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE}
 data6 <- cpu %>% top_n(-211, rank) %>% 
@@ -155,7 +168,7 @@ t.test(price_intel, price_amd,
        var.equal = FALSE, conf.level = 0.95)
 ```
 
-## Exploratory Analysis
+## Exploratory Statistical Analysis
 
 ```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
 corplot <- cor(data6[, c(-1, -2)])
@@ -163,7 +176,11 @@ corrplot(corplot, method = "square")
 ```
 
 
-## Exploratory Analysis
+## Exploratory Statistical Analysis
+
+Use linear regression to predict the price CPU.  
+**Predictor**: brand, series, core, power, freq.  
+**Response**: price.
 
 ```{r echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE, results = 'hide'}
 model_empty = lm(price ~ 1, data = data6)
@@ -176,42 +193,50 @@ AICmodel_forward = step(model_empty, scope,
                         direction = "forward", k = 2)
 ```
 
-## Exploratory Analysis{.smaller}
+## Exploratory Statistical Analysis
 
-```{r echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE}
-summary(AICmodel_back) 
+```{r echo = TRUE, cache = TRUE, eval = FALSE}
+summary(AICmodel_back)  
 ```
+lm(formula = price ~ series + core + power, data = data6)
 
-## Exploratory Analysis
+Residual standard error: 123.5 on 192 degrees of freedom  
+ Multiple R-squared: 0.7529, Adjusted R-squared: 0.7298  
+F-statistic: 32.51 on 18 and 192 DF, p-value: < 2.2e-16
+
+## Exploratory Statistical Analysis
 
 ```{r echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE}
 qqnorm(data6$price) 
 ```
 
-## Exploratory Analysis
+## Exploratory Statistical Analysis
 
 ```{r echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE}
 boxCox(AICmodel_back)
 ```
 
-## Exploratory Analysis
+## Exploratory Statistical Analysis
 
-```{r echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE}
+Regression after BoxCox transformation
+```{r echo = TRUE, cache = TRUE, warning = FALSE, results = 'hide'}
 model_bc <- lm(log(price) ~ series + core + power, data = data6)
-```
-
-## Exploratory Analysis
-
-```{r echo = FALSE, cache = TRUE, warning = FALSE, message = FALSE}
 summary(model_bc)
 ```
+lm(formula = log(price) ~ series + core + power, data = data6)  
+
+Residual standard error: 0.2751 on 192 degrees of freedom  
+Multiple R-squared: 0.8821, Adjusted R-squared: 0.871  
+F-statistic: 79.79 on 18 and 192 DF, p-value: < 2.2e-16
+
 
 ## Conclusion {.smaller}
 
 - From the analysis, we can see:
-    * The price of CPUs showed weak correlation with the operating frequency.
+    * To my suprise, the price of CPUs showed weak correlation with the operating frequency.  
     * Although AMD has a wide range of product line, it is dominated by Intel and Nvidia in CPU and GPU area, respectively.
 
-- An extension of this work can be:
-    * Scrape more features from the web, like product release date.
+- If I had more time, I will:
+    * Build a interactive app to allow others to explore the data set.  
+    * Scrape more features from the web, like product release date.  
     * Apply machine learning algorithms to predict the user rating of a product based on its information. 
