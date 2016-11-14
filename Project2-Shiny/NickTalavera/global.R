@@ -51,7 +51,12 @@ printCurrency <- function(value, currency.sym="$", digits=2, sep=",", decimal=".
 options(scipen=999)
 
 # Read model data
-dnmData <- read.csv("./Data/DNMdata.csv", header = TRUE)
+if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Darknet Data/')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Darknet Data/' 
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/Darknet Data/')) {
+  dataLocale = '/Volumes/SDExpansion/Data Files/Darknet Data/'
+}
+dnmData <- read.csv(paste0(dataLocale,"DNMdata.csv"), header = TRUE)
 dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
 dnmData$Time_Added = as.Date(dnmData$Time_Added)
 dnmData$X = NULL

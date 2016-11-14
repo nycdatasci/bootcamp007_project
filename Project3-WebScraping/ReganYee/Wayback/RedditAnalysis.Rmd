@@ -1,0 +1,218 @@
+---
+title: "What's Hot?"
+subtitle: "Analysis of Top 10 Reddit Posts"
+author: "Regan Yee"
+date: "November 12, 2016"
+output: ioslides_presentation
+css: assets/css/ioslides.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
+library(dplyr)
+library(DT)
+library(png)
+library(grid)
+setwd("~/Documents/bootcamp007_project/Project3-WebScraping/ReganYee/Wayback")
+reddit = readRDS("reddit.RDS")
+
+df = reddit %>% 
+  mutate(datehour = sapply(reddit$snapshot_datetime, function(x) substring(x,1,10))) %>% 
+  mutate(rank_hour = paste0(datehour,rank)) %>% 
+  select(1:10, rank_hour, submit_date, submit_hour)
+
+## Return a list of top 10 items that are unique per day and hour
+df_unique_hour = df[!duplicated(df$rank_hour),]
+df_unique_hour = df_unique_hour %>% select(snapshot_date, rank, titles, subreddit, upvotes, comments, submitter, snapshot_time, url, submit_datetime, submit_date, submit_hour)
+
+## Reindex row indices
+rownames(df_unique_hour) = NULL
+
+df_unique_hour = df_unique_hour %>%
+  mutate(snapshot_hour = substring(snapshot_time,1,2))
+```
+
+## Questions
+<b>Scraping:</b>
+
+- How can I scrape historical data for time-series data?
+
+<b>Data:</b>
+
+- What subreddits produce the most front-page content?
+- What are people talking about on Reddit?
+- When is the best time to submit content?
+
+## Data 
+<a href="https://archive.org/web/"> The Wayback Machine </a> is a site that allows us to browse historical snapshots of any websites crawled by the site.
+
+I <a href="https://raw.githubusercontent.com/nycdatasci/bootcamp007_project/master/Project3-WebScraping/ReganYee/Wayback/wayback.csv">scraped</a> ~211k rows of data about the top 10 Reddit posts from 06/30/2016 - 11/11/2016:
+
+```{r reddit_snippet, echo=TRUE}
+colnames(reddit)
+```
+
+<div>
+<font size="-1">Upvotes had data randomly imputed whenever there was an upvote value of '•'.</font>
+<br/>
+<font size="-1">Comments for threads which restricted comments had a value of 0 imputed.</font>
+</div>
+
+## Scraping Workflow
+```{r workflow}
+img = readPNG("./assets/img/snap1.png")
+grid.raster(img)
+```
+
+## {.flexbox .vcenter}
+<div class="centered">
+<font size="+5">Findings</font>
+</div>
+
+## Hottest Subreddits by Posts
+```{r subreddit_analysis, cache = FALSE, echo = FALSE, message=FALSE}
+subreddit_grouped = reddit %>% group_by(subreddit,titles) %>%
+  summarize(count=n()) %>% arrange(desc(count))
+
+## Filter on subreddits with more than 10 posts in top10
+subreddit_analysis = subreddit_grouped %>% 
+  select(subreddit) %>% 
+  summarize(count=n()) %>% 
+  filter(count >=10) %>% 
+  arrange(desc(count))
+
+## Reorder to be descending
+subreddit_analysis$subreddit = 
+  factor(subreddit_analysis$subreddit, levels = unique(subreddit_analysis$subreddit)[order(subreddit_analysis$count, decreasing = TRUE)])
+
+y <- list(
+  title = "Number of Posts")
+
+plot_ly (
+  x = subreddit_analysis$subreddit,
+  y = subreddit_analysis$count,
+  type = 'bar') %>% 
+  layout(
+    yaxis = y
+  )
+```
+<div>
+<font size="-1">Only including subreddits with >= 10 posts in the top 10</font>
+</div>
+
+## Comments vs Upvotes
+```{r reddit_comment_ratio, cache = FALSE, echo = FALSE, message=FALSE}
+comment_analysis1 = reddit %>% 
+  group_by(Titles=titles,Subreddit=subreddit) %>% 
+  summarize(Ratio = max(signif(comment_ratio, 5))) %>% 
+  arrange(desc(Ratio))
+
+datatable(head(comment_analysis1, 8),
+          extensions = 'FixedColumns',
+          options = list(
+            dom = 't',
+            scrollX = TRUE,
+            scrollCollapse = TRUE)) %>% 
+  formatStyle('Titles', `font-size` = '14px') %>% 
+  formatStyle('Subreddit', `font-size` = '14px') %>% 
+  formatStyle('Ratio', `font-size` = '14px')
+```
+
+## Hottest Upvote Time (by Date)
+```{r reddit_score_plot, cache = FALSE, echo = FALSE, message=FALSE}
+reddit_score_mean = df_unique_hour %>% 
+  select(snapshot_date,upvotes) %>% 
+  group_by(snapshot_date) %>% 
+  summarize(avg_score_mean = mean(upvotes))
+
+plot_ly (
+  x = reddit_score_mean$snapshot_date,
+  y = reddit_score_mean$avg_score_mean,
+  type = 'scatter',
+  mode = 'markers') %>% 
+  layout(
+    xaxis=list(
+        title = "Date",
+        nticks = 4
+    ),
+    yaxis = list(
+      title = "Reddit Score"
+    )
+  )
+```
+
+## Hottest Upvote Time (by Snapshot Hr)
+```{r reddit_score_hour, cache = FALSE, echo = FALSE, message=FALSE}
+reddit_score_by_hour = df_unique_hour %>% 
+  group_by(snapshot_hour) %>% summarize(score_mean = mean(upvotes), score_median = median(upvotes))
+
+x <- list(
+  title = "Hour of day(UTC)")
+y <- list(
+  title = "Reddit Score")
+
+plot_ly (
+  x = reddit_score_by_hour$snapshot_hour,
+  y = reddit_score_by_hour$score_mean,
+  type = 'scatter',
+  mode = 'lines',
+  name = 'mean') %>% 
+  add_trace(
+    x = reddit_score_by_hour$snapshot_hour,
+    y = reddit_score_by_hour$score_median,
+    type = 'scatter',
+    mode = 'lines',
+    name = 'median'
+  ) %>% 
+  layout(
+    xaxis = x,
+    yaxis = y
+  )
+```
+
+## Hottest Upvote Time (by Submit Time)
+```{r reddit_score_submitted, cache = FALSE, echo = FALSE, message=FALSE}
+reddit_score_by_submit_hour = df_unique_hour %>% 
+  group_by(submit_hour) %>% summarize(score_mean = mean(upvotes), score_median = median(upvotes))
+
+x <- list(
+  title = "Hour of day(UTC)")
+y <- list(
+  title = "Reddit Score")
+
+plot_ly(
+    x = reddit_score_by_submit_hour$submit_hour,
+    y = reddit_score_by_submit_hour$score_mean,
+    type = 'scatter',
+    mode = 'lines',
+    name = 'mean') %>% 
+  add_trace(
+    x = reddit_score_by_submit_hour$submit_hour,
+    y = reddit_score_by_submit_hour$score_median,
+    type = 'scatter',
+    mode = 'lines',
+    name = 'median') %>% 
+  layout(
+    xaxis = x,
+    yaxis = y
+  )
+```
+
+## Conclusions
+- Reddit users gravitate towards r/funny, r/pics, r/gifs, r/todayilearned, r/aww, and r/gaming.
+- r/AskReddit is the subreddit that generates the most discussion via the comments.
+- There appears to be a positive trend in upvotes as the days go by in my dataset.
+- The best time to submit content to Reddit to get the most amount of coverage is 13:00 - 19:00 UTC.
+- The posts on reddit are most likely to have the most upvotes from 17:00 - 20:00 UTC.
+
+## Retrospective
+- Scraping Wayback Machine site is only good for sites which have enough snapshots per day.
+- Website layouts change and hence need to be able to handle different tag name changes in the spider.
+- Data became missing at random due to HTTP 429. Would like to find a way to try again for all the items that reach a 429 status.
+
+##
+<div class="centered">
+<font size="+5">Questions?</font>
+</div>
+
