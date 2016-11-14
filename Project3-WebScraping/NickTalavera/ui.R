@@ -98,6 +98,19 @@ padding-left: 0px;
 margin-right: 0px;
 margin-left: 0px;
 }
+.irs-from, .irs-to, .irs-single {
+    color: #f1f1f1;
+font-size: 11px;
+line-height: 1.333;
+text-shadow: none;
+padding: 1px 3px;
+background: #5dc21e;
+border-radius: 3px;
+-moz-border-radius: 3px;
+}
+.box.box-primary {
+border-top-color: #5dc21e;
+}
                                           '))),
     
     
@@ -130,10 +143,18 @@ margin-left: 0px;
                                           margin-right: 10px;
                                           margin-left: 10px;
                                           }
+.irs-bar {
+    height: 8px;
+                                          top: 25px;
+                                          border-top: 0.5px solid #000000;
+                                          border-bottom: 0.5px solid #000000;
+                                          background: #5dc21e;
+}
                                           '))),
                 fluidRow(
                   box(
                     title = "Search",
+                    
                     status = "primary",
                     width = 12,
                     # solidHeader = TRUE,
@@ -235,9 +256,9 @@ margin-left: 0px;
                                 choices = str_title_case(sort(c(as.character(unique(xboxData$features))))),
                                 multiple = TRUE),
                     checkboxGroupInput("bcProb",
-                                label = h3("Smartglass Compatable:"),
-                                choices = list("Yes" = TRUE, "No" = FALSE),
-                                selected = 1),
+                                       label = h3("Smartglass Compatable:"),
+                                       choices = list("Yes" = TRUE, "No" = FALSE),
+                                       selected = 1),
                     sliderInput("bcProb",
                                 label = h3("Number of Game Add-Ons:"),
                                 min = 0, max = roundUp(max(xboxData$DLgameAddons, na.rm = TRUE)), value = 0, step = 1,
@@ -270,7 +291,7 @@ margin-left: 0px;
                     collapsible = FALSE,
                     DT::dataTableOutput('List_SearchResults')
                   )
-              # )
+                  # )
                 )# end of fluidrow
               ) # End of fluidPage
       ), # End of tabItem
