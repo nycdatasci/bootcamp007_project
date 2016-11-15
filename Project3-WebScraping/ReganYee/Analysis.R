@@ -15,6 +15,8 @@ reddit$snapshot_date = as.character(reddit$snapshot_date)
 reddit$snapshot_time = sapply(reddit$snapshot_datetime, function(x) substring(x,9,14))
 reddit$submit_date = sapply(reddit$submit_datetime, function(x) substring(x,1,10))
 reddit$submit_hour = sapply(reddit$submit_datetime, function(x) substring(x,12,13))
+reddit = reddit %>% filter(snapshot_date != 20160629)
+
 reddit$comments = as.character(reddit$comments)
 delimited_list = strsplit(reddit$comments, split = " ")
 comms = sapply(delimited_list,function(x) x[1])
@@ -23,9 +25,8 @@ reddit$comments_num = as.numeric(reddit$comments)
 #Convert NAs to 0
 reddit$comments_num[which(reddit$comments_num %in% NA)] = 0
 reddit = reddit %>% mutate(comment_ratio = comments_num/upvotes)
-reddit = reddit %>% filter(snapshot_date != 20160629)
 
-colnames(reddit)
+
 saveRDS(reddit, "reddit.RDS")
 
 ## All caps analysis

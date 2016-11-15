@@ -126,16 +126,24 @@ reddit_score_mean = df_unique_hour %>%
   group_by(snapshot_date) %>% 
   summarize(avg_score_mean = mean(upvotes))
 
+model = lm(avg_score_mean ~ as.numeric(snapshot_date), data = reddit_score_mean)
+
 plot_ly (
   x = reddit_score_mean$snapshot_date,
   y = reddit_score_mean$avg_score_mean,
   type = 'scatter',
-  mode = 'markers') %>% 
+  mode = 'markers',
+  xaxis = 'x1') %>% 
+  add_trace(x = as.numeric(reddit_score_mean$snapshot_date), y = fitted(model), mode='lines', xaxis = 'x2') %>%
   layout(
     xaxis=list(
+        xaxis = 'x1',
         title = "Date",
         nticks = 4
     ),
+    xaxis2=list(
+        overlaying='x1',
+        showticklabels = FALSE),
     yaxis = list(
       title = "Reddit Score"
     )
