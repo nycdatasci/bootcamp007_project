@@ -28,7 +28,7 @@ shinyServer(function(input, output, session) {
   
   # Return the requested dataset
   getDataSetToUse <- eventReactive(input$query, {
-    dataToDisplay = getDataPresentable()
+    dataToDisplay = xboxData
     # input$SEARCH_Is_Backwards_Compatible
     # input$SEARCH_Predicted_to_become_Backwards_Compatible
     # input$SEARCH_Backwards_Compatability_Probability_Percent
@@ -65,7 +65,10 @@ shinyServer(function(input, output, session) {
     print(paste("SEARCH_Is_Backwards_Compatible", input$SEARCH_Is_Backwards_Compatible))
     print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
     print(paste("SEARCH_Backwards_Compatability_Probability_Percent", input$SEARCH_Backwards_Compatability_Probability_Percent))
-    print(paste("SEARCH_Release_date", input$SEARCH_Release_date))
+    # print(paste("SEARCH_Release_date", input$SEARCH_Release_date))
+    if (!is.null(input$SEARCH_Release_date)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    }
     print(paste("SEARCH_Is_Listed_on_XboxCom", input$SEARCH_Is_Listed_on_XboxCom))
     print(paste("SEARCH_Is_Exclusive", input$SEARCH_Is_Exclusive))
     print(paste("SEARCH_Xbox_One_Version_Available", input$SEARCH_Xbox_One_Version_Available))
@@ -121,9 +124,7 @@ shinyServer(function(input, output, session) {
     # if (!is.null(input$dataAccessedDate)) {
     #   dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]
     # }
-    # if (!is.null(input$dataPostedDate)) {
-    #   dataToDisplay = dataToDisplay[dataToDisplay$Time_Added >= input$dataPostedDate[1] & dataToDisplay$Time_Added <= input$dataPostedDate[2],]
-    # }
+
     # dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
