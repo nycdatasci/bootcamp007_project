@@ -1,1 +1,109 @@
+/* logo */
+                                          .skin-blue .main-header .logo {
+                                          background-color: #107c10;
+                                          }
+                                          
+                                          /* logo when hovered */
+                                          .skin-blue .main-header .logo:hover {
+                                          background-color: #107c10;
+                                          }
+                                          
+                                          /* navbar (rest of the header) */
+                                          .skin-blue .main-header .navbar {
+                                          background-color: #107c10;
+                                          }        
+                                          
+                                          /* main sidebar */
+                                          .skin-blue .main-sidebar {
+                                          background-color: #3a3a3a;
+                                          }
+                                          
+                                          /* active selected tab in the sidebarmenu */
+                                          .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+                                          background-color: #f1f1f1;
+color: #000000;
+border-left-color: #c2c2c2
+                                          }
+                                          
+                                          /* other links in the sidebarmenu */
+                                          .skin-blue .main-sidebar .sidebar .sidebar-menu a{
+                                          background-color: #3a3a3a;
+                                          color: #f1f1f1;
+                                          }
+                                          
+                                          /* other links in the sidebarmenu when hovered */
+                                          .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+                                          background-color: #f1f1f1;
+color: #000000;
+border-left-color: #c2c2c2
+                                          }
+                                          /* toggle button when hovered  */                    
+                                          .skin-blue .main-header .navbar .sidebar-toggle:hover{
+                                          background-color: #ff69b4;
+                                          }
+/* toggle button when hovered  */                    
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  background-color: #f1f1f1;
+color: #000000;
+}
+.skin-blue .content-wrapper, .right-side{
+  background-color: #c2c2c2;
+}
+.box.box-solid.box-primary>.box-header{
+  background-color: #107c10;
+}
+.box.box-solid.box-primary {
+    border: 0.5px solid #3a3a3a;
+}
+.box-body {
+    border-radius: 0 0 3px 3px;
+padding: 10px;
+background-color: #f1f1f1;
+}
+.content {
+    min-height: 250px;
+padding-top:0px;
+padding-right: 0px;
+padding-bottom: 0px;
+padding-left: 0px;
+margin-right: 0px;
+margin-left: 0px;
+}
+.irs-from, .irs-to, .irs-single {
+    color: #f1f1f1;
+font-size: 11px;
+line-height: 1.333;
+text-shadow: none;
+padding: 1px 3px;
+background: #5dc21e;
+border-radius: 3px;
+-moz-border-radius: 3px;
+}
+.box.box-primary {
+border-top-color: #5dc21e;
+}
 
+                                          .skin-blue .content-wrapper, .right-side{
+                                          background-color: #f1f1f1;
+                                          }
+                                          .box.box-solid.box-primary>.box-header{
+                                          background-color: #f1f1f1;
+                                          }
+                                          .box.box-solid.box-primary {
+                                          border: 0.5px solid #f1f1f1;
+                                          }
+                                          .box-body {
+                                          border-radius: 0 0 3px 3px;
+                                          padding: 10px;
+                                          background-color: #f1f1f1;
+                                          }
+                                          .irs-bar-edge {
+    height: 8px;
+    top: 25px;
+    width: 14px;
+    border: 0.5px solid #f1f1f1;
+    border-right: 0;
+    background: #5dc21e;
+    border-radius: 16px 0 0 16px;
+    -moz-border-radius: 16px 0 0 16px;
+}
