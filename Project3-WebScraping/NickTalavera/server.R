@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
     dataToDisplay = xboxData
     # input$SEARCH_Is_Backwards_Compatible
     # input$SEARCH_Predicted_to_become_Backwards_Compatible
-    # input$SEARCH_Backwards_Compatability_Probability_Percent
+    # input$SEARCH_Backwards_Compatibility_Probability_Percent
     # input$SEARCH_Release_date
     # input$SEARCH_Is_Listed_on_XboxCom
     # input$SEARCH_Is_Exclusive
@@ -55,7 +55,7 @@ shinyServer(function(input, output, session) {
     # input$SEARCH_Genre
     # input$SEARCH_ESRB_Rating
     # input$SEARCH_Features
-    # input$SEARCH_Smartglass_Compatable
+    # input$SEARCH_Smartglass_Compatible
     # input$SEARCH_Number_of_Game_Add-Ons
     # input$SEARCH_Number_of_Avatar_Items
     # input$SEARCH_Number_of_GamerPics
@@ -64,7 +64,7 @@ shinyServer(function(input, output, session) {
     
     print(paste("SEARCH_Is_Backwards_Compatible", input$SEARCH_Is_Backwards_Compatible))
     print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
-    print(paste("SEARCH_Backwards_Compatability_Probability_Percent", input$SEARCH_Backwards_Compatability_Probability_Percent))
+    print(paste("SEARCH_Backwards_Compatibility_Probability_Percent", input$SEARCH_Backwards_Compatibility_Probability_Percent))
     if (!is.null(input$SEARCH_Release_date)) {
       dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
     }
@@ -100,7 +100,7 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$SEARCH_Features)) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
     }
-    print(paste("SEARCH_Smartglass_Compatable", input$SEARCH_Smartglass_Compatable))
+    print(paste("SEARCH_Smartglass_Compatible", input$SEARCH_Smartglass_Compatible))
     print(paste("SEARCH_Number_of_Game_Add_Ons", input$SEARCH_Number_of_Game_Add_Ons))
     if (!is.null(input$SEARCH_Release_date)) {
       dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
@@ -155,7 +155,7 @@ shinyServer(function(input, output, session) {
   getDataPresentable = function(){
     dataToPresent = xboxData
     dataToPresent = dataToPresent[dataToPresent$gameName != "TRUE",]
-    # dataToPresent$percentProb[dataToPresent$isBCCompatable == TRUE] = 100
+    # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100
     dataToPresent$bcGuess = as.logical(dataToPresent$bcGuess)
     # dataToPresent[dataToPresent == TRUE] = TRUE
     # dataToPresent[dataToPresent == FALSE] = FALSE
@@ -183,7 +183,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dataToPresent[dataToPresent$isBCCompatable == TRUE,]
+        dataToPresent = dataToPresent[dataToPresent$isBCCompatible == TRUE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
@@ -220,7 +220,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatable == FALSE,]
+        dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
@@ -302,7 +302,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatable[isBCCompatable==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatable[isBCCompatable==TRUE])/length(gameName)*100,0)))
+      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = dplyr::arrange(dataToPresent, Percent, desc(dataToPresent$"Games Published"))
       dataToPresent
     }, 
@@ -314,7 +314,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatable[isBCCompatable==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatable[isBCCompatable==TRUE])/length(gameName)*100,0)))
+      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent
     }, 
