@@ -7,7 +7,6 @@
 #                                                                       #
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
 #
-#
 #     # - - - - - - - - # - - - - - - - - #
 #     #              Question             #
 #     # - - - - - - - - # - - - - - - - - #
@@ -27,11 +26,6 @@
 # For the condom retailers: 
 #         Is there a way to get to the top of the corresponding category for 
 #         the condom retailer?
-# For the customers:
-#         Is there a stable way to evalute th quality of a product without 
-#         relying on reviews or their own preferences? 
-#
-#
 #
 #     # - - - - - - - - - - - - - - # - - - - - - - - - - - - - - #
 #     #       Scraping [Top 100] condom products from Amazon      #
@@ -130,6 +124,37 @@ main$PREVIEW_IMAGE_COUNT[which(main$PREVIEW_IMAGE_COUNT == -2)] <- 0
 # The asin code for different products
 main$URL <- gsub('http://www.amazon.com/dp/', '', main$URL)
 #
+# Add frequencies of item_bought and item_viewed (create 2 new variables)
+#
+asin_bought <- main %>% select(contains('ITEM_ALSO_BOUGHT'))
+asin_viewed <- main %>% select(contains('ITEM_ALSO_VIEWED'))
+asin_bought <- with(asin_bought, 
+                    paste0(ITEM_ALSO_BOUGHT_1, ',', ITEM_ALSO_BOUGHT_2, ',', 
+                           ITEM_ALSO_BOUGHT_3, ',', ITEM_ALSO_BOUGHT_4, ',', 
+                           ITEM_ALSO_BOUGHT_5, ',', ITEM_ALSO_BOUGHT_6, ',', collapse = ''))
+asin_bought <- unlist(strsplit(asin_bought, "[,]"))
+asin_bought <- ifelse(asin_bought == 'null', NA, asin_bought)
+asin_bought <- asin_bought[-which(is.na(asin_bought))]
+#
+asin_viewed <- with(asin_viewed, 
+                    paste0(ITEM_ALSO_VIEWED_1, ',', ITEM_ALSO_VIEWED_2, ',', 
+                           ITEM_ALSO_VIEWED_3, ',', ITEM_ALSO_VIEWED_4, ',', 
+                           ITEM_ALSO_VIEWED_5, ',', ITEM_ALSO_VIEWED_6, ',', collapse = ''))
+asin_viewed <- unlist(strsplit(asin_viewed, "[,]"))
+asin_viewed <- ifelse(asin_viewed == 'null', NA, asin_viewed)
+asin_viewed <- asin_viewed[-which(is.na(asin_viewed))]
+#
+temp_asin_bought <- c()
+for (i in 1:dim(main)[1]){
+  temp_asin_bought[i] <- length(grep(main$URL[i], asin_bought))
+}
+temp_asin_viewed <- c()
+for (i in 1:dim(main)[1]){
+  temp_asin_viewed[i] <- length(grep(main$URL[i], asin_viewed))
+}
+#
+main$ASIN_BOUGHT <- temp_asin_bought
+main$ASIN_VIEWED <- temp_asin_viewed 
 #
 #
 #        # - - - - - - - - - - - - - - - - - - #
@@ -142,11 +167,18 @@ main$URL <- gsub('http://www.amazon.com/dp/', '', main$URL)
 #
 brand_freq <- as.data.frame(table(main$BRAND))
 brand_freq <- brand_freq[which(brand_freq$Var1 != ''),]
-ggplot(subset(brand_freq, Freq > 50), aes(x = reorder(Var1, -Freq), y = Freq)) +
+plot_brand_freq <- ggplot(subset(brand_freq, Freq > 50), aes(x = reorder(Var1, -Freq), y = Freq)) +
   geom_bar(stat = 'identity', fill = 'peachpuff3') +
   labs(x = 'Major Condom Brands', y = 'Number Of Products',
        title = 'Major Brands/Retailers In Condom Market') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'red3'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'red3'),
+        axis.text = element_text(size = 15, face = 'bold')) 
 #
 #
 #
@@ -240,7 +272,7 @@ write.table(brand_name, file = 'brand_name.txt')
 #     #        Reading in the desired text file       #
 #     # - - - - - - - - - - - - - - - - - - - - - - - #
 #
-cname <- file.path("~", "Desktop", "NYCDSA/Project/scrapy_draft/Amazon_Main_Page/R_Part")   
+cname <- file.path("~", "Desktop", "NYCDSA/Project/scrapy_draft/Boyang_Dai/R_Part")   
 dir(cname)
 docs <- Corpus(DirSource(cname))
 file_num <- which(rownames(summary(docs)) == 'brand_name.txt')
@@ -313,11 +345,18 @@ wf_brand_name$word <- gsub('ded', 'de', wf_brand_name$word)
 #     #   Plot word Frequencies   #
 #     # - - - - - - - - - - - - - #
 #
-p_brand_name <- ggplot(subset(wf_brand_name, freq > 50), 
+plot_brand_name <- ggplot(subset(wf_brand_name, freq > 50), 
                        aes(x = reorder(word, -freq), y = freq)) + 
   geom_bar(stat="identity") + 
-  theme(axis.text.x=element_text(angle=45, hjust=1))  
-p_brand_name
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'red3'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'red3'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
+plot_brand_name
 #
 #
 #     # - - - - - - - - - - - #
@@ -336,15 +375,15 @@ brand_matrix <- as.matrix(brand_matrix)
 colnames(brand_matrix) <- c('Durex', 'Lifestyles', 'Others', 'Trojan')
 #
 # a. General wordcloud
-comparison.cloud(brand_matrix, max.words = 100,
+plot_commonality <- commonality.cloud(brand_matrix, random.order = FALSE, color = "peachpuff3")
+# b. Comparison wordcloud
+plot_comparison <- comparison.cloud(brand_matrix, max.words = 100,
                  random.order = FALSE,
-                 scale = c(2, 0.1), 
-                 colors = c('red','green','blue','black'), 
+                 scale = c(3, 0.1), 
+                 colors = c('red','green','blue','yellow3'), 
                  main = "Differences Between Condom Brands",
                  title.size = 1)
 #
-# b. Comparison wordcloud
-commonality.cloud(brand_matrix, random.order = FALSE, color = "peachpuff3")
 #
 #
 #
@@ -356,7 +395,8 @@ commonality.cloud(brand_matrix, random.order = FALSE, color = "peachpuff3")
 #     #   Numerical Analysis  #
 #     # - - - - - - - - - - - #
 #
-num_main <- main %>% select(contains('STAR'), contains('Num'), SALE_PRICE, PREVIEW_IMAGE_COUNT, RANK_IN_CONDOM, URL)
+num_main <- main %>% select(contains('STAR'), contains('Num'), contains('ASIN'),
+                            SALE_PRICE, PREVIEW_IMAGE_COUNT, RANK_IN_CONDOM, URL)
 num_main$TOP_CUSTOMER_REVIEW_STAR <- NULL
 num_main$SALE_PRICE[which(num_main$SALE_PRICE == 'None')] <- NA
 num_main <- num_main[-which(is.na(num_main$RANK_IN_CONDOM)), ]
@@ -372,12 +412,21 @@ num_main$RANK_IN_CONDOM <- c(1:dim(num_main)[1])
 #
 price_freq <- as.numeric(num_main$SALE_PRICE)
 price_freq <- as.data.frame(price_freq)
-ggplot(price_freq, aes(x = price_freq)) +
+plot_price <- ggplot(price_freq, aes(x = price_freq)) +
   geom_histogram(bins = 20, fill = 'red3') +
-  labs(x = 'Price of Product', y = '', 
+  labs(x = 'Price of Product', y = 'Number of Products', 
        title = 'Distribution Of Prices Of 881 Condom Products on Amazon') +
   theme(plot.title = element_text(hjust = 0.5)) +
-  scale_x_continuous(breaks = seq(0, 300, 30), labels = seq(0, 300, 30))
+  scale_x_continuous(breaks = seq(0, 300, 30), labels = seq(0, 300, 30)) + 
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
+  
 #
 # Over 80% of Amazon Electronics are priced between $0 and $30,  which makes sense as condom 
 # products are not usually expensive. However, there’s no statistical correlation between the 
@@ -389,22 +438,37 @@ ggplot(price_freq, aes(x = price_freq)) +
 #     # - - - - - - - - - - - - - - - - - - - #
 #
 # a. General Distribution
-ggplot(num_main, aes(x = STAR)) +
+plot_rating <- ggplot(num_main, aes(x = STAR)) +
   geom_bar(fill = 'red3') + 
   labs(x = 'Rating of the condom products', y = 'Number of products',
        title = 'Distribution Of Ratings For 2,800 Condom Products On Amazon') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #
 # b. Distribution of ratings for 4,249 condom reviews on Amazon
 temp <- reviews
 temp$LENGTH_OF_REVIEW <- nchar(temp$REVIEW)
 temp <- temp[-which(is.na(temp$STAR)), ]
 temp$STAR <- as.factor(temp$STAR)
-ggplot(temp, aes(x = STAR)) +
+plot_review_rating <- ggplot(temp, aes(x = STAR)) +
   geom_bar(fill = 'green4') + 
   labs(x = 'Review Rating (1 star ~ 5 stars)', y = '',
        title = 'Distribution Of Ratings For 4,249 Condom Reviews On Amazon') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #
 # For the overall rating of a particular product, which is the average rating of all reviews 
 # for that product, the ratings are no longer limited to discrete numbers between 1 and 5, 
@@ -418,25 +482,41 @@ ggplot(temp, aes(x = STAR)) +
 #
 # c. Product Ratings vs. Product Ranks
 temp <- num_main %>% select(RANK_IN_CONDOM, STAR, NumCUSTOMER_REVIEW)
-ggplot(subset(temp, NumCUSTOMER_REVIEW > 150), aes(x = RANK_IN_CONDOM, y = STAR)) +
+plot_rating_ranks <- ggplot(subset(temp, NumCUSTOMER_REVIEW > 150), aes(x = RANK_IN_CONDOM, y = STAR)) +
   geom_point(aes(color = NumCUSTOMER_REVIEW, size = NumCUSTOMER_REVIEW), alpha = 0.5) +
   labs(x = 'Product Ranks', y = 'Product Ratings',
        title = 'Product Ratings vs. Product Ranks') + 
   ylim(c(3, 5)) + 
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_color_gradient(low = 'green', high = 'red') +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #ggplotly()
 #
 # d. Product price vs. overall rating of reviews written for 2,800 condom products
 temp <- num_main %>% select(SALE_PRICE, STAR)
 temp$SALE_PRICE <- as.numeric(temp$SALE_PRICE)
-ggplot(temp, aes(x = STAR, y = SALE_PRICE)) +
+plot_price_rating <- ggplot(temp, aes(x = STAR, y = SALE_PRICE)) +
   geom_point(alpha = 0.5, color = 'blue') +
   labs(x = 'Overall Rating Of Product (1 star ~ 5 stars)', y = 'Price Of Products',
        title = 'Product Prices vs. Overall Rating Of Reviews Written For 2,800 Amazon Products') + 
   theme(plot.title = element_text(hjust = 0.5)) +
-  scale_y_continuous(breaks = seq(0, 300, 30), labels = paste0('$', seq(0, 300, 30)))
+  scale_y_continuous(breaks = seq(0, 300, 30), labels = paste0('$', seq(0, 300, 30))) +
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #ggplotly()
 #main[main$SALE_PRICE == '284.99', ]
 # Observed a distinct outlier with price $284.99.
@@ -462,12 +542,19 @@ temp2 <- main %>% select(SALE_PRICE, URL)
 temp2$SALE_PRICE <- as.numeric(temp2$SALE_PRICE)
 temp2 <- temp2[-which(is.na(temp2$SALE_PRICE)), ]
 avg_review_length <- merge(temp1, temp2, by.x = 'ID', by.y = 'URL')
-ggplot(avg_review_length, aes(x = SALE_PRICE, y = avg_review_length)) +
+plot_avg_review <- ggplot(avg_review_length, aes(x = SALE_PRICE, y = avg_review_length)) +
   geom_point(color = 'red3', alpha = 0.5) +
   geom_smooth(method = 'lm', formula = y ~ log(x), se = FALSE) +
-  labs(x = 'Price of Product', 'Avg. Length Of Reviews (# Characters) For Product',
+  labs(x = 'Price of Product', y = 'Avg. Length Of Reviews (# Characters) For Product',
        title = 'Avg. Review Length Of Reviews vs. Product Price For 2,800 Amazon Products') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #
 # In contrast, the relationship between product price and the average length of reviews for 
 # the product is interesting.
@@ -491,11 +578,22 @@ temp$STAR <- ifelse(temp$STAR >= 0 & temp$STAR < 3, 'Low',
                     ifelse(temp$STAR >= 3 & temp$STAR < 3.5, 'Medium', 'High'))
 temp$STAR <- as.factor(temp$STAR)
 temp$BRAND <- as.factor(temp$BRAND)
-ggplot(temp, aes(x = RANK_IN_CONDOM, y = NumCUSTOMER_REVIEW)) +
+plot_numreviews <- ggplot(temp, aes(x = RANK_IN_CONDOM, y = NumCUSTOMER_REVIEW)) +
   geom_point(aes(shape = BRAND, color = STAR)) +
   scale_color_manual(values = c("green", "red", 'blue', 'black')) +
   xlim(c(0, 1000)) + ylim(c(0, 100)) + 
-  geom_smooth(method = "lm", formula = y ~ splines::bs(x, 3), se = FALSE)
+  labs(x = 'Rank in Condom Category', y = 'Number of Customer Reviews',
+       title = 'Number of Customer Reviews vs. Product Ranks (Top 1000 products)') +
+  geom_smooth(method = "lm", formula = y ~ splines::bs(x, 3), se = FALSE) +
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
+#
 #ggplotly()
 #
 #
@@ -523,12 +621,19 @@ review_sentiment <- review_sentiment[-which(is.na(review_sentiment$STAR)), ]
 review_sentiment$RATING_LEVEL <- ifelse(review_sentiment$STAR >= 0 & review_sentiment$STAR < 3, 'Low', 
                                ifelse(review_sentiment$STAR >= 3 & review_sentiment$STAR < 4, 'Mid', 'High'))
 review_sentiment$RATING_LEVEL <- as.factor(review_sentiment$RATING_LEVEL)
-ggplot(review_sentiment, aes(x = LENGTH_OF_REVIEW)) +
+plot_length_review <- ggplot(review_sentiment, aes(x = LENGTH_OF_REVIEW)) +
   geom_histogram(binwidth = 100, position = 'dodge', fill = 'orange') +
   scale_x_continuous(breaks = seq(0, 2000, 200), labels = seq(0, 2000, 200)) +
-  labs(x = 'Length of review (# of characters)', y = '', 
+  labs(x = 'Length of review (# of characters)', y = 'Count', 
        title = 'Distribution Of Length On 2,800 Condom Reviews On Amazon') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 # Insights:
 #       Most reviews are 120-360 characters, but the average amount of characters in review
 # is about 410. Assuming that the average amount of characters in a paragraph is 352,
@@ -626,10 +731,18 @@ reviews_sentiment <- review_words %>% inner_join(AFINN, by = 'word') %>%
 # expect the sentiment score to correlate with the star rating.
 #
 ggplot(reviews_sentiment, aes(STAR, sentiment, group = STAR)) +
-  geom_boxplot() + 
+  geom_boxplot(fill = 'orange') + 
   labs(x = 'Product Rating', y = 'Average sentiment score',
        title = 'Avg. Sentiment vs. Product Ratings') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #
 # From the boxplot, it seems that our sentiment scores are certainly correlated with positive ratings.
 # But there are prediction errorsome 5-star ratings have a highly negative sentiment score. 
@@ -708,7 +821,14 @@ ggplot(word_summaries_filtered, aes(reviews, average_stars)) +
   geom_hline(yintercept = mean(reviews$STAR, na.rm = TRUE), color = "red", lty = 2) +
   labs("Number Of Reviews", y = "Average stars of reviews with this word",
        title = 'Positive/Negative Word Map') +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 # Note that some fo the most common ords (e.g."condom") are pretty neutral. There are some connon 
 # words that are pretty positive (e.g. "love", "amazing") and others that are pretty negative 
 # (e.g."worst", "trash")
@@ -741,8 +861,15 @@ ggplot(words_afinn, aes(afinn_score, average_stars, group = afinn_score, size = 
   geom_text(aes(label = word), check_overlap = TRUE, vjust = -1, hjust = 0.3) +
   labs("AFINN score of word", y = "Average stars of reviews with this word",
        title = 'Positive/Negative Word Map') +
-  theme(plot.title = element_text(hjust = 0.5)) + 
-  geom_abline(intercept = 4.08090 , slope = 0.09768, col = 'blue')
+  geom_abline(intercept = 4.08090 , slope = 0.09768, col = 'blue') +
+  theme_bw() +
+  theme(plot.title = element_text(face="bold", hjust = 0.5, size = rel(3)),
+        legend.key = element_blank(),
+        panel.background = element_blank(),
+        plot.background = element_rect(fill = "transparent",colour = NA),
+        axis.title.x = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.title.y = element_text(size = 15, face = 'bold', color = 'black'),
+        axis.text = element_text(size = 10, angle=45, hjust=1)) 
 #
 #
 # From this plot, we can see that most profanity has an AFINN score of -5,and that while some words, 
@@ -833,10 +960,12 @@ ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
 #     #     Multiple Linear Regression    #
 #     # - - - - - - - - - - - - - - - - - #
 #
+# Although initially I scraped 34 variables from Amazon Website, many variables are not 
+# applicable to predict movie rating. I will therefore only select several critical variables. 
 library(car)
 mlr_data <- heatmap_temp 
 # Assume that we are fitting a multiple linear regression on the 'mlr_data' data:
-mlr_fit <- lm(STAR ~. - (X1_STAR + X2_STAR + X3_STAR + X4_STAR), data = mlr_data)
+mlr_fit <- lm(STAR ~. - (X1_STAR + X2_STAR + X3_STAR + X4_STAR + X5_STAR), data = mlr_data)
 #
 # a. Accessing Outliers:
 car::outlierTest(mlr_fit) # Bonferonni p-value for most extreme obs
