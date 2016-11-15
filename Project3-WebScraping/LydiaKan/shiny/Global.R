@@ -8,6 +8,8 @@ library(shinythemes)
 library(googleVis)
 library(reshape2)
 library(datasets)
+library(stringi)
+library(plotly)
 
 #read the data in
 meetup = read.csv('meetupfv.csv')
