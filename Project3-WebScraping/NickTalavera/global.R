@@ -1,0 +1,128 @@
+# Xbox One Backwards Compatability Predictor
+# Nick Talavera
+# Created on November 14, 2016
+
+# global.R
+rm(list = ls())
+################################################################################
+#                                   FUNCTIONS                                 #
+################################################################################
+usePackage <- function(p) {
+  if (!is.element(p, installed.packages()[,1]))
+    install.packages(p, dep = TRUE)
+  require(p, character.only = TRUE)
+}
+
+moveMe <- function(data, tomove, where = "last", ba = NULL) {
+  temp <- setdiff(names(data), tomove)
+  x <- switch(
+    where,
+    first = data[c(tomove, temp)],
+    last = data[c(temp, tomove)],
+    before = {
+      if (is.null(ba)) stop("must specify ba column")
+      if (length(ba) > 1) stop("ba must be a single character string")
+      data[append(temp, values = tomove, after = (match(ba, temp)-1))]
+    },
+    after = {
+      if (is.null(ba)) stop("must specify ba column")
+      if (length(ba) > 1) stop("ba must be a single character string")
+      data[append(temp, values = tomove, after = (match(ba, temp)))]
+    })
+  x
+}
+
+roundUp <- function(x, nice=c(1,2,4,5,6,8,10)) {
+  if(length(x) != 1) stop("'x' must be of length 1")
+  10^floor(log10(x)) * nice[[which(x <= 10^floor(log10(x)) * nice)[[1]]]]
+}
+###############################################################################
+#                         LOAD PACKAGES AND MODULES                          #
+###############################################################################
+#require(rCharts)
+#options(RCHART_LIB = 'polycharts')
+usePackage("ggplot2")
+usePackage("plotly")
+usePackage("rCharts")
+usePackage("shiny")
+usePackage("shinydashboard")
+usePackage("TTR")
+usePackage("lettercase")
+usePackage("dplyr")
+usePackage("scales")
+usePackage("DT")
+usePackage("RColorBrewer")
+usePackage("MASS")
+usePackage("car")
+usePackage("rmarkdown")
+usePackage("flexdashboard")
+################################################################################
+#                             GLOBAL VARIABLES                                 #
+################################################################################
+dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
+if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
+  dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
+  setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/')
+}  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
+  dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
+}
+markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
+dataUltKNN  = read.csv(paste0(dataLocale,'dataUltKNN.csv'), stringsAsFactors = TRUE)
+dataUlt = read.csv(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE)
+dataUltKNN$X = NULL
+dataUltKNN$gameName = as.character(dataUltKNN$gameName)
+dataUltKNN$releaseDate = as.Date(dataUltKNN$releaseDate)
+dataUlt$X = NULL
+dataUlt$gameName = as.character(dataUltKNN$gameName)
+dataUlt$releaseDate = as.Date(dataUltKNN$releaseDate)
+# head(dataUltKNN)
+# summary(dataUltKNN) #Looking at the five number summary information.
+# sapply(dataUltKNN, sd) #Looking at the individual standard deviations.
+# sapply(dataUltKNN, class) #Looking at the variable classes.
+# table(dataUltKNN$isBCCompatable)/nrow(dataUltKNN) #Manually calculating the proportions.
+# table(dataUltKNN$isBCCompatable, dataUltKNN$isKinectSupported) #Checking to see that we have data
+#Fitting the logistic regression with all variables; the family parameter
+#specifies the error distribution and link function to be used. For logistic
+#regression, this is binomial.
+# FINDING MODEL
+model.empty = glm(isBCCompatable ~ -isBCCompatable -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
+glogit.overall = glm(isBCCompatable ~ . -isBCCompatable -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN)
+scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
+# forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+# glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
+glogit.optimizedFoAIC = glm(isBCCompatable ~ gamesOnDemandorArcade + price + reviewScorePro +
+                              isOnXboxOne + isMetacritic + isKinectRequired + isConsoleExclusive +
+                              xbox360Rating + hasDemoAvailable + isListedOnMSSite + votes +
+                              numberOfReviews + DLgameAddons + DLavatarItems + ESRBRating, family = "binomial", data = dataUltKNN)
+# summary(glogit.optimizedFoAIC)
+# class(glogit.optimizedFoAIC)
+# #Residual plot for logistic regression with an added loess smoother; we would
+# #hope that, on average, the residual values are 0.
+# scatter.smooth(glogit.optimizedFoAIC$fit,
+#                residuals(glogit.optimizedFoAIC, type = "deviance"),
+#                lpars = list(col = "red"),
+#                xlab = "Fitted Probabilities",
+#                ylab = "Deviance Residual Values",
+#                main = "Residual Plot for\nLogistic Regression of Admission Data")
+# abline(h = 0, lty = 2)
+# summary(glogit.optimizedFoAIC)
+# exp(glogit.optimizedFoAIC$coefficients)
+# influencePlot(glogit.optimizedFoAIC)
+# # avPlots(glogit.optimizedFoAIC)
+# confint(glogit.optimizedFoAIC)
+
+isBC.predicted = round(glogit.optimizedFoAIC$fitted.values)
+xboxData = cbind(dataUlt,bcGuess = round(glogit.optimizedFoAIC$fitted.values), percentProb = round(glogit.optimizedFoAIC$fitted.values,3)*100)
+# xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatable", "bcGuess", "percentProb"), "first")
+# #Comparing the true values to the predicted values:
+# table(truth = dataUltKNN$isBCCompatable, prediction = isBC.predicted)/nrow(dataUltKNN)
+
+# pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.tail = FALSE)
+# #The p-value for the overall test of deviance is <.05, indicating that this model
+# #is not a good overall fit!
+
+# table(dataUltKNN$isBCCompatable)
+# table(isBC.predicted)
+# table(truth = dataUltKNN$isBCCompatable, prediction = isBC.predicted)
