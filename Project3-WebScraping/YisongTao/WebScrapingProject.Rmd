@@ -11,11 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Web scraping MyAnimeList.net 
 
-MyAnimelist.net scraped reviews and info of 5953 animes.
-1. web scraping
-2. reviews: EDA
-3. anime info: network graph eda
-4. predict anime score
+MyAnimelist.net scraped reviews and info of 5953 animes.  
+1. web scraping  
+2. reviews: EDA  
+3. anime info: network graph eda  
+4. predict anime score  
 
 
 
@@ -60,15 +60,19 @@ p2 <- ggplot(review1) +
 p2
 ```
 
-3. anime info network graph
+
+This anime started airing in Summer 2012, ended in Dec 2012. A short film aired in Dec 2013 and its sequel air in Summer 2014. Rumors of new sequel and movie project started in late 2016.
+
+3. anime info EDA
 ```{r load data2, warning=F, message=F}
 library(visNetwork)
 library(car)
 AnimeInfo <- readRDS("AnimeInfo/AnimeInfo.RDS")
 length(AnimeInfo)
 names(AnimeInfo[[1]])
+
 ```
-```{r plot3}
+```{r plot3_1}
 set.seed(0)
 graph_list <- sample(AnimeInfo, 100)  ##randomly choose 100 anime for network graph
 mklink_lst <- function(lst){
@@ -179,7 +183,36 @@ table(AnimeInfo_df$Rating)
 AnimeInfo_df$Rating[AnimeInfo_df$Rating== "None"] <- "G - All Ages"
 AnimeInfo_df$Rating <- as.character(AnimeInfo_df$Rating)
 AnimeInfo_df$Rating <- as.factor(AnimeInfo_df$Rating)
-
+sum_AnimeInfo <- AnimeInfo_df %>%
+    group_by(Type) %>% 
+    summarise(MeanScore = mean(Score), SDScore = sd(Score)) %>% 
+    arrange(desc(MeanScore))
+sum_AnimeInfo
+sum_AnimeInfo_Rating <- AnimeInfo_df %>% 
+    group_by(Rating) %>% 
+    summarise(MeanScore = mean(Score), SDScore = sd(Score)) %>% 
+    arrange(desc(MeanScore))
+sum_AnimeInfo_Rating
+bartlett.test(Score ~ Type, data = AnimeInfo_df) #unequal variance
+bartlett.test(Score ~ Rating, data = AnimeInfo_df) #unequal variance
+#summary(aov(Score ~ Type, data = AnimeInfo_df))
+#summary(aov(Score ~ Rating, data = AnimeInfo_df))
+```
+```{r plot3_2}
+plot1 <- ggplot(AnimeInfo_df) +
+    geom_boxplot(aes(y=Score, x= Type, color = Type)) +
+    theme_bw() + theme(legend.position="none")
+plot1
+```
+```{r plot3_3}
+plot2 <- ggplot(AnimeInfo_df) +
+    geom_boxplot(aes(y=Score, x= Rating, color = Rating)) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="none")
+plot2
+```
+```{r model}
 # dummify director variable
 # list of anime directors who won awards in last 15-20 years at Tokyo Anime Award or Animation Kobe
 direct_award <- c("Daichi, Akitaro", "Miyazaki, Hayao", "Hara, Keiichi", "Kon, Satoshi", 
@@ -206,3 +239,7 @@ vif(model)
 Significant coeffiecients: (Intercept), Award_DirectorTRUE, Favorite, Viewer, TypeMusic, TypeONA, TypeOVA, RatingPG-13 - Teens 13 or older, RatingR - 17+ (violence & profanity), RatingR+ - Mild Nudity, RatingRx - Hentai.
 
 Adjusted R-squared:  0.289  only explains 28.9% of the variance in scores of animes.
+
+To do:    
+ - Normalize viewer/favorites against time since release;  
+ - Use number of favorites on staff/actor pages to turn Director, Actor etc. into continuous variable.
