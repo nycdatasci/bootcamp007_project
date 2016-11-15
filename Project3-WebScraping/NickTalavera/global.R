@@ -81,18 +81,18 @@ dataUlt$releaseDate = as.Date(dataUltKNN$releaseDate)
 # summary(dataUltKNN) #Looking at the five number summary information.
 # sapply(dataUltKNN, sd) #Looking at the individual standard deviations.
 # sapply(dataUltKNN, class) #Looking at the variable classes.
-# table(dataUltKNN$isBCCompatible)/nrow(dataUltKNN) #Manually calculating the proportions.
-# table(dataUltKNN$isBCCompatible, dataUltKNN$isKinectSupported) #Checking to see that we have data
+# table(dataUltKNN$isBCCompatable)/nrow(dataUltKNN) #Manually calculating the proportions.
+# table(dataUltKNN$isBCCompatable, dataUltKNN$isKinectSupported) #Checking to see that we have data
 #Fitting the logistic regression with all variables; the family parameter
 #specifies the error distribution and link function to be used. For logistic
 #regression, this is binomial.
 # FINDING MODEL
-model.empty = glm(isBCCompatible ~ -isBCCompatible -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
-glogit.overall = glm(isBCCompatible ~ . -isBCCompatible -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN)
+model.empty = glm(isBCCompatable ~ -isBCCompatable -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN) #The model with an intercept ONLY.
+glogit.overall = glm(isBCCompatable ~ . -isBCCompatable -gameName -features -isOnUserVoice -isMetacritic, family = "binomial", data = dataUltKNN)
 scope = list(lower = formula(model.empty), upper = formula(glogit.overall))
 # forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
 # glogit.optimizedFoAIC = glm(forwardAIC$formula, family = "binomial", data = dataUltKNN)
-glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + price + reviewScorePro +
+glogit.optimizedFoAIC = glm(isBCCompatable ~ gamesOnDemandorArcade + price + reviewScorePro +
                               isOnXboxOne + isMetacritic + isKinectRequired + isConsoleExclusive +
                               xbox360Rating + hasDemoAvailable + isListedOnMSSite + votes +
                               numberOfReviews + DLgameAddons + DLavatarItems + ESRBRating, family = "binomial", data = dataUltKNN)
@@ -115,14 +115,14 @@ glogit.optimizedFoAIC = glm(isBCCompatible ~ gamesOnDemandorArcade + price + rev
 
 isBC.predicted = round(glogit.optimizedFoAIC$fitted.values)
 xboxData = cbind(dataUlt,bcGuess = round(glogit.optimizedFoAIC$fitted.values), percentProb = round(glogit.optimizedFoAIC$fitted.values,3)*100)
-# xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatible", "bcGuess", "percentProb"), "first")
+# xboxData = moveMe(data = xboxData, c("gameName", "isBCCompatable", "bcGuess", "percentProb"), "first")
 # #Comparing the true values to the predicted values:
-# table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted)/nrow(dataUltKNN)
+# table(truth = dataUltKNN$isBCCompatable, prediction = isBC.predicted)/nrow(dataUltKNN)
 
 # pchisq(glogit.optimizedFoAIC$deviance, glogit.optimizedFoAIC$df.residual, lower.tail = FALSE)
 # #The p-value for the overall test of deviance is <.05, indicating that this model
 # #is not a good overall fit!
 
-# table(dataUltKNN$isBCCompatible)
+# table(dataUltKNN$isBCCompatable)
 # table(isBC.predicted)
-# table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted)
+# table(truth = dataUltKNN$isBCCompatable, prediction = isBC.predicted)

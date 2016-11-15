@@ -129,7 +129,7 @@ fixMetacritic = function(data) {
 
 fixMajorNelson = function(data){
   data$isDiscOnly[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))] = TRUE
-  data$isBCCompatible = TRUE
+  data$isBCCompatable = TRUE
   data$BCCompatible = NULL
   data$gameName[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))] =  gsub('(disc only)',"",data$isDiscOnly[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))])
   return(data)
@@ -427,7 +427,7 @@ dataUlt = unique(dataUlt)
 dataUlt = gameRemover(dataUlt)
 dataUlt$isListedOnMSSite[is.na(dataUlt$isListedOnMSSite)] = FALSE
 dataUlt$isMetacritic[is.na(dataUlt$isMetacritic)] = FALSE
-dataUlt$isBCCompatible[is.na(dataUlt$isBCCompatible)] = FALSE
+dataUlt$isBCCompatable[is.na(dataUlt$isBCCompatable)] = FALSE
 dataUlt$isOnUserVoice[is.na(dataUlt$isOnUserVoice)] = FALSE
 dataUlt$isExclusive[is.na(dataUlt$isExclusive)] = FALSE
 dataUlt$isKinectSupported[is.na(dataUlt$isKinectSupported)] = FALSE
@@ -481,13 +481,13 @@ dataUlt$publisherKinect = NULL
 dataUlt$isAvailableToPurchasePhysically = NULL
 dataUlt$releaseDateExclusive = NULL
 dataUlt$releaseDateKinect = NULL
-dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatable","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 na_count(dataUlt)
-# dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-# dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+# dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatable == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+# dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatable == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 # dataUltMetMS = dataUlt[dataUlt$isListedOnMSSite == TRUE  & dataUlt$isMetacritic != TRUE,]
 # dataUltUVMS = dataUlt[dataUlt$isOnUserVoice == TRUE  & dataUlt$isListedOnMSSite != TRUE,]
-# dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
+# dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatable == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
 dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUltKNN,'dataUltKNN.csv')

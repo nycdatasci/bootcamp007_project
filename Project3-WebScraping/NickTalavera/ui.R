@@ -1,4 +1,4 @@
-# Xbox One Backwards Compatiablity Predictor
+# Xbox One Backwards Compatablity Predictor
 
 library(shiny)
 roundUp <- function(x, nice=c(1,2,4,5,6,8,10)) {
@@ -6,7 +6,7 @@ roundUp <- function(x, nice=c(1,2,4,5,6,8,10)) {
   10^floor(log10(x)) * nice[[which(x <= 10^floor(log10(x)) * nice)[[1]]]]
 }
 
-programName = "Xbox One Backwards Compatibility Predictor"
+programName = "Xbox One Backwards Compatability Predictor"
 sideBarWidth = 450
 dashboardPage(
   
@@ -76,10 +76,10 @@ dashboardPage(
                     # solidHeader = TRUE,
                     collapsible = TRUE,
                     helpText("Note: You may leave fields empty or unchecked to select all."),
-                    checkboxGroupInput("SEARCH_Is_Backwards_Compatible", label = h3("Is backwards compatible:"), 
+                    checkboxGroupInput("SEARCH_Is_Backwards_Compatable", label = h3("Is backwards compatable:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
                                        selected = ""),
-                    checkboxGroupInput("SEARCH_Predicted_to_become_Backwards_Compatible", label = h3("Predicted to become backwards compatible:"), 
+                    checkboxGroupInput("SEARCH_Predicted_to_become_Backwards_Compatable", label = h3("Predicted to become backwards compatable:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
                                        selected = ""),
                     sliderInput("SEARCH_Backwards_Compatability_Probability_Percent",
@@ -216,8 +216,8 @@ dashboardPage(
                 title = 'Interesting Lists',
                 # position = "static-top",
                 tabPanel('All Games',      DT::dataTableOutput('List_AllGames')),
-                tabPanel('Backwards Compatible Now',     DT::dataTableOutput('List_BackwardsCompatibleGames')),
-                tabPanel('Predicted Backwards Compatible',       DT::dataTableOutput('List_PredictedBackwardsCompatible')),
+                tabPanel('Backwards Compatable Now',     DT::dataTableOutput('List_BackwardsCompatableGames')),
+                tabPanel('Predicted Backwards Compatable',       DT::dataTableOutput('List_PredictedBackwardsCompatable')),
                 navbarMenu("Publishers",
                            tabPanel('Most Likely 25',
                                     helpText('Not including Games that Require Kinect or Peripherals'),

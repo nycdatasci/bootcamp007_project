@@ -155,7 +155,7 @@ shinyServer(function(input, output, session) {
   getDataPresentable = function(){
     dataToPresent = xboxData
     dataToPresent = dataToPresent[dataToPresent$gameName != "TRUE",]
-    # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100
+    # dataToPresent$percentProb[dataToPresent$isBCCompatable == TRUE] = 100
     dataToPresent$bcGuess = as.logical(dataToPresent$bcGuess)
     # dataToPresent[dataToPresent == TRUE] = TRUE
     # dataToPresent[dataToPresent == FALSE] = FALSE
@@ -183,7 +183,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dataToPresent[dataToPresent$isBCCompatible == TRUE,]
+        dataToPresent = dataToPresent[dataToPresent$isBCCompatable == TRUE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
@@ -220,7 +220,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
+        dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatable == FALSE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
@@ -302,7 +302,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatable[isBCCompatable==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatable[isBCCompatable==TRUE])/length(gameName)*100,0)))
       dataToPresent = dplyr::arrange(dataToPresent, Percent, desc(dataToPresent$"Games Published"))
       dataToPresent
     }, 
@@ -314,7 +314,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatable[isBCCompatable==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatable[isBCCompatable==TRUE])/length(gameName)*100,0)))
       dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent
     }, 
