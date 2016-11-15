@@ -76,5 +76,10 @@ function(input, output){
                  zoom = T, legend = T, opacity = 0.8)
   })
   
+  output$model <- renderUI({
+    file = "RMarkdownFile.rmd"
+    htmlFile = rmarkdown::render(file)
+    shiny::includeHTML(htmlFile)
+  })
   
 }

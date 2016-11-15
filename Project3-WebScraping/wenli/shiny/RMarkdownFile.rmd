@@ -93,10 +93,10 @@ F-statistic: 176.9 on 12 and 2221 DF,  p-value: < 2.2e-16
 plot(model.full)
 ```
 
-![](./figure/1.png)
-![](./figure/2.png)
-![](./figure/3.png)
-![](./figure/4.png)
+![](1.png)
+![](2.png)
+![](3.png)
+![](4.png)
 
         
         
