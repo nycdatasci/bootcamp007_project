@@ -1,0 +1,382 @@
+2042	Verona High School	http://www.greatschools.org/new-jersey/verona/2042-Verona-High-School/
+2166	West Morris Central High School	http://www.greatschools.org/new-jersey/chester/2166-West-Morris-Central-High-School/
+93	Belvidere High School	http://www.greatschools.org/new-jersey/belvidere/93-Belvidere-High-School/
+285	Cedar Grove High School	http://www.greatschools.org/new-jersey/cedar-grove/285-Cedar-Grove-High-School/
+385	Delaware Valley Reg High School	http://www.greatschools.org/new-jersey/frenchtown/385-Delaware-Valley-Reg-High-School/
+413	Dumont High School	http://www.greatschools.org/new-jersey/dumont/413-Dumont-High-School/
+423	East Brunswick High School	http://www.greatschools.org/new-jersey/e-brunswick/423-East-Brunswick-High-School/
+537	Emerson Jr Sr High School	http://www.greatschools.org/new-jersey/emerson/537-Emerson-Jr-Sr-High-School/
+570	Fair Lawn High School	http://www.greatschools.org/new-jersey/fair-lawn/570-Fair-Lawn-High-School/
+598	Fort Lee High School	http://www.greatschools.org/new-jersey/fort-lee/598-Fort-Lee-High-School/
+626	Colts Neck High School	http://www.greatschools.org/new-jersey/colts-neck/626-Colts-Neck-High-School/
+628	Freehold Twp High School	http://www.greatschools.org/new-jersey/freehold-twp/628-Freehold-Twp-High-School/
+629	Howell High School	http://www.greatschools.org/new-jersey/farmingdale/629-Howell-High-School/
+630	Manalapan High School	http://www.greatschools.org/new-jersey/englishtown/630-Manalapan-High-School/
+784	Highland Park High School	http://www.greatschools.org/new-jersey/highland-park/784-Highland-Park-High-School/
+864	Jefferson Twp High School	http://www.greatschools.org/new-jersey/oak-ridge/864-Jefferson-Twp-High-School/
+942	Lakeland Reg High School	http://www.greatschools.org/new-jersey/wanaque/942-Lakeland-Reg-High-School/
+1052	Madison High School	http://www.greatschools.org/new-jersey/madison/1052-Madison-High-School/
+1142	Metuchen High School	http://www.greatschools.org/new-jersey/metuchen/1142-Metuchen-High-School/
+1161	Middletown - South High School	http://www.greatschools.org/new-jersey/middletown/1161-Middletown---South-High-School/
+1177	Midland Park High School	http://www.greatschools.org/new-jersey/midland-park/1177-Midland-Park-High-School/
+1208	Monroe Twp High School	http://www.greatschools.org/new-jersey/monroe-township/1208-Monroe-Twp-High-School/
+1245	Morris Hills High School	http://www.greatschools.org/new-jersey/rockaway/1245-Morris-Hills-High-School/
+1491	Paramus High School	http://www.greatschools.org/new-jersey/paramus/1491-Paramus-High-School/
+1498	Park Ridge High School	http://www.greatschools.org/new-jersey/park-ridge/1498-Park-Ridge-High-School/
+1150	Middlesex High School	http://www.greatschools.org/new-jersey/middlesex/1150-Middlesex-High-School/
+1160	Middletown - North High School	http://www.greatschools.org/new-jersey/middletown/1160-Middletown---North-High-School/
+1216	Montclair High School	http://www.greatschools.org/new-jersey/montclair/1216-Montclair-High-School/
+1272	Mt  Olive High School	http://www.greatschools.org/new-jersey/flanders/1272-Mt--Olive-High-School/
+1306	New Milford High School	http://www.greatschools.org/new-jersey/new-milford/1306-New-Milford-High-School/
+1392	North Arlington High School	http://www.greatschools.org/new-jersey/north-arlington/1392-North-Arlington-High-School/
+1437	Nutley High School	http://www.greatschools.org/new-jersey/nutley/1437-Nutley-High-School/
+1459	Ocean Twp High School	http://www.greatschools.org/new-jersey/oakhurst/1459-Ocean-Twp-High-School/
+1532	Passaic Co Tech Institute	http://www.greatschools.org/new-jersey/wayne/1532-Passaic-Co-Tech-Institute/
+1709	Raritan High School	http://www.greatschools.org/new-jersey/hazlet/1709-Raritan-High-School/
+1789	Rutherford High School	http://www.greatschools.org/new-jersey/rutherford/1789-Rutherford-High-School/
+1796	Saddle Brook Mid  High School	http://www.greatschools.org/new-jersey/saddle-brook/1796-Saddle-Brook-Mid--High-School/
+1840	Somerville High School	http://www.greatschools.org/new-jersey/somerville/1840-Somerville-High-School/
+1863	Columbia Sr High School	http://www.greatschools.org/new-jersey/maplewood/1863-Columbia-Sr-High-School/
+1894	Spotswood High School	http://www.greatschools.org/new-jersey/spotswood/1894-Spotswood-High-School/
+1899	Jonathan Dayton High School	http://www.greatschools.org/new-jersey/springfield/1899-Jonathan-Dayton-High-School/
+1923	Sussex Cty Tech High School	http://www.greatschools.org/new-jersey/sparta/1923-Sussex-Cty-Tech-High-School/
+2158	West Milford High School	http://www.greatschools.org/new-jersey/west-milford/2158-West-Milford-High-School/
+2208	Westwood Junior  Senior High School	http://www.greatschools.org/new-jersey/township-of-washington/2208-Westwood-Junior--Senior-High-School/
+2242	Colonia High School	http://www.greatschools.org/new-jersey/colonia/2242-Colonia-High-School/
+7076	Harp Health& Related Prof Academy	http://www.greatschools.org/new-jersey/paterson/7076-Harp-Health-Related-Prof-Academy/
+7143	Bard Early College High School	http://www.greatschools.org/new-jersey/newark/7143-Bard-Early-College-High-School/
+157	Boonton High School	http://www.greatschools.org/new-jersey/boonton/157-Boonton-High-School/
+226	Butler High School	http://www.greatschools.org/new-jersey/butler/226-Butler-High-School/
+477	Edison High School	http://www.greatschools.org/new-jersey/edison/477-Edison-High-School/
+1502	Parsippany High School	http://www.greatschools.org/new-jersey/parsippany/1502-Parsippany-High-School/
+1503	Parsippany Hills High School	http://www.greatschools.org/new-jersey/morris-plains/1503-Parsippany-Hills-High-School/
+1675	Pompton Lakes High School	http://www.greatschools.org/new-jersey/pompton-lakes/1675-Pompton-Lakes-High-School/
+1694	Indian Hills High School	http://www.greatschools.org/new-jersey/oakland/1694-Indian-Hills-High-School/
+1722	Red Bank Reg High School	http://www.greatschools.org/new-jersey/little-silver/1722-Red-Bank-Reg-High-School/
+1776	Roxbury High School	http://www.greatschools.org/new-jersey/roxbury-township/1776-Roxbury-High-School/
+1827	Secaucus High School	http://www.greatschools.org/new-jersey/secaucus/1827-Secaucus-High-School/
+1834	Shore Reg High School	http://www.greatschools.org/new-jersey/west-long-branch/1834-Shore-Reg-High-School/
+2026	Allentown High School	http://www.greatschools.org/new-jersey/allentown/2026-Allentown-High-School/
+2036	Vernon Twp High School	http://www.greatschools.org/new-jersey/vernon/2036-Vernon-Twp-High-School/
+2072	Waldwick High School	http://www.greatschools.org/new-jersey/waldwick/2072-Waldwick-High-School/
+2077	Wall High School	http://www.greatschools.org/new-jersey/wall/2077-Wall-High-School/
+2124	Wayne Valley High School	http://www.greatschools.org/new-jersey/wayne/2124-Wayne-Valley-High-School/
+2125	Wayne Hills High School	http://www.greatschools.org/new-jersey/wayne/2125-Wayne-Hills-High-School/
+2243	John F Kennedy Mem High School	http://www.greatschools.org/new-jersey/iselin/2243-John-F-Kennedy-Mem-High-School/
+108	Bergenfield High School	http://www.greatschools.org/new-jersey/bergenfield/108-Bergenfield-High-School/
+419	Dunellen High School	http://www.greatschools.org/new-jersey/dunellen/419-Dunellen-High-School/
+460	Hightstown High School	http://www.greatschools.org/new-jersey/hightstown/460-Hightstown-High-School/
+549	Essex County Vocational School	http://www.greatschools.org/new-jersey/newark/549-Essex-County-Vocational-School/
+627	Freehold Borough High School	http://www.greatschools.org/new-jersey/freehold/627-Freehold-Borough-High-School/
+771	Hasbrouck Heights High School	http://www.greatschools.org/new-jersey/hasbrouck-heights/771-Hasbrouck-Heights-High-School/
+932	Kittatinny Reg High School	http://www.greatschools.org/new-jersey/newton/932-Kittatinny-Reg-High-School/
+967	Lenape Val Regional High School	http://www.greatschools.org/new-jersey/stanhope/967-Lenape-Val-Regional-High-School/
+968	Leonia High School	http://www.greatschools.org/new-jersey/leonia/968-Leonia-High-School/
+1097	N Warren Reg High School	http://www.greatschools.org/new-jersey/blairstown/1097-N-Warren-Reg-High-School/
+1	Chatham High School	http://www.greatschools.org/new-jersey/chatham/1-Chatham-High-School/
+103	Bergen Academies	http://www.greatschools.org/new-jersey/hackensack/103-Bergen-Academies/
+106	Technical School  Teterboro	http://www.greatschools.org/new-jersey/teterboro/106-Technical-School--Teterboro/
+840	High Tech High School	http://www.greatschools.org/new-jersey/n-bergen/840-High-Tech-High-School/
+878	Dr. Ronald Mc Nair Academy High School	http://www.greatschools.org/new-jersey/jersey-city/878-Dr.-Ronald-Mc-Nair-Academy-High-School/
+1181	Millburn Sr High School	http://www.greatschools.org/new-jersey/millburn/1181-Millburn-Sr-High-School/
+1244	Morris Co School Of Tech	http://www.greatschools.org/new-jersey/denville/1244-Morris-Co-School-Of-Tech/
+1731	Ridgewood High School	http://www.greatschools.org/new-jersey/ridgewood/1731-Ridgewood-High-School/
+2152	Academy Allied Health & Sci	http://www.greatschools.org/new-jersey/neptune/2152-Academy-Allied-Health--Sci/
+2154	Marine Academy Sci & Tech	http://www.greatschools.org/new-jersey/highlands/2154-Marine-Academy-Sci--Tech/
+2157	High Technology High School	http://www.greatschools.org/new-jersey/lincroft/2157-High-Technology-High-School/
+2233	Union Cty Magnet High School	http://www.greatschools.org/new-jersey/scotch-plains/2233-Union-Cty-Magnet-High-School/
+2234	Union County Vocational Technical School	http://www.greatschools.org/new-jersey/scotch-plains/2234-Union-County-Vocational-Technical-School/
+3418	Academy of Science Vocational School	http://www.greatschools.org/new-jersey/edison/3418-Academy-Of-Science-Vocational-School/
+3429	Communications High School	http://www.greatschools.org/new-jersey/wall/3429-Communications-High-School/
+4274	Biotechnology High School	http://www.greatschools.org/new-jersey/freehold/4274-Biotechnology-High-School/
+4311	Academy For Allied Hlth Sci	http://www.greatschools.org/new-jersey/scotch-plains/4311-Academy-For-Allied-Hlth-Sci/
+4312	Academy For Info Tech	http://www.greatschools.org/new-jersey/scotch-plains/4312-Academy-For-Info-Tech/
+6902	Academy For Perform Arts	http://www.greatschools.org/new-jersey/scotch-plains/6902-Academy-For-Perform-Arts/
+115	Governor Livingston High School	http://www.greatschools.org/new-jersey/berkeley-heights/115-Governor-Livingston-High-School/
+127	Ridge High School	http://www.greatschools.org/new-jersey/basking-ridge/127-Ridge-High-School/
+369	Cranford Sr High School	http://www.greatschools.org/new-jersey/cranford/369-Cranford-Sr-High-School/
+375	Cresskill Jr Sr High School	http://www.greatschools.org/new-jersey/cresskill/375-Cresskill-Jr-Sr-High-School/
+507	Elizabeth High School	http://www.greatschools.org/new-jersey/elizabeth/507-Elizabeth-High-School/
+669	Glen Rock High School	http://www.greatschools.org/new-jersey/glen-rock/669-Glen-Rock-High-School/
+550	Essex County Vocational School	http://www.greatschools.org/new-jersey/west-caldwell/550-Essex-County-Vocational-School/
+704	Hackettstown High School	http://www.greatschools.org/new-jersey/hackettstown/704-Hackettstown-High-School/
+729	Hamilton East-Steinert High School	http://www.greatschools.org/new-jersey/hamilton/729-Hamilton-East-Steinert-High-School/
+775	Hawthorne High School	http://www.greatschools.org/new-jersey/hawthorne/775-Hawthorne-High-School/
+783	High Point Regional High School	http://www.greatschools.org/new-jersey/sussex/783-High-Point-Regional-High-School/
+954	Lawrence High School	http://www.greatschools.org/new-jersey/lawrenceville/954-Lawrence-High-School/
+1045	Lyndhurst High School	http://www.greatschools.org/new-jersey/lyndhurst/1045-Lyndhurst-High-School/
+1058	Old Bridge High School	http://www.greatschools.org/new-jersey/matawan/1058-Old-Bridge-High-School/
+1117	Matawan Reg High School	http://www.greatschools.org/new-jersey/aberdeen/1117-Matawan-Reg-High-School/
+1202	Monmouth Reg High School	http://www.greatschools.org/new-jersey/tinton-falls/1202-Monmouth-Reg-High-School/
+1249	Morristown High School	http://www.greatschools.org/new-jersey/morristown/1249-Morristown-High-School/
+1315	Technology High School	http://www.greatschools.org/new-jersey/newark/1315-Technology-High-School/
+1389	Newton High School	http://www.greatschools.org/new-jersey/newton/1389-Newton-High-School/
+1404	North Brunswick Twp High School	http://www.greatschools.org/new-jersey/north-brunswick/1404-North-Brunswick-Twp-High-School/
+1486	Palisades Park Jr  Sr High School	http://www.greatschools.org/new-jersey/palisades-park/1486-Palisades-Park-Jr--Sr-High-School/
+1530	Passaic Valley High School	http://www.greatschools.org/new-jersey/little-falls/1530-Passaic-Valley-High-School/
+1628	Piscataway Twp High School	http://www.greatschools.org/new-jersey/piscataway/1628-Piscataway-Twp-High-School/
+1771	Roselle Park High School	http://www.greatschools.org/new-jersey/roselle-park/1771-Roselle-Park-High-School/
+1809	War Memorial High School	http://www.greatschools.org/new-jersey/parlin/1809-War-Memorial-High-School/
+1862	S Hunterdon Reg High School	http://www.greatschools.org/new-jersey/lambertville/1862-S-Hunterdon-Reg-High-School/
+1872	South Plainfield High School	http://www.greatschools.org/new-jersey/south-plainfield/1872-South-Plainfield-High-School/
+1931	Teaneck Sr High School	http://www.greatschools.org/new-jersey/teaneck/1931-Teaneck-Sr-High-School/
+2075	Wallkill Valley Reg High School	http://www.greatschools.org/new-jersey/hardyston-township/2075-Wallkill-Valley-Reg-High-School/
+2083	Wallington Jr Sr High School	http://www.greatschools.org/new-jersey/wallington/2083-Wallington-Jr-Sr-High-School/
+2088	Warren Hills Reg High School	http://www.greatschools.org/new-jersey/washington/2088-Warren-Hills-Reg-High-School/
+231	James Caldwell High School	http://www.greatschools.org/new-jersey/west-caldwell/231-James-Caldwell-High-School/
+319	Arthur L  Johnson High School	http://www.greatschools.org/new-jersey/clark/319-Arthur-L--Johnson-High-School/
+478	J P Stevens High School	http://www.greatschools.org/new-jersey/edison/478-J-P-Stevens-High-School/
+548	Essex Cty Voc Bloomfield	http://www.greatschools.org/new-jersey/bloomfield/548-Essex-Cty-Voc-Bloomfield/
+631	Marlboro High School	http://www.greatschools.org/new-jersey/marlboro/631-Marlboro-High-School/
+664	Glen Ridge High School	http://www.greatschools.org/new-jersey/glen-ridge/664-Glen-Ridge-High-School/
+691	Watchung Hills Regional High School	http://www.greatschools.org/new-jersey/watchung/691-Watchung-Hills-Regional-High-School/
+757	Hanover Park High School	http://www.greatschools.org/new-jersey/east-hanover/757-Hanover-Park-High-School/
+758	Whippany Park High School	http://www.greatschools.org/new-jersey/whippany/758-Whippany-Park-High-School/
+788	Hillsborough High School	http://www.greatschools.org/new-jersey/hillsborough/788-Hillsborough-High-School/
+824	Central High School	http://www.greatschools.org/new-jersey/pennington/824-Central-High-School/
+841	County Prep High School	http://www.greatschools.org/new-jersey/jersey-city/841-County-Prep-High-School/
+842	Hunterdon Central High School	http://www.greatschools.org/new-jersey/flemington/842-Hunterdon-Central-High-School/
+1073	Mahwah High School	http://www.greatschools.org/new-jersey/mahwah/1073-Mahwah-High-School/
+1231	Montville High School	http://www.greatschools.org/new-jersey/montville/1231-Montville-High-School/
+1246	Morris Knolls High School	http://www.greatschools.org/new-jersey/rockaway/1246-Morris-Knolls-High-School/
+1322	Science High School	http://www.greatschools.org/new-jersey/newark/1322-Science-High-School/
+1419	North Hunterdon Reg High School	http://www.greatschools.org/new-jersey/annandale/1419-North-Hunterdon-Reg-High-School/
+1474	River Dell Regional High School	http://www.greatschools.org/new-jersey/oradell/1474-River-Dell-Regional-High-School/
+1515	Pascack Valley High School	http://www.greatschools.org/new-jersey/hillsdale/1515-Pascack-Valley-High-School/
+1603	Pequannock Twp High School	http://www.greatschools.org/new-jersey/pompton-plains/1603-Pequannock-Twp-High-School/
+1681	Princeton High School	http://www.greatschools.org/new-jersey/princeton/1681-Princeton-High-School/
+1703	Randolph High School	http://www.greatschools.org/new-jersey/randolph/1703-Randolph-High-School/
+1815	Scotch Plains Fanwood High School	http://www.greatschools.org/new-jersey/scotch-plains/1815-Scotch-Plains-Fanwood-High-School/
+1851	South Brunswick High School	http://www.greatschools.org/new-jersey/monmouth-junction/1851-South-Brunswick-High-School/
+1646	Plainfield High School	http://www.greatschools.org/new-jersey/plainfield/1646-Plainfield-High-School/
+1765	Abraham Clark High School	http://www.greatschools.org/new-jersey/roselle/1765-Abraham-Clark-High-School/
+7080	Trenton Central High School West	http://www.greatschools.org/new-jersey/trenton/7080-Trenton-Central-High-School-West/
+7070	T A Edison Career Tech Academy	http://www.greatschools.org/new-jersey/elizabeth/7070-T-A-Edison-Career-Tech-Academy/
+7046	Union City High School	http://www.greatschools.org/new-jersey/union-city/7046-Union-City-High-School/
+7105	School Of Science Tech Engineer Math	http://www.greatschools.org/new-jersey/paterson/7105-School-Of-Science-Tech-Engineer-Math/
+7119	Mdsx Co Voc Eb Career Development	http://www.greatschools.org/new-jersey/east-brunswick/7119-Mdsx-Co-Voc-Eb-Career-Development/
+7138	Bridges High School A Diploma Plus School	http://www.greatschools.org/new-jersey/newark/7138-Bridges-High-School-A-Diploma-Plus-School/
+844	Irvington High School	http://www.greatschools.org/new-jersey/irvington/844-Irvington-High-School/
+875	Henry Snyder High School	http://www.greatschools.org/new-jersey/jersey-city/875-Henry-Snyder-High-School/
+876	James J. Ferris High School	http://www.greatschools.org/new-jersey/jersey-city/876-James-J.-Ferris-High-School/
+1518	Passaic High School	http://www.greatschools.org/new-jersey/passaic/1518-Passaic-High-School/
+1967	Trenton Central High School	http://www.greatschools.org/new-jersey/trenton/1967-Trenton-Central-High-School/
+3485	East Orange Campus High School	http://www.greatschools.org/new-jersey/east-orange/3485-East-Orange-Campus-High-School/
+7079	High School Of Info Tech	http://www.greatschools.org/new-jersey/paterson/7079-High-School-Of-Info-Tech/
+7078	High School Hospitality Tour & Culinary Arts	http://www.greatschools.org/new-jersey/paterson/7078-High-School-Hospitality-Tour--Culinary-Arts/
+7073	John E Dwyer Tech Academy	http://www.greatschools.org/new-jersey/elizabeth/7073-John-E-Dwyer-Tech-Academy/
+7072	Adm  W F Halsey Leadership Academy	http://www.greatschools.org/new-jersey/elizabeth/7072-Adm--W-F-Halsey-Leadership-Academy/
+7071	T Jefferson Arts Academy	http://www.greatschools.org/new-jersey/elizabeth/7071-T-Jefferson-Arts-Academy/
+6915	Academy High School	http://www.greatschools.org/new-jersey/paterson/6915-Academy-High-School/
+7099	School Of Education And Training	http://www.greatschools.org/new-jersey/paterson/7099-School-Of-Education-And-Training/
+7123	School Of Archit Construction Trades	http://www.greatschools.org/new-jersey/paterson/7123-School-Of-Archit-Construction-Trades/
+7147	School Of Bus Tech Mrkting Finance	http://www.greatschools.org/new-jersey/paterson/7147-School-Of-Bus-Tech-Mrkting-Finance/
+8666	Trenton Psychiatric Hospital	http://www.greatschools.org/new-jersey/trenton/8666-Trenton-Psychiatric-Hospital/
+23	Hunterdon County Vocational School	http://www.greatschools.org/new-jersey/flemington/23-Hunterdon-County-Vocational-School/
+1531	Manchester Reg High School	http://www.greatschools.org/new-jersey/haledon/1531-Manchester-Reg-High-School/
+1688	Rahway High School	http://www.greatschools.org/new-jersey/rahway/1688-Rahway-High-School/
+1844	South Amboy High School	http://www.greatschools.org/new-jersey/south-amboy/1844-South-Amboy-High-School/
+1880	South River High School	http://www.greatschools.org/new-jersey/south-river/1880-South-River-High-School/
+2168	Memorial High School	http://www.greatschools.org/new-jersey/west-new-york/2168-Memorial-High-School/
+7077	High School Govern & Public Admin	http://www.greatschools.org/new-jersey/paterson/7077-High-School-Govern--Public-Admin/
+7075	Panther	http://www.greatschools.org/new-jersey/paterson/7075-Panther/
+39	Asbury Park High School	http://www.greatschools.org/new-jersey/asbury-park/39-Asbury-Park-High-School/
+799	Hillside High School	http://www.greatschools.org/new-jersey/hillside/799-Hillside-High-School/
+807	Hoboken High School	http://www.greatschools.org/new-jersey/hoboken/807-Hoboken-High-School/
+877	Lincoln High School	http://www.greatschools.org/new-jersey/jersey-city/877-Lincoln-High-School/
+879	William L. Dickinson High School	http://www.greatschools.org/new-jersey/jersey-city/879-William-L.-Dickinson-High-School/
+911	Keansburg High School	http://www.greatschools.org/new-jersey/keansburg/911-Keansburg-High-School/
+973	Linden High School	http://www.greatschools.org/new-jersey/linden/973-Linden-High-School/
+1158	Piscataway Vocational School	http://www.greatschools.org/new-jersey/piscataway/1158-Piscataway-Vocational-School/
+1287	Neptune High School	http://www.greatschools.org/new-jersey/neptune/1287-Neptune-High-School/
+1295	New Brunswick High School	http://www.greatschools.org/new-jersey/new-brunswick/1295-New-Brunswick-High-School/
+1317	Barringer High School	http://www.greatschools.org/new-jersey/newark/1317-Barringer-High-School/
+1319	East Side High School	http://www.greatschools.org/new-jersey/newark/1319-East-Side-High-School/
+1320	Newark Vocational High School	http://www.greatschools.org/new-jersey/newark/1320-Newark-Vocational-High-School/
+1321	Malcolm X Shabazz High School	http://www.greatschools.org/new-jersey/newark/1321-Malcolm-X-Shabazz-High-School/
+1324	Weequahic High School	http://www.greatschools.org/new-jersey/newark/1324-Weequahic-High-School/
+1325	West Side High School	http://www.greatschools.org/new-jersey/newark/1325-West-Side-High-School/
+1476	Orange High School	http://www.greatschools.org/new-jersey/orange/1476-Orange-High-School/
+1609	Perth Amboy High School	http://www.greatschools.org/new-jersey/perth-amboy/1609-Perth-Amboy-High-School/
+2014	Union Senior High School	http://www.greatschools.org/new-jersey/union/2014-Union-Senior-High-School/
+2176	West Orange High School	http://www.greatschools.org/new-jersey/west-orange/2176-West-Orange-High-School/
+2244	Woodbridge High School	http://www.greatschools.org/new-jersey/woodbridge/2244-Woodbridge-High-School/
+2275	Wood  Ridge High School	http://www.greatschools.org/new-jersey/wood-ridge/2275-Wood--Ridge-High-School/
+4531	American History High School	http://www.greatschools.org/new-jersey/newark/4531-American-History-High-School/
+4533	International High School	http://www.greatschools.org/new-jersey/paterson/4533-International-High-School/
+80	Belleville Sr  High School	http://www.greatschools.org/new-jersey/belleville/80-Belleville-Sr--High-School/
+153	Bogota Jr   Sr  High School	http://www.greatschools.org/new-jersey/bogota/153-Bogota-Jr---Sr--High-School/
+165	Bound Brook High School	http://www.greatschools.org/new-jersey/bound-brook/165-Bound-Brook-High-School/
+281	Carteret High School	http://www.greatschools.org/new-jersey/carteret/281-Carteret-High-School/
+329	Cliffside Park High School	http://www.greatschools.org/new-jersey/cliffside-park/329-Cliffside-Park-High-School/
+334	Clifton High School	http://www.greatschools.org/new-jersey/clifton/334-Clifton-High-School/
+452	Cicely Tyson Middle/High School	http://www.greatschools.org/new-jersey/east-orange/452-Cicely-Tyson-Middle-High-School/
+562	Ewing High School	http://www.greatschools.org/new-jersey/ewing/562-Ewing-High-School/
+648	Garfield High School	http://www.greatschools.org/new-jersey/garfield/648-Garfield-High-School/
+730	Hamilton West-Watson High School	http://www.greatschools.org/new-jersey/hamilton/730-Hamilton-West-Watson-High-School/
+750	Hamilton North-Nottingham High School	http://www.greatschools.org/new-jersey/hamilton/750-Hamilton-North-Nottingham-High-School/
+767	Harrison High School	http://www.greatschools.org/new-jersey/harrison/767-Harrison-High-School/
+817	Hopatcong High School	http://www.greatschools.org/new-jersey/hopatcong/817-Hopatcong-High-School/
+923	Keyport High School	http://www.greatschools.org/new-jersey/keyport/923-Keyport-High-School/
+1006	Lodi High School	http://www.greatschools.org/new-jersey/lodi/1006-Lodi-High-School/
+1157	Perth Amboy Vocational School	http://www.greatschools.org/new-jersey/perth-amboy/1157-Perth-Amboy-Vocational-School/
+1316	Arts High School	http://www.greatschools.org/new-jersey/newark/1316-Arts-High-School/
+1318	Central High School	http://www.greatschools.org/new-jersey/newark/1318-Central-High-School/
+1397	North Bergen High School	http://www.greatschools.org/new-jersey/n-bergen/1397-North-Bergen-High-School/
+107	Technical School  Paramus	http://www.greatschools.org/new-jersey/paramus/107-Technical-School--Paramus/
+441	East Orange Campus 9	http://www.greatschools.org/new-jersey/east-orange/441-East-Orange-Campus-9/
+1138	McVs Assunpink Vocational School	http://www.greatschools.org/new-jersey/trenton/1138-McVs-Assunpink-Vocational-School/
+1139	McVs Sypek Center Vocational School	http://www.greatschools.org/new-jersey/pennington/1139-McVs-Sypek-Center-Vocational-School/
+1159	Mdsx Co Voc Health Biomed	http://www.greatschools.org/new-jersey/woodbridge/1159-Mdsx-Co-Voc-Health-Biomed/
+1430	N Valley Reg H Demarest	http://www.greatschools.org/new-jersey/demarest/1430-N-Valley-Reg-H-Demarest/
+1725	Slocum  Skewes School	http://www.greatschools.org/new-jersey/ridgefield/1725-Slocum--Skewes-School/
+2007	Hillcrest Academy  North	http://www.greatschools.org/new-jersey/scotch-plains/2007-Hillcrest-Academy--North/
+2151	Class Academy	http://www.greatschools.org/new-jersey/neptune/2151-Class-Academy/
+2153	Monmouth Cty Voc Tech High School	http://www.greatschools.org/new-jersey/hazlet/2153-Monmouth-Cty-Voc-Tech-High-School/
+2286	Raritan Valley Academy	http://www.greatschools.org/new-jersey/piscataway/2286-Raritan-Valley-Academy/
+2287	Middlesex County Academy	http://www.greatschools.org/new-jersey/piscataway/2287-Middlesex-County-Academy/
+2297	Regional Alternative School	http://www.greatschools.org/new-jersey/tinton-falls/2297-Regional-Alternative-School/
+2302	Somerset Secondary Academy	http://www.greatschools.org/new-jersey/bridgewater/2302-Somerset-Secondary-Academy/
+8663	Greystone Park Psychiatric Hospital	http://www.greatschools.org/new-jersey/greystone-park/8663-Greystone-Park-Psychiatric-Hospital/
+3416	Liberty High School	http://www.greatschools.org/new-jersey/jersey-city/3416-Liberty-High-School/
+3466	Daylight  Twilight High School	http://www.greatschools.org/new-jersey/trenton/3466-Daylight--Twilight-High-School/
+3496	Law & Public Safety	http://www.greatschools.org/new-jersey/butler/3496-Law--Public-Safety/
+3506	Regional Day School	http://www.greatschools.org/new-jersey/morristown/3506-Regional-Day-School/
+7082	Fast Track Success Academy	http://www.greatschools.org/new-jersey/newark/7082-Fast-Track-Success-Academy/
+7081	Newark Innovation Academy	http://www.greatschools.org/new-jersey/newark/7081-Newark-Innovation-Academy/
+4097	Devel L C  New Providence	http://www.greatschools.org/new-jersey/new-providence/4097-Devel-L-C--New-Providence/
+4102	Bartels Corner	http://www.greatschools.org/new-jersey/flemington/4102-Bartels-Corner/
+4105	Developmental Learning	http://www.greatschools.org/new-jersey/tinton-falls/4105-Developmental-Learning/
+4109	Prog 6  Autistic	http://www.greatschools.org/new-jersey/paramus/4109-Prog-6--Autistic/
+4193	E S C School	http://www.greatschools.org/new-jersey/lambertville/4193-E-S-C-School/
+4196	Warren Co Spec Ser School	http://www.greatschools.org/new-jersey/oxford/4196-Warren-Co-Spec-Ser-School/
+4204	Evening Vocational-Technical School	http://www.greatschools.org/new-jersey/hackensack/4204-Evening-Vocational-Technical-School/
+4230	Essex Campus Academy	http://www.greatschools.org/new-jersey/fairfield/4230-Essex-Campus-Academy/
+4236	Acc. Eve. High School and Community Education	http://www.greatschools.org/new-jersey/bayonne/4236-Acc.-Eve.-High-School-And-Community-Education/
+4237	HCST Adult Evening & Adult High School	http://www.greatschools.org/new-jersey/north-bergen/4237-HCST-Adult-Evening--Adult-High-School/
+4239	Adult Evening High School	http://www.greatschools.org/new-jersey/jersey-city/4239-Adult-Evening-High-School/
+4246	Jose Marti Freshman Academy	http://www.greatschools.org/new-jersey/union-city/4246-Jose-Marti-Freshman-Academy/
+4249	E S C Tewksbury	http://www.greatschools.org/new-jersey/lebanon/4249-E-S-C-Tewksbury/
+4250	Hunterdon County Polytech	http://www.greatschools.org/new-jersey/flemington/4250-Hunterdon-County-Polytech/
+4253	Accredited Evening High School	http://www.greatschools.org/new-jersey/hamilton/4253-Accredited-Evening-High-School/
+4255	McVs Evening School	http://www.greatschools.org/new-jersey/trenton/4255-McVs-Evening-School/
+4256	McVs Health Occupations Center	http://www.greatschools.org/new-jersey/hamilton/4256-McVs-Health-Occupations-Center/
+4261	Adult High School	http://www.greatschools.org/new-jersey/new-brunswick/4261-Adult-High-School/
+4264	Perth Amboy Acc. Adult High School	http://www.greatschools.org/new-jersey/perth-amboy/4264-Perth-Amboy-Acc.-Adult-High-School/
+4280	Morris Hills Adult High School	http://www.greatschools.org/new-jersey/rockaway/4280-Morris-Hills-Adult-High-School/
+4296	Adult High School	http://www.greatschools.org/new-jersey/paterson/4296-Adult-High-School/
+4310	Hillcrest Academy  South	http://www.greatschools.org/new-jersey/westfield/4310-Hillcrest-Academy--South/
+4529	Nuview Academy	http://www.greatschools.org/new-jersey/piscataway/4529-Nuview-Academy/
+4561	Devel L C  Warren	http://www.greatschools.org/new-jersey/warren/4561-Devel-L-C--Warren/
+6916	Boaacd	http://www.greatschools.org/new-jersey/plainfield/6916-Boaacd/
+6917	Paaas	http://www.greatschools.org/new-jersey/plainfield/6917-Paaas/
+6930	Center For Life Long Learning	http://www.greatschools.org/new-jersey/parlin/6930-Center-For-Life-Long-Learning/
+6931	Lodi Annex	http://www.greatschools.org/new-jersey/lodi/6931-Lodi-Annex/
+6932	Hope Academy	http://www.greatschools.org/new-jersey/passaic/6932-Hope-Academy/
+4110	Prog 1  Hearing Impaired	http://www.greatschools.org/new-jersey/paramus/4110-Prog-1--Hearing-Impaired/
+4111	Prog 3  Emotionally Distur	http://www.greatschools.org/new-jersey/paramus/4111-Prog-3--Emotionally-Distur/
+4112	Prog 5  Life Skills	http://www.greatschools.org/new-jersey/paramus/4112-Prog-5--Life-Skills/
+4113	N A Bleshman Reg Day Para	http://www.greatschools.org/new-jersey/millburn/4113-N-A-Bleshman-Reg-Day-Para/
+4114	Prog 2  Multiply Handicapd	http://www.greatschools.org/new-jersey/paramus/4114-Prog-2--Multiply-Handicapd/
+7074	Alternative High School - Yes Academy	http://www.greatschools.org/new-jersey/paterson/7074-Alternative-High-School---Yes-Academy/
+4115	N J Reg Day Millburn	http://www.greatschools.org/new-jersey/millburn/4115-N-J-Reg-Day-Millburn/
+4116	Paramus Vocational School	http://www.greatschools.org/new-jersey/paramus/4116-Paramus-Vocational-School/
+4117	Bridges Academy At Forest Glen	http://www.greatschools.org/new-jersey/bloomfield/4117-Bridges-Academy-At-Forest-Glen/
+4137	N J Reg Day  Jersey City	http://www.greatschools.org/new-jersey/jersey-city/4137-N-J-Reg-Day--Jersey-City/
+4150	John F Kennedy	http://www.greatschools.org/new-jersey/newark/4150-John-F-Kennedy/
+4153	N J Reg Day School  Newark	http://www.greatschools.org/new-jersey/newark/4153-N-J-Reg-Day-School--Newark/
+4167	Westlake School  Westfield	http://www.greatschools.org/new-jersey/westfield/4167-Westlake-School--Westfield/
+4169	Lamberts Mill Academy	http://www.greatschools.org/new-jersey/westfield/4169-Lamberts-Mill-Academy/
+4171	Monmouth Cty Career Cent	http://www.greatschools.org/new-jersey/freehold/4171-Monmouth-Cty-Career-Cent/
+4172	Kiva High School	http://www.greatschools.org/new-jersey/tinton-falls/4172-Kiva-High-School/
+4175	Bright Beginnings Lrn Cnt	http://www.greatschools.org/new-jersey/piscataway/4175-Bright-Beginnings-Lrn-Cnt/
+4176	Academy Learning Center	http://www.greatschools.org/new-jersey/monroe-township/4176-Academy-Learning-Center/
+4177	N J Reg Day  Piscataway	http://www.greatschools.org/new-jersey/piscataway/4177-N-J-Reg-Day--Piscataway/
+4182	Mercer Jr  Sr High School	http://www.greatschools.org/new-jersey/trenton/4182-Mercer-Jr--Sr-High-School/
+4188	Park Lake School	http://www.greatschools.org/new-jersey/rockaway/4188-Park-Lake-School/
+4189	Essex High School	http://www.greatschools.org/new-jersey/passaic/4189-Essex-High-School/
+4191	Essex Jr Academy	http://www.greatschools.org/new-jersey/cedar-grove/4191-Essex-Jr-Academy/
+4192	Northern Hill Academy	http://www.greatschools.org/new-jersey/sparta/4192-Northern-Hill-Academy/
+7066	Infinity Institute	http://www.greatschools.org/new-jersey/jersey-city/7066-Infinity-Institute/
+7088	Garfield Auxiliary Ms-High School	http://www.greatschools.org/new-jersey/clifton/7088-Garfield-Auxiliary-Ms-High-School/
+7091	Newark Leadership Academy	http://www.greatschools.org/new-jersey/newark/7091-Newark-Leadership-Academy/
+7093	Knowledge Advanced Skills	http://www.greatschools.org/new-jersey/north-bergen/7093-Knowledge-Advanced-Skills/
+7094	Mdsx Co Voc Pisc Career Develop	http://www.greatschools.org/new-jersey/piscataway/7094-Mdsx-Co-Voc-Pisc-Career-Develop/
+7106	Academy for Independent Studies	http://www.greatschools.org/new-jersey/north-bergen/7106-Academy-For-Independent-Studies/
+7108	New Jersey Virtual School	http://www.greatschools.org/new-jersey/tinton-falls/7108-New-Jersey-Virtual-School/
+7111	Academy of Technology Design	http://www.greatschools.org/new-jersey/jersey-city/7111-Academy-Of-Technology-Design/
+7112	Knowledge Advanced Skills West	http://www.greatschools.org/new-jersey/harrison/7112-Knowledge-Advanced-Skills-West/
+7117	Newark Early College High School	http://www.greatschools.org/new-jersey/newark/7117-Newark-Early-College-High-School/
+7133	Career Academy	http://www.greatschools.org/new-jersey/jersey-city/7133-Career-Academy/
+7145	Orange Alternative High School	http://www.greatschools.org/new-jersey/orange/7145-Orange-Alternative-High-School/
+7177	Anne Klien Forensic Center	http://www.greatschools.org/new-jersey/west-trenton/7177-Anne-Klien-Forensic-Center/
+7179	Capital Academy	http://www.greatschools.org/new-jersey/ewing/7179-Capital-Academy/
+7181	Bergen Regional School	http://www.greatschools.org/new-jersey/paramus/7181-Bergen-Regional-School/
+7189	Independence High School	http://www.greatschools.org/new-jersey/irvington/7189-Independence-High-School/
+7199	Warren Transitional Educational Center	http://www.greatschools.org/new-jersey/port-murray/7199-Warren-Transitional-Educational-Center/
+7204	No Jersey Devel Center	http://www.greatschools.org/new-jersey/totowa/7204-No-Jersey-Devel-Center/
+7210	Project Teach - Monmouth	http://www.greatschools.org/new-jersey/ocean/7210-Project-Teach---Monmouth/
+7214	Project Teach - Mercer	http://www.greatschools.org/new-jersey/trenton/7214-Project-Teach---Mercer/
+7216	Morris Transitional Education Center	http://www.greatschools.org/new-jersey/morristown/7216-Morris-Transitional-Education-Center/
+7218	Project Teach - Warren	http://www.greatschools.org/new-jersey/port-murray/7218-Project-Teach---Warren/
+7223	Central Reception And Adjustment Facility	http://www.greatschools.org/new-jersey/trenton/7223-Central-Reception-And-Adjustment-Facility/
+7224	East Jersey State Prison	http://www.greatschools.org/new-jersey/rahway/7224-East-Jersey-State-Prison/
+7225	New Jersey State Prison	http://www.greatschools.org/new-jersey/trenton/7225-New-Jersey-State-Prison/
+7226	Northern State Prison	http://www.greatschools.org/new-jersey/newark/7226-Northern-State-Prison/
+7432	Academy Of Law & Public Safety	http://www.greatschools.org/new-jersey/long-branch/7432-Academy-Of-Law--Public-Safety/
+8667	Adult Diagnostic And Treatment Center	http://www.greatschools.org/new-jersey/avenel/8667-Adult-Diagnostic-And-Treatment-Center/
+8720	Innovation High School	http://www.greatschools.org/new-jersey/jersey-city/8720-Innovation-High-School/
+8795	Bayonne Academy	http://www.greatschools.org/new-jersey/bayonne/8795-Bayonne-Academy/
+8798	Garrett Morgan Academy For Transportation & Engine	http://www.greatschools.org/new-jersey/paterson/8798-Garrett-Morgan-Academy-For-Transportation--Engine/
+8799	Students Transitioning And Achieving Real Success	http://www.greatschools.org/new-jersey/paterson/8799-Students-Transitioning-And-Achieving-Real-Success/
+8801	Pcesc Academy At Preakness	http://www.greatschools.org/new-jersey/wayne/8801-Pcesc-Academy-At-Preakness/
+2136	Weehawken High School	http://www.greatschools.org/new-jersey/weehawken/2136-Weehawken-High-School/
+2218	Warren County Institute Vocational School	http://www.greatschools.org/new-jersey/washington/2218-Warren-County-Institute-Vocational-School/
+7069	A Hamilton Preparatory Academy	http://www.greatschools.org/new-jersey/elizabeth/7069-A-Hamilton-Preparatory-Academy/
+68	Bayonne High School	http://www.greatschools.org/new-jersey/bayonne/68-Bayonne-High-School/
+139	Bloomfield High School	http://www.greatschools.org/new-jersey/bloomfield/139-Bloomfield-High-School/
+280	Henry P Becton Reg High School	http://www.greatschools.org/new-jersey/east-rutherford/280-Henry-P-Becton-Reg-High-School/
+407	Dover High School	http://www.greatschools.org/new-jersey/dover/407-Dover-High-School/
+532	Memorial Sr  High School	http://www.greatschools.org/new-jersey/elmwood-park/532-Memorial-Sr--High-School/
+540	Dwight Morrow High	http://www.greatschools.org/new-jersey/englewood/540-Dwight-Morrow-High/
+547	West Market Street Vocational School	http://www.greatschools.org/new-jersey/newark/547-West-Market-Street-Vocational-School/
+613	Franklin Twp High School	http://www.greatschools.org/new-jersey/somerset/613-Franklin-Twp-High-School/
+698	Hackensack High School	http://www.greatschools.org/new-jersey/hackensack/698-Hackensack-High-School/
+780	Henry Hudson Reg School	http://www.greatschools.org/new-jersey/highlands/780-Henry-Hudson-Reg-School/
+914	Kearny High School	http://www.greatschools.org/new-jersey/kearny/914-Kearny-High-School/
+921	David Brearley High School	http://www.greatschools.org/new-jersey/kenilworth/921-David-Brearley-High-School/
+1016	Long Branch High School	http://www.greatschools.org/new-jersey/long-branch/1016-Long-Branch-High-School/
+1102	Manville High School	http://www.greatschools.org/new-jersey/manville/1102-Manville-High-School/
+1155	East Brunswick Vocational School	http://www.greatschools.org/new-jersey/east-brunswick/1155-East-Brunswick-Vocational-School/
+1323	University High School	http://www.greatschools.org/new-jersey/newark/1323-University-High-School/
+1421	North Plainfield High School	http://www.greatschools.org/new-jersey/n-plainfield/1421-North-Plainfield-High-School/
+1568	Rosa Parks Arts High School	http://www.greatschools.org/new-jersey/paterson/1568-Rosa-Parks-Arts-High-School/
+1617	Phillipsburg High School	http://www.greatschools.org/new-jersey/phillipsburg/1617-Phillipsburg-High-School/
+1724	Ridgefield Memorial High School	http://www.greatschools.org/new-jersey/ridgefield/1724-Ridgefield-Memorial-High-School/
+1727	Ridgefield Park Jr Sr High School	http://www.greatschools.org/new-jersey/ridgefield-park/1727-Ridgefield-Park-Jr-Sr-High-School/
+1839	Somerset Co Voc Tech High School	http://www.greatschools.org/new-jersey/bridgewater/1839-Somerset-Co-Voc-Tech-High-School/
+813	Holmdel High School	http://www.greatschools.org/new-jersey/holmdel/813-Holmdel-High-School/
+928	Kinnelon High School	http://www.greatschools.org/new-jersey/kinnelon/928-Kinnelon-High-School/
+997	Livingston Sr  High School	http://www.greatschools.org/new-jersey/livingston/997-Livingston-Sr--High-School/
+1226	Montgomery High School	http://www.greatschools.org/new-jersey/skillman/1226-Montgomery-High-School/
+1310	New Providence High School	http://www.greatschools.org/new-jersey/new-providence/1310-New-Providence-High-School/
+1420	Voorhees High School	http://www.greatschools.org/new-jersey/glen-gardner/1420-Voorhees-High-School/
+1429	Northern Highlands Reg High School	http://www.greatschools.org/new-jersey/allendale/1429-Northern-Highlands-Reg-High-School/
+1431	N Valley Reg H Old Tappan	http://www.greatschools.org/new-jersey/old-tappan/1431-N-Valley-Reg-H-Old-Tappan/
+1514	Pascack Hills High School	http://www.greatschools.org/new-jersey/montvale/1514-Pascack-Hills-High-School/
+1695	Ramapo High School	http://www.greatschools.org/new-jersey/franklin-lakes/1695-Ramapo-High-School/
+1696	Ramsey High School	http://www.greatschools.org/new-jersey/ramsey/1696-Ramsey-High-School/
+1785	Rumson Fair Haven Reg High School	http://www.greatschools.org/new-jersey/rumson/1785-Rumson-Fair-Haven-Reg-High-School/
+1889	Sparta High School	http://www.greatschools.org/new-jersey/sparta/1889-Sparta-High-School/
+1916	Summit Sr High School	http://www.greatschools.org/new-jersey/summit/1916-Summit-Sr-High-School/
+1938	Tenafly High School	http://www.greatschools.org/new-jersey/tenafly/1938-Tenafly-High-School/
+2120	Watchung Hills Reg High School	http://www.greatschools.org/new-jersey/warren/2120-Watchung-Hills-Reg-High-School/
+2147	West Essex High School	http://www.greatschools.org/new-jersey/north-caldwell/2147-West-Essex-High-School/
+2167	West Morris Mendham High School	http://www.greatschools.org/new-jersey/mendham/2167-West-Morris-Mendham-High-School/
+2189	Wwindsor  Plainsboro North	http://www.greatschools.org/new-jersey/plainsboro/2189-Wwindsor--Plainsboro-North/
+2190	Wwindsor  Plainsboro South	http://www.greatschools.org/new-jersey/west-windsor/2190-Wwindsor--Plainsboro-South/
+2198	Westfield Senior High School	http://www.greatschools.org/new-jersey/westfield/2198-Westfield-Senior-High-School/
+3497	Mathematics, Science & Engineering School	http://www.greatschools.org/new-jersey/rockaway/3497-Mathematics-Science--Engineering-School/
+4257	Robbinsville High School	http://www.greatschools.org/new-jersey/robbinsville/4257-Robbinsville-High-School/
+20	Bernards High School	http://www.greatschools.org/new-jersey/bernardsville/20-Bernards-High-School/
+192	Brdgwtr  Raritn High School	http://www.greatschools.org/new-jersey/bridgewater/192-Brdgwtr--Raritn-High-School/
