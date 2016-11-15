@@ -29,6 +29,72 @@ shinyServer(function(input, output, session) {
   # Return the requested dataset
   getDataSetToUse <- eventReactive(input$query, {
     dataToDisplay = getDataPresentable()
+    # input$SEARCH_Is_Backwards_Compatible
+    # input$SEARCH_Predicted_to_become_Backwards_Compatible
+    # input$SEARCH_Backwards_Compatability_Probability_Percent
+    # input$SEARCH_Release_date
+    # input$SEARCH_Is_Listed_on_XboxCom
+    # input$SEARCH_Is_Exclusive
+    # input$SEARCH_Xbox_One_Version_Available
+    # input$SEARCH_Is_On_Uservoice
+    # input$SEARCH_Uservoice_Votes
+    # input$SEARCH_Uservoice_Comments
+    # input$SEARCH_Is_Kinect_Supported
+    # input$SEARCH_Is_Kinect_Required
+    # input$SEARCH_Does_The_Game_Need_Special_Peripherals
+    # input$SEARCH_Is_The_Game_Retail_Only
+    # input$SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com
+    # input$SEARCH_Has_a_Demo_Available
+    # input$SEARCH_Xbox_User_Review_Score
+    # input$SEARCH_Xbox_User_Review_Counts
+    # input$SEARCH_Metacritic_Review_Score
+    # input$SEARCH_Metacritic_User_Review_Score
+    # input$SEARCH_Price_on_Xbox.com
+    # input$SEARCH_Publisher
+    # input$SEARCH_Developer
+    # input$SEARCH_Genre
+    # input$SEARCH_ESRB_Rating
+    # input$SEARCH_Features
+    # input$SEARCH_Smartglass_Compatable
+    # input$SEARCH_Number_of_Game_Add-Ons
+    # input$SEARCH_Number_of_Avatar_Items
+    # input$SEARCH_Number_of_GamerPics
+    # input$SEARCH_Number_of_Themes
+    # input$SEARCH_Number_of_Game_Videos
+    
+    print(paste("SEARCH_Is_Backwards_Compatible", input$SEARCH_Is_Backwards_Compatible))
+    print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
+    print(paste("SEARCH_Backwards_Compatability_Probability_Percent", input$SEARCH_Backwards_Compatability_Probability_Percent))
+    print(paste("SEARCH_Release_date", input$SEARCH_Release_date))
+    print(paste("SEARCH_Is_Listed_on_XboxCom", input$SEARCH_Is_Listed_on_XboxCom))
+    print(paste("SEARCH_Is_Exclusive", input$SEARCH_Is_Exclusive))
+    print(paste("SEARCH_Xbox_One_Version_Available", input$SEARCH_Xbox_One_Version_Available))
+    print(paste("SEARCH_Is_On_Uservoice", input$SEARCH_Is_On_Uservoice))
+    print(paste("SEARCH_Uservoice_Votes", input$SEARCH_Uservoice_Votes))
+    print(paste("SEARCH_Uservoice_Comments", input$SEARCH_Uservoice_Comments))
+    print(paste("SEARCH_Is_Kinect_Supported", input$SEARCH_Is_Kinect_Supported))
+    print(paste("SEARCH_Is_Kinect_Required", input$SEARCH_Is_Kinect_Required))
+    print(paste("SEARCH_Does_The_Game_Need_Special_Peripherals", input$SEARCH_Does_The_Game_Need_Special_Peripherals))
+    print(paste("SEARCH_Is_The_Game_Retail_Only", input$SEARCH_Is_The_Game_Retail_Only))
+    print(paste("SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com", input$SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com))
+    print(paste("SEARCH_Has_a_Demo_Available", input$SEARCH_Has_a_Demo_Available))
+    print(paste("SEARCH_Xbox_User_Review_Score", input$SEARCH_Xbox_User_Review_Score))
+    print(paste("SEARCH_Xbox_User_Review_Counts", input$SEARCH_Xbox_User_Review_Counts))
+    print(paste("SEARCH_Metacritic_Review_Score", input$SEARCH_Metacritic_Review_Score))
+    print(paste("SEARCH_Metacritic_User_Review_Score", input$SEARCH_Metacritic_User_Review_Score))
+    print(paste("SEARCH_Price_on_Xbox.com", input$SEARCH_Price_on_Xbox.com))
+    print(paste("SEARCH_Publisher", input$SEARCH_Publisher))
+    print(paste("SEARCH_Developer", input$SEARCH_Developer))
+    print(paste("SEARCH_Genre", input$SEARCH_Genre))
+    print(paste("SEARCH_ESRB_Rating", input$SEARCH_ESRB_Rating))
+    print(paste("SEARCH_Features", input$SEARCH_Features))
+    print(paste("SEARCH_Smartglass_Compatable", input$SEARCH_Smartglass_Compatable))
+    print(paste("SEARCH_Number_of_Game_Add_Ons", input$SEARCH_Number_of_Game_Add_Ons))
+    print(paste("SEARCH_Number_of_Avatar_Items", input$SEARCH_Number_of_Avatar_Items))
+    print(paste("SEARCH_Number_of_GamerPics", input$SEARCH_Number_of_GamerPics))
+    print(paste("SEARCH_Number_of_Themes", input$SEARCH_Number_of_Themes))
+    print(paste("SEARCH_Number_of_Game_Videos", input$SEARCH_Number_of_Game_Videos))
+    
     # if (!is.null(input$marketName)) {
     #   dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
     # }
@@ -75,7 +141,7 @@ shinyServer(function(input, output, session) {
   output$List_SearchResults <- DT::renderDataTable(
     DT::datatable(
       {
-        dataToPresent = getDataPresentable()
+        dataToPresent = getDataSetToUse()
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
@@ -84,8 +150,8 @@ shinyServer(function(input, output, session) {
         dataToPresent
       }, selection = "none",
       options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -96,15 +162,15 @@ shinyServer(function(input, output, session) {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isBCCompatible == TRUE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
-                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
-                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
         dataToPresent
       }, selection = "none",
-  options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+      options = list(scrollX = TRUE,
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -114,15 +180,15 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
-                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
-                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
         dataToPresent
       }, selection = "none",
       options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -133,15 +199,15 @@ shinyServer(function(input, output, session) {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
-                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
-                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = as.numeric(price), 'Game Addons' = DLgameAddons, "Genre" = genre,
-                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
-      dataToPresent
-        }, selection = "none",
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = as.numeric(price), 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        dataToPresent
+      }, selection = "none",
       options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -157,15 +223,15 @@ shinyServer(function(input, output, session) {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isKinectSupported == TRUE | dataToPresent$isKinectRequired == TRUE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = percentProb, "Uservoice Votes" = votes, 
-                               "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
-                               "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
-                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+                                      "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
+                                      "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
         dataToPresent
       }, selection = "none",
       options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -176,15 +242,15 @@ shinyServer(function(input, output, session) {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isOnXboxOne == TRUE | dataToPresent$isKinectRequired == TRUE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
-                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-                               "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
-                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-                               'Publisher'= publisher, 'Developer' = developer)
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer)
         dataToPresent
       }, selection = "none",
       options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -194,16 +260,16 @@ shinyServer(function(input, output, session) {
         dataToPresent = getDataPresentable()        
         dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
-                               "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
-                               "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
-                               "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
-                               'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+                                      "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
+                                      "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
+                                      "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
+                                      'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
         dataToPresent
       }, selection = "none",
       height = NULL,
       options = list(scrollX = TRUE,
-        lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
-        pageLength = 15
+                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     pageLength = 15
       )
     )
   )
@@ -219,8 +285,8 @@ shinyServer(function(input, output, session) {
     }, 
     n = max(length(dataToPresent$"Percent"[dataToPresent$"Percent" == 0]),25))
   )
-
-
+  
+  
   output$PublisherTop <- shiny::renderTable(
     head({
       dataToPresent = getDataPresentable()
@@ -228,8 +294,8 @@ shinyServer(function(input, output, session) {
       dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent
-      }, 
-      n = 25)
+    }, 
+    n = 25)
   )
   
   output$Explanation <- renderUI({
