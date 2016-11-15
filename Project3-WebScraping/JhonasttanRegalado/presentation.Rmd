@@ -203,7 +203,7 @@ ggplot(data = mca1_obs_df, aes(x = Dim.1, y = Dim.2)) +
             aes(x = Dim.1, y = Dim.2, 
                 label = rownames(mca1_vars_df), colour = Variable)) +
   ggtitle("MCA plot of Amenities") +
-  scale_colour_discrete(name = "Variable")
+  scale_colour_discrete(name = "Variable") + theme_bw()
 ```
 
 #### Five most common amenities:

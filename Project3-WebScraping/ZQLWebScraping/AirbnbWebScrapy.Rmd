@@ -1,0 +1,64 @@
+---
+title: "Airbnb WebScrapy Model Part"
+author: "ZQL"
+date: "11/13/2016"
+output: ioslides_presentation
+---
+
+
+## Data Loading Airbnb
+```{r}
+airbnb <- read.csv("~/Downloads/airbnb_final.csv")    
+summary(airbnb)
+
+
+```
+
+## Data Loading TripAdvisor
+```{r}
+tripadvisor <-
+  read.csv("~/Downloads/tripadvisor_final.csv") 
+summary(tripadvisor)
+
+```
+
+
+## Slide with Bullets
+
+```{r}
+  drops_model_a <- c("X",
+                "instant_book",
+                "tax",
+                "host_id",
+                "hosting_id",
+                "url",
+                "nightly_price",
+                "lon",
+                "lat")
+airbnb_model <- airbnb[,!(names(airbnb) %in% drops_model_a)]
+model.airbnb = lm(price~ ., data = airbnb_model)
+summary(model.airbnb)
+
+```
+
+## Slide with Bullets
+```{r}
+summary(model.airbnb)
+```
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
