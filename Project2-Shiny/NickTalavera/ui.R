@@ -164,7 +164,7 @@ dashboardPage(dashboardHeader(title = programName,
                             title = "Market Explorer",
 
                             conditionalPanel(
-                              condition = "input.query",
+                              condition = "input.query | input.sbm == 'explorer'",
                               # column(width = 10,
                                      box(
                                        title = "Market Data",
