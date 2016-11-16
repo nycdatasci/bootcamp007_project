@@ -294,3 +294,10 @@ model.class$fitted.values
 test.class<-data.frame(Ist.class.2[163,1:7])
 predict(model.class,test.class,"probs")
 
+####Tree
+train = sample(1:nrow(Ist.month.class.bc), 7*nrow(Ist.month.class.bc)/10)
+sample.test<- Ist.month.class.bc[-train,]
+tree.bc<-tree(IR~ ., split = "gini",data = Ist.month.class.bc[train,])
+tree.pre<-predict(tree.bc,sample.test,type = "class")
+table(tree.pre,Ist.month.class.bc$IR[-train])
+(140+23)/241

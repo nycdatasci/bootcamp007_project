@@ -209,7 +209,7 @@ predict(model.class,test.class,"probs")
 ```
 # Probabilty of no-change is 55.7%, 32.9% for increase 
 
-## Binary Classfication--Random Tree
+## Binary Classfication--Tree
 ```{r,echo=FALSE}
 generator<-function(x){
   y=c()
@@ -231,6 +231,17 @@ Ist.month.class<-Ist[,c(2,3,9,10,11,12,13,20)]
 Ist.month.class.bc<-mutate(Ist.month.class,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
 Ist.month.class.more.va.1<-Ist[110:801,c(2,3,9,10,11,12,13,20,28,29,31)]
 Ist.month.class.more.va.1.bc<-mutate(Ist.month.class.more.va.1,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
+train = sample(1:nrow(Ist.month.class.bc), 7*nrow(Ist.month.class.bc)/10)
+sample.test<- Ist.month.class.bc[-train,]
+tree.bc<-tree(IR~ ., split = "gini",data = Ist.month.class.bc[train,])
+tree.test.pre<-predict(tree.bc,sample.test,type = "class")
+table(tree.test.pre,Ist.month.class.bc$IR[-train])
+cat('(140+23)/241','=',(140+23)/241)
+```
+
+## Binary Classfication--Random Tree
+```{r,echo=FALSE}
+
 set.seed(200)
 train = sample(1:nrow(Ist.month.class.bc), 7*nrow(Ist.month.class.bc)/10)
 
