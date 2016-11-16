@@ -186,7 +186,9 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=8))) # create a df or something else with the summary output.
+      print(unique(dataSet$Drug_Type))
+      temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=6))) # create a df or something else with the summary output.
+      print(temp)
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
       dataSet$top <- ifelse(
         dataSet$Drug_Type %in% temp, ## condition: match aDDs$answer with row.names in summary df
@@ -194,8 +196,8 @@ shinyServer(function(input, output, session) {
         "Other" ## else it should be named "Other"
       )
       dataSet$top <- as.factor(dataSet$top)
-      
-      
+      dataSet = dataSet[dataSet$top != "Other",]
+      print(unique(dataSet$top))
       colourCount = length(unique(dataSet$Price_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
@@ -209,7 +211,7 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Market_Name),]
-      temp <- row.names(as.data.frame(summary(dataSet$Market_Name, max=8))) # create a df or something else with the summary output.
+      temp <- row.names(as.data.frame(summary(dataSet$Market_Name, max=6))) # create a df or something else with the summary output.
       dataSet$Market_Name <- as.character(dataSet$Market_Name)
       dataSet$top <- ifelse(
         dataSet$Market_Name %in% temp, ## condition: match aDDs$answer with row.names in summary df
@@ -217,7 +219,7 @@ shinyServer(function(input, output, session) {
         "Other" ## else it should be named "Other"
       )
       dataSet$top <- as.factor(dataSet$top)
-      
+      dataSet = dataSet[dataSet$top != "Other",]
       colourCount = length(unique(dataSet$Price_Per_Gram_BTC))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
