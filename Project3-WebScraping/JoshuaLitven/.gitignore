@@ -1,2 +1,3 @@
 *.RData
-.gitignore
+/shiny/data/
+/presentation/
