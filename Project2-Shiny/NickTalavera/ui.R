@@ -5,10 +5,13 @@
 
 
 programName = "Darknet Market Analyzer"
-dashboardPage(dashboardHeader(title = programName),
+sidebarWidth = 250
+dashboardPage(dashboardHeader(title = programName,
+                              titleWidth = sidebarWidth),
               # skin = "red",
               
               dashboardSidebar(
+                width = sidebarWidth,
                 sidebarMenu(id = "sbm",
                             
                             menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
@@ -158,7 +161,7 @@ dashboardPage(dashboardHeader(title = programName),
                           
                           fluidPage(
                             title = "Market Explorer",
-                            # shinythemes::themeSelector(),
+                            shinythemes::themeSelector(),
                             theme = shinythemes::shinytheme("superhero"),
 
                             conditionalPanel(
