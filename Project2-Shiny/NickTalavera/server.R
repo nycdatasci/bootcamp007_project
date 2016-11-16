@@ -22,7 +22,7 @@ reorder_size <- function(x) {
 
 shinyServer(function(input, output, session) {
   
-  
+  session$onSessionEnded(stopApp)
   #===============================================================================
   #                        DASHBOARD SERVER FUNCTIONS                            #
   #===============================================================================

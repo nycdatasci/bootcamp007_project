@@ -77,7 +77,7 @@ dashboardPage(dashboardHeader(title = programName,
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(
-                
+                includeCSS("www/custom.css"),
                 theme = shinythemes::shinytheme("superhero"),
                 tabItems(
                   tabItem(tabName = "dashboard",
