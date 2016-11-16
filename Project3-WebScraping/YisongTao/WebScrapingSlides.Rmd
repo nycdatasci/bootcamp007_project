@@ -1,0 +1,198 @@
+---
+title: "Web scraping MyAnimeList.net"
+author: "Yisong Tao"
+date: "11/13/2016"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Web scraping MyAnimeList.net
+
+MyAnimeList.net <http://MyAnimeList.net> is the world's most active online anime and manga community and database. 
+
+- Scraping website
+- Exploratory Data Analysis
+- Regression model
+
+
+## Web Scraping
+
+- Completed using scrapy.
+- Scraped 89244 reviews and info about 5953 anime.
+- Another ~6000 anime don't have any review were skipped.
+
+- clean up data while scraping, 
+- store data in correct format -- Json vs. csv -> list vs. data.frame.
+
+## Total Number of Reviews
+
+```{r load data and library, warning=F, message=F, echo=F}
+library(ggplot2)
+library(dplyr)
+AnimeReviews <- readRDS("AnimeReviews/AnimeReviews.RDS")
+summ_review <- AnimeReviews %>%
+    select(anime_title) %>% 
+    group_by(anime_title) %>%
+    summarise(Count = n()) %>% 
+    arrange(desc(Count))
+```
+
+```{r plot1}
+p1 <- ggplot(AnimeReviews) +
+    geom_freqpoly(aes(x=date), bins = 60) +
+    xlab("Review Date") + ylab("Number of Reviews") +
+    theme_bw()
+p1
+```
+
+
+## Trend of most reviewed anime
+
+```{r plot2}
+review1 <- AnimeReviews[AnimeReviews$anime_title == "Sword Art Online", ]
+p2 <- ggplot(review1) +
+    geom_freqpoly(aes(x=date), bins = 30) +
+    xlab("Review Date") + ylab("Number of Reviews") +
+    theme_bw() + ggtitle("Reviews of 'Sword Art Online'") 
+p2
+```
+
+Airing started in <span style="color:red">Summer 2012</span>, ended in <span style="color:red">Dec 2012</span>. A short film aired in <span style="color:red">Dec 2013</span> and its sequel air in <span style="color:red">Summer 2014</span>. 
+
+## Anime Info EDA
+```{r load data2, warning=F, message=F}
+library(visNetwork)
+library(car)
+library(ggplot2)
+AnimeInfo <- readRDS("AnimeInfo/AnimeInfo.RDS")
+```
+```{r eda anime_info, echo=T}
+length(AnimeInfo)
+names(AnimeInfo[[1]])
+```
+## Anime Info EDA 2
+```{r read data, echo = F, fig.width= 4}
+AnimeInfo_df <- readRDS("AnimeInfo_df.RDS")
+plot1 <- ggplot(AnimeInfo_df) +
+    geom_boxplot(aes(y=Score, x= Type, color = Type)) +
+    theme_bw() + theme(legend.position="none")
+plot1
+plot2 <- ggplot(AnimeInfo_df) +
+    geom_boxplot(aes(y=Score, x= Rating, color = Rating)) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="none")
+plot2
+```
+
+## Network graph of 100 anime
+```{r plot3}
+set.seed(0)
+graph_list <- sample(AnimeInfo, 100)  ##randomly choose 100 anime for network graph
+mklink_lst <- function(lst){
+	link_list <- data.frame(from = numeric(), to = numeric(), 
+	                        value = numeric(), title = character())
+	l <- length(lst)
+	#########check common elements in staff and cast members #####################################
+	actor_lst <-lapply(lst, function(x) x$anime_mainactors)
+	staff_lst <-lapply(lst, function(x) unlist(x$anime_staff))
+	for (i in c(1:l-1)){
+		for (j in c(i+1:l)){
+			temp_actor <- intersect(unlist(actor_lst[i]), unlist(actor_lst[j]))
+			temp_staff <- intersect(unlist(staff_lst[i]), unlist(staff_lst[j]))
+			if (length(temp_actor) > 0 | length(temp_staff) > 0){
+				if (length(temp_actor) > 0){
+				    title_actor_temp <- paste0("Cast: ", temp_actor, collapse = '<br>')
+				}
+				if (length(temp_staff) > 0){
+				    title_staff_temp <- paste0("Staff: ", temp_staff, collapse = '<br>')
+				}
+				if (length(temp_actor) > 0 & length(temp_staff) > 0){
+				    title_temp <- paste0(title_staff_temp,'<br>', title_actor_temp)
+				    value_t <- length(temp_staff) + length(temp_actor)
+				}else if (length(temp_actor) > 0){
+				    title_temp <- title_actor_temp
+				    value_t <- length(temp_actor)
+				}else{
+				        title_temp <- title_staff_temp
+				        value_t <- length(temp_staff)
+				        }
+				row <- data.frame(from = i, to = j,
+				                  value = value_t, title = title_temp)
+			    link_list <- rbind(link_list, row)
+			}
+		}
+	}
+	return(link_list)
+}
+
+mknode_lst <- function(lst){
+    node_list <- data.frame(ID = c(1:length(lst)))
+    titles <- unlist(lapply(lst, function(x) x$anime_title))
+    node_list$Titles <- titles
+    types <- unlist(lapply(lst, function(x) x$anime_type))
+    node_list$Types <- types
+    members <- unlist(lapply(lst, function(x) x$anime_members))
+    members <- as.numeric(gsub("\\,", "", members))
+    node_list$Members <- members
+    colnames(node_list) <- c("id", "title", "group", "size")
+    node_list$size <- 2*sqrt(sqrt(node_list$size))
+    node_list$label <- NA
+    return(node_list)
+}
+link_list <- mklink_lst(graph_list)
+node_list<- mknode_lst(graph_list)
+graph <- visNetwork(nodes = node_list, edges = link_list, main = "Network of 100 Anime") %>%
+    visNodes(label = NULL) %>% 
+    visLegend(enabled = TRUE, useGroups = TRUE, addNodes = NULL,
+              addEdges = NULL, width = 0.2, position = "left", main = NULL) %>% 
+    visOptions(selectedBy = "group", highlightNearest = TRUE)
+graph
+```
+
+## Regression Model - predicting anime score
+
+Aim: to build to model to predict score of an anime
+
+Difficulties: Only viewers, favorites are numerical variables, other variables such as Rating, Type, Director, Actors, Musicians etc. are all categorical variables. 
+
+Tried to create dummy variables: using a list of directors who won an award in last 20 years and divide the director into 2 groups.
+
+
+
+## Model 1, adjusted R-squared value = 0.289 {.smaller}
+
+```{r  model1, echo=T}
+model <- glm(Score ~ Award_Director + Viewer + Favorite + Type + Rating, 
+             data = AnimeInfo_df)
+#summary(model)
+```
+![Summary model 1](1_2.png)
+
+## check model1 assumptions
+
+```{r model1 plot, fig.width=3 , fig.height=3}
+plot(model)
+```
+
+## check vif
+
+```{r model1 vif, echo=T}
+vif(model)
+```
+
+## check avplots
+
+```{r avplots model1, eval=F}
+avPlots(model)
+```
+![Avplots model 1](2.png)
+
+## Future work
+
+- Normalize viewer/favorites against time since release;
+- Use number of favorites on staff/actor pages to turn Director, Actor etc. into continuous variable.
+
