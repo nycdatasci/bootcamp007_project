@@ -683,8 +683,11 @@ shinyServer(function(input, output, session) {
     dataSet$Shipped_From = str_title_case(dataSet$Shipped_From)
     dataSet$Drug_Type = str_title_case(dataSet$Drug_Type)
     dataSet$Market_Name = str_title_case(dataSet$Market_Name)
+    print(names(dataSet))
+    dataSet = select(dataSet,"Market" = Market_Name, "Country of Origin" = Shipped_From, "Drug" = Drug_Type, "Price/Gram (Bitcoin)" = Price_Per_Gram_BTC, "Date Posted" = Time_Added, "Date Scraped" = Sheet_Date)
+    names(dataSet) = str_title_case(names(dataSet))
     DT::datatable(dataSet, 
                   options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 10, 
-                                 scrollY = TRUE, scrollX = TRUE))
+                                 scrollY = TRUE, scrollX = TRUE), selection = "none", style = "bootstrap")
   })
 })
