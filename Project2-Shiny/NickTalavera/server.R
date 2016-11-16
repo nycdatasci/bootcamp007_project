@@ -504,15 +504,23 @@ shinyServer(function(input, output, session) {
   output$numberOfDrugsAvailablePerMarket <- renderPlot({
     withProgress(message = "Rendering Number of Drugs Available Per Market", {
       # Get Data
+      print(input$numberOfDrugsRadial)
+      choice = "Market_Name"
+      if (input$numberOfDrugsRadial == "Per Market") {
+        choice = "Market_Name"
+      } else {
+        choice = "Shipped_From"
+      }
       dataSet <- getDataSetToUse()
-      dataSet$Market_Name = as.character(dataSet$Market_Name)
+      dataSet[,choice] = as.character(dataSet[,choice])
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = summarise(group_by(dataSet, Market_Name), drugCount = length(unique(Drug_Type)))
-      colourCount = length(unique(dataSet$Market_Name))
+      dataSet = summarise(group_by_(dataSet, choice), drugCount = length(unique(Drug_Type)))
+      print(nrow(unique(dataSet[,choice])))
+      colourCount = nrow(unique(dataSet[,choice]))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Market_Name, y = drugCount, fill = Market_Name))
-      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market') + scale_fill_manual(values = platteNew) + theme(legend.position="none")
+      g = ggplot(data = dataSet, aes_string(x = choice, y = "drugCount", fill = choice))
+      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market') + scale_fill_manual(values = platteNew)
     })
   })
   

@@ -225,12 +225,16 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = str_title_case("Number of Drugs Available Per Market"),
+                                           title = str_title_case("Number of Drugs"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
-                                           plotOutput("numberOfDrugsAvailablePerMarket")
+                                           plotOutput("numberOfDrugsAvailablePerMarket"),
+                                           radioButtons("numberOfDrugsRadial", 
+                                                        label = h3("Options:"),
+                                                        choices = list("Per Market" = "Per Market", "Per Country" = "Per Country"), 
+                                                        selected = "Per Market")
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
