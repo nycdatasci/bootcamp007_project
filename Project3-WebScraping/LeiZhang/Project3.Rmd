@@ -237,7 +237,10 @@ tree.bc<-tree(IR~ ., split = "gini",data = Ist.month.class.bc[train,])
 tree.test.pre<-predict(tree.bc,sample.test,type = "class")
 table(tree.test.pre,Ist.month.class.bc$IR[-train])
 cat('(140+23)/241','=',(140+23)/241)
+test.class.month<-data.frame(Ist.month.class.bc[801,1:6])
+predict(tree.bc, test.class.month, type = "vector")
 ```
+### Probabilty of no-change is 80%, 20% for increase
 
 ## Binary Classfication--Random Tree
 ```{r,echo=FALSE}
@@ -265,6 +268,8 @@ set.seed(200)
 train.mc = sample(1:nrow(Ist.month.class.mc), 7*nrow(Ist.month.class.mc)/10)
 rf.month.mc = randomForest(IR ~ ., data = Ist.month.class.mc, subset = train.mc, importance=TRUE)
 rf.month.mc 
+predict(rf.month.mc, test.class.month, type = "prob")
 ```
 
+## Probabilty of no-change is 98%, 2% for increase
 ### Future: use Anomaly Detection Algorithm to do the binary classification 

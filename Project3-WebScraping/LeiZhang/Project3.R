@@ -301,3 +301,5 @@ tree.bc<-tree(IR~ ., split = "gini",data = Ist.month.class.bc[train,])
 tree.pre<-predict(tree.bc,sample.test,type = "class")
 table(tree.pre,Ist.month.class.bc$IR[-train])
 (140+23)/241
+test.class.month<-data.frame(Ist.month.class.bc[801,1:6])
+predict(tree.bc,test.class.month,type = "vector")
