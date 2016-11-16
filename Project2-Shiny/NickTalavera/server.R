@@ -230,7 +230,7 @@ shinyServer(function(input, output, session) {
   
   output$mostCommonCountryAndMarketForEachDrug <- DT::renderDataTable({
     dataSet <- getDataSetToUse()
-    dataSet = summarise(group_by(dataSet,Drug_Type), "Country" = names(which.max(table(Shipped_From))), "Market" = names(which.max(table(Shipped_From))))
+    dataSet = summarise(group_by(dataSet,Drug_Type), "Country" = names(which.max(table(Shipped_From))), "Market" = names(which.max(table(Market_Name))))
     DT::datatable(dataSet, 
                   options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 5, 
                                  scrollY = TRUE, scrollX = TRUE), selection = "none", style = "bootstrap")
