@@ -13,7 +13,7 @@ library(lettercase)
 library(qdapRegex)
 # library(sqldf)
 
-labelDrugs = function(data) {
+labelDrugs = function(data,column) {
   data = data[!is.na(data$market_name),]
   drugNames <- unique(tolower(c("Spice","Speed","LSD","MDMA","Crystal Meth","Kush","Cocaine","Hash","Heroin","Methadone","Ketamin","Weed","Xanax","Ritalin","Adderal","Mushroom",
                                 "Psilocybe","Bud","GHB","Cannabis","Hashish","Mast","Mephedrone","DMT","Methylone","Ethylone","alprazolam","methAmphetamin","Amphetamin","Opium","Ecstasy","Tren","Durabolin","Clomid",
@@ -30,12 +30,12 @@ labelDrugs = function(data) {
   keywordsToRemove <- sort(c("Brownie","Gummi","tobacco","kisses","home test","exemption","stronger than","butter","vape pen","Hashoel","sample","cookie","pollen","wax","Sachet","likes","seeds","gatorade","sampler","half price","pack","boxes"))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
   keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
-  data$name = tolower(data$name)
-  Drug_Type = unlist(lapply(data$name, (function (x) str_extract(x,drugNamesRegex))))
-  notRemoved = unlist(lapply(data$name, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
+  data$column = tolower(data$column)
+  Drug_Type = unlist(lapply(data$column, (function (x) str_extract(x,drugNamesRegex))))
+  notRemoved = unlist(lapply(data$column, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
   Drug_Type[notRemoved] = NA
   setwd(processedCSVDirectory)
-  write.csv(unique(data$name[is.na(Drug_Type)]),'Unique_Drug_Info.csv')
+  write.csv(unique(data$column[is.na(Drug_Type)]),'Unique_Drug_Info.csv')
   data = data[!is.na(Drug_Type),]
   return(data)
 }
@@ -69,6 +69,8 @@ darkentMarketFiles = list.files(path = './grams', recursive = TRUE, pattern = "\
 dnmData = lapply(darkentMarketFiles[1:length(darkentMarketFiles)], function(x) readIn(x))
 dnmData = ldply(dnmData, data.frame)
 # dnmData = as.data.frame(read.csv('DNMdataUnsorted.csv'))
-dnmData = labelDrugs(dnmData)
+dnmDataSorted = labelDrugs(dnmData,"name")
+dnmDataDescriptions = labelDrugs(dnmData,"description")
 # setwd(processedCSVDirectory)
-write.csv(dnmData, 'DNMdataSomewhatSorted.csv')
+write.csv(dnmDataSorted, 'DNMdataSomewhatSorted.csv')
+write.csv(as.data.frame(dnmDataDescriptions$description), 'DNMdataDescriptionsOnly.csv')

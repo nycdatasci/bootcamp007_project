@@ -15,7 +15,7 @@ dashboardPage(dashboardHeader(title = programName,
                 sidebarMenu(id = "sbm",
                             
                             menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-                            menuItem("Maps", tabName = "explorer", icon = icon("search")), 
+                            menuItem("Maps", tabName = "maps", icon = icon("search")), 
                             menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
                             menuItem("Popular Words", tabName = "popularWords", icon = icon("search")), 
                             conditionalPanel("input.sbm == 'explorer'",
@@ -162,11 +162,9 @@ dashboardPage(dashboardHeader(title = programName,
                   tabItem(tabName = "explorer",
                           fluidPage(
                             title = "Market Explorer",
-                            shinythemes::themeSelector(),
-                            theme = shinythemes::shinytheme("superhero"),
 
                             conditionalPanel(
-                              condition = "input.query",
+                              condition = "input.query | input.sbm == 'explorer'",
                               # column(width = 10,
                                      box(
                                        title = "Market Data",
@@ -264,9 +262,16 @@ dashboardPage(dashboardHeader(title = programName,
                             ) # end of conditionalpanel
                           ) # End of fluidPage
                   ), # End of tabItem
-                  tabItem(tabName = "explorer",
+                  tabItem(tabName = "popularWords",
                           fluidPage(
                             plotOutput("wordCloud")
+                          )
+                  ),
+                  tabItem(tabName = "maps",
+                          fluidPage(
+                            leafletOutput("mymap"),
+                            p(),
+                            actionButton("recalc", "New points")
                           )
                   )
                 ) # end of tabITems
