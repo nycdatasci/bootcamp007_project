@@ -297,7 +297,8 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'Xbox')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'English')] = NA
-  PublisherStrings[grepl(PublisherStrings, pattern = '2K')] = '2K Games'
+  PublisherStrings[grepl(PublisherStrings, pattern = '2K') & !grepl(PublisherStrings, pattern = 'Sport', ignore.case = TRUE)] = '2K Games'
+  PublisherStrings[grepl(PublisherStrings, pattern = '2K')] = '2K Sports'
   PublisherStrings[grepl(PublisherStrings, pattern = 'UFO.Interactive')] = 'UFO Interactive Games'
   PublisherStrings[grepl(PublisherStrings, pattern = '345')] = '345 Games'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Arc.System.Works', ignore.case = TRUE)] = 'Arc System Works'

@@ -28,7 +28,8 @@ shinyServer(function(input, output, session) {
   
   # Return the requested dataset
   getDataSetToUse <- eventReactive(input$query, {
-    dataToDisplay = xboxData
+    dataToDisplay = getDataPresentable()
+    
     # input$SEARCH_Is_Backwards_Compatible
     # input$SEARCH_Predicted_to_become_Backwards_Compatible
     # input$SEARCH_Backwards_Compatibility_Probability_Percent
@@ -61,30 +62,46 @@ shinyServer(function(input, output, session) {
     # input$SEARCH_Number_of_GamerPics
     # input$SEARCH_Number_of_Themes
     # input$SEARCH_Number_of_Game_Videos
-    
+    print("NEW SEARCH")
     print(paste("SEARCH_Is_Backwards_Compatible", input$SEARCH_Is_Backwards_Compatible))
+    if (!is.null(input$SEARCH_Is_Backwards_Compatible)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$isBCCompatible == input$SEARCH_Is_Backwards_Compatible[1] | dataToDisplay$isBCCompatible == input$SEARCH_Is_Backwards_Compatible[2],]
+    }
     print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
-    print(paste("SEARCH_Backwards_Compatibility_Probability_Percent", input$SEARCH_Backwards_Compatibility_Probability_Percent))
-    if (!is.null(input$SEARCH_Release_date)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    if (!is.null(input$SEARCH_Backwards_Compatibility_Probability_Percent)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$percentProb >= input$SEARCH_Backwards_Compatibility_Probability_Percent[1] & dataToDisplay$percentProb <= input$SEARCH_Backwards_Compatibility_Probability_Percent[2],]
     }
     print(paste("SEARCH_Is_Listed_on_XboxCom", input$SEARCH_Is_Listed_on_XboxCom))
     print(paste("SEARCH_Is_Exclusive", input$SEARCH_Is_Exclusive))
     print(paste("SEARCH_Xbox_One_Version_Available", input$SEARCH_Xbox_One_Version_Available))
     print(paste("SEARCH_Is_On_Uservoice", input$SEARCH_Is_On_Uservoice))
-    print(paste("SEARCH_Uservoice_Votes", input$SEARCH_Uservoice_Votes))
-    print(paste("SEARCH_Uservoice_Comments", input$SEARCH_Uservoice_Comments))
+    if (!is.null(input$SEARCH_Uservoice_Votes)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$votes >= input$SEARCH_Uservoice_Votes[1] & dataToDisplay$votes <= input$SEARCH_Uservoice_Votes[2],]
+    }
+    if (!is.null(input$SEARCH_Uservoice_Comments)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$comments >= input$SEARCH_Uservoice_Comments[1] & dataToDisplay$comments <= input$SEARCH_Uservoice_Comments[2],]
+    }
     print(paste("SEARCH_Is_Kinect_Supported", input$SEARCH_Is_Kinect_Supported))
     print(paste("SEARCH_Is_Kinect_Required", input$SEARCH_Is_Kinect_Required))
     print(paste("SEARCH_Does_The_Game_Need_Special_Peripherals", input$SEARCH_Does_The_Game_Need_Special_Peripherals))
     print(paste("SEARCH_Is_The_Game_Retail_Only", input$SEARCH_Is_The_Game_Retail_Only))
     print(paste("SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com", input$SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com))
     print(paste("SEARCH_Has_a_Demo_Available", input$SEARCH_Has_a_Demo_Available))
-    print(paste("SEARCH_Xbox_User_Review_Score", input$SEARCH_Xbox_User_Review_Score))
-    print(paste("SEARCH_Xbox_User_Review_Counts", input$SEARCH_Xbox_User_Review_Counts))
-    print(paste("SEARCH_Metacritic_Review_Score", input$SEARCH_Metacritic_Review_Score))
-    print(paste("SEARCH_Metacritic_User_Review_Score", input$SEARCH_Metacritic_User_Review_Score))
-    print(paste("SEARCH_Price_on_Xbox.com", input$SEARCH_Price_on_Xbox.com))
+    if (!is.null(input$SEARCH_Xbox_User_Review_Score)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$xbox360Rating >= input$SEARCH_Xbox_User_Review_Score[1] & dataToDisplay$xbox360Rating <= input$SEARCH_Xbox_User_Review_Score[2],]
+    }
+    if (!is.null(input$SEARCH_Xbox_User_Review_Counts)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$numberOfReviews >= input$SEARCH_Xbox_User_Review_Counts[1] & dataToDisplay$numberOfReviews <= input$SEARCH_Xbox_User_Review_Counts[2],]
+    }
+    if (!is.null(input$SEARCH_Uservoice_Votes)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$reviewScorePro >= input$SEARCH_Metacritic_Review_Score[1] & dataToDisplay$reviewScorePro <= input$SEARCH_Metacritic_Review_Score[2],]
+    }
+    if (!is.null(input$SEARCH_Metacritic_User_Review_Score)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$reviewScoreUser >= input$SEARCH_Metacritic_User_Review_Score[1] & dataToDisplay$reviewScoreUser <= input$SEARCH_Metacritic_User_Review_Score[2],]
+    }
+    if (!is.null(input$SEARCH_Price_on_Xbox.com)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$price >= input$SEARCH_Price_on_Xbox.com[1] & dataToDisplay$price <= input$SEARCH_Price_on_Xbox.com[2],]
+    }
     if (!is.null(input$SEARCH_Publisher)) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$publisher%in%input$SEARCH_Publisher)),]
     }
@@ -101,53 +118,22 @@ shinyServer(function(input, output, session) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
     }
     print(paste("SEARCH_Smartglass_Compatible", input$SEARCH_Smartglass_Compatible))
-    print(paste("SEARCH_Number_of_Game_Add_Ons", input$SEARCH_Number_of_Game_Add_Ons))
-    if (!is.null(input$SEARCH_Release_date)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    if (!is.null(input$SEARCH_Number_of_Game_Add_Ons)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$DLgameAddons >= input$SEARCH_Number_of_Game_Add_Ons[1] & dataToDisplay$DLgameAddons <= input$SEARCH_Number_of_Game_Add_Ons[2],]
     }
-    print(paste("SEARCH_Number_of_Avatar_Items", input$SEARCH_Number_of_Avatar_Items))
-    if (!is.null(input$SEARCH_Release_date)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    if (!is.null(input$SEARCH_Number_of_Avatar_Items)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$DLavatarItems >= input$SEARCH_Number_of_Avatar_Items[1] & dataToDisplay$DLavatarItems <= input$SEARCH_Number_of_Avatar_Items[2],]
     }
-    print(paste("SEARCH_Number_of_GamerPics", input$SEARCH_Number_of_GamerPics))
-    if (!is.null(input$SEARCH_Release_date)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    if (!is.null(input$SEARCH_Number_of_GamerPics)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$DLgamerPictures >= input$SEARCH_Number_of_GamerPics[1] & dataToDisplay$DLgamerPictures <= input$SEARCH_Number_of_GamerPics[2],]
     }
-    print(paste("SEARCH_Number_of_Themes", input$SEARCH_Number_of_Themes))
-    if (!is.null(input$SEARCH_Release_date)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    if (!is.null(input$SEARCH_Number_of_Themes)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$DLthemes >= input$SEARCH_Number_of_Themes[1] & dataToDisplay$DLthemes <= input$SEARCH_Number_of_Themes[2],]
     }
-    print(paste("SEARCH_Number_of_Game_Videos", input$SEARCH_Number_of_Game_Videos))
-    if (!is.null(input$SEARCH_Release_date)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$releaseDate >= input$SEARCH_Release_date[1] & dataToDisplay$releaseDate <= input$SEARCH_Release_date[2],]
+    if (!is.null(input$SEARCH_Number_of_Game_Videos)) {
+      dataToDisplay = dataToDisplay[dataToDisplay$DLgameVideos >= input$SEARCH_Number_of_Game_Videos[1] & dataToDisplay$DLgameVideos <= input$SEARCH_Number_of_Game_Videos[2],]
     }
-    
-    # if (!is.null(input$marketName)) {
-    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
-    # }
-    # 
-    # if (!is.null(input$drugName)) {
-    #   dataToDisplay = dataToDisplay[which((dataToDisplay$Drug_Type%in%input$drugName)),]
-    # }
-
-    # # switch(input$weightUnits)
-    # if (!is.null(input$weightUnits)) {
-    #   drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
-    #   names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
-    #   dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
-    # }
-    # if (!is.null(input$weightValue)) {
-    #   dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
-    # }
-    # # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
-    # if (!is.null(input$pricePerWeight)) {
-    #   dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
-    # }
-    # if (!is.null(input$dataAccessedDate)) {
-    #   dataToDisplay = dataToDisplay[dataToDisplay$Sheet_Date >= input$dataAccessedDate[1] & dataToDisplay$Sheet_Date <= input$dataAccessedDate[2],]
-    # }
-
-    # dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
+    # dataToDisplay = dataToDisplay[!is.na(dataToDisplay$gameName),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
   
@@ -175,7 +161,8 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
+      ),
+      escape = FALSE
     )
   )
   
@@ -194,7 +181,8 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
+      ),
+      escape = FALSE
     )
   )
   
@@ -212,7 +200,10 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
+      ),
+      escape = FALSE,
+      fillContainer = FALSE,
+      autoHideNavigation = FALSE
     )
   )
   
@@ -231,7 +222,10 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
+      ),
+      escape = FALSE,
+      fillContainer = FALSE,
+      autoHideNavigation = FALSE
     )
   )
   
@@ -255,7 +249,8 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
+      ),
+      escape = FALSE
     )
   )
   
@@ -293,7 +288,10 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
+      ),
+      escape = FALSE,
+      fillContainer = FALSE,
+      autoHideNavigation = FALSE
     )
   )
   
@@ -330,9 +328,9 @@ shinyServer(function(input, output, session) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     }
     # htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
-    htmlFile = rmarkdown::render(file)
-    print(htmlFile)
-    shiny::includeHTML(htmlFile)
+    # htmlFile = rmarkdown::render(file)
+    # print(htmlFile)
+    # shiny::includeHTML(htmlFile)
   })
   
   output$AboutMe <- renderUI({
@@ -344,8 +342,10 @@ shinyServer(function(input, output, session) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     }
     # htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
-    htmlFile = rmarkdown::render(file)
-    print(htmlFile)
-    shiny::includeHTML(htmlFile)
+    # htmlFile = rmarkdown::render(file)
+    htmlFile = "www/AboutMe.html"
+    # print(htmlFile)
+    htmltools::includeHTML(htmlFile)
+    # htmltools::tags$iframe(src = htmlFile, width = '100%', height = '100%')
   })
 })

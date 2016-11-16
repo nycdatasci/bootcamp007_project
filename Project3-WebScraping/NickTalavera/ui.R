@@ -250,7 +250,10 @@ dashboardPage(
       ), # End of tabItem
       tabItem(tabName = "AboutMe",
               fluidPage(
+                titlePanel("About Me"),
+                mainPanel(
                 uiOutput("AboutMe")
+                )
               )
       ) # End of tabItem
     ) # end of tabITems
