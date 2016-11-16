@@ -15,7 +15,9 @@ dashboardPage(dashboardHeader(title = programName,
                 sidebarMenu(id = "sbm",
                             
                             menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+                            menuItem("Maps", tabName = "explorer", icon = icon("search")), 
                             menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
+                            menuItem("Popular Words", tabName = "popularWords", icon = icon("search")), 
                             conditionalPanel("input.sbm == 'explorer'",
                                         tabName = "explorer",
                                         icon = NULL,
@@ -158,7 +160,6 @@ dashboardPage(dashboardHeader(title = programName,
                           ) # End of fluidPage
                   ), # End of tabItem
                   tabItem(tabName = "explorer",
-                          
                           fluidPage(
                             title = "Market Explorer",
                             shinythemes::themeSelector(),
@@ -262,7 +263,12 @@ dashboardPage(dashboardHeader(title = programName,
                               # )#end of column
                             ) # end of conditionalpanel
                           ) # End of fluidPage
-                  ) # End of tabItem
+                  ), # End of tabItem
+                  tabItem(tabName = "explorer",
+                          fluidPage(
+                            plotOutput("wordCloud")
+                          )
+                  )
                 ) # end of tabITems
               )# end of dashboard body
 )# end of dashboard page

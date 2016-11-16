@@ -408,6 +408,35 @@ shinyServer(function(input, output, session) {
     })
   })
   
+  output$postsPerDayWithDrugColor <- renderPlot({
+    withProgress(message = "Number of postings per day over time for each darknet", {
+      # Get Data
+      dataSet <- getDataSetToUse()
+      dataSet = dataSet[!is.na(dataSet$Drug_Type),]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      # dataSet = summarise(group_by(dataSet, Time_Added, Market_Name))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
+      getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
+      platteNew = getPalette(colourCount)
+      g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
+      g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
+    })
+  })
+  
+  wordcloud_rep <- repeatable(wordcloud)
+  
+  output$wordCloud <- renderPlot({
+    isolate({
+      withProgress({
+        setProgress(message = "Processing corpus...")
+        v = getTermMatrix(input$selection)
+      })
+    })
+    wordcloud_rep(names(v), v, scale=c(4,0.5),
+                  min.freq = input$freq, max.words=input$max,
+                  colors=brewer.pal(8, "Dark2"))
+  })
+  
   output$numberOfDrugsAvailablePerMarket <- renderPlot({
     withProgress(message = "Number of postings per day over time for each darknet", {
       # Get Data

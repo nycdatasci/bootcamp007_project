@@ -28,6 +28,7 @@ usePackage("scales")
 usePackage("RColorBrewer")
 usePackage("flexdashboard")
 usePackage("DT")
+usePackage("wordcloud")
 usePackage("shinythemes")
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
