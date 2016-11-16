@@ -63,6 +63,10 @@ shinyServer(function(input, output, session) {
     )
   })
   
+  output$menuitem <- renderMenu({
+    menuItem("Menu item", icon = icon("calendar"))
+  })
+  
   # Render Annual Price Growth  Box
   output$usAnnualBox <- renderValueBox({
     price = 0
