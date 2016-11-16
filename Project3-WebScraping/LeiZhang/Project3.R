@@ -1,4 +1,8 @@
 library(dplyr)
+library(Hmisc)
+library(VIM)
+library(car)
+library(neuralnet)
 data.Interest<-read.csv("Interest Rates, Discount Rate for United States.csv")
 Ist<-data.Interest
 Ist$DATE<-as.Date(Ist$DATE)
@@ -172,3 +176,121 @@ concrete_model = neuralnet(IR ~ unem.rate + BankLoan + U.S.Dollar.Index +     #C
                            data = Ist.class.2)
 plot(concrete_model)
 table(Ist.class$IR,concrete_model$response)
+
+
+
+
+####redo the classification using monthly data
+
+Ist.month.class<-Ist[,c(2,3,9,10,11,12,13,20)]
+
+Ist.month.class.more.va.1<-Ist[110:801,c(2,3,9,10,11,12,13,20,28,29,31)]
+Ist.month.class.more.va.2<-Ist[313:801,c(2,3,9,10,11,12,13,20,28,29,31,14,19,22,36,37,39)]
+
+aggr(Ist.month.class)
+Ist.month.class.bc<-mutate(Ist.month.class,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
+
+Ist.month.class.more.va.1.bc<-mutate(Ist.month.class.more.va.1,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
+Ist.month.class.more.va.2.bc<-mutate(Ist.month.class.more.va.2,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
+###### binary model using glm 
+model.month.class.bc<-glm(IR ~ ., family = "binomial",data = Ist.month.class.bc)
+model.month.class.bc.more.va.1<-glm(IR ~ ., family = "binomial",data = Ist.month.class.more.va.1.bc)
+model.month.class.bc.more.va.2<-glm(IR ~ ., family = "binomial",data = Ist.month.class.more.va.2.bc)
+summary(model.month.class.bc)
+vif(model.month.class.bc)
+
+model.month.class.bc.re<-glm(IR~. -LFP.rate -ConsumerPrice -Industrial.Index, family = "binomial",data = Ist.month.class.bc)
+summary(model.month.class.bc.re)
+vif(model.month.class.bc.re)
+pchisq(model.month.class.bc.re$deviance,model.month.class.bc.re$df.residual,lower.tail = FALSE)
+##0.0046
+1-model.month.class.bc.re$deviance/model.month.class.bc.re$null.deviance
+##0.061
+result.pre.bc<-predict(model.month.class.bc.re, Ist.month.class.bc[,-7], type = "response")
+table(Ist.month.class.bc$IR,round.generator(result.pre.bc,0.3))
+
+
+
+summary(model.month.class.bc.more.va.1)
+vif(model.month.class.bc.more.va.1)
+###Only LFP.rate,BankLoan,Industrial.Idex
+model.month.class.bc.more.va.1.re<-glm(IR~ .-Em_Pop.rate -ConsumerPrice -Psaving.rate -unem.rate -Disposable.income -Personal.Consumption.Expenditures, family = "binomial",data = Ist.month.class.more.va.1.bc)
+vif(model.month.class.bc.more.va.1.re)
+summary(model.month.class.bc.more.va.1.re)
+pchisq(model.month.class.bc.more.va.1.re$deviance,model.month.class.bc.more.va.1.re$df.residual,lower.tail = FALSE)
+#####0.002014806639
+1-model.month.class.bc.more.va.1.re$deviance/model.month.class.bc.more.va.1.re$null.deviance
+###0.0355555
+
+
+summary(model.month.class.bc.more.va.2)
+vif(model.month.class.bc.more.va.2)
+model.month.class.bc.more.va.2.re<-glm(IR~. -Em_Pop.rate -Total.Vehicle.Sales -Unemployment.Level-Industrial.Index
+                                       -Psaving.rate -Brent.Oil -Light.vehicle.sale -unem.rate -Disposable.income
+                                       -ConsumerPrice -U.S.Dollar.Index, family = "binomial",data = Ist.month.class.more.va.2.bc)
+#####only LFP,Bank Loan,Personal.Consumption.Expenditures,New.House.Start
+summary(model.month.class.bc.more.va.2.re)
+vif(model.month.class.bc.more.va.2.re)
+influencePlot(model.month.class.bc.more.va.2.re)
+pchisq(model.month.class.bc.more.va.2.re$deviance,model.month.class.bc.more.va.2.re$df.residual,lower.tail = FALSE)
+##0.6256334512
+1-model.month.class.bc.more.va.2.re$deviance/model.month.class.bc.more.va.2.re$null.deviance
+##0.1276680975
+
+result.pre<-predict(model.month.class.bc.more.va.2.re, Ist.month.class.more.va.2.bc[,-16], type = "response")
+#model.month.class.bc.more.va.2.re<-glm(IR~ LFP.rate + BankLoan + Personal.Consumption.Expenditures + New.House.Start,
+#                                       family = "binomial",data = Ist.month.class.more.va.2.bc)
+
+round.generator<-function(x,n){
+  for(i in 1:length(x)){
+    if(x[i]>=n){
+      y[i]=1
+    }
+    else {
+      y[i]=0
+    }
+  }
+  return(y)
+}
+table(Ist.month.class.more.va.2.bc$IR,round.generator(result.pre,0.35))
+
+
+model.month.class.bc.re<-glm(IR ~ BankLoan + ConsumerPrice,family = "binomial",data = Ist.month.class.bc)
+summary(model.month.class.bc.re)
+vif(model.month.class.bc.re)
+influencePlot(model.month.class.bc.re)
+pchisq(model.month.class.bc.re$deviance,model.month.class.bc.re$df.residual,lower.tail = FALSE)
+###0.0001633084769 bad model
+
+###### binary model using neural network
+normalize = function(x) { 
+  return((x - min(x)) / (max(x) - min(x)))
+}
+
+#We now apply our normalization function to all the variables within our dataset;
+#we store the result as a data frame for future manipulation.
+Ist.month.class.bc_norm = as.data.frame(lapply(Ist.month.class.bc[,1:6], normalize))
+Ist.month.class.bc_norm$IR=as.numeric(Ist.month.class.bc$IR)
+Ist.month.class.bc_norm_train<-Ist.month.class.bc_norm[2:500,]
+Ist.month.class.bc_norm_test<-Ist.month.class.bc_norm[501:801,]
+set.seed(1)
+model.month.bc.nn = neuralnet(IR~ Em_Pop.rate + LFP.rate + unem.rate + BankLoan + ConsumerPrice + Industrial.Index,
+                              hidden = 3,#Default number of hidden neurons.
+                           data = Ist.month.class.bc_norm_train)
+results<-neuralnet::compute(model.month.bc.nn,Ist.month.class.bc_norm_test[,1:6])
+
+plot(model.month.bc.nn)
+table(Ist.month.class.bc_norm_test$IR[501:801],model_results)
+model.month.bc.nn.re = neuralnet(IR~ BankLoan + ConsumerPrice,
+                              hidden = 3,#Default number of hidden neurons.
+                              data = Ist.month.class.bc_norm_train)
+
+results.re<-neuralnet::compute(model.month.bc.nn.re,Ist.month.class.bc_norm_test[,4:5])
+
+model.class<-multinom(IR~ .,data = Ist.class.2)
+plot(Ist.class.2)
+summary(model.class)
+model.class$fitted.values
+test.class<-data.frame(Ist.class.2[163,1:7])
+predict(model.class,test.class,"probs")
+

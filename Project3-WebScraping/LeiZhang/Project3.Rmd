@@ -42,6 +42,8 @@ library(ggplot2)
 library(ggthemes)
 library(reshape2)
 library(nnet)
+library(tree)
+library(randomForest)
 ```
 
 ## Motivation
@@ -97,7 +99,7 @@ model.season_final<-lm(Interest.Rate~ .-Date, data = Ist.complete_final)
 ```
 
 ---
-```{r, echo = FALSE}
+```{r, echo = FALSE, tidy=TRUE}
 summary(model.season_final)
 ```
 
@@ -139,8 +141,27 @@ influencePlot(model.season_final)
 plot(model.season_final)
 ```
 
+---
+  ![](./linear2.png)
+  ![](./linear3.png)
+
+## Abnormal sample investigation
+###On March 10, 2000 the NASDAQ peaked at 5,132.52 intraday before closing at 5,048.62. Afterwards, the NASDAQ fell as much as 78%
+### starting from November 2008, several countries launched large 'help packages' for their economies.
+  ![](./linear4.png)
+```{r echo=FALSE}
+x<-Ist[c(622,706),]
+ir.pre<-predict(model.season_final,x,type = "response")
+data.frame(Date=Ist$Date[c(622,706)],Prediction=ir.pre,Real=Ist$Interest.Rate[c(622.706)])
+#table(Ist$Date[c(622,706)],model.season_final$fitted.values[c(104,132)][[1]])
+```
+
+
+
+
+
 ## Predict interest rate for 2016 fall
-```{r,echo = FALSE,dev='svg',fig.path='myplot',fig.height=4}
+```{r,echo = FALSE,dev='svg',fig.path='myplot',fig.height=3.5}
 
 newdata<-Ist.select_final[793:801,-2]
 interest.predict<-predict(model.season_final, newdata)
@@ -153,14 +174,14 @@ ggplot(test.melt)+geom_bar(aes(x=Date,y=value,fill=variable),stat = "identity",p
 
 ```
 
-## Classfication
+##Multi-class Classfication---Neural Network
 
 ```{r,echo = FALSE,dev='svg',fig.path='myplot',fig.height=4}
 generator.2<-function(x){
   y=c()
   for (i in 1:length(x)){
     if (i==length(x)){
-      y[i]<-NA
+      y[i]<-0
       break
     }
     else if (x[i] == x[i+1]){
@@ -188,10 +209,51 @@ predict(model.class,test.class,"probs")
 ```
 # Probabilty of no-change is 55.7%, 32.9% for increase 
 
+## Binary Classfication--Random Tree
+```{r,echo=FALSE}
+generator<-function(x){
+  y=c()
+  for (i in 1:length(x)){
+    if (i==length(x)){
+      y[i]<-0
+      break
+    }
+    else if (x[i] == x[i+1]){
+      y[i]<-0
+    }
+    else {
+      y[i]=1
+      }
+  }
+  return(y)
+}
+Ist.month.class<-Ist[,c(2,3,9,10,11,12,13,20)]
+Ist.month.class.bc<-mutate(Ist.month.class,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
+Ist.month.class.more.va.1<-Ist[110:801,c(2,3,9,10,11,12,13,20,28,29,31)]
+Ist.month.class.more.va.1.bc<-mutate(Ist.month.class.more.va.1,IR=as.factor(generator(Interest.Rate)))[,-c(1,2)]
+set.seed(200)
+train = sample(1:nrow(Ist.month.class.bc), 7*nrow(Ist.month.class.bc)/10)
 
+rf.month.bc = randomForest(IR ~ ., data = Ist.month.class.bc, subset = train, importance = TRUE)
+rf.month.bc 
 
+#Varying the number of variables used at each step of the random forest procedure.
+#set.seed(200)
+#for (mtry in 1:6) {
+ # fit = randomForest(IR ~ ., data = Ist.month.class.bc[train, ], mtry = mtry)
+#  tr<-table(Ist.month.class.bc$IR[train],fit$predicted)
+#  cat("We're performing iteration", mtry, "\n")
+#  print(tr)
+#}
+```
 
+## Multi-class Classfication--Random Tree
+```{r,echo=FALSE}
+Ist.month.class.mc<-mutate(Ist.month.class,IR=as.factor(generator.2(Interest.Rate)))[,-c(1,2)]
+set.seed(200)
+train.mc = sample(1:nrow(Ist.month.class.mc), 7*nrow(Ist.month.class.mc)/10)
+rf.month.mc = randomForest(IR ~ ., data = Ist.month.class.mc, subset = train.mc, importance=TRUE)
+rf.month.mc 
+```
 
-
-
-
+### Future: use Anomaly Detection Algorithm to do the binary classification 
