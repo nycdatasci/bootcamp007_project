@@ -198,11 +198,11 @@ shinyServer(function(input, output, session) {
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[dataSet$top != "Other",]
       print(unique(dataSet$top))
-      colourCount = length(unique(dataSet$Price_Per_Gram_BTC))
+      colourCount = length(unique(dataSet$top))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = reorder_size(top)))
-      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Drug Type') + guides(color = "colorbar") + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Typical Game Type"))
+      g = ggplot(data = dataSet, aes(x = reorder_size(top), fill=reorder_size(top)))
+      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Drug Type') + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
     })
   })
   
@@ -220,14 +220,22 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[dataSet$top != "Other",]
-      colourCount = length(unique(dataSet$Price_Per_Gram_BTC))
+      colourCount = length(unique(dataSet$top))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = reorder_size(top))) #+ ggtitle(title)
-      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Market Name') + guides(color = "colorbar") + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Typical Game Type"))
+      g = ggplot(data = dataSet, aes(x = reorder_size(top), fill = reorder_size(top))) #+ ggtitle(title)
+      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Market Name') + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
     })
-  })
+  }, bg="transparent")
   
+  output$mostCommonCountryAndMarketForEachDrug <- DT::renderDataTable({
+    dataSet <- getDataSetToUse()
+    dataSet = summarise(group_by(dataSet,Drug_Type), "Country" = names(which.max(table(Shipped_From))), "Market" = names(which.max(table(Shipped_From))))
+    DT::datatable(dataSet, 
+                  options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 5, 
+                                 scrollY = TRUE, scrollX = TRUE), selection = "none", style = "bootstrap")
+  }
+  )
   
   
   

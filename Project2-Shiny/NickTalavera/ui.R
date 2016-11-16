@@ -208,7 +208,6 @@ dashboardPage(dashboardHeader(title = programName,
                                            title = "Number of postings per day over time for each darknet",
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("postsPerDayWithDrugColor")
@@ -216,10 +215,19 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
+                                           title = "Most Common Country and Market for Each Drug",
+                                           status = "primary",
+                                           width = 12,
+                                           solidHeader = FALSE,
+                                           collapsible = TRUE,
+                                           dataTableOutput("mostCommonCountryAndMarketForEachDrug")
+                                         ) #End of Box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                         box(
                                            title = "Number of Drugs Available Per Market",
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("numberOfDrugsAvailablePerMarket")
@@ -230,7 +238,6 @@ dashboardPage(dashboardHeader(title = programName,
                                            title = "Price per gram for each drug over time",
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("pricePerDrug")
@@ -241,7 +248,6 @@ dashboardPage(dashboardHeader(title = programName,
                                            title = "Average prices of drugs for each market",
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("drugPrices")
@@ -252,7 +258,6 @@ dashboardPage(dashboardHeader(title = programName,
                                            title = "Average prices of drugs against price of bitcoins",
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("pricesComparedToBicoinPrice")

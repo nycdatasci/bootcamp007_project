@@ -86,3 +86,4 @@ dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
 timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
 sheetDateRange = range(dnmData$Sheet_Date, na.rm = TRUE)
 maxPricePerWeight = roundUpNice(max(dnmData$Price_Per_Gram, na.rm = TRUE))
+par(bg="transparent")
