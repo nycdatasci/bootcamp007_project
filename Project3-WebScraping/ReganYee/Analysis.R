@@ -1,18 +1,31 @@
 library(dplyr)
 library(ggplot2)
 library(plotly)
+library(DT)
 
 ## Import and read data
 setwd("~/Documents/bootcamp007_project/Project3-WebScraping/ReganYee/Wayback/")
 reddit = read.csv("wayback.csv")
+#reddit[reddit$snapshot_datetime == '20161109103912',]
+reddit$upvotes = as.numeric(as.character(reddit$upvotes))
+reddit$upvotes = imputedupvotes = Hmisc::impute(reddit$upvotes, "random")
 
 reddit$snapshot_datetime = as.character(reddit$snapshot_datetime)
 reddit$snapshot_date = as.character(reddit$snapshot_date)
-reddit$upvotes = as.numeric(reddit$upvotes)
 reddit$snapshot_time = sapply(reddit$snapshot_datetime, function(x) substring(x,9,14))
 reddit$submit_date = sapply(reddit$submit_datetime, function(x) substring(x,1,10))
 reddit$submit_hour = sapply(reddit$submit_datetime, function(x) substring(x,12,13))
 reddit = reddit %>% filter(snapshot_date != 20160629)
+
+reddit$comments = as.character(reddit$comments)
+delimited_list = strsplit(reddit$comments, split = " ")
+comms = sapply(delimited_list,function(x) x[1])
+reddit$comments = comms
+reddit$comments_num = as.numeric(reddit$comments)
+#Convert NAs to 0
+reddit$comments_num[which(reddit$comments_num %in% NA)] = 0
+reddit = reddit %>% mutate(comment_ratio = comments_num/upvotes)
+
 
 saveRDS(reddit, "reddit.RDS")
 
@@ -66,9 +79,6 @@ t = unique(front_page_by_user) %>% filter(submitter=='Nameless696')
 r = t %>% group_by(submitter) %>% summarize(count=n()) %>% filter(count > 2) %>% arrange(desc(count))
                                    
 ###
-
-### Relationship between number of comments and upvotes?
-
 ### Hottest Upvote time?
 ### mean and median reddit score by time (aggregate per day/ per hour)
 reddit_score_mean = df_unique_hour %>% 
@@ -174,6 +184,43 @@ plot_ly (
   mode = 'markers',
   title = 'Posts by Subreddit'
 )
+
+### Relationship between number of comments and upvotes?
+comment_analysis1 = reddit %>% group_by(titles,subreddit) %>% summarize(max = max(comment_ratio)) %>% arrange(desc(max)) 
+head(comment_analysis1)
+
+datatable(head(comment_analysis1),
+          extensions = 'FixedColumns',
+          options = list(
+            dom = 't',
+            scrollX = TRUE,
+            scrollCollapse = TRUE)) %>% 
+  formatStyle('titles', `font-size` = '11px') %>% 
+  formatStyle('subreddit', `font-size` = '11px') %>% 
+  formatStyle('max', `font-size` = '11px')
+
+
+maxup = reddit %>% group_by(titles) %>% summarize(submit_hour = round(mean(as.numeric(submit_hour))))
+head(maxup,25)
+joined_df = left_join(reddit, maxup, by="titles")
+head(joined_df)
+maxup_1 = maxup %>% group_by(submit_hour) %>% summarize(count = n())
+g = ggplot(maxup_1, aes(x = submit_hour, y = count))
+g+ geom_point()
+lm = joined_df %>% select(titles, submit_hour.x, subreddit, upvotes)
+head(lm)
+
+gogo = reddit %>% filter(titles == '\'Anti-Vaxxer\' Mom Changes Mind After Her Three Kids Fall Ill')
+
+g = ggplot(reddit, aes(x=comments_num, y=upvotes))
+g + geom_point()
+
+reddit$comments_num
+reddit[reddit$comments_num == max(reddit$comments_num),]
+reddit[reddit$upvotes == max(reddit$upvotes),]
+
+
+# Upvotes = Subreddit + submit_time
 
 ### boxplot of subreddit
 ### average life of top10?

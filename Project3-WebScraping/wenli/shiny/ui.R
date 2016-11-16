@@ -56,7 +56,7 @@ shinyUI(navbarPage('Shiny Ted Talks',
                    tabPanel('Modeling',
                             column(1),
                             column(10,
-                                   withMathJax(includeMarkdown("RMarkdownFile.md"))),
+                                   uiOutput("model")),
                             column(1)
                    ),
                    

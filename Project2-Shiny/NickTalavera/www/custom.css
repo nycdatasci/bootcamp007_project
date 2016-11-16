@@ -1,35 +1,120 @@
-#top10StatesBar, #top10StatesBar .rChart {
-    height: 200px;
-    width: 1000px;
+/* logo */
+                                          .skin-blue .main-header .logo {
+                                          background-color: #d9534f;
+                                          }
+                                          
+                                          /* logo when hovered */
+                                          .skin-blue .main-header .logo:hover {
+                                          background-color: #d9534f;
+                                          }
+                                          
+                                          /* navbar (rest of the header) */
+                                          .skin-blue .main-header .navbar {
+                                          background-color: #d9534f;
+                                          }        
+                                          
+                                          /* main sidebar */
+                                          .skin-blue .main-sidebar {
+                                          background-color: #3d4954;
+                                          }
+                                          
+                                          /* active selected tab in the sidebarmenu */
+                                          .skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+                                          background-color: #f1f1f1;
+color: #000000;
+border-left-color: #c2c2c2
+                                          }
+                                          
+                                          /* other links in the sidebarmenu */
+                                          .skin-blue .main-sidebar .sidebar .sidebar-menu a{
+                                          background-color: #3d4954;
+                                          color: #f1f1f1;
+                                          }
+                                          
+                                          /* other links in the sidebarmenu when hovered */
+                                          .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+                                          background-color: #f1f1f1;
+color: #000000;
+border-left-color: #c2c2c2
+                                          }
+                                          /* toggle button when hovered  */                    
+                                          .skin-blue .main-header .navbar .sidebar-toggle:hover{
+                                          background-color: #ff69b4;
+                                          }
+/* toggle button when hovered  */                    
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+  background-color: #f1f1f1;
+color: #000000;
+}
+.skin-blue .content-wrapper, .right-side{
+  background-color: #c2c2c2;
+}
+.box.box-solid.box-primary>.box-header{
+  background-color: #107c10;
+}
+.box.box-solid.box-primary {
+    border: 0.5px solid #3a3a3a;
+}
+.box-body {
+    border-radius: 0 0 3px 3px;
+padding: 10px;
+background-color: #f1f1f1;
+}
+.content {
+    min-height: 250px;
+padding-top:0px;
+padding-right: 0px;
+padding-bottom: 0px;
+padding-left: 0px;
+margin-right: 0px;
+margin-left: 0px;
+}
+.irs-from, .irs-to, .irs-single {
+    color: #f1f1f1;
+font-size: 11px;
+line-height: 1.333;
+text-shadow: none;
+padding: 1px 3px;
+background: #4d9598;
+border-radius: 3px;
+-moz-border-radius: 3px;
+}
+.box.box-primary {
+border-top-color: #4d9598;
 }
 
-#top10CitiesBar, #top10CitiesBar .rChart {
-    height: 200px;
-    width: 1000px;
-}
 
-#top10StatesTS, #top10StatesTS .rChart {
-    height: 400px;
-    width: 700px;
+                                          .content-wrapper, .right-side{
+                                          background-color: #f1f1f1;
+                                          }
+                                          .box.box-solid.box-primary>.box-header{
+                                          background-color: #f1f1f1;
+                                          }
+                                          .box.box-solid.box-primary {
+                                          border: 0.5px solid #f1f1f1;
+                                          }
+                                          .box-body {
+                                          border-radius: 0 0 3px 3px;
+                                          padding: 10px;
+                                          background-color: #f1f1f1;
+                                          }
+.irs-bar {
+    height: 8px;
+    top: 25px;
+    border-top: 1px solid #b5dee0;
+    border-bottom: 1px solid #b5dee0;
+    background: #82bec0;
 }
-
-#top10CitiesTS, #top10CitiesTS .rChart {
-    height: 400px;
-    width: 700px;
+.irs-bar-edge {
+    height: 8px;
+    top: 25px;
+    width: 14px;
+    border: 0.5px solid #b5dee0;
+    border-right: 0;
+    background: #82bec0;
+    border-radius: 16px 0 0 16px;
+    -moz-border-radius: 16px 0 0 16px;
 }
-
-#topByGrowth, #topByGrowth .rChart {
-    height: 400px;
-    width: 1200px;
+.input-group-addon:not(:first-child):not(:last-child), .input-group-btn:not(:first-child):not(:last-child), .input-group .form-control:not(:first-child):not(:last-child) {
+    background-color: #b5dee0;
 }
-
-#topMarketsTS, #topMarketsTS .rChart {
-    height: 650px;
-    width: 1200px;
-}
-
-#forecastSummaryPlot, #forecastSummaryPlot .rChart {
-    height: 500px;
-    width: 1000px;
-}
-

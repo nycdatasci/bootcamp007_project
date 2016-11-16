@@ -4,19 +4,83 @@
 # Date: Octber 25, 2016
 
 
-library(shiny)
-library(ggplot2)
 programName = "Darknet Market Analyzer"
-dashboardPage(skin = "green",
-              dashboardHeader(title = programName),
+sidebarWidth = 250
+dashboardPage(dashboardHeader(title = programName,
+                              titleWidth = sidebarWidth),
+              # skin = "red",
+              
               dashboardSidebar(
+                width = sidebarWidth,
                 sidebarMenu(id = "sbm",
+                            
                             menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-                            menuItem("Market Explorer", tabName = "explorer", icon = icon("search"))
+                            menuItem("Maps", tabName = "explorer", icon = icon("search")), 
+                            menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
+                            menuItem("Popular Words", tabName = "popularWords", icon = icon("search")), 
+                            conditionalPanel("input.sbm == 'explorer'",
+                                        tabName = "explorer",
+                                        icon = NULL,
+                                     title = "Query Builder",
+                                     status = "primary",
+                                     solidHeader = TRUE,
+                                     selectInput("marketName",
+                                                 "Choose your markets:",
+                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Market_Name))))),
+                                                 multiple = TRUE),
+
+                                     selectInput("drugName",
+                                                 "Choose your drugs:",
+                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Drug_Type))))),
+                                                 multiple = TRUE),
+                                     selectInput("shippedFrom",
+                                                 "Choose where the drugs are shipped from:",
+                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Shipped_From))))),
+                                                 multiple = TRUE),
+
+                                     selectInput("weightUnits",
+                                                 "Choose your units of weight:",
+                                                 choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
+                                                 selected = "grams"
+                                     ),
+
+                                     # sliderInput("weightValue",
+                                     #             paste("Choose the the total weight of the drug in ", "grams", ":"),
+                                     #             min = 0, max = 1000, value = 1, step = 0.5,
+                                     #             post = " grams", sep = ",", animate=FALSE),
+
+                                     sliderInput("pricePerWeight",
+                                                 paste("Choose the range of price per ", "grams", ":"),
+                                                 min = 0, max = maxPricePerWeight, value = c(0,maxPricePerWeight), step = maxPricePerWeight/5,
+                                                 pre = "$", sep = ",", animate=FALSE),
+
+
+
+                                     dateRangeInput('dataPostedDate',
+                                                    label = paste('Choose the date range for when the item was posted:'),
+                                                    start = timeAddedRange[1], end = timeAddedRange[2],
+                                                    min = timeAddedRange[1], max = timeAddedRange[2],
+                                                    separator = " - ", format = "mm/dd/yy",
+                                                    startview = 'month', weekstart = 1
+                                     ),
+
+
+                                     dateRangeInput('dataAccessedDate',
+                                                    label = paste('Choose the date range for when the item was accessed:'),
+                                                    start = sheetDateRange[1], end = sheetDateRange[2],
+                                                    min = sheetDateRange[1], max = sheetDateRange[2],
+                                                    separator = " - ", format = "mm/dd/yy",
+                                                    startview = 'month', weekstart = 1
+                                     ),
+
+                                     helpText("Note: Leave a field empty to select all."),
+                                     actionButton("query", label = "Go")
+                                     )
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(
                 includeCSS("www/custom.css"),
+                theme = shinythemes::shinytheme("superhero"),
                 tabItems(
                   tabItem(tabName = "dashboard",
                           fluidPage(
@@ -35,7 +99,6 @@ dashboardPage(skin = "green",
                                        title = "Analytics for the Darknet Market",
                                        width = 12,
                                        height = 530,
-                                       background = "orange",
                                        solidHeader = FALSE,
                                        collapsible = FALSE,
                                        collapsed = FALSE,
@@ -99,68 +162,9 @@ dashboardPage(skin = "green",
                   tabItem(tabName = "explorer",
                           fluidPage(
                             title = "Market Explorer",
-                            column(width = 4,
-                                   box(
-                                     title = "Query Builder",
-                                     status = "primary",
-                                     width = 12,
-                                     solidHeader = TRUE,
-                                     background = "navy",
-                                     selectInput("marketName",
-                                                 "Choose your markets:",
-                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Market_Name))))),
-                                                 multiple = TRUE),
-                                     
-                                     selectInput("drugName",
-                                                 "Choose your drugs:",
-                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Drug_Type))))),
-                                                 multiple = TRUE),
-                                     selectInput("shippedFrom",
-                                                 "Choose where the drugs are shipped from:",
-                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Shipped_From))))),
-                                                 multiple = TRUE),
-                                     
-                                     selectInput("weightUnits",
-                                                 "Choose your units of weight:",
-                                                 choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
-                                                 selected = "grams"
-                                     ),
-                                     
-                                     sliderInput("weightValue",
-                                                 paste("Choose the the total weight of the drug in ", "grams", ":"),
-                                                 min = 0, max = 1000, value = 1, step = 0.5,
-                                                 post = " grams", sep = ",", animate=FALSE),
-                                     
-                                     sliderInput("pricePerWeight",
-                                                 paste("Choose the range of price per ", "grams", ":"),
-                                                 min = 0, max = maxPricePerWeight, value = c(0,maxPricePerWeight), step = maxPricePerWeight/5,
-                                                 pre = "$", sep = ",", animate=FALSE),
-                                     
-                                     
-                                     
-                                     dateRangeInput('dataPostedDate',
-                                                    label = paste('Choose the date range for when the item was posted:'),
-                                                    start = timeAddedRange[1], end = timeAddedRange[2],
-                                                    min = timeAddedRange[1], max = timeAddedRange[2],
-                                                    separator = " - ", format = "mm/dd/yy",
-                                                    startview = 'month', weekstart = 1
-                                     ),
-                                     
-                                     
-                                     dateRangeInput('dataAccessedDate',
-                                                    label = paste('Choose the date range for when the item was accessed:'),
-                                                    start = sheetDateRange[1], end = sheetDateRange[2],
-                                                    min = sheetDateRange[1], max = sheetDateRange[2],
-                                                    separator = " - ", format = "mm/dd/yy",
-                                                    startview = 'month', weekstart = 1
-                                     ),
-                                     
-                                     helpText("Note: Leave a field empty to select all."),
-                                     actionButton("query", label = "Go")
-                                   )
-                            ),
-                            
-                            
+                            shinythemes::themeSelector(),
+                            theme = shinythemes::shinytheme("superhero"),
+
                             conditionalPanel(
                               condition = "input.query",
                               # column(width = 10,
@@ -259,7 +263,12 @@ dashboardPage(skin = "green",
                               # )#end of column
                             ) # end of conditionalpanel
                           ) # End of fluidPage
-                  ) # End of tabItem
+                  ), # End of tabItem
+                  tabItem(tabName = "explorer",
+                          fluidPage(
+                            plotOutput("wordCloud")
+                          )
+                  )
                 ) # end of tabITems
               )# end of dashboard body
 )# end of dashboard page

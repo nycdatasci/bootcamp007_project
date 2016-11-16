@@ -60,13 +60,35 @@ p2 <- ggplot(review1) +
 p2
 ```
 
-## Network graph of 100 anime
+Airing started in <span style="color:red">Summer 2012</span>, ended in <span style="color:red">Dec 2012</span>. A short film aired in <span style="color:red">Dec 2013</span> and its sequel air in <span style="color:red">Summer 2014</span>. 
 
+## Anime Info EDA
 ```{r load data2, warning=F, message=F}
 library(visNetwork)
 library(car)
+library(ggplot2)
 AnimeInfo <- readRDS("AnimeInfo/AnimeInfo.RDS")
 ```
+```{r eda anime_info, echo=T}
+length(AnimeInfo)
+names(AnimeInfo[[1]])
+```
+## Anime Info EDA 2
+```{r read data, echo = F, fig.width= 4}
+AnimeInfo_df <- readRDS("AnimeInfo_df.RDS")
+plot1 <- ggplot(AnimeInfo_df) +
+    geom_boxplot(aes(y=Score, x= Type, color = Type)) +
+    theme_bw() + theme(legend.position="none")
+plot1
+plot2 <- ggplot(AnimeInfo_df) +
+    geom_boxplot(aes(y=Score, x= Rating, color = Rating)) + 
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position="none")
+plot2
+```
+
+## Network graph of 100 anime
 ```{r plot3}
 set.seed(0)
 graph_list <- sample(AnimeInfo, 100)  ##randomly choose 100 anime for network graph
@@ -134,24 +156,21 @@ graph
 ## Regression Model - predicting anime score
 
 Aim: to build to model to predict score of an anime
-Need to convert anime info in nested list to a data frame first.
 
 Difficulties: Only viewers, favorites are numerical variables, other variables such as Rating, Type, Director, Actors, Musicians etc. are all categorical variables. 
 
 Tried to create dummy variables: using a list of directors who won an award in last 20 years and divide the director into 2 groups.
 
-```{r read data}
-AnimeInfo_df <- readRDS("AnimeInfo_df.RDS")
-```
 
-## Model 1, adjusted R-squared value = 0.289
+
+## Model 1, adjusted R-squared value = 0.289 {.smaller}
 
 ```{r  model1, echo=T}
 model <- glm(Score ~ Award_Director + Viewer + Favorite + Type + Rating, 
              data = AnimeInfo_df)
 #summary(model)
 ```
-![Summary model 1](1.png)
+![Summary model 1](1_2.png)
 
 ## check model1 assumptions
 
@@ -174,6 +193,6 @@ avPlots(model)
 
 ## Future work
 
-- Normalize viewer numbers against time since its premiere
-- add more dummy variables (use number of actor favorites to dummify actors variable, etc.)
+- Normalize viewer/favorites against time since release;
+- Use number of favorites on staff/actor pages to turn Director, Actor etc. into continuous variable.
 

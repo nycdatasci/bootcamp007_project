@@ -22,7 +22,7 @@ reorder_size <- function(x) {
 
 shinyServer(function(input, output, session) {
   
-  
+  session$onSessionEnded(stopApp)
   #===============================================================================
   #                        DASHBOARD SERVER FUNCTIONS                            #
   #===============================================================================
@@ -38,7 +38,7 @@ shinyServer(function(input, output, session) {
   
   # Highest Home Value Index by City Box
   output$highestViBox <- renderValueBox({
-    dataSet = select(dnmData,Market_Name,Drug_Type,Price_Per_Gram_BTC)
+    dataSet = dplyr::select(dnmData,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSet$Market_Name = as.character(dataSet$Market_Name)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount = length(unique(Market_Name)))
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
@@ -63,10 +63,14 @@ shinyServer(function(input, output, session) {
     )
   })
   
+  output$menuitem <- renderMenu({
+    menuItem("Menu item", icon = icon("calendar"))
+  })
+  
   # Render Annual Price Growth  Box
   output$usAnnualBox <- renderValueBox({
     price = 0
-    dataSet = select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
+    dataSet = dplyr::select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
     print(dataSetTemp)
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
@@ -86,7 +90,7 @@ shinyServer(function(input, output, session) {
   # Render Highest Annual Price Growth  Box
   output$highestAnnualBox <- renderValueBox({
     price = 0
-    dataSet = select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
+    dataSet = dplyr::select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
     drugRandom = sample(unique(dataSetTemp$Drug_Type),1)
@@ -108,7 +112,7 @@ shinyServer(function(input, output, session) {
   
   # Render number of states box
   output$numStatesBox <- renderValueBox({
-    dataSet = select(dnmData,Shipped_From)
+    dataSet = dplyr::select(dnmData,Shipped_From)
     mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
     valueBox(
       paste0(str_title_case(mostPostedInCountry)), paste("Most Active Country"), 
@@ -118,7 +122,7 @@ shinyServer(function(input, output, session) {
   
   # Render number of counties box
   output$mostPostedDruginXCountry <- renderValueBox({
-    dataSet = select(dnmData,Drug_Type,Shipped_From)
+    dataSet = dplyr::select(dnmData,Drug_Type,Shipped_From)
     countryRandom = sample(unique(dnmData$Shipped_From[!is.na(dataSet$Shipped_From) & dnmData$Shipped_From != "unknown"]),1)
     mostPostedDrug = names(sort(summary(as.factor(dnmData$Drug_Type[dnmData$Shipped_From == countryRandom])), decreasing=T))
     for (i in 1:length(mostPostedDrug)) {
@@ -135,7 +139,7 @@ shinyServer(function(input, output, session) {
   
   # Render number of cities box
   output$bitcoinHighLow <- renderValueBox({
-    dataSet = select(dnmData,BitcoinPriceUSD)
+    dataSet = dplyr::select(dnmData,BitcoinPriceUSD)
     #dataSet = dataSet[!is.infinite(abs(dataSet$BitcoinPriceUSD)),]
     choice = sample(c(1:3),1)
     if (choice == 1) {
@@ -402,6 +406,35 @@ shinyServer(function(input, output, session) {
       g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
       g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
     })
+  })
+  
+  output$postsPerDayWithDrugColor <- renderPlot({
+    withProgress(message = "Number of postings per day over time for each darknet", {
+      # Get Data
+      dataSet <- getDataSetToUse()
+      dataSet = dataSet[!is.na(dataSet$Drug_Type),]
+      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      # dataSet = summarise(group_by(dataSet, Time_Added, Market_Name))
+      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
+      getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
+      platteNew = getPalette(colourCount)
+      g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
+      g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
+    })
+  })
+  
+  wordcloud_rep <- repeatable(wordcloud)
+  
+  output$wordCloud <- renderPlot({
+    isolate({
+      withProgress({
+        setProgress(message = "Processing corpus...")
+        v = getTermMatrix(input$selection)
+      })
+    })
+    wordcloud_rep(names(v), v, scale=c(4,0.5),
+                  min.freq = input$freq, max.words=input$max,
+                  colors=brewer.pal(8, "Dark2"))
   })
   
   output$numberOfDrugsAvailablePerMarket <- renderPlot({
