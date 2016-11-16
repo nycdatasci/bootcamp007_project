@@ -72,7 +72,6 @@ shinyServer(function(input, output, session) {
     price = 0
     dataSet = dplyr::select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
-    print(dataSetTemp)
     dataSetTemp = filter(dataSetTemp, mnCount >=2)
     drugRandom = sample(unique(dataSetTemp$Drug_Type),1)
     dataSet = dataSet[dataSet$Drug_Type == drugRandom,]
@@ -166,7 +165,6 @@ shinyServer(function(input, output, session) {
     drugRandom = sample(unique(dataSet$Drug_Type),1)
     dataSet = filter(dataSet, Drug_Type == drugRandom)
     dataSet = arrange(dataSet, desc(mnPrice))
-    print(dataSet)
     lowestCost = min(dataSet$mnPrice, na.rm = TRUE)
     lowestMarket = dataSet$Market_Name[dataSet$mnPrice == lowestCost]
     valueBox(
@@ -186,7 +184,6 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      print(unique(dataSet$Drug_Type))
       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=6))) # create a df or something else with the summary output.
       print(temp)
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
@@ -197,25 +194,33 @@ shinyServer(function(input, output, session) {
       )
       dataSet$top <- as.factor(dataSet$top)
       dataSet = dataSet[dataSet$top != "Other",]
-      print(unique(dataSet$top))
       colourCount = length(unique(dataSet$top))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = reorder_size(top), fill=reorder_size(top)))
-      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Drug Type') + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
+      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Drug') + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
     })
   })
   
   output$mostPopularMarkets <- renderPlot({
-    withProgress(message = "Rendering Most Popular Market For Selected Drugs Bar Graph", {
+    withProgress(message = "Rendering Active For Selected Drugs Bar Graph", {
       # Get Data
+      choice = "Market_Name"
+      if (input$radialMostActive == "Most Active Market") {
+        choice = "Market_Name"
+        xlabel ="Market Name"
+      } else {
+        choice = "Shipped_From"
+        xlabel ="Country Shipped From"
+      }
       dataSet <- getDataSetToUse()
-      dataSet = dataSet[!is.na(dataSet$Market_Name),]
-      temp <- row.names(as.data.frame(summary(dataSet$Market_Name, max=6))) # create a df or something else with the summary output.
-      dataSet$Market_Name <- as.character(dataSet$Market_Name)
+      dataSet = dataSet[!is.na(dataSet[,choice]),]
+      temp <- row.names(as.data.frame(summary(dataSet[,choice], max=6))) # create a df or something else with the summary output.
+      print(temp)
+      dataSet[,choice] <- as.character(dataSet[,choice])
       dataSet$top <- ifelse(
-        dataSet$Market_Name %in% temp, ## condition: match aDDs$answer with row.names in summary df
-        dataSet$Market_Name, ## then it should be named as aDDs$answer
+        dataSet[,choice] %in% temp, ## condition: match aDDs$answer with row.names in summary df
+        dataSet[,choice], ## then it should be named as aDDs$answer
         "Other" ## else it should be named "Other"
       )
       dataSet$top <- as.factor(dataSet$top)
@@ -224,7 +229,11 @@ shinyServer(function(input, output, session) {
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = reorder_size(top), fill = reorder_size(top))) #+ ggtitle(title)
-      g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Market Name') + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
+      g = g + geom_bar(stat="count") + ylab('Number of Postings') + xlab(xlabel) + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
+      if (colourCount >= 10) {
+        g = g + theme(legend.position="bottom")
+      }
+      g
     })
   }, bg="transparent")
   
@@ -420,22 +429,11 @@ shinyServer(function(input, output, session) {
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
-      g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
-    })
-  })
-  
-  output$postsPerDayWithDrugColor <- renderPlot({
-    withProgress(message = "Number of postings per day over time for each darknet", {
-      # Get Data
-      dataSet <- getDataSetToUse()
-      dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
-      # dataSet = summarise(group_by(dataSet, Time_Added, Market_Name))
-      colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
-      getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
-      platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Time_Added, colour = Market_Name))
-      g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type"))
+      g = g + geom_density(na.rm = TRUE, size=1) + ylab('Number of Posts Made') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) 
+      if (colourCount >= 10) {
+        g = g + theme(legend.position="bottom")
+      }
+      g
     })
   })
   
@@ -504,23 +502,30 @@ shinyServer(function(input, output, session) {
   output$numberOfDrugsAvailablePerMarket <- renderPlot({
     withProgress(message = "Rendering Number of Drugs Available Per Market", {
       # Get Data
-      print(input$numberOfDrugsRadial)
       choice = "Market_Name"
       if (input$numberOfDrugsRadial == "Per Market") {
         choice = "Market_Name"
+        xlabel = "Market Name"
       } else {
         choice = "Shipped_From"
+        xlabel = "Country Shipped From"
       }
       dataSet <- getDataSetToUse()
       dataSet[,choice] = as.character(dataSet[,choice])
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = summarise(group_by_(dataSet, choice), drugCount = length(unique(Drug_Type)))
-      print(nrow(unique(dataSet[,choice])))
       colourCount = nrow(unique(dataSet[,choice]))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes_string(x = choice, y = "drugCount", fill = choice))
-      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market') + scale_fill_manual(values = platteNew)
+      g = g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab(xlabel) + scale_fill_manual(values = platteNew, guide = guide_legend(title = xlabel))
+      if (colourCount >= 10) {
+        g = g + theme(legend.position="bottom") +
+      theme(axis.title.x=element_blank(),
+            axis.text.x=element_blank(),
+            axis.ticks.x=element_blank())
+      }
+      g
     })
   })
   
@@ -701,7 +706,6 @@ shinyServer(function(input, output, session) {
     dataSet$Shipped_From = str_title_case(dataSet$Shipped_From)
     dataSet$Drug_Type = str_title_case(dataSet$Drug_Type)
     dataSet$Market_Name = str_title_case(dataSet$Market_Name)
-    print(names(dataSet))
     dataSet = select(dataSet,"Market" = Market_Name, "Country of Origin" = Shipped_From, "Drug" = Drug_Type, "Price/Gram (Bitcoin)" = Price_Per_Gram_BTC, "Date Posted" = Time_Added, "Date Scraped" = Sheet_Date)
     names(dataSet) = str_title_case(names(dataSet))
     DT::datatable(dataSet, 

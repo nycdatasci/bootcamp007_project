@@ -167,42 +167,6 @@ dashboardPage(dashboardHeader(title = programName,
                             conditionalPanel(
                               condition = "input.query | input.sbm == 'explorer'",
                               # column(width = 10,
-                                     box(
-                                       title = "Market Data",
-                                       status = "primary",
-                                       width = 12,
-                                       solidHeader = TRUE,
-                                       collapsible = FALSE,
-                                       fluidRow(
-                                         box(
-                                           title = "Data Table",
-                                           status = "primary",
-                                           width = 12,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           DT::dataTableOutput('dataTableViewOfDrugs')
-                                         )# end of box
-                                       ),# end of fluidrow
-                                       fluidRow(
-                                         column(width = 12,
-                                                box(
-                                                  title = str_title_case("Most Common Drug Listing by Count"),
-                                                  status = "primary",
-                                                  width = 6,
-                                                  solidHeader = FALSE,
-                                                  collapsible = TRUE,
-                                                  plotOutput("mostCommonDrugsHist")
-                                                ),# end of box
-                                                box(
-                                                  title = str_title_case("Most Active Market For Selected Drugs"),
-                                                  status = "primary",
-                                                  width = 6,
-                                                  solidHeader = FALSE,
-                                                  collapsible = TRUE,
-                                                  plotOutput("mostPopularMarkets")
-                                                )# end of box
-                                         )# end of column
-                                       ),# end of fluidRow
                                        fluidRow(
                                          box(
                                            title = str_title_case("Number of postings per day over time for each darknet"),
@@ -213,6 +177,32 @@ dashboardPage(dashboardHeader(title = programName,
                                            plotOutput("postsPerDayWithDrugColor")
                                          ) #End of Box
                                        ),# end of fluidRow
+                                       fluidRow(
+                                                box(
+                                                  title = str_title_case("Most Common Drug Listing by Count"),
+                                                  status = "primary",
+                                                  width = 12,
+                                                  solidHeader = FALSE,
+                                                  collapsible = TRUE,
+                                                  plotOutput("mostCommonDrugsHist")
+                                                )# end of box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                                box(
+                                                  title = str_title_case("Most Active For Selected Drugs"),
+                                                  status = "primary",
+                                                  width = 12,
+                                                  solidHeader = FALSE,
+                                                  collapsible = TRUE,
+                                                  plotOutput("mostPopularMarkets"),
+                                                  radioButtons("radialMostActive", 
+                                                               label = h3("Options:"),
+                                                               choices = list("Most Active Market" = "Most Active Market", "Most Active Country" = "Most Active Country"), 
+                                                               selected = "Most Active Market",
+                                                               inline = TRUE)
+                                                )# end of box
+                                       ),# end of fluidRow
+
                                        fluidRow(
                                          box(
                                            title = str_title_case("Most Common Country and Market for Each Drug"),
@@ -234,7 +224,8 @@ dashboardPage(dashboardHeader(title = programName,
                                            radioButtons("numberOfDrugsRadial", 
                                                         label = h3("Options:"),
                                                         choices = list("Per Market" = "Per Market", "Per Country" = "Per Country"), 
-                                                        selected = "Per Market")
+                                                        selected = "Per Market",
+                                                        inline = TRUE)
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
@@ -266,8 +257,17 @@ dashboardPage(dashboardHeader(title = programName,
                                            collapsible = TRUE,
                                            plotOutput("pricesComparedToBicoinPrice")
                                          ) #End of Box
-                                       )# end of fluidRow
-                                     )# end of box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                         box(
+                                           title = "Data Table",
+                                           status = "primary",
+                                           width = 12,
+                                           solidHeader = FALSE,
+                                           collapsible = TRUE,
+                                           DT::dataTableOutput('dataTableViewOfDrugs')
+                                         )# end of box
+                                       )# end of fluidrow
                               # )#end of column
                             ) # end of conditionalpanel
                           ) # End of fluidPage
