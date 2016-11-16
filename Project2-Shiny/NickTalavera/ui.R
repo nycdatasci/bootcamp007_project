@@ -264,11 +264,17 @@ dashboardPage(dashboardHeader(title = programName,
                   ), # End of tabItem
                   tabItem(tabName = "popularWords",
                           fluidPage(
+                            title = "Word Frequency in Descriptions",
+                            box(
+                              title = "Word Cloud of the Silk Road",
+                              width = 12,
                             plotOutput("wordCloud")
+                            )
                           )
                   ),
                   tabItem(tabName = "maps",
                           fluidPage(
+                            title = "Maps",
                             leafletOutput("mymap"),
                             p(),
                             actionButton("recalc", "New points")

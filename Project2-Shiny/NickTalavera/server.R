@@ -469,7 +469,7 @@ shinyServer(function(input, output, session) {
     set.seed(1234)
     par(bg= "transparent")
     wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
-              random.order=FALSE, rot.per=0.35, scale=c(4,.2), 
+              random.order=FALSE, rot.per=0.35, 
               use.r.layout=FALSE, colors=colors)
     
     invisible(list(tdm=tdm, freqTable = d))
@@ -478,7 +478,7 @@ shinyServer(function(input, output, session) {
   output$wordCloud <- renderPlot({
     isolate({
       withProgress({
-        setProgress(message = "Processing corpus...")
+        setProgress(message = "Processing word cloud...")
         dataWords = read.csv(paste0(dataLocale,"DNMdataDescriptionsOnly.csv"),nrow = 1000)
         dataWords$X = NULL
         rquery.wordcloud(dataWords, type= "text", min.freq = 50, max.words= 60, 
@@ -683,6 +683,8 @@ shinyServer(function(input, output, session) {
     dataSet$Shipped_From = str_title_case(dataSet$Shipped_From)
     dataSet$Drug_Type = str_title_case(dataSet$Drug_Type)
     dataSet$Market_Name = str_title_case(dataSet$Market_Name)
-    DT::datatable(dataSet, options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 10))
+    DT::datatable(dataSet, 
+                  options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 10, 
+                                 scrollY = TRUE, scrollX = TRUE))
   })
 })
