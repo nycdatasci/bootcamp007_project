@@ -502,7 +502,7 @@ shinyServer(function(input, output, session) {
   })
   
   output$numberOfDrugsAvailablePerMarket <- renderPlot({
-    withProgress(message = "Number of postings per day over time for each darknet", {
+    withProgress(message = "Rendering Number of Drugs Available Per Market", {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet$Market_Name = as.character(dataSet$Market_Name)
@@ -511,8 +511,8 @@ shinyServer(function(input, output, session) {
       colourCount = length(unique(dataSet$Market_Name))
       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
       platteNew = getPalette(colourCount)
-      g = ggplot(data = dataSet, aes(x = Market_Name, y = drugCount))
-      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market')
+      g = ggplot(data = dataSet, aes(x = Market_Name, y = drugCount, fill = Market_Name))
+      g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab('Market') + scale_fill_manual(values = platteNew) + theme(legend.position="none")
     })
   })
   
@@ -543,7 +543,7 @@ shinyServer(function(input, output, session) {
     })
   })
   output$mostActiveCountryDaily <- renderPlot({
-    withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
+    withProgress(message = "Rendering Most Active Country Daily", {
       # Get Data
       dataSet <- getDataSetToUse()
       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
@@ -568,7 +568,7 @@ shinyServer(function(input, output, session) {
     })
   })
   output$drugPrices <- renderPlot({
-    withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
+    withProgress(message = "Rendering Drug Price Line Graph", {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Market_Name),]

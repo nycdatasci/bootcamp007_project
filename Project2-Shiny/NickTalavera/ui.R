@@ -186,7 +186,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        fluidRow(
                                          column(width = 12,
                                                 box(
-                                                  title = "Most Common Drug Listing by Count",
+                                                  title = str_title_case("Most Common Drug Listing by Count"),
                                                   status = "primary",
                                                   width = 6,
                                                   solidHeader = FALSE,
@@ -194,7 +194,7 @@ dashboardPage(dashboardHeader(title = programName,
                                                   plotOutput("mostCommonDrugsHist")
                                                 ),# end of box
                                                 box(
-                                                  title = "Most Active Market For Selected Drugs",
+                                                  title = str_title_case("Most Active Market For Selected Drugs"),
                                                   status = "primary",
                                                   width = 6,
                                                   solidHeader = FALSE,
@@ -205,7 +205,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Number of postings per day over time for each darknet",
+                                           title = str_title_case("Number of postings per day over time for each darknet"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
@@ -215,7 +215,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Most Common Country and Market for Each Drug",
+                                           title = str_title_case("Most Common Country and Market for Each Drug"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
@@ -225,7 +225,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Number of Drugs Available Per Market",
+                                           title = str_title_case("Number of Drugs Available Per Market"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
@@ -235,7 +235,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Price per gram for each drug over time",
+                                           title = str_title_case("Price per gram for each drug over time"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
@@ -245,7 +245,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Average prices of drugs for each market",
+                                           title = str_title_case("Average prices of drugs for each market"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
@@ -255,7 +255,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Average prices of drugs against price of bitcoins",
+                                           title = str_title_case("Average prices of drugs against price of bitcoins"),
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
@@ -270,7 +270,7 @@ dashboardPage(dashboardHeader(title = programName,
                   ), # End of tabItem
                   tabItem(tabName = "popularWords",
                           fluidPage(
-                            title = "Word Frequency in Descriptions",
+                            title = str_title_case("Word Frequency in Descriptions"),
                             box(
                               title = "Word Cloud of the Silk Road",
                               width = 12,
@@ -280,7 +280,7 @@ dashboardPage(dashboardHeader(title = programName,
                   ),
                   tabItem(tabName = "maps",
                           fluidPage(
-                            title = "Maps",
+                            title = str_title_case("Maps"),
                             leafletOutput("mymap"),
                             p(),
                             actionButton("recalc", "New points")
