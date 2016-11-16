@@ -292,6 +292,6 @@ countryList = c("argentina", "australia","austria", "bangladesh", "belgium", "bu
                 "germany", "germany ", "germany ", "guatemala","guernsey", "holland", "hong kong sar china", "hungary", "india", "ireland", "italy",  "latvia", "luxembourg", "mexico", "netherland", 
                 "netherlands", "new zealand", "nl", "norway", "peru", "poland", "serbia", "singapore","slovakia", "slovenia", "south africa", "spain", "sweden", "switzerland", 
                 "thailand", "the netherlands", "uk", "united kingdom", "united states", "united states of ame", "united states of america", "unknown", "us", "usa", "usa and canada", "usa only", "venezuela")
-dnmData = as.data.frame(read.csv(paste0(folderName,'DNMdataSomewhatSorted.csv'),nrow = 100000))
+dnmData = as.data.frame(read.csv(paste0(folderName,'DNMdataSomewhatSorted.csv')))
 dnmData = cleanupCSV(dnmData)
 write.csv(dnmData, paste0(folderName, 'DNMdata.csv'))

@@ -1,4 +1,4 @@
- # shinyHome
+# shinyHome
 # Real Estate Analytics and Forecasting
 # Nick Talavera
 # Date: October 25, 2016
@@ -174,7 +174,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
- 
+  
   
   #===============================================================================
   #                         MARKET EXPLORER FUNCTIONS                            #
@@ -366,7 +366,13 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  
+  output$mymap <- renderLeaflet({
+    leaflet() %>%
+      addProviderTiles("Stamen.TonerLite",
+                       options = providerTileOptions(noWrap = TRUE)
+      ) %>%
+      addMarkers(data = points())
+  })
   
   output$topTenDrugPriceChangeTimeSeries <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
@@ -423,18 +429,66 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  wordcloud_rep <- repeatable(wordcloud)
+  
+  rquery.wordcloud <- function(x, type=c("text", "url", "file"), 
+                               lang="english", excludeWords=NULL, 
+                               textStemming=FALSE,  colorPalette="Dark2",
+                               min.freq=3, max.words=200)
+  { 
+    
+    if(type[1]=="file") text <- readLines(x)
+    else if(type[1]=="url") text <- html_to_text(x)
+    else if(type[1]=="text") text <- x
+    
+    # Load the text as a corpus
+    docs <- Corpus(VectorSource(text))
+    # Convert the text to lower case
+    docs <- tm_map(docs, content_transformer(tolower))
+    # Remove numbers
+    docs <- tm_map(docs, removeNumbers)
+    # Remove stopwords for the language 
+    docs <- tm_map(docs, removeWords, stopwords(lang))
+    # Remove punctuations
+    docs <- tm_map(docs, removePunctuation)
+    # Eliminate extra white spaces
+    docs <- tm_map(docs, stripWhitespace)
+    # Remove your own stopwords
+    if(!is.null(excludeWords)) 
+      docs <- tm_map(docs, removeWords, excludeWords) 
+    # Text stemming
+    if(textStemming) docs <- tm_map(docs, stemDocument)
+    # Create term-document matrix
+    tdm <- TermDocumentMatrix(docs)
+    m <- as.matrix(tdm)
+    v <- sort(rowSums(m),decreasing=TRUE)
+    d <- data.frame(word = names(v),freq=v)
+    # check the color palette name 
+    if(!colorPalette %in% rownames(brewer.pal.info)) colors = colorPalette
+    else colors = brewer.pal(8, colorPalette) 
+    # Plot the word cloud
+    set.seed(1234)
+    par(bg= "transparent")
+    wordcloud(d$word,d$freq, min.freq=min.freq, max.words=max.words,
+              random.order=FALSE, rot.per=0.35, scale=c(4,.2), 
+              use.r.layout=FALSE, colors=colors)
+    
+    invisible(list(tdm=tdm, freqTable = d))
+  }
   
   output$wordCloud <- renderPlot({
     isolate({
       withProgress({
         setProgress(message = "Processing corpus...")
-        v = getTermMatrix(input$selection)
+        dataWords = read.csv(paste0(dataLocale,"DNMdataDescriptionsOnly.csv"),nrow = 1000)
+        dataWords$X = NULL
+        rquery.wordcloud(dataWords, type= "text", min.freq = 50, max.words= 60, 
+                         excludeWords = c("get","will","can","like","one","say","items","see","read","src","non",
+                                          "com",'links',"www","http","note","case","theres","good","listing",
+                                          "via","yet","full","usd","may","user","even","watches","watch","little","additional",
+                                          "around","just",
+                                          "item","don","much","many","way","first","also","per","sphotobuckcom","back"))
       })
     })
-    wordcloud_rep(names(v), v, scale=c(4,0.5),
-                  min.freq = input$freq, max.words=input$max,
-                  colors=brewer.pal(8, "Dark2"))
   })
   
   output$numberOfDrugsAvailablePerMarket <- renderPlot({
@@ -483,22 +537,22 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- getDataSetToUse()
       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
-#       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-#       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
-#       dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC))
-#       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
-#       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
-#       dataSet$top <- ifelse(
-#         dataSet$Drug_Type %in% temp, ## condition: match aDDs$answer with row.names in summary df
-#         dataSet$Drug_Type, ## then it should be named as aDDs$answer
-#         "Other" ## else it should be named "Other"
-#       )
-#       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
-#       dataSet$top <- as.factor(dataSet$top)
-#       dataSet = dataSet[as.character(dataSet$top) != "Other",]
-#       colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
-#       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
-#       platteNew = getPalette(colourCount)
+      #       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
+      #       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
+      #       dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC))
+      #       temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=7, na.rm = TRUE))) # create a df or something else with the summary output.
+      #       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
+      #       dataSet$top <- ifelse(
+      #         dataSet$Drug_Type %in% temp, ## condition: match aDDs$answer with row.names in summary df
+      #         dataSet$Drug_Type, ## then it should be named as aDDs$answer
+      #         "Other" ## else it should be named "Other"
+      #       )
+      #       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
+      #       dataSet$top <- as.factor(dataSet$top)
+      #       dataSet = dataSet[as.character(dataSet$top) != "Other",]
+      #       colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
+      #       getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
+      #       platteNew = getPalette(colourCount)
       # g = ggplot(data = dataSet, aes(x = Sheet_Date, y=meanPrice_Per_Gram_BTC, colour=Drug_Type))
       # g + geom_line(na.rm = TRUE, size=1) + ylab('Average Price Per 10 Grams (Normalized)') + xlab('Date') + scale_fill_manual(values = platteNew, guide = guide_legend(title = "Drug Type")) + theme(axis.text.y=element_blank(), axis.ticks.y=element_blank())
     })
@@ -602,9 +656,9 @@ shinyServer(function(input, output, session) {
     }
     # switch(input$weightUnits)
     if (!is.null(input$weightUnits)) {
-    drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
-    names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
-    dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
+      drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
+      names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
+      dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*drugUnitMutiplier[input$weightUnits]
     }
     if (!is.null(input$weightValue)) {
       dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)

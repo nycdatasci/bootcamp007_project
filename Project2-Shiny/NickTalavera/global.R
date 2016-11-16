@@ -30,6 +30,11 @@ usePackage("flexdashboard")
 usePackage("DT")
 usePackage("wordcloud")
 usePackage("shinythemes")
+usePackage("tm")
+usePackage("SnowballC")
+usePackage("leaflet")
+usePackage("wordcloud")
+usePackage("RColorBrewer") 
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
