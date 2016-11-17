@@ -1,7 +1,6 @@
-# shinyHome
-# Real Estate Analytics and Forecasting
-# Nick Talavera
-# Date: October 25, 2016
+# Darknet Market Visualizer
+# By Nick Talavera
+# Created on October 25, 2016
 
 # global.R
 
