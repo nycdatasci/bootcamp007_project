@@ -257,16 +257,16 @@ dashboardPage(dashboardHeader(title = programName,
                                            collapsible = TRUE,
                                            plotOutput("pricesComparedToBicoinPrice")
                                          ) #End of Box
-                                       ),# end of fluidRow
-                                       fluidRow(
-                                         box(
-                                           title = "Data Table",
-                                           status = "primary",
-                                           width = 12,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           DT::dataTableOutput('dataTableViewOfDrugs')
-                                         )# end of box
+                                       # ),# end of fluidRow
+                                       # fluidRow(
+                                       #   box(
+                                       #     title = "Data Table",
+                                       #     status = "primary",
+                                       #     width = 12,
+                                       #     solidHeader = FALSE,
+                                       #     collapsible = TRUE,
+                                       #     DT::dataTableOutput('dataTableViewOfDrugs')
+                                       #   )# end of box
                                        )# end of fluidrow
                               # )#end of column
                             ) # end of conditionalpanel

@@ -17,7 +17,8 @@ usePackage("data.table")
 usePackage("stringr")
 usePackage("lettercase")
 usePackage("qdapRegex")
-
+usePackage("data.table")
+library(plyr)
 anonymiseColumns <- function(df, colIDs) {
   id <- if(is.character(colIDs)) match(colIDs, names(df)) else colIDs
   for(id in colIDs) {
@@ -307,9 +308,24 @@ countryList = c("argentina", "australia","austria", "bangladesh", "belgium", "bu
                 "netherlands", "new zealand", "nl", "norway", "peru", "poland", "serbia", "singapore","slovakia", "slovenia", "south africa", "spain", "sweden", "switzerland", 
                 "thailand", "the netherlands", "uk", "united kingdom", "united states", "united states of ame", "united states of america", "unknown", "us", "usa", "usa and canada", "usa only", "venezuela")
 dnmData = as.data.frame(read.csv(paste0(folderName,'DNMdataSomewhatSorted.csv')))
-bynum = 10000
-for (i in seq(1, to = nrow(dnmData), by = bynum)) {
+bynum = 20000
+print(paste(nrow(dnmData),"rows"))
+for (i in seq(8680001, to = nrow(dnmData), by = bynum)) {
   dataTemp = dnmData[i:(i+bynum-1),]
   dataTemp = cleanupCSV(dataTemp)
-  write.csv(dataTemp, paste0(folderName, 'OutputTemp/DNMdata',str_pad(i, 7, pad = "0"),'.csv'))
+  print(paste(i,'to',i+bynum-1))
+  dataTemp = unique(dataTemp)
+  dataTemp = dataTemp[!is.na(dataTemp$Sheet_Date),]
+  write.csv(dataTemp, paste0(folderName, 'OutputTemp/DNMdata',str_pad(i, nchar(as.character(nrow(dnmData))), pad = "0"),'.csv'))
 }
+
+
+readIn = function(fName) {
+  data = fread(fName, header = TRUE,showProgress= TRUE)
+  print(fName)
+  return(data)
+}
+darkentMarketFiles = list.files(path = './OutputTemp', recursive = TRUE, pattern = "\\.csv$", no.. = TRUE, full.names = TRUE)
+dnmData = lapply(darkentMarketFiles[1:length(darkentMarketFiles)], function(x) readIn(x))
+dnmData = ldply(dnmData, data.frame)
+write.csv(dnmData,'DNMdata.csv')
