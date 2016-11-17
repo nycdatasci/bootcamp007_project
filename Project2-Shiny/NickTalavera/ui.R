@@ -14,8 +14,8 @@ dashboardPage(dashboardHeader(title = programName,
                 width = sidebarWidth,
                 sidebarMenu(id = "sbm",
                             
-                            menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-                            menuItem("Maps", tabName = "maps", icon = icon("search")), 
+                            # menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+                            # menuItem("Maps", tabName = "maps", icon = icon("search")), 
                             menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
                             
                             conditionalPanel("input.sbm == 'explorer'",
@@ -75,8 +75,8 @@ dashboardPage(dashboardHeader(title = programName,
 
                                      helpText("Note: Leave a field empty to select all."),
                                      actionButton("query", label = "Go")
-                                     ),
-                            menuItem("Popular Words", tabName = "popularWords", icon = icon("search"))
+                                     )
+                            # menuItem("Popular Words", tabName = "popularWords", icon = icon("search"))
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(

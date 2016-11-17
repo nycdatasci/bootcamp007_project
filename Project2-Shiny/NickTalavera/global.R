@@ -66,7 +66,7 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Darknet Data
   dataLocale = '/Volumes/SDExpansion/Data Files/Darknet Data/'
 }
 if (!exists("dnmData")) { 
-  dnmData <- read.csv(paste0(dataLocale,"DNMdata.csv"), header = TRUE, nrows = 2000000)
+  dnmData <- read.csv(paste0(dataLocale,"DNMdata.csv"), header = TRUE, nrows = 500000)
   dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
   dnmData$Time_Added = as.Date(dnmData$Time_Added)
   dnmData$X = NULL
