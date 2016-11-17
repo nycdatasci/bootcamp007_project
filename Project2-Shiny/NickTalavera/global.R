@@ -33,6 +33,7 @@ usePackage("tm")
 usePackage("SnowballC")
 usePackage("leaflet")
 usePackage("wordcloud")
+library(bigvis)
 usePackage("RColorBrewer")
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
@@ -70,7 +71,11 @@ if (!exists("dnmData")) {
   dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
   dnmData$Time_Added = as.Date(dnmData$Time_Added)
   dnmData$X = NULL
-  dnmData$X = NULL
+  dnmData$V1 = NULL
+  dnmData$Ask = NULL
+  dnmData$Bid = NULL
+  dnmData$Last = NULL
+  dnmData$BitcoinVolume = NULL
   dnmData$Item_Name_Full_Text = NULL
   dnmData$Vendor_Name = NULL
   dnmData$Drug_Quantity = NULL
@@ -83,6 +88,8 @@ if (!exists("dnmData")) {
   dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
   dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
 }
+dnmData = bigvis::as.condensed(dnmData)
+bigvis::condense(dnmData)
 unitString = "grams"
 timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
 sheetDateRange = range(dnmData$Sheet_Date, na.rm = TRUE)

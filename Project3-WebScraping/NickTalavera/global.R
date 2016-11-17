@@ -54,6 +54,7 @@ usePackage("DT")
 usePackage("RColorBrewer")
 usePackage("MASS")
 usePackage("car")
+usePackage("knitr")
 usePackage("rmarkdown")
 usePackage("flexdashboard")
 ################################################################################

@@ -327,10 +327,7 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     }
-    # htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
-    # htmlFile = rmarkdown::render(file)
-    # print(htmlFile)
-    # shiny::includeHTML(htmlFile)
+    HTML(markdown::markdownToHTML(knit(file, quiet = FALSE), stylesheet = NA))
   })
   
   output$AboutMe <- renderUI({
@@ -341,11 +338,6 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     }
-    # htmlFile = rmarkdown::render(file, output_dir = markdownFolder)
-    # htmlFile = rmarkdown::render(file)
-    htmlFile = "www/AboutMe.html"
-    # print(htmlFile)
-    htmltools::includeHTML(htmlFile)
-    # htmltools::tags$iframe(src = htmlFile, width = '100%', height = '100%')
+    HTML(markdown::markdownToHTML(knit(file, quiet = FALSE), stylesheet = NA))
   })
 })
