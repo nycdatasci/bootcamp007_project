@@ -20,6 +20,8 @@ reorder_size <- function(x) {
   factor(x, levels = names(sort(table(x))))
 }
 
+
+
 shinyServer(function(input, output, session) {
   
   # session$onSessionEnded(stopApp)
@@ -482,19 +484,19 @@ shinyServer(function(input, output, session) {
     
     invisible(list(tdm=tdm, freqTable = d))
   }
-  
+  wordcloud_rep <- repeatable(wordcloud)
   output$wordCloud <- renderPlot({
     isolate({
       withProgress({
         setProgress(message = "Processing word cloud...")
-        dataWords = read.csv(paste0(dataLocale,"DNMdataDescriptionsOnly.csv"),nrow = 1000)
+        dataWords = read.csv(paste0(dataLocale,"DNMdataDescriptionsOnly.csv"))
         dataWords$X = NULL
-        rquery.wordcloud(dataWords, type= "text", min.freq = 50, max.words= 60, 
+        repeatable(rquery.wordcloud(dataWords, type= "text", min.freq = 50, max.words= 60, 
                          excludeWords = c("get","will","can","like","one","say","items","see","read","src","non",
                                           "com",'links',"www","http","note","case","theres","good","listing",
                                           "via","yet","full","usd","may","user","even","watches","watch","little","additional",
                                           "around","just",
-                                          "item","don","much","many","way","first","also","per","sphotobuckcom","back"))
+                                          "item","don","much","many","way","first","also","per","sphotobuckcom","back")))
       })
     })
   })
