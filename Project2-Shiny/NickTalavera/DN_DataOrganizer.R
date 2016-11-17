@@ -1,17 +1,24 @@
-rm(list = setdiff(ls(), lsf.str()))
-library(jsonlite)
-library(stringr)
-library(dplyr)
-library(ggplot2)
-library(RColorBrewer)
-library(scales)
-library(anonymizer)
-library(parallel)
-library(data.table)
-library(stringr)
-library(lettercase)
-library(qdapRegex)
+rm(list = ls())
+usePackage <- function(p) {
+  if (!is.element(p, installed.packages()[,1]))
+    install.packages(p, dep = TRUE)
+  require(p, character.only = TRUE)
+}
 
+usePackage("jsonlite")
+usePackage("stringr")
+usePackage("dplyr")
+usePackage("ggplot2")
+usePackage("RColorBrewer")
+usePackage("scales")
+usePackage("anonymizer")
+usePackage("parallel")
+usePackage("data.table")
+usePackage("stringr")
+usePackage("lettercase")
+usePackage("qdapRegex")
+usePackage("data.table")
+library(plyr)
 anonymiseColumns <- function(df, colIDs) {
   id <- if(is.character(colIDs)) match(colIDs, names(df)) else colIDs
   for(id in colIDs) {
@@ -278,6 +285,9 @@ addBTC = function(data) {
     download.file(url = 'http://www.quandl.com/api/v1/datasets/BAVERAGE/USD.csv', destfile = paste0(folderName,'Bitcoin.csv'))
   } 
   bitcoinData = fread(paste0(folderName,'Bitcoin.csv'))
+  bitcoinData$ask = NULL
+  bitcoinData$bid = NULL
+  bitcoinData$last = NULL
   colnames(bitcoinData)[colnames(bitcoinData) == 'Date'] = "Sheet_Date"
   colnames(bitcoinData)[colnames(bitcoinData) == '24h Average'] = "BitcoinPriceUSD"
   colnames(bitcoinData)[colnames(bitcoinData) == 'Total Volume'] = "BitcoinVolume"
@@ -287,11 +297,35 @@ addBTC = function(data) {
   data$Price_Per_Gram_BTC = data$Price_Per_Gram/data$BitcoinPriceUSD
   return(data)
 }
+if (dir.exists('/Volumes/SDExpansion/Data Files/Darknet Data/')){
 folderName = '/Volumes/SDExpansion/Data Files/Darknet Data/'
+} else if (dir.exists("~/Dropbox/Data Science/Data Files/Darknet Data/")){
+  folderName = "~/Dropbox/Data Science/Data Files/Darknet Data/"
+  setwd('~/Dropbox/Data Science/Data Files/Darknet Data/')
+}
 countryList = c("argentina", "australia","austria", "bangladesh", "belgium", "bulgaria", "canada", "china","colombia","czech republic", "denmark", "finland", "france", "georgia", 
                 "germany", "germany ", "germany ", "guatemala","guernsey", "holland", "hong kong sar china", "hungary", "india", "ireland", "italy",  "latvia", "luxembourg", "mexico", "netherland", 
                 "netherlands", "new zealand", "nl", "norway", "peru", "poland", "serbia", "singapore","slovakia", "slovenia", "south africa", "spain", "sweden", "switzerland", 
                 "thailand", "the netherlands", "uk", "united kingdom", "united states", "united states of ame", "united states of america", "unknown", "us", "usa", "usa and canada", "usa only", "venezuela")
 dnmData = as.data.frame(read.csv(paste0(folderName,'DNMdataSomewhatSorted.csv')))
-dnmData = cleanupCSV(dnmData)
-write.csv(dnmData, paste0(folderName, 'DNMdata.csv'))
+bynum = 20000
+print(paste(nrow(dnmData),"rows"))
+for (i in seq(8680001, to = nrow(dnmData), by = bynum)) {
+  dataTemp = dnmData[i:(i+bynum-1),]
+  dataTemp = cleanupCSV(dataTemp)
+  print(paste(i,'to',i+bynum-1))
+  dataTemp = unique(dataTemp)
+  dataTemp = dataTemp[!is.na(dataTemp$Sheet_Date),]
+  write.csv(dataTemp, paste0(folderName, 'OutputTemp/DNMdata',str_pad(i, nchar(as.character(nrow(dnmData))), pad = "0"),'.csv'))
+}
+
+
+readIn = function(fName) {
+  data = fread(fName, header = TRUE,showProgress= TRUE)
+  print(fName)
+  return(data)
+}
+darkentMarketFiles = list.files(path = './OutputTemp', recursive = TRUE, pattern = "\\.csv$", no.. = TRUE, full.names = TRUE)
+dnmData = lapply(darkentMarketFiles[1:length(darkentMarketFiles)], function(x) readIn(x))
+dnmData = ldply(dnmData, data.frame)
+write.csv(dnmData,'DNMdata.csv')

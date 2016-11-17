@@ -14,10 +14,10 @@ dashboardPage(dashboardHeader(title = programName,
                 width = sidebarWidth,
                 sidebarMenu(id = "sbm",
                             
-                            menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
-                            menuItem("Maps", tabName = "maps", icon = icon("search")), 
+                            # menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+                            # menuItem("Maps", tabName = "maps", icon = icon("search")), 
                             menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
-                            menuItem("Popular Words", tabName = "popularWords", icon = icon("search")), 
+                            
                             conditionalPanel("input.sbm == 'explorer'",
                                         tabName = "explorer",
                                         icon = NULL,
@@ -76,6 +76,7 @@ dashboardPage(dashboardHeader(title = programName,
                                      helpText("Note: Leave a field empty to select all."),
                                      actionButton("query", label = "Go")
                                      )
+                            # menuItem("Popular Words", tabName = "popularWords", icon = icon("search"))
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(
@@ -166,70 +167,72 @@ dashboardPage(dashboardHeader(title = programName,
                             conditionalPanel(
                               condition = "input.query | input.sbm == 'explorer'",
                               # column(width = 10,
-                                     box(
-                                       title = "Market Data",
-                                       status = "primary",
-                                       width = 12,
-                                       solidHeader = TRUE,
-                                       collapsible = FALSE,
                                        fluidRow(
                                          box(
-                                           title = "Data Table",
+                                           title = str_title_case("Number of postings per day over time for each darknet"),
                                            status = "primary",
                                            width = 12,
-                                           solidHeader = FALSE,
-                                           collapsible = TRUE,
-                                           DT::dataTableOutput('dataTableViewOfDrugs')
-                                         )# end of box
-                                       ),# end of fluidrow
-                                       fluidRow(
-                                         column(width = 12,
-                                                box(
-                                                  title = "Most Common Drug Listing by Count",
-                                                  status = "primary",
-                                                  width = 6,
-                                                  solidHeader = FALSE,
-                                                  collapsible = TRUE,
-                                                  plotOutput("mostCommonDrugsHist")
-                                                ),# end of box
-                                                box(
-                                                  title = "Most Active Market For Selected Drugs",
-                                                  status = "primary",
-                                                  width = 6,
-                                                  solidHeader = FALSE,
-                                                  collapsible = TRUE,
-                                                  plotOutput("mostPopularMarkets")
-                                                )# end of box
-                                         )# end of column
-                                       ),# end of fluidRow
-                                       fluidRow(
-                                         box(
-                                           title = "Number of postings per day over time for each darknet",
-                                           status = "primary",
-                                           width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("postsPerDayWithDrugColor")
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
+                                                box(
+                                                  title = str_title_case("Most Common Drug Listing by Count"),
+                                                  status = "primary",
+                                                  width = 12,
+                                                  solidHeader = FALSE,
+                                                  collapsible = TRUE,
+                                                  plotOutput("mostCommonDrugsHist")
+                                                )# end of box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                                box(
+                                                  title = str_title_case("Most Active For Selected Drugs"),
+                                                  status = "primary",
+                                                  width = 12,
+                                                  solidHeader = FALSE,
+                                                  collapsible = TRUE,
+                                                  plotOutput("mostPopularMarkets"),
+                                                  radioButtons("radialMostActive", 
+                                                               label = h3("Options:"),
+                                                               choices = list("Most Active Market" = "Most Active Market", "Most Active Country" = "Most Active Country"), 
+                                                               selected = "Most Active Market",
+                                                               inline = TRUE)
+                                                )# end of box
+                                       ),# end of fluidRow
+
+                                       fluidRow(
                                          box(
-                                           title = "Number of Drugs Available Per Market",
+                                           title = str_title_case("Most Common Country and Market for Each Drug"),
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
-                                           plotOutput("numberOfDrugsAvailablePerMarket")
+                                           dataTableOutput("mostCommonCountryAndMarketForEachDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Price per gram for each drug over time",
+                                           title = str_title_case("Number of Drugs"),
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
+                                           solidHeader = FALSE,
+                                           collapsible = TRUE,
+                                           plotOutput("numberOfDrugsAvailablePerMarket"),
+                                           radioButtons("numberOfDrugsRadial", 
+                                                        label = h3("Options:"),
+                                                        choices = list("Per Market" = "Per Market", "Per Country" = "Per Country"), 
+                                                        selected = "Per Market",
+                                                        inline = TRUE)
+                                         ) #End of Box
+                                       ),# end of fluidRow
+                                       fluidRow(
+                                         box(
+                                           title = str_title_case("Price per gram for each drug over time"),
+                                           status = "primary",
+                                           width = 12,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("pricePerDrug")
@@ -237,10 +240,9 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Average prices of drugs for each market",
+                                           title = str_title_case("Average prices of drugs for each market"),
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("drugPrices")
@@ -248,28 +250,42 @@ dashboardPage(dashboardHeader(title = programName,
                                        ),# end of fluidRow
                                        fluidRow(
                                          box(
-                                           title = "Average prices of drugs against price of bitcoins",
+                                           title = str_title_case("Average prices of drugs against price of bitcoins"),
                                            status = "primary",
                                            width = 12,
-                                           height = 700,
                                            solidHeader = FALSE,
                                            collapsible = TRUE,
                                            plotOutput("pricesComparedToBicoinPrice")
                                          ) #End of Box
-                                       )# end of fluidRow
-                                     )# end of box
+                                       # ),# end of fluidRow
+                                       # fluidRow(
+                                       #   box(
+                                       #     title = "Data Table",
+                                       #     status = "primary",
+                                       #     width = 12,
+                                       #     solidHeader = FALSE,
+                                       #     collapsible = TRUE,
+                                       #     DT::dataTableOutput('dataTableViewOfDrugs')
+                                       #   )# end of box
+                                       )# end of fluidrow
                               # )#end of column
                             ) # end of conditionalpanel
                           ) # End of fluidPage
                   ), # End of tabItem
                   tabItem(tabName = "popularWords",
                           fluidPage(
+                            title = str_title_case("Word Frequency in Descriptions"),
+                            box(
+                              title = "Word Cloud of the Silk Road",
+                              width = 12,
                             plotOutput("wordCloud")
+                            )
                           )
                   ),
                   tabItem(tabName = "maps",
                           fluidPage(
-                            leafletOutput("mymap"),
+                            title = str_title_case("Maps"),
+                            # leafletOutput("mymap"),
                             p(),
                             actionButton("recalc", "New points")
                           )

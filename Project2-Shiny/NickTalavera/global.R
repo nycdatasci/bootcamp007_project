@@ -1,14 +1,13 @@
-# shinyHome
-# Real Estate Analytics and Forecasting
-# Nick Talavera
-# Date: October 25, 2016
+# Darknet Market Visualizer
+# By Nick Talavera
+# Created on October 25, 2016
 
 # global.R
 
 ###############################################################################
 #                         LOAD PACKAGES AND MODULES                          #
 ###############################################################################
-rm(list = ls())
+# rm(list = ls())
 usePackage <- function(p) {
   if (!is.element(p, installed.packages()[,1]))
     install.packages(p, dep = TRUE)
@@ -28,13 +27,13 @@ usePackage("scales")
 usePackage("RColorBrewer")
 usePackage("flexdashboard")
 usePackage("DT")
-# usePackage("wordcloud")
-# usePackage("shinythemes")
-# usePackage("tm")
-# usePackage("SnowballC")
-# usePackage("leaflet")
-# usePackage("wordcloud")
-# usePackage("RColorBrewer") 
+usePackage("wordcloud")
+usePackage("shinythemes")
+usePackage("tm")
+usePackage("SnowballC")
+usePackage("leaflet")
+usePackage("wordcloud")
+usePackage("RColorBrewer")
 ################################################################################
 #                             GLOBAL VARIABLES                                 #
 ################################################################################
@@ -66,23 +65,30 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Darknet Data
 } else if (dir.exists('/Volumes/SDExpansion/Data Files/Darknet Data/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/Darknet Data/'
 }
-dnmData <- read.csv(paste0(dataLocale,"DNMdata.csv"), header = TRUE)
-dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
-dnmData$Time_Added = as.Date(dnmData$Time_Added)
-dnmData$X = NULL
-dnmData$X = NULL
-dnmData$Item_Name_Full_Text = NULL
-dnmData$Vendor_Name = NULL
-dnmData$Drug_Quantity = NULL
-dnmData$Drug_Quantity_In_Order_Unit = NULL
-dnmData$Drug_Weight = NULL
-dnmData$Price = NULL
-dnmData$Drug_Weight_Unit = NULL
+if (!exists("dnmData")) { 
+  dnmData <- read.csv(paste0(dataLocale,"DNMdata.csv"), header = TRUE, nrows = 500000)
+  dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
+  dnmData$Time_Added = as.Date(dnmData$Time_Added)
+  dnmData$X = NULL
+  dnmData$V1 = NULL
+  dnmData$Ask = NULL
+  dnmData$Bid = NULL
+  dnmData$Last = NULL
+  dnmData$BitcoinVolume = NULL
+  dnmData$Item_Name_Full_Text = NULL
+  dnmData$Vendor_Name = NULL
+  dnmData$Drug_Quantity = NULL
+  dnmData$Drug_Quantity_In_Order_Unit = NULL
+  dnmData$Drug_Weight = NULL
+  dnmData$Price = NULL
+  dnmData$Drug_Weight_Unit = NULL
+  dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
+  dnmData = dnmData[!is.na(dnmData$Market_Name),]
+  dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
+  dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
+}
 unitString = "grams"
-dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
-dnmData = dnmData[!is.na(dnmData$Market_Name),]
-dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
-dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
 timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
 sheetDateRange = range(dnmData$Sheet_Date, na.rm = TRUE)
 maxPricePerWeight = roundUpNice(max(dnmData$Price_Per_Gram, na.rm = TRUE))
+par(bg="transparent")

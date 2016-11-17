@@ -1,6 +1,6 @@
-# Xbox One Backwards Compatibility Predictor
+# Xbox 360 Backwards Compatability Predictor
 # Nick Talavera
-# Created on November 14, 2016
+# Date: November 1, 2016
 
 # global.R
 rm(list = ls())
@@ -54,6 +54,7 @@ usePackage("DT")
 usePackage("RColorBrewer")
 usePackage("MASS")
 usePackage("car")
+usePackage("knitr")
 usePackage("rmarkdown")
 usePackage("flexdashboard")
 ################################################################################
