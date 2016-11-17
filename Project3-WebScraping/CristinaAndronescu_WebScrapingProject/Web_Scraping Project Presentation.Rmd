@@ -1,0 +1,21 @@
+---
+title: "WINE - Web-Scraping Project"
+author: "Cristina Andronescu"
+date: "November 13, 2016"
+output: ioslides_presentation
+---
+## Question
+What do great wines have in common?
+
+## Data
+Website wine.com
+
+## Data 
+- 13995 wines from around the world
+- ratings, expert reviews, prices, other wine characteristics
+
+## Goal
+- recommendation system based on similarity of wine descriptions, rating
+
+
+

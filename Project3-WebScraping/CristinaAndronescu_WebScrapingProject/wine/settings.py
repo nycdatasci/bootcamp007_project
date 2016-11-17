@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for babyEtsy project
+# Scrapy settings for wine project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,18 +9,14 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'babyEtsy'
+BOT_NAME = 'wine'
 
-SPIDER_MODULES = ['babyEtsy.spiders']
-NEWSPIDER_MODULE = 'babyEtsy.spiders'
-
-DOWNLOAD_DELAY = 2
-
-ITEM_PIPELINES = {'babyEtsy.pipelines.BabyetsyPipeline':100,'babyEtsy.pipelines.WriteItemPipeline':200, }
+SPIDER_MODULES = ['wine.spiders']
+NEWSPIDER_MODULE = 'wine.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'babyEtsy (+http://www.yourdomain.com)'
+#USER_AGENT = 'wine (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -51,13 +47,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'babyEtsy.middlewares.MyCustomSpiderMiddleware': 543,
+#    'wine.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'babyEtsy.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'wine.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -68,9 +64,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'babyEtsy.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'wine.pipelines.JsonWithEncodingPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

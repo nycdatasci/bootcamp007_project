@@ -9,7 +9,7 @@
 .Rproj.user
 Project4-MachineLearning/*.csv
 Project5-Capstone/*.csv
-
+*.Rproj
 
 
 *.xlsx
