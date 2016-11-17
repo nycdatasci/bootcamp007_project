@@ -142,8 +142,6 @@ shinyServer(function(input, output, session) {
     dataToPresent = dataToPresent[dataToPresent$gameName != "TRUE",]
     # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100
     dataToPresent$bcGuess = as.logical(dataToPresent$bcGuess)
-    dataToPresent[dataToPresent == TRUE] = "Yes"
-    dataToPresent[dataToPresent == FALSE] = "No"
     return(dataToPresent)
   }
   
@@ -166,8 +164,8 @@ shinyServer(function(input, output, session) {
       options = list(scrollX = TRUE,
                      lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
                      pageLength = 15
-      )
-      # escape = FALSE
+      ),
+      escape = FALSE
     )
   )
   
