@@ -1,4 +1,6 @@
-# Xbox One Backwards Compatiblity Predictor
+# Xbox 360 Backwards Compatability Predictor
+# Nick Talavera
+# Date: November 1, 2016
 
 library(shiny)
 roundUp <- function(x, nice=c(1,2,4,5,6,8,10)) {

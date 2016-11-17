@@ -1,7 +1,6 @@
-# shinyHome
-# Real Estate Analytics and Forecasting
+# Xbox 360 Backwards Compatability Predictor
 # Nick Talavera
-# Date: October 25, 2016
+# Date: November 1, 2016
 
 # server.R
 
@@ -147,15 +146,18 @@ shinyServer(function(input, output, session) {
     # dataToPresent[dataToPresent == FALSE] = FALSE
     return(dataToPresent)
   }
+  
   output$List_SearchResults <- DT::renderDataTable(
     DT::datatable(
       {
         dataToPresent = getDataSetToUse()
+        print(nrow(dataToPresent))
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
                                       'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
+        print(nrow(dataToPresent))
         dataToPresent
       }, selection = "none",
       options = list(scrollX = TRUE,
@@ -327,7 +329,7 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     }
-    HTML(markdown::markdownToHTML(knit(file, quiet = FALSE), stylesheet = NA))
+    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = NA))
   })
   
   output$AboutMe <- renderUI({
@@ -338,6 +340,6 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     }
-    HTML(markdown::markdownToHTML(knit(file, quiet = FALSE), stylesheet = NA))
+    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = NA))
   })
 })
