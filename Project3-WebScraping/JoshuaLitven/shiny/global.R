@@ -8,8 +8,8 @@ if(LOAD_DATA){
   pantheon = read.csv('data/cleaned_data/pantheon.csv', stringsAsFactors=FALSE)
   quotes = read.csv('data/cleaned_data/quotes.csv', stringsAsFactors=FALSE)
   load('data/cleaned_data/similarity_matrix.RData') # loads similarity_matrix
+  load('data/cleaned_data/quotes_tfidf.RData')
 }
-
 
 # Get the top n most similar authors
 # author_name - string

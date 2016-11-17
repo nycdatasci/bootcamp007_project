@@ -3,10 +3,8 @@ server <- function(input, output, session){
   
   # Render an empty leaflet map
   output$map <- renderLeaflet({
-    # leaflet() %>% addProviderTiles("Stamen.Watercolor")
     leaflet(data=points) %>% 
-      #addProviderTiles("Thunderforest.Pioneer") %>% 
-      addTiles() %>% 
+      addProviderTiles("Thunderforest.Pioneer") %>% 
       addLegend("bottomleft", pal = domain_palette, values=~domain,
                 title = "Domain", opacity=1)
   })

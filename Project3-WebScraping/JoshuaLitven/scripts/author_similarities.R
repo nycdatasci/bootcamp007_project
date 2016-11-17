@@ -5,8 +5,6 @@
 library(quanteda)
 library(dplyr)
 
-OUTPUT_DATA = FALSE
-
 # Load in the quotes data
 setwd('~/Courses/nyc_data_science_academy/projects/web_scraping/data/cleaned_data/')
 quotes = read.csv('quotes.csv', stringsAsFactors = FALSE)
@@ -37,7 +35,7 @@ similarity_matrix <- similarity(quotes_tfidf, margin="documents", method = "cosi
 similarity_matrix = as.matrix(similarity_matrix)
 
 # Get most similar authors
-author = "Donald Trump"
+author = "Aristotle"
 
 most_similar = sort(similarity_matrix[author, ], decreasing=TRUE)
 most_similar = most_similar[-1] # exclude top element
@@ -46,11 +44,16 @@ most_similar[1:10]
 # Create a random user
 document_names = rownames(quotes_tfidf)
 sample_docs = sample(document_names, 5, replace = FALSE)
-sample_docs = c("Donald Trump", "Miley Cyrus", "Justin Bieber", "Steven Pinker")
+sample_docs = c("Charles Darwin")
 user = ifelse(document_names %in% sample_docs, 1, 0)
 
 # Get the corresponding vector in word space
-user_doc = colSums(quotes_tfidf[user==1, ])
+# I think I need to normalized before summing
+user_doc2 = colSums(quotes_tfidf[user==1, ])
+user.quotes = quotes_tfidf[user==1, ]
+user.norms = apply(user.quotes, 1, norm, type = "2")
+user.quotes.normalized = user.quotes / user.norms
+user_doc = colSums(user.quotes.normalized)
 
 # Calculate the user preference
 user_prefs = quotes_tfidf %*% user_doc
@@ -62,9 +65,16 @@ n_recommendations = 25
 top_recommendations = user_prefs_normalized[order(user_prefs_normalized, decreasing = TRUE), ][1:n_recommendations]
 top_recommendations
 
+OUTPUT_DATA = FALSE
+
 # Output to file
 if(OUTPUT_DATA){
   save(similarity_matrix, file="similarity_matrix.RData")
   save(tfidf_norms, file="tfidf_norms.RData")
   save(quotes_tfidf, file="quotes_tfidf.RData")
 }
+
+# Plato Ralph Waldo Emerson      Samuel Johnson       Francis Bacon George Bernard Shaw 
+# 0.3762767           0.3170570           0.3099014           0.2928849           0.2922911 
+# Blaise Pascal Friedrich Nietzsche         John Ruskin    Thomas Jefferson      Joseph Addison 
+# 0.2901397           0.2817879           0.2796148           0.2792864           0.2756363 
