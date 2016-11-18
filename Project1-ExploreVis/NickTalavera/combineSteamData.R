@@ -118,12 +118,17 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
   return(ignMetacritcMerged)
 }
 
+#===============================================================================
+#                               DIRECTORY SETUP                                #
+#===============================================================================
 if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/' 
 } else if (dir.exists('/Volumes/SDExpansion/Data Files/Steam/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/Steam/'
 }
-
+#===============================================================================
+#                               EXECUTE FUNCTIONS                              #
+#===============================================================================
 steamSummerSaleFirstDay = as.Date('2016-07-04', "%Y-%m-%d")
 steamSummerSaleLastDay = as.Date('2016-06-23', "%Y-%m-%d")
 steamSummerSaleData = steamSpySaleCSVPreparer()

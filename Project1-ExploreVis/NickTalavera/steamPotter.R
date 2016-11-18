@@ -1,11 +1,25 @@
+rm(list = ls()) #If I want my environment reset for testing.
+#===============================================================================
+#                                   LIBRARIES                                  #
+#===============================================================================
 library(jsonlite)
 library(stringr)
 library(dplyr)
 library(ggplot2)
 library(RColorBrewer)
 library(scales)
-rm(list = setdiff(ls(), lsf.str()))
-
+#===============================================================================
+#                                SETUP PARALLEL                                #
+#===============================================================================
+library(foreach)
+library(parallel)
+library(doParallel)
+cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
+cl <- makeCluster(2)
+registerDoParallel(cl, cores=cores.Number)
+#===============================================================================
+#                               GENERAL FUNCTIONS                              #
+#===============================================================================
 removeSymbols = function(namesArray) {
   newNames = namesArray
   newNames = str_replace_all(newNames,"[[:punct:]]","")
@@ -13,6 +27,9 @@ removeSymbols = function(namesArray) {
   # newNames = trim(newNames)
   return(newNames)
 }
+#===============================================================================
+#                               DIRECTORY SETUP                                #
+#===============================================================================
 if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/' 
   figuresLocale = paste0(dataLocale,'/Figures/')
@@ -23,9 +40,14 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
 if (!dir.exists(figuresLocale)) {
   dir.create(figuresLocale)
 }
+#===============================================================================
+#                                 READ IN DATA                                 #
+#===============================================================================
 steam = read.csv(paste0(dataLocale, 'steamDatabaseAllCombined.csv'))
 
-
+#===============================================================================
+#                                GENERATE PLOTS                               #
+#===============================================================================
 # #Overall Ownership and Game Age Compared to Percent Discounts
 labelsScores = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
 metacriticScoresVSIncreaseSeventyPlus = steam
