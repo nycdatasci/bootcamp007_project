@@ -62,11 +62,9 @@ steamspyJson = function() {
   else {
     steamSpyDataJsonFormat <- fromJSON(paste0(dataLocale,"steamSpyAll.json"))
     steamSpyDataToOutput <- data.frame()
-    for (i in steamSpyDataJsonFormat) {
-      tmp <- data.frame(Name=i$name, appid=i$appid, Owners_As_Of_Today=i$owners, Players_Forever_As_Of_Today=i$players_forever, average_forever=i$average_forever, median_forever=i$median_forever)
-      steamSpyDataToOutput <- rbind(steamSpyDataToOutput, tmp)  
+    steamSpyDataToOutput = foreach (i = 1:length(steamSpyDataJsonFormat), .combine=rbind) %dopar% {
+      return(data.frame(Name=steamSpyDataJsonFormat[i]$name, appid=steamSpyDataJsonFormat[i]$appid, Owners_As_Of_Today=steamSpyDataJsonFormat[i]$owners, Players_Forever_As_Of_Today=steamSpyDataJsonFormat[i]$players_forever, average_forever=steamSpyDataJsonFormat[i]$average_forever, median_forever=steamSpyDataJsonFormat[i]$median_forever))
     }
-    steamSpyDataToOutput$Name = removeSymbols(d$Name)
     dplyr::select(steamSpyDataToOutput, -X, -median_forever, -average_forever)
     write.csv(steamSpyDataToOutput,paste0(dataLocale,'steamSpyAll.csv'))
     return(steamSpyDataToOutput)
