@@ -4,36 +4,6 @@ library(dplyr)
 library(stringr)
 library(qdapRegex)
 
-steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
-  print(colnames(steamDatabase))
-  # colnames(steamDatabase)[colnames(steamDatabase) == 'name'] = "Name"
-  # steamDatabase$Name = removeSymbols(steamDatabase$Name)
-  steamDatabase$name = NULL
-  colnames(steamDatabase)[colnames(steamDatabase) == 'price'] = "Price_Now"
-  steamDatabase[colnames(steamDatabase) == 'Price_Now'] = steamDatabase[colnames(steamDatabase) == 'Price_Now']/100
-  steamDatabase$Recorded_Date = dateRecorded
-  steamDatabase$median_forever = NULL
-  steamDatabase$median_2weeks = NULL
-  steamDatabase$average_forever = NULL
-  steamDatabase$average_2weeks = NULL
-  steamDatabase$players_forever_variance = NULL
-  steamDatabase$owners = NULL
-  steamDatabase$players_forever = NULL
-  steamDatabase$median_2weeks = NULL
-  steamDatabase$players_2weeks = NULL
-  steamDatabase$players_2weeks_variance = NULL
-  # steamDatabase$owners = NULL
-  # steamDatabase$players = NULL
-  steamDatabase$owners_variance = NULL
-  steamDatabase$players_forever_variance = NULL
-  steamDatabase$players_2weeks_variance = NULL
-  steamDatabase$median_forever = NULL
-  steamDatabase$average_forever = NULL
-  steamDatabase$median_2weeks = NULL
-  steamDatabase$average_2weeks = NULL
-  return(steamDatabase)
-}
-
 steamSpySaleCSVPreparer <- function() {
   steamSummerSaleNew = read.csv(paste0(dataLocale, 'Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv'),sep=',')
   colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Game'] = "Name"
@@ -89,15 +59,16 @@ steamspyJson = function() {
     return(read.csv(paste0(dataLocale,'steamSpyAll.csv')))
   }
   else {
-  steamspy.data <- fromJSON(paste0(dataLocale,"steamSpyAll.json"))
-  d <- data.frame()
-  for (i in steamspy.data) {
+  steamSpyDataJsonFormat <- fromJSON(paste0(dataLocale,"steamSpyAll.json"))
+  steamSpyDataToOutput <- data.frame()
+  for (i in steamSpyDataJsonFormat) {
     tmp <- data.frame(Name=i$name, appid=i$appid, Owners_As_Of_Today=i$owners, Players_Forever_As_Of_Today=i$players_forever, average_forever=i$average_forever, median_forever=i$median_forever)
-    d <- rbind(d, tmp)  
+    steamSpyDataToOutput <- rbind(steamSpyDataToOutput, tmp)  
   }
-  d$Name = removeSymbols(d$Name)
-  write.csv(d,paste0(dataLocale,'steamSpyAll.csv'))
-  return(d)
+  steamSpyDataToOutput$Name = removeSymbols(d$Name)
+  steamSpyDataToOutput$X = NULL
+  write.csv(steamSpyDataToOutput,paste0(dataLocale,'steamSpyAll.csv'))
+  return(steamSpyDataToOutput)
   }
 }
 
@@ -181,20 +152,18 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
 } else if (dir.exists('/Volumes/SDExpansion/Data Files/Steam/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/Steam/'
 }
-
-steamSummerSaleFirstDay = as.Date('20160704', "%Y%m%d")
-steamSummerSaleLastDay = as.Date('20160623', "%Y%m%d")
-steamSummerSale = steamSpySaleCSVPreparer()
-steamSpyAll = steamspyJson()
-metacriticReviews = metacriticCSVPreparer()
-howLongToBeat = howLongToBeatCSVPreparer()
-ignReviews = ignCSVPreparer()
-ignMetacritcHLTBMerged = ignMetacritcHLTBMerged(ignReviews,metacriticReviews,steamSummerSale,howLongToBeat)
-steamMerged = merge(x = steamSummerSale, y = steamSpyAll, by = "Name", all.x = TRUE)
-steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMerged, by = "Name", all.x = TRUE)
+steamSummerSaleFirstDay = as.Date('2016-07-04', "%Y-%m-%d")
+steamSummerSaleLastDay = as.Date('2016-06-23', "%Y-%m-%d")
+steamSummerSaleData = steamSpySaleCSVPreparer()
+steamSpyAllData = steamspyJson()
+metacriticReviewsData = metacriticCSVPreparer()
+howLongToBeatData = howLongToBeatCSVPreparer()
+ignReviewsData = ignCSVPreparer()
+ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
+steamMerged = merge(x = steamSummerSaleData, y = steamSpyAllData, by = "Name", all.x = TRUE)
+steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMergedData, by = "Name", all.x = TRUE)
 steamMerged$median_forever = NULL
 steamMerged$average_forever = NULL
-steamMerged$X = NULL
 steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
 steamMerged$GameAge[steamMerged$GameAge < 0] = NA
 write.csv(steamMerged, file = 'steamDatabaseAllCombined.csv')
