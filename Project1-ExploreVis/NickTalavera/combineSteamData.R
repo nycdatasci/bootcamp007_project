@@ -3,32 +3,6 @@ library(jsonlite)
 library(dplyr)
 library(stringr)
 library(qdapRegex)
-trim <- function (x) gsub("^\\s+|\\s+$", "", x)
-# steamCSVFinder <- function() {
-#   steamFilesList = list.files(path = ".", pattern = "steamdata-[0-9]{8}.csv")
-#   steamDatabase = list()
-#   for (i in 1:length(steamFilesList)) {
-#     dateRecorded = substr(steamFilesList[i], regexpr("[0-9]{8}",steamFilesList[i]), regexpr("[0-9]{8}",steamFilesList[i])+7)
-#     dateRecorded = as.Date(dateRecorded, format = "%Y%m%d")
-#     steamDatabase$dateRecorded = read.csv(steamFilesList[i], sep=',')
-#     steamDatabase$dateRecorded = steamCSVPreparer(steamDatabase$dateRecorded,dateRecorded)
-#     print(names(steamDatabase))
-#     steamDatabase[,c(players_forever_variance, 
-#                      players_2weeks_variance, 
-#                      median_forever, 
-#                      median_2weeks, 
-#                      average_forever, 
-#                      average_2weeks, 
-#                      owners_variance, 
-#                      players_forever_variance, 
-#                      players_2weeks_variance, 
-#                      median_forever, 
-#                      median_2weeks, 
-#                      average_forever, 
-#                      average_2weeks) := NULL]
-#   }
-#   return(steamDatabase)
-# }
 
 steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
   # colnames(steamDatabase)[colnames(steamDatabase) == 'name'] = "Name"
@@ -143,7 +117,7 @@ removeSymbols = function(namesArray) {
   newNames = namesArray
   newNames = str_replace_all(newNames,"[[:punct:]]","")
   newNames = str_replace_all(newNames, "[^[:alnum:]]", " ")
-  newNames = trim(newNames)
+  newNames = str_trim(newNames)
   newNames = rm_white(newNames)
   return(newNames)
 }
@@ -205,7 +179,6 @@ steamSummerSaleFirstDay = as.Date('20160704', "%Y%m%d")
 steamSummerSaleLastDay = as.Date('20160623', "%Y%m%d")
 steamSummerSale = steamSpySaleCSVPreparer()
 steamSpyAll = steamspyJson()
-# steamDatabaseHistory = steamCSVFinder()
 metacriticReviews = metacriticCSVPreparer()
 howLongToBeat = howLongToBeatCSVPreparer()
 ignReviews = ignCSVPreparer()
