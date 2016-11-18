@@ -20,6 +20,9 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/Steam/'
   figuresLocale = paste0(dataLocale,'/Figures/')
 }
+if (!dir.exists(figuresLocale)) {
+  dir.create(figuresLocale)
+}
 steam = read.csv(paste0(dataLocale, 'steamDatabaseAllCombined.csv'))
 
 

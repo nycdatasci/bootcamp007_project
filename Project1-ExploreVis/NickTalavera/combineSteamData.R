@@ -1,74 +1,67 @@
 rm(list = ls()) #If I want my environment reset for testing.
+#===============================================================================
+#                                   LIBRARIES                                  #
+#===============================================================================
 library(jsonlite)
 library(dplyr)
 library(stringr)
 library(qdapRegex)
 
+#===============================================================================
+#                               GENERAL FUNCTIONS                              #
+#===============================================================================
+removeSymbols = function(namesArray) {
+  newNames = namesArray
+  newNames = str_replace_all(newNames,"[[:punct:]]","")
+  newNames = str_replace_all(newNames, "[^[:alnum:]]", " ")
+  newNames = str_trim(newNames)
+  newNames = rm_white(newNames)
+  return(newNames)
+}
+
+#===============================================================================
+#                               DATA PROCESSING                                #
+#===============================================================================
 steamSpySaleCSVPreparer <- function() {
-  steamSummerSaleNew = read.csv(paste0(dataLocale, 'Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv'),sep=',')
-  colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Game'] = "Name"
-  colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Price'] = "Price_Before_Sale"
-  colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Max.discount'] = "Maximum_Percent_Sale_and_Minimum_Price_With_Sale"
-  colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Owners.before'] = "Owners_Before"
-  colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Owners.after'] = "Owners_After"
-  saleStrings = unlist(lapply(steamSummerSaleNew[colnames(steamSummerSaleNew) == 'Maximum_Percent_Sale_and_Minimum_Price_With_Sale'][[1]], as.character))
-  saleStrings = str_split_fixed(saleStrings, " ", 2)
-  reviewScoreStrings = unlist(lapply(steamSummerSaleNew[colnames(steamSummerSaleNew) == 'Userscore..Metascore.'][[1]], as.character))
-  salePercent = saleStrings[,1]
-  salePercent = sub("%", "", salePercent)
-  salePercent = gsub("\\(|\\)", "", salePercent)
-  salePercent[salePercent == "N/A"] = NA
-  salePercent = as.numeric(as.character(salePercent),na.rm = FALSE)
-  salePrice = saleStrings[,2]
-  salePrice = gsub("\\(|\\)", "", salePrice)
-  salePrice = as.numeric(as.character(gsub("\\$", "", salePrice)),na.rm = FALSE)
-  steamSummerSaleNew$Maximum_Percent_Sale_and_Minimum_Price_With_Sale = NULL
-  steamSummerSaleNew$Userscore..Metascore. = NULL
-  steamSummerSaleNew$X. <- NULL
-  steamSummerSaleNew$X <- NULL
-  reviewScoreStrings = str_split_fixed(reviewScoreStrings, " ", 2)
-  reviewScoreSteam = sub("%", "", reviewScoreStrings[,1])
-  reviewScoreSteam[reviewScoreSteam == "N/A"] <- NA
-  reviewScoreSteam = as.numeric(reviewScoreSteam,na.rm = TRUE)
-  reviewScoreMetacritic = reviewScoreStrings[,2]
-  reviewScoreMetacritic = sub("%", "", reviewScoreMetacritic)
-  reviewScoreMetacritic = gsub("\\(|\\)", "", reviewScoreMetacritic)
-  reviewScoreMetacritic[reviewScoreMetacritic == "N/A"] <- NA
-  reviewScoreMetacritic = as.numeric(as.character(reviewScoreMetacritic),na.rm = FALSE)
-  steamSummerSaleNew$Review_Score_Metacritic = reviewScoreMetacritic
-  steamSummerSaleNew$Review_Score_Steam_Users = reviewScoreSteam
-  steamSummerSaleNew$Sale_Percent = salePercent
-  steamSummerSaleNew$Price_After_Sale = as.numeric(salePrice)
-  steamSummerSaleNew$Price_Before_Sale = as.numeric(as.character(gsub("\\$", "", steamSummerSaleNew$Price_Before_Sale)),na.rm = FALSE)
-  steamSummerSaleNew$Sales = as.numeric(gsub(",","",steamSummerSaleNew$Sales))
-  steamSummerSaleNew$Increase = as.numeric(gsub(",","",sub("%", "", steamSummerSaleNew$Increase)))
-  steamSummerSaleNew$Owners_Before = gsub(",","",steamSummerSaleNew$Owners_Before)
-  steamSummerSaleNew$Owners_Before = as.numeric(gsub("\\±.*","",steamSummerSaleNew$Owners_Before))
-  steamSummerSaleNew$Owners_After = gsub(",","",steamSummerSaleNew$Owners_After)
-  steamSummerSaleNew$Owners_After = as.numeric(gsub("\\±.*","",steamSummerSaleNew$Owners_After))
-  steamSummerSaleNew$Review_Score_Metacritic_User = NULL
-  steamSummerSaleNew$Review_Score_Metacritic = NULL
-  steamSummerSaleNew$Name = removeSymbols(steamSummerSaleNew$Name)
-  steamSummerSaleNew = unique(steamSummerSaleNew)
+  steamSummerSaleNew = as.data.frame(read.csv(paste0(dataLocale, 'Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv'),sep=',', stringsAsFactors = FALSE))
+  steamSummerSaleNew = dplyr::select(steamSummerSaleNew, 'Name' = Game,
+                                     'Price_Before_Sale' = Price,
+                                     'Maximum_Percent_Sale_and_Minimum_Price_With_Sale' = Max.discount,
+                                     'Owners_Before' = Owners.before,
+                                     'Owners_After' = Owners.after,
+                                     "Userscore_And_Metascore" = Userscore..Metascore.,
+                                     Increase
+  )
+  steamSummerSaleNew = data.frame(lapply(steamSummerSaleNew, sub, pattern = "N/A", replacement = NA, fixed = TRUE))
+  steamSummerSaleNew = data.frame(lapply(steamSummerSaleNew, gsub, pattern = "\\±|\\,|\\$|\\%|\\(|\\)", replacement = "", fixed = FALSE))
+  saleStrings = str_split_fixed(steamSummerSaleNew$Maximum_Percent_Sale_and_Minimum_Price_With_Sale, " ", 2)
+  steamSummerSaleNew$Sale_Percent = saleStrings[,1]
+  steamSummerSaleNew$Price_After_Sale = saleStrings[,2]
+  reviewScoreStrings = str_split_fixed(steamSummerSaleNew$Userscore_And_Metascore, " ", 2)
+  steamSummerSaleNew$Review_Score_Steam_Users = reviewScoreStrings[,1]
+  steamSummerSaleNew$Review_Score_Metacritic = reviewScoreStrings[,2]
+  steamSummerSaleNew = dplyr::select(steamSummerSaleNew, -Userscore_And_Metascore, -Maximum_Percent_Sale_and_Minimum_Price_With_Sale)
   return(steamSummerSaleNew)
 }
 
 steamspyJson = function() {
   if (file.exists(paste0(dataLocale,'steamSpyAll.csv'))) {
     print('The SteamSpy API data named \"steamSpyAll.csv\" exists')
-    return(read.csv(paste0(dataLocale,'steamSpyAll.csv')))
+    steamSpyCSV = read.csv(paste0(dataLocale,'steamSpyAll.csv'))
+    steamSpyCSV = dplyr::select(steamSpyCSV, -X, -median_forever, -average_forever)
+    return(steamSpyCSV)
   }
   else {
-  steamSpyDataJsonFormat <- fromJSON(paste0(dataLocale,"steamSpyAll.json"))
-  steamSpyDataToOutput <- data.frame()
-  for (i in steamSpyDataJsonFormat) {
-    tmp <- data.frame(Name=i$name, appid=i$appid, Owners_As_Of_Today=i$owners, Players_Forever_As_Of_Today=i$players_forever, average_forever=i$average_forever, median_forever=i$median_forever)
-    steamSpyDataToOutput <- rbind(steamSpyDataToOutput, tmp)  
-  }
-  steamSpyDataToOutput$Name = removeSymbols(d$Name)
-  steamSpyDataToOutput$X = NULL
-  write.csv(steamSpyDataToOutput,paste0(dataLocale,'steamSpyAll.csv'))
-  return(steamSpyDataToOutput)
+    steamSpyDataJsonFormat <- fromJSON(paste0(dataLocale,"steamSpyAll.json"))
+    steamSpyDataToOutput <- data.frame()
+    for (i in steamSpyDataJsonFormat) {
+      tmp <- data.frame(Name=i$name, appid=i$appid, Owners_As_Of_Today=i$owners, Players_Forever_As_Of_Today=i$players_forever, average_forever=i$average_forever, median_forever=i$median_forever)
+      steamSpyDataToOutput <- rbind(steamSpyDataToOutput, tmp)  
+    }
+    steamSpyDataToOutput$Name = removeSymbols(d$Name)
+    dplyr::select(steamSpyDataToOutput, -X, -median_forever, -average_forever)
+    write.csv(steamSpyDataToOutput,paste0(dataLocale,'steamSpyAll.csv'))
+    return(steamSpyDataToOutput)
   }
 }
 
@@ -83,15 +76,6 @@ metacriticCSVPreparer <- function() {
   metacriticReviews = metacriticReviews[metacriticReviews$platform == 'pc',]
   metacriticReviews$Name = removeSymbols(metacriticReviews$Name)
   return(metacriticReviews)
-}
-
-removeSymbols = function(namesArray) {
-  newNames = namesArray
-  newNames = str_replace_all(newNames,"[[:punct:]]","")
-  newNames = str_replace_all(newNames, "[^[:alnum:]]", " ")
-  newNames = str_trim(newNames)
-  newNames = rm_white(newNames)
-  return(newNames)
 }
 
 ignCSVPreparer <- function() {
@@ -122,7 +106,7 @@ ignCSVPreparer <- function() {
 
 howLongToBeatCSVPreparer <- function() {
   howLongToBeat = read.csv(paste0(dataLocale,'howlongtobeat.csv'),sep=';')
-  howLongToBeat = select(howLongToBeat, Name = title, main_story_length, platform)
+  howLongToBeat = dplyr::select(howLongToBeat, Name = title, main_story_length, platform)
   howLongToBeat$Name = removeSymbols(howLongToBeat$Name)
   howLongToBeat = howLongToBeat[howLongToBeat$platform == 'PC',]
   howLongToBeat$platform = NULL
@@ -136,8 +120,8 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
   ignMetacritcMerged$release = NULL
   ignMetacritcMerged$Review_Score_Metacritic[is.na(ignMetacritcMerged$Review_Score_Metacritic) == TRUE & is.na(ignMetacritcMerged$score) == FALSE] = ignMetacritcMerged$score[is.na(ignMetacritcMerged$Review_Score_Metacritic) == TRUE & is.na(ignMetacritcMerged$score) == FALSE]
   ignMetacritcMerged = ignMetacritcMerged[is.na(ignMetacritcMerged$Release_Date) == FALSE | is.na(ignMetacritcMerged$platform) == FALSE,]
-  ignMetacritcMerged = merge(x = select(steamSummerSale,Name), y = ignMetacritcMerged, by = "Name", all.x = TRUE)
-  hltbMerged = merge(x = select(steamSummerSale, Name), y = howLongToBeat, by = "Name", all.x = TRUE)
+  ignMetacritcMerged = merge(x = dplyr::select(steamSummerSale,Name), y = ignMetacritcMerged, by = "Name", all.x = TRUE)
+  hltbMerged = merge(x = dplyr::select(steamSummerSale, Name), y = howLongToBeat, by = "Name", all.x = TRUE)
   hltbMerged = hltbMerged[is.na(hltbMerged$main_story_length) == FALSE,]
   print(head(hltbMerged))
   ignMetacritcMerged = merge(x = ignMetacritcMerged, y = hltbMerged, by = "Name", all.x = TRUE)
@@ -162,8 +146,6 @@ ignReviewsData = ignCSVPreparer()
 ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
 steamMerged = merge(x = steamSummerSaleData, y = steamSpyAllData, by = "Name", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMergedData, by = "Name", all.x = TRUE)
-steamMerged$median_forever = NULL
-steamMerged$average_forever = NULL
 steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
 steamMerged$GameAge[steamMerged$GameAge < 0] = NA
 write.csv(steamMerged, file = 'steamDatabaseAllCombined.csv')
