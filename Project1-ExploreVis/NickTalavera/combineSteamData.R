@@ -76,37 +76,22 @@ metacriticCSVPreparer <- function() {
 }
 
 ignCSVPreparer <- function() {
-  ignReviews = read.csv(paste0(dataLocale,'ign.csv'),sep=',')
+  ignReviews = read.csv(paste0(dataLocale,'ign.csv'),sep=',', stringsAsFactors = FALSE)
   ignReviews$Release_Date = as.Date(paste0(ignReviews$release_year,ignReviews$release_month,ignReviews$release_day), format = "%Y%m%d")
-  ignReviews$X = NULL
-  ignReviews$url <- NULL
-  ignReviews$score_phrase = NULL
-  ignReviews$release_year = NULL
-  ignReviews$release_month <- NULL
-  ignReviews$Genre<- NULL
-  ignReviews$release_day = NULL
-  colnames(ignReviews)[colnames(ignReviews) == 'title'] = "Name"
-  colnames(ignReviews)[colnames(ignReviews) == 'score'] = "Review_Score_IGN"
-  colnames(ignReviews)[colnames(ignReviews) == 'genre'] = "Genre"
-  colnames(ignReviews)[colnames(ignReviews) == 'platform'] = "Platform"
-  ignReviews$Platform = as.character(ignReviews$Platform)
+  ignReviews = dplyr::select(ignReviews, "Name" = title, "Review_Score_IGN" = score, "Genre" = genre, "Platform" = platform, Release_Date)
   colnames(ignReviews)[colnames(ignReviews) == 'editors_choice'] = "IGN_Editors_Choice"
-  ignReviews = ignReviews[ignReviews$Platform != 'Wireless' & ignReviews$Platform != 'PlayStation Vita' & ignReviews$Platform != 'ios' & ignReviews$Platform != 'PlayStation Portable' & ignReviews$Platform != 'Nintendo DS' & ignReviews$Platform != 'Nintendo 3DS' & ignReviews$Platform != 'iPhone' & ignReviews$Platform != 'iPad',]
+  ignReviews = ignReviews[ignReviews$Platform %!in% c('Wireless','PlayStation Vita','ios','3ds','PlayStation Portable','Nintendo DS','Nintendo 3DS','iPhone','iPad'),]
   # ignReviews = ignReviews[ignReviews$Platform != 'PC',]
-  ignReviews$Platform = NULL
-  ignReviews$Review_Score_IGN = as.numeric(ignReviews$Review_Score_IGN*10)
-  ignReviews$IGN_Editors_Choice = NULL
-  ignReviews$Name = removeSymbols(ignReviews$Name)
+  howLongToBeat = dplyr::select(howLongToBeat, -Platform)
   ignReviews = unique(ignReviews)
   return(ignReviews)
 }
 
 howLongToBeatCSVPreparer <- function() {
-  howLongToBeat = read.csv(paste0(dataLocale,'howlongtobeat.csv'),sep=';')
+  howLongToBeat = read.csv(paste0(dataLocale,'howlongtobeat.csv'),sep=';', stringsAsFactors = FALSE)
   howLongToBeat = dplyr::select(howLongToBeat, Name = title, main_story_length, platform)
-  howLongToBeat$Name = removeSymbols(howLongToBeat$Name)
-  howLongToBeat = howLongToBeat[howLongToBeat$platform == 'PC',]
-  howLongToBeat$platform = NULL
+  howLongToBeat = howLongToBeat[howLongToBeat$platform %in% c('PC','Linux','Mac'),]
+  howLongToBeat = dplyr::select(howLongToBeat, -platform)
   return(howLongToBeat)
 }
 
