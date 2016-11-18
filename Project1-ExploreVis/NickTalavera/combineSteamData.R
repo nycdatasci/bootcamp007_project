@@ -5,6 +5,7 @@ library(stringr)
 library(qdapRegex)
 
 steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
+  print(colnames(steamDatabase))
   # colnames(steamDatabase)[colnames(steamDatabase) == 'name'] = "Name"
   # steamDatabase$Name = removeSymbols(steamDatabase$Name)
   steamDatabase$name = NULL
@@ -175,6 +176,12 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
   return(ignMetacritcMerged)
 }
 
+if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/' 
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/Steam/')) {
+  dataLocale = '/Volumes/SDExpansion/Data Files/Steam/'
+}
+
 steamSummerSaleFirstDay = as.Date('20160704', "%Y%m%d")
 steamSummerSaleLastDay = as.Date('20160623', "%Y%m%d")
 steamSummerSale = steamSpySaleCSVPreparer()
@@ -184,7 +191,6 @@ howLongToBeat = howLongToBeatCSVPreparer()
 ignReviews = ignCSVPreparer()
 ignMetacritcHLTBMerged = ignMetacritcHLTBMerged(ignReviews,metacriticReviews,steamSummerSale,howLongToBeat)
 steamMerged = merge(x = steamSummerSale, y = steamSpyAll, by = "Name", all.x = TRUE)
-# steamMerged = merge(x = steamMerged, y = steamDatabaseHistory[[length(steamDatabaseHistory)]], by = "appid", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMerged, by = "Name", all.x = TRUE)
 steamMerged$median_forever = NULL
 steamMerged$average_forever = NULL
