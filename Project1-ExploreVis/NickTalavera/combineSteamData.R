@@ -5,7 +5,6 @@ rm(list = ls()) #If I want my environment reset for testing.
 library(jsonlite)
 library(dplyr)
 library(stringr)
-library(qdapRegex)
 #===============================================================================
 #                                SETUP PARALLEL                                #
 #===============================================================================
@@ -124,6 +123,7 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Steam/')) {
 } else if (dir.exists('/Volumes/SDExpansion/Data Files/Steam/')) {
   dataLocale = '/Volumes/SDExpansion/Data Files/Steam/'
 }
+
 steamSummerSaleFirstDay = as.Date('2016-07-04', "%Y-%m-%d")
 steamSummerSaleLastDay = as.Date('2016-06-23', "%Y-%m-%d")
 steamSummerSaleData = steamSpySaleCSVPreparer()
