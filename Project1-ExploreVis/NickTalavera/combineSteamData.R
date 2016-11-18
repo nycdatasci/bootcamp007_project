@@ -1,38 +1,34 @@
+rm(list = ls()) #If I want my environment reset for testing.
 library(jsonlite)
-library(stringr)
 library(dplyr)
+library(stringr)
 library(qdapRegex)
-
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
-steamCSVFinder <- function() {
-  steamFilesList = list.files(path = ".", pattern = "steamdata-[0-9]{8}.csv")
-  steamDatabase = list()
-  for (i in 1:length(steamFilesList)) {
-    dateRecorded = substr(steamFilesList[i], regexpr("[0-9]{8}",steamFilesList[i]), regexpr("[0-9]{8}",steamFilesList[i])+7)
-    dateRecorded = as.Date(dateRecorded, format = "%Y%m%d")
-    # print(str(steamDatabase))
-    steamDatabase$dateRecorded = read.csv(steamFilesList[i], sep=',')
-    steamDatabase$dateRecorded = steamCSVPreparer(steamDatabase$dateRecorded,dateRecorded)
-    steamDatabase$players_forever_variance = NULL
-    steamDatabase$players_2weeks_variance = NULL
-    steamDatabase$median_forever = NULL
-    steamDatabase$median_2weeks = NULL
-    steamDatabase$average_forever = NULL
-    steamDatabase$average_2weeks = NULL
-    # steamDatabase$owners = NULL
-    # steamDatabase$players = NULL
-    steamDatabase$owners_variance = NULL
-    steamDatabase$players_forever_variance = NULL
-    steamDatabase$players_2weeks_variance = NULL
-    steamDatabase$median_forever = NULL
-    steamDatabase$median_2weeks = NULL
-    steamDatabase$average_forever = NULL
-    steamDatabase$average_2weeks = NULL
-    # print(str(steamDatabase))
-    # steamDatabase$Name = removeSymbols(steamDatabase$Name)
-  }
-  return(steamDatabase)
-}
+# steamCSVFinder <- function() {
+#   steamFilesList = list.files(path = ".", pattern = "steamdata-[0-9]{8}.csv")
+#   steamDatabase = list()
+#   for (i in 1:length(steamFilesList)) {
+#     dateRecorded = substr(steamFilesList[i], regexpr("[0-9]{8}",steamFilesList[i]), regexpr("[0-9]{8}",steamFilesList[i])+7)
+#     dateRecorded = as.Date(dateRecorded, format = "%Y%m%d")
+#     steamDatabase$dateRecorded = read.csv(steamFilesList[i], sep=',')
+#     steamDatabase$dateRecorded = steamCSVPreparer(steamDatabase$dateRecorded,dateRecorded)
+#     print(names(steamDatabase))
+#     steamDatabase[,c(players_forever_variance, 
+#                      players_2weeks_variance, 
+#                      median_forever, 
+#                      median_2weeks, 
+#                      average_forever, 
+#                      average_2weeks, 
+#                      owners_variance, 
+#                      players_forever_variance, 
+#                      players_2weeks_variance, 
+#                      median_forever, 
+#                      median_2weeks, 
+#                      average_forever, 
+#                      average_2weeks) := NULL]
+#   }
+#   return(steamDatabase)
+# }
 
 steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
   # colnames(steamDatabase)[colnames(steamDatabase) == 'name'] = "Name"
@@ -63,7 +59,8 @@ steamCSVPreparer <- function(steamDatabase,dateRecorded="2016-09-30") {
   return(steamDatabase)
 }
 
-steamSpySaleCSVPreparer <- function(steamSummerSaleNew) {
+steamSpySaleCSVPreparer <- function() {
+  steamSummerSaleNew = read.csv(paste0(dataLocale, 'Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv'),sep=',')
   colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Game'] = "Name"
   colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Price'] = "Price_Before_Sale"
   colnames(steamSummerSaleNew)[colnames(steamSummerSaleNew) == 'Max.discount'] = "Maximum_Percent_Sale_and_Minimum_Price_With_Sale"
@@ -112,25 +109,25 @@ steamSpySaleCSVPreparer <- function(steamSummerSaleNew) {
 }
 
 steamspyJson = function() {
-  if (file.exists('steamSpyAll.csv')) {
-    print('steamSpyAll.csv exists')
-    return(read.csv('steamSpyAll.csv'))
+  if (file.exists(paste0(dataLocale,'steamSpyAll.csv'))) {
+    print('The SteamSpy API data named \"steamSpyAll.csv\" exists')
+    return(read.csv(paste0(dataLocale,'steamSpyAll.csv')))
   }
   else {
-  # steamspy.data <- fromJSON("http://steamspy.com/api.php?request=all")
-  steamspy.data <- fromJSON("steamSpyAll.json")
+  steamspy.data <- fromJSON(paste0(dataLocale,"steamSpyAll.json"))
   d <- data.frame()
   for (i in steamspy.data) {
     tmp <- data.frame(Name=i$name, appid=i$appid, Owners_As_Of_Today=i$owners, Players_Forever_As_Of_Today=i$players_forever, average_forever=i$average_forever, median_forever=i$median_forever)
     d <- rbind(d, tmp)  
   }
   d$Name = removeSymbols(d$Name)
-  write.csv(d,'steamSpyAll.csv')
+  write.csv(d,paste0(dataLocale,'steamSpyAll.csv'))
   return(d)
   }
 }
 
-metacriticCSVPreparer <- function(metacriticReviews) {
+metacriticCSVPreparer <- function() {
+  metacriticReviews = read.csv(paste0(dataLocale,'metacritic-20151227.csv'),sep=';')
   metacriticReviews$genre = NULL
   colnames(metacriticReviews)[colnames(metacriticReviews) == 'title'] = "Name"
   metacriticReviews$release = as.Date(as.character(metacriticReviews$release),'%b %d, %Y')
@@ -151,7 +148,8 @@ removeSymbols = function(namesArray) {
   return(newNames)
 }
 
-ignCSVPreparer <- function(ignReviews) {
+ignCSVPreparer <- function() {
+  ignReviews = read.csv(paste0(dataLocale,'ign.csv'),sep=',')
   ignReviews$Release_Date = as.Date(paste0(ignReviews$release_year,ignReviews$release_month,ignReviews$release_day), format = "%Y%m%d")
   ignReviews$X = NULL
   ignReviews$url <- NULL
@@ -176,7 +174,8 @@ ignCSVPreparer <- function(ignReviews) {
   return(ignReviews)
 }
 
-howLongToBeatCSVPreparer <- function(howLongToBeat) {
+howLongToBeatCSVPreparer <- function() {
+  howLongToBeat = read.csv(paste0(dataLocale,'howlongtobeat.csv'),sep=';')
   howLongToBeat = select(howLongToBeat, Name = title, main_story_length, platform)
   howLongToBeat$Name = removeSymbols(howLongToBeat$Name)
   howLongToBeat = howLongToBeat[howLongToBeat$platform == 'PC',]
@@ -201,22 +200,19 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
   ignMetacritcMerged = unique(ignMetacritcMerged)
   return(ignMetacritcMerged)
 }
-rm(list = setdiff(ls(), lsf.str()))
-setwd('/Users/nicktalavera/Coding/bootcamp007_project/Project1-ExploreVis/NickTalavera/Steam')
+
 steamSummerSaleFirstDay = as.Date('20160704', "%Y%m%d")
 steamSummerSaleLastDay = as.Date('20160623', "%Y%m%d")
-metacriticReviews = metacriticCSVPreparer(read.csv('metacritic-20151227.csv',sep=';'))
-howLongToBeat = howLongToBeatCSVPreparer(read.csv('howlongtobeat.csv',sep=';'))
-ignReviews = ignCSVPreparer(read.csv('ign.csv',sep=','))
-steamDatabaseHistory = steamCSVFinder()
-steamSummerSale = steamSpySaleCSVPreparer(read.csv('Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv',sep=','))
+steamSummerSale = steamSpySaleCSVPreparer()
 steamSpyAll = steamspyJson()
+# steamDatabaseHistory = steamCSVFinder()
+metacriticReviews = metacriticCSVPreparer()
+howLongToBeat = howLongToBeatCSVPreparer()
+ignReviews = ignCSVPreparer()
 ignMetacritcHLTBMerged = ignMetacritcHLTBMerged(ignReviews,metacriticReviews,steamSummerSale,howLongToBeat)
-# giantBomb = as.data.frame(do.call(rbind, fromJSON('http://www.giantbomb.com/api/games/?api_key=6523d79b659cd6663ac630bab3bdcfc2e5851778&format=json&field_list=name')))
 steamMerged = merge(x = steamSummerSale, y = steamSpyAll, by = "Name", all.x = TRUE)
-steamMerged = merge(x = steamMerged, y = steamDatabaseHistory[[length(steamDatabaseHistory)]], by = "appid", all.x = TRUE)
+# steamMerged = merge(x = steamMerged, y = steamDatabaseHistory[[length(steamDatabaseHistory)]], by = "appid", all.x = TRUE)
 steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMerged, by = "Name", all.x = TRUE)
-# steamMerged$Players_Forever_As_Of_Today = numeric(Players_Forever_As_Of_Today)
 steamMerged$median_forever = NULL
 steamMerged$average_forever = NULL
 steamMerged$X = NULL
