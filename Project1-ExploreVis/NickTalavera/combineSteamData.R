@@ -6,7 +6,15 @@ library(jsonlite)
 library(dplyr)
 library(stringr)
 library(qdapRegex)
-
+#===============================================================================
+#                                SETUP PARALLEL                                #
+#===============================================================================
+library(foreach)
+library(parallel)
+library(doParallel)
+cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
+cl <- makeCluster(2)
+registerDoParallel(cl, cores=cores.Number)
 #===============================================================================
 #                               GENERAL FUNCTIONS                              #
 #===============================================================================
@@ -32,8 +40,8 @@ steamSpySaleCSVPreparer <- function() {
                                      "Userscore_And_Metascore" = Userscore..Metascore.,
                                      Increase
   )
-  steamSummerSaleNew = data.frame(lapply(steamSummerSaleNew, sub, pattern = "N/A", replacement = NA, fixed = TRUE))
-  steamSummerSaleNew = data.frame(lapply(steamSummerSaleNew, gsub, pattern = "\\±|\\,|\\$|\\%|\\(|\\)", replacement = "", fixed = FALSE))
+  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, sub, pattern = "N/A", replacement = NA, fixed = TRUE))
+  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, gsub, pattern = "\\±|\\,|\\$|\\%|\\(|\\)", replacement = "", fixed = FALSE))
   saleStrings = str_split_fixed(steamSummerSaleNew$Maximum_Percent_Sale_and_Minimum_Price_With_Sale, " ", 2)
   steamSummerSaleNew$Sale_Percent = saleStrings[,1]
   steamSummerSaleNew$Price_After_Sale = saleStrings[,2]
@@ -82,7 +90,7 @@ ignCSVPreparer <- function() {
   colnames(ignReviews)[colnames(ignReviews) == 'editors_choice'] = "IGN_Editors_Choice"
   ignReviews = ignReviews[ignReviews$Platform %!in% c('Wireless','PlayStation Vita','ios','3ds','PlayStation Portable','Nintendo DS','Nintendo 3DS','iPhone','iPad'),]
   # ignReviews = ignReviews[ignReviews$Platform != 'PC',]
-  howLongToBeat = dplyr::select(howLongToBeat, -Platform)
+  ignReviews = dplyr::select(ignReviews, -Platform)
   ignReviews = unique(ignReviews)
   return(ignReviews)
 }
@@ -131,3 +139,4 @@ steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMergedData, by = "Name"
 steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
 steamMerged$GameAge[steamMerged$GameAge < 0] = NA
 write.csv(steamMerged, file = 'steamDatabaseAllCombined.csv')
+stopCluster(cl)
