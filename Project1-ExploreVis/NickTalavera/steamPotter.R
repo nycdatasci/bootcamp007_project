@@ -2,7 +2,6 @@ library(jsonlite)
 library(stringr)
 library(dplyr)
 library(ggplot2)
-# library(corrplot)
 library(RColorBrewer)
 library(scales)
 rm(list = setdiff(ls(), lsf.str()))
@@ -47,7 +46,7 @@ ggsave(file=paste0(dataLocale, removeSymbols(title), ".png"), limitsize = TRUE, 
 
 
 # #READY TO GO
-#Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD SHIT
+#Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD
 labelsScores = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
 metacriticScoresVSIncreaseSeventyPlus = steam
 title = 'Sales Increases Across Metacritic Score'
@@ -77,7 +76,7 @@ metacriticScoresVSIncreaseSeventyPlusN = NULL
 
 
 # READY TO GO
-#Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD SHIT
+#Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD
 reviewScores = c(60, 70,85)
 for (reviewScore in reviewScores) {
 labelsScores = c(paste(c("Below","Above"),reviewScore))
@@ -112,21 +111,6 @@ platteNew = rev(getPalette(colourCount))
 g = ggplot(data = metacriticScoresVSIncreaseSeventyPlus, aes(x = metacriticScoresVSIncreaseSeventyPlus$Owners_Before, y = metacriticScoresVSIncreaseSeventyPlus$Increase)) + ggtitle(title)
 g + geom_point(aes(color = Sales)) + scale_y_continuous(labels=percent) + scale_x_log10() + ylab('Increase of Owners') + xlab('Number of Owners Before') + scale_fill_manual(values = platteNew, labels = labelsScores, guide = guide_legend(title = "Metacritic Score"))
 ggsave(file=paste0(dataLocale, removeSymbols(title), ".png"), limitsize = TRUE, width = 8, height = 4.5)
-
-# FIGURE OUT BARS
-#Histogram of Metacritic scores versus increase in sales if under vs over 70 #GOOD SHIT
-# steamScoresVSIncreaseThumbs = steam
-# steamScoresVSIncreaseThumbs = filter(steamScoresVSIncreaseThumbs, steamScoresVSIncreaseThumbs$Review_Score_Steam_Users > -1000)
-# steamScoresVSIncreaseThumbs$Review_Score_Steam_Users[as.numeric(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) >= reviewScore] = reviewScore
-# steamScoresVSIncreaseThumbs$Review_Score_Steam_Users[as.numeric(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users) < reviewScore] = 0
-# # steamScoresVSIncreaseThumbs$Review_Score_Steam_Users = cut_interval(steamScoresVSIncreaseThumbs$Review_Score_Steam_Users, n = 2, rm.na = TRUE)
-# steamScoresVSIncreaseThumbs = steamScoresVSIncreaseThumbs[steamScoresVSIncreaseThumbs$Increase < 750,]
-# # labelsYears = c(paste(as.character(seq(1, 100, by=10)), "to", as.character(seq(10, 110, by=10))))
-# title = paste('Sales Increases Comparing an Ideal Review Score of', reviewScore)
-# g = ggplot(data = steamScoresVSIncreaseThumbs, aes(factor(Review_Score_Steam_Users))) + ggtitle(title)
-# g + geom_bar() + guides(color = "colorbar") + scale_fill_brewer(palette ="Blues",direction = 1, labels = c(paste(c('Less than',"Greater than"), reviewScore)), guide = guide_legend(title = "Metacritic Score"))
-# ggsave(file=paste0(removeSymbols(title), ".eps"))
-
 
 #READY TO GO
 #Steam User Reviews' Impact on the Increase of Sales'
