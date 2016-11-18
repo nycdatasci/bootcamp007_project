@@ -18,9 +18,9 @@ removeSymbols = function(namesArray) {
   newNames = rm_white(newNames)
   return(newNames)
 }
-
+'%!in%' <- function(x,y)!('%in%'(x,y))
 #===============================================================================
-#                               DATA PROCESSING                                #
+#                          DATA PROCESSING FUNCTIONS                           #
 #===============================================================================
 steamSpySaleCSVPreparer <- function() {
   steamSummerSaleNew = as.data.frame(read.csv(paste0(dataLocale, 'Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv'),sep=',', stringsAsFactors = FALSE))
@@ -67,14 +67,11 @@ steamspyJson = function() {
 
 metacriticCSVPreparer <- function() {
   metacriticReviews = read.csv(paste0(dataLocale,'metacritic-20151227.csv'),sep=';')
-  metacriticReviews$genre = NULL
-  colnames(metacriticReviews)[colnames(metacriticReviews) == 'title'] = "Name"
+  metacriticReviews = rename(metacriticReviews, "Name" = title)
   metacriticReviews$release = as.Date(as.character(metacriticReviews$release),'%b %d, %Y')
-  metacriticReviews = metacriticReviews[metacriticReviews$platform != 'ios' & metacriticReviews$platform !='gba' & metacriticReviews$platform !='ds' & metacriticReviews$platform !='3ds' & metacriticReviews$platform !='psp' & metacriticReviews$platform !='vita',]
-  metacriticReviews$Review_Score_Metacritic_User = metacriticReviews$user_score * 10
-  metacriticReviews$user_score = NULL
-  metacriticReviews = metacriticReviews[metacriticReviews$platform == 'pc',]
-  metacriticReviews$Name = removeSymbols(metacriticReviews$Name)
+  metacriticReviews = metacriticReviews[metacriticReviews$platform %!in% c('ios','gba','ds','3ds','psp','vita'),] 
+  metacriticReviews = metacriticReviews[metacriticReviews$platform %in% c('pc'),]
+  metacriticReviews = dplyr::select(metacriticReviews, -user_score)
   return(metacriticReviews)
 }
 
