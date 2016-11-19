@@ -1,7 +1,7 @@
 # Darknet Market Analyzer
 # Darknet Market Analysis
 # Nick Talavera
-# Date: Octber 25, 2016
+# Date: October 25, 2016
 
 
 programName = "Darknet Market Analyzer"
@@ -92,9 +92,9 @@ dashboardPage(dashboardHeader(title = programName,
                             fluidRow(
                               column(width = 12,
                                      valueBoxOutput("usViBox", width = 3),
-                                     valueBoxOutput("highestViBox", width = 3),
-                                     valueBoxOutput("usAnnualBox", width = 3),
-                                     valueBoxOutput("highestAnnualBox", width = 3)
+                                     valueBoxOutput("XThanAveragePricesForXAtXBox", width = 3),
+                                     valueBoxOutput("averagePricePerOunceForXInXonXBox", width = 3),
+                                     valueBoxOutput("DayOfTheMostXPostsOnXBox", width = 3)
                               )#end of column
                             ),# end of row
                             fluidRow(
@@ -155,10 +155,10 @@ dashboardPage(dashboardHeader(title = programName,
                             ),#end of fluidrow
                             fluidRow(
                               column(width = 12,
-                                     valueBoxOutput("numStatesBox", width = 3),
-                                     valueBoxOutput("mostPostedDruginXCountry", width = 3),
-                                     valueBoxOutput("bitcoinHighLow", width = 3),
-                                     valueBoxOutput("mostPopularMarketForDrugX", width = 3)
+                                     valueBoxOutput("MostActiveCountryBox", width = 3),
+                                     valueBoxOutput("mostPostedDruginXCountryBox", width = 3),
+                                     valueBoxOutput("bitcoinHighLowBox", width = 3),
+                                     valueBoxOutput("mostPopularMarketForDrugXBox", width = 3)
                               )# end of column
                             )# end of fluidrow
                           ) # End of fluidPage

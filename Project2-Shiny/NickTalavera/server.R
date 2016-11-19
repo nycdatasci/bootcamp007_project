@@ -1,12 +1,12 @@
-# shinyHome
-# Real Estate Analytics and Forecasting
+# Darknet Market Analyzer
+# Darknet Market Analysis
 # Nick Talavera
 # Date: October 25, 2016
 
 # server.R
 
 #===============================================================================
-#                               SHINYSERVER                                    #
+#                               GENERAL FUNCTIONS                              #
 #===============================================================================
 str_Currency <- function(value, currency.sym="$", digits=2, sep=",", decimal=".") {
   paste(
@@ -20,26 +20,21 @@ reorder_size <- function(x) {
   factor(x, levels = names(sort(table(x))))
 }
 
-
-
+#===============================================================================
+#                                  SHINY SERVER                                #
+#===============================================================================
 shinyServer(function(input, output, session) {
-  
-  # session$onSessionEnded(stopApp)
-  #===============================================================================
-  #                        DASHBOARD SERVER FUNCTIONS                            #
-  #===============================================================================
-  # Render National Home Value Index Box
+  #=============================================================================
+  #                               DASHBOARD BOXES                              #
+  #=============================================================================
   output$usViBox <- renderValueBox({
-    # current <- currentState[ which(currentState$State == "United States"), ]
     valueBox(
       paste0(nrow(dnmData)), paste("Drug Postings"), 
       icon = icon("bar-chart"), color = "red"
     )
   })
   
-  
-  # Highest Home Value Index by City Box
-  output$highestViBox <- renderValueBox({
+  output$XThanAveragePricesForXAtXBox <- renderValueBox({
     dataSet = dplyr::select(dnmData,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSet$Market_Name = as.character(dataSet$Market_Name)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount = length(unique(Market_Name)))
@@ -65,12 +60,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  output$menuitem <- renderMenu({
-    menuItem("Menu item", icon = icon("calendar"))
-  })
-  
-  # Render Annual Price Growth  Box
-  output$usAnnualBox <- renderValueBox({
+  output$averagePricePerOunceForXInXonXBox <- renderValueBox({
     price = 0
     dataSet = dplyr::select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
@@ -84,12 +74,11 @@ shinyServer(function(input, output, session) {
     dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
     price = mean(dataSet$Price_Per_Gram_BTC, rm.na = TRUE)*28.345
     valueBox(
-      paste0(str_Currency(price)), paste("Average Price Per Ounce For",drugRandom,"In",str_title_case(countryRandom), "on", dateRandom), icon = icon("dollar"), color = "green"
+      paste0(str_Currency(price)), paste("Average Price Per Ounce For", drugRandom, "In", str_title_case(countryRandom), "on", dateRandom), icon = icon("dollar"), color = "green"
     )
   })
   
-  # Render Highest Annual Price Growth  Box
-  output$highestAnnualBox <- renderValueBox({
+  output$DayOfTheMostXPostsOnXBox <- renderValueBox({
     price = 0
     dataSet = dplyr::select(dnmData,Sheet_Date,Shipped_From,Market_Name,Drug_Type,Price_Per_Gram_BTC)
     dataSetTemp = summarise(group_by(dataSet, Drug_Type), mnCount= length(unique(Market_Name)))
@@ -111,8 +100,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  # Render number of states box
-  output$numStatesBox <- renderValueBox({
+  output$MostActiveCountryBox <- renderValueBox({
     dataSet = dplyr::select(dnmData,Shipped_From)
     mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
     valueBox(
@@ -121,8 +109,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  # Render number of counties box
-  output$mostPostedDruginXCountry <- renderValueBox({
+  output$mostPostedDruginXCountryBox <- renderValueBox({
     dataSet = dplyr::select(dnmData,Drug_Type,Shipped_From)
     countryRandom = sample(unique(dnmData$Shipped_From[!is.na(dataSet$Shipped_From) & dnmData$Shipped_From != "unknown"]),1)
     mostPostedDrug = names(sort(summary(as.factor(dnmData$Drug_Type[dnmData$Shipped_From == countryRandom])), decreasing=T))
@@ -138,8 +125,7 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  # Render number of cities box
-  output$bitcoinHighLow <- renderValueBox({
+  output$bitcoinHighLowBox <- renderValueBox({
     dataSet = dplyr::select(dnmData,BitcoinPriceUSD)
     #dataSet = dataSet[!is.infinite(abs(dataSet$BitcoinPriceUSD)),]
     choice = sample(c(1:3),1)
@@ -162,7 +148,7 @@ shinyServer(function(input, output, session) {
   })
   
   # Render number of cities box
-  output$mostPopularMarketForDrugX <- renderValueBox({
+  output$mostPopularMarketForDrugXBox <- renderValueBox({
     dataSet = summarise(group_by(dnmData, Drug_Type, Market_Name), mnPrice = mean(Price_Per_Gram_BTC))
     drugRandom = sample(unique(dataSet$Drug_Type),1)
     dataSet = filter(dataSet, Drug_Type == drugRandom)
@@ -260,7 +246,9 @@ shinyServer(function(input, output, session) {
   )
   
   
-  
+  #=============================================================================
+  #                        DASHBOARD SERVER FUNCTIONS                          #
+  #=============================================================================
   
   #Render Top Markets by Home Value Growth TimeSeries
   output$topMarketsTS <- renderChart({
@@ -719,7 +707,6 @@ shinyServer(function(input, output, session) {
     dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
-  
   
   output$dataTableViewOfDrugs <- DT::renderDataTable({
     dataSet = getDataSetToUse()

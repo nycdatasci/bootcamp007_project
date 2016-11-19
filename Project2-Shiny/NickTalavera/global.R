@@ -1,6 +1,7 @@
-# Darknet Market Visualizer
-# By Nick Talavera
-# Created on October 25, 2016
+# Darknet Market Analyzer
+# Darknet Market Analysis
+# Nick Talavera
+# Date: October 25, 2016
 
 # global.R
 
