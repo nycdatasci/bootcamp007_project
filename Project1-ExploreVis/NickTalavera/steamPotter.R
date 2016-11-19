@@ -176,22 +176,22 @@ ggsave(file=paste0(figuresLocale, removeSymbols(title), ".png"), limitsize = TRU
 #Scatter Metacritic vs How long to beat
 title = 'Metacritic Scores Compared to Campaign Length'
 labelsGameType = c('Indie Games','Action Games', 'Adventure Games',"Role Playing Games")
-MetacriticVSCampaign = select(steam, main_story_length, Review_Score_Metacritic, Increase)
+MetacriticVSCampaign = select(steam, CampaignLength, Review_Score_Metacritic, Increase)
 maxLength = 75
 metacriticReview = 70
-MetacriticVSCampaign = MetacriticVSCampaign[!is.na(MetacriticVSCampaign$main_story_length) & !is.na(MetacriticVSCampaign$Review_Score_Metacritic),]
-MetacriticVSCampaign = MetacriticVSCampaign[MetacriticVSCampaign$main_story_length < maxLength,]
-MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,0,6)] = 6
-MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,6,12)] = 12
-MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$main_story_length,12,17)] = 17
-MetacriticVSCampaign$hoursRange[MetacriticVSCampaign$main_story_length >= 17] = 40
+MetacriticVSCampaign = MetacriticVSCampaign[!is.na(MetacriticVSCampaign$CampaignLength) & !is.na(MetacriticVSCampaign$Review_Score_Metacritic),]
+MetacriticVSCampaign = MetacriticVSCampaign[MetacriticVSCampaign$CampaignLength < maxLength,]
+MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$CampaignLength,0,6)] = 6
+MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$CampaignLength,6,12)] = 12
+MetacriticVSCampaign$hoursRange[between(MetacriticVSCampaign$CampaignLength,12,17)] = 17
+MetacriticVSCampaign$hoursRange[MetacriticVSCampaign$CampaignLength >= 17] = 40
 colourCount = length(unique(MetacriticVSCampaign$hoursRange))
 getPalette = colorRampPalette(brewer.pal(11, "Spectral"))
 platteNew = getPalette(colourCount)
-g = ggplot(MetacriticVSCampaign, aes(x = main_story_length , y = Review_Score_Metacritic)) + ggtitle(title)
+g = ggplot(MetacriticVSCampaign, aes(x = CampaignLength , y = Review_Score_Metacritic)) + ggtitle(title)
 g + geom_point(aes(color=factor(hoursRange))) + geom_hline(yintercept = metacriticReview, color="red") + ylab('Metacritic Score') + xlab("Game Campaign Length (hours)") + scale_color_manual(values = platteNew, name ="Typical Game Type",
                                                                                                                                                                                                                                      labels=labelsGameType) + geom_smooth(method = "lm", color = "black") + geom_smooth(aes(group= hoursRange)) +
-  scale_x_continuous(breaks = pretty(MetacriticVSCampaign$main_story_length, n = 20))
+  scale_x_continuous(breaks = pretty(MetacriticVSCampaign$CampaignLength, n = 20))
 ggsave(file=paste0(figuresLocale, removeSymbols(title), ".png"), limitsize = TRUE, width = 8, height = 4.5)
 
 # Campaign Length Compared to the Increase of Owners
@@ -200,7 +200,7 @@ difference = 5
 maxHours = 40
 labelsScores = c(paste(seq(0, maxHours, by=difference), "to", seq(difference, maxHours+difference, by=difference), "hours"))
 labelsScores = replace(labelsScores, length(labelsScores), paste0(">",40," hours"))
-MetacriticVSCampaign$Rounded = round(MetacriticVSCampaign$main_story_length/difference)*difference
+MetacriticVSCampaign$Rounded = round(MetacriticVSCampaign$CampaignLength/difference)*difference
 MetacriticVSCampaign$Rounded[MetacriticVSCampaign$Rounded > maxHours] = maxHours
 colourCount = length(unique(MetacriticVSCampaign$Rounded))
 getPalette = (colorRampPalette(brewer.pal(9, "PiYG")))
