@@ -47,6 +47,8 @@ steamSpySaleCSVPreparer <- function() {
   reviewScoreStrings = str_split_fixed(steamSummerSaleNew$Userscore_And_Metascore, " ", 2)
   steamSummerSaleNew$Review_Score_Steam_Users = reviewScoreStrings[,1]
   steamSummerSaleNew$Review_Score_Metacritic = reviewScoreStrings[,2]
+  steamSummerSaleNew$Owners_Before = str_replace_all(steamSummerSaleNew$Owners_Before," ","")
+  steamSummerSaleNew$Owners_After = str_replace_all(steamSummerSaleNew$Owners_After," ","")
   steamSummerSaleNew = dplyr::select(steamSummerSaleNew, -Userscore_And_Metascore, -Maximum_Percent_Sale_and_Minimum_Price_With_Sale)
   return(steamSummerSaleNew)
 }
@@ -99,7 +101,9 @@ howLongToBeatCSVPreparer <- function() {
   howLongToBeat = dplyr::select(howLongToBeat, -platform)
   return(howLongToBeat)
 }
-
+#===============================================================================
+#                               SPECIALIZED MERGING                            #
+#===============================================================================
 ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale, howLongToBeat) {
   ignMetacritcMerged = merge(x = metacriticReviews, y = ignReviews, by = "Name", all.x = TRUE)
   ignMetacritcMerged$Release_Date[is.na(ignMetacritcMerged$Release_Date) == TRUE & is.na(ignMetacritcMerged$release) == FALSE  & as.character(ignMetacritcMerged$platform) == 'pc'] = ignMetacritcMerged$release[is.na(ignMetacritcMerged$Release_Date) == TRUE & is.na(ignMetacritcMerged$release) == FALSE & as.character(ignMetacritcMerged$platform) == 'pc']
@@ -116,6 +120,62 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
   ignMetacritcMerged$platform = NULL
   ignMetacritcMerged = unique(ignMetacritcMerged)
   return(ignMetacritcMerged)
+}
+
+generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
+  dataList = list(dataX, dataY)
+  datasWNameModded = foreach(i=1:length(dataList)) %do% {
+    datasOut = dataList[[i]]
+    datasOut$Name = as.character(datasOut$Name)
+    datasOut$NameModded = tolower(datasOut$Name)
+    lastWords = as.integer(str_trim(str_extract(datasOut$NameModded,pattern='[0-9]+')))
+    lastWords = as.character(as.roman(lastWords))
+    datasOut$NameModded[!is.na(lastWords)] = str_replace(datasOut$NameModded[!is.na(lastWords)], replacement = lastWords[!is.na(lastWords)], pattern = '[0-9]+')
+    removeWords = tolower(c("[^a-zA-Z0-9]"," ",'Remastered','Videogame','WWE','EA*SPORTS','Soccer','&',"™","®",'DVD$','of','DX','disney','Deluxe','Complete','Ultimate','Encore','definitive','for','edition','standard','special','game', 'the','Gold','Legendary','Base*Game','free*to*play','full*game', 'year','hd','movie','TM','Cabela\'s','and'," x$","s$"))
+    for (i in removeWords) {
+      datasOut$NameModded = gsub(i, "", datasOut$NameModded, ignore.case = TRUE)
+    }
+    datasOut$NameModded[datasOut$NameModded == ""] = datasOut$Name
+    return(datasOut)
+  }
+  dataX = datasWNameModded[[1]]
+  dataY = datasWNameModded[[2]]
+  print(str(dataX))
+  print(str(dataY))
+  if (tolower(mergeType) == "all") {
+    data = merge(x = dataX, y = dataY, by = "NameModded", all = TRUE)
+  } else if (tolower(mergeType) == "all.x") {
+    data = merge(x = dataX, y = dataY, by = "NameModded", all.x = TRUE)
+  } else if (tolower(mergeType) == "all.y") {
+    data = merge(x = dataX, y = dataY, by = "NameModded", all.y = TRUE)
+  }
+  if (tolower(keepName) == "x") {
+    data$Name.x[is.na(data$Name.x)] =  data$Name.y[is.na(data$Name.x)]
+    data$Name = data$Name.x
+  } else {
+    data$Name.y[is.na(data$Name.y)] =  data$Name.x[is.na(data$Name.y)]
+    data$Name = data$Name.y
+  }
+  # data = unique(data)
+  # data$NameModded = NULL
+  data = dplyr::select(data, -Name.y, Name.x)
+  data = gameRemover(data)
+  return (data)
+}
+
+gameRemover = function(data) {
+  gamesToRemove = c(
+  )
+  keywordsToRemove <- tolower(sort(c("\\Sbundle","pack",'(PC)','Team DZN',"\\SDLC")))
+  keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
+  keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
+  gameNameMissed = tolower(data$Name)
+  notRemoved = unlist(lapply(gameNameMissed, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
+  data = data[!notRemoved,]
+  for (i in tolower(gamesToRemove)) {
+    data = data[tolower(data$Name) != i,]
+  }
+  return(data)
 }
 
 #===============================================================================
@@ -136,10 +196,9 @@ steamSpyAllData = steamspyJson()
 metacriticReviewsData = metacriticCSVPreparer()
 howLongToBeatData = howLongToBeatCSVPreparer()
 ignReviewsData = ignCSVPreparer()
-ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
-steamMerged = merge(x = steamSummerSaleData, y = steamSpyAllData, by = "Name", all.x = TRUE)
-steamMerged = merge(x = steamMerged, y = ignMetacritcHLTBMergedData, by = "Name", all.x = TRUE)
-steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
-steamMerged$GameAge[steamMerged$GameAge < 0] = NA
+steamMerged = generousNameMerger(steamSummerSaleData,steamSpyAllData,mergeType="all.x",keepName = "x")
+# ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
+# steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
+# steamMerged$GameAge[steamMerged$GameAge < 0] = NA
 write.csv(steamMerged, file = 'steamDatabaseAllCombined.csv')
 stopCluster(cl)

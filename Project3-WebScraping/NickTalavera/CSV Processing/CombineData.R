@@ -7,6 +7,7 @@ library(stringr)
 library(Hmisc)
 library(stringi)
 library(dplyr)
+library(DataCombine)
 moveMe <- function(data, tomove, where = "last", ba = NULL) {
   temp <- setdiff(names(data), tomove)
   x <- switch(
@@ -262,18 +263,19 @@ gameRemover = function(data) {
                     'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies','Rock Band Classic Rock',
                     'Halo: Combat Evolved Anniversary','Tom Clancy\'s Splinter Cell Chaos Theory'
                     )
-  keywordsToRemove <- tolower(sort(c("bundle","pack",'(PC)','Team DZN')))
+  keywordsToRemove <- tolower(sort(c("\\Sbundle","pack",'(PC)','Team DZN',"\\SDLC")))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
   keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
   gameNameMissed = tolower(data$gameName)
   notRemoved = unlist(lapply(gameNameMissed, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
   # notRemoved = unlist(lapply(data$gameNameMissed, (function (x) !is.na(str_match(x,keywordsToRemoveRegex)))))
+  data = data[!notRemoved,]
   for (i in tolower(gamesToRemove)) {
     # print(i)
     data = data[tolower(data$gameName) != i,]
   }
   # print(sort(data$gameName[notRemoved]))
-  data = data[!notRemoved,]
+  
   return(data)
 }
 

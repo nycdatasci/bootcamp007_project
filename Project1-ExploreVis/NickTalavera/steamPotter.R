@@ -24,9 +24,9 @@ removeSymbols = function(namesArray) {
   newNames = namesArray
   newNames = str_replace_all(newNames,"[[:punct:]]","")
   newNames = str_replace_all(newNames, "[^[:alnum:]]", " ")
-  # newNames = trim(newNames)
   return(newNames)
 }
+
 #===============================================================================
 #                               DIRECTORY SETUP                                #
 #===============================================================================
@@ -44,7 +44,6 @@ if (!dir.exists(figuresLocale)) {
 #                                 READ IN DATA                                 #
 #===============================================================================
 steam = read.csv(paste0(dataLocale, 'steamDatabaseAllCombined.csv'))
-
 #===============================================================================
 #                                GENERATE PLOTS                               #
 #===============================================================================
