@@ -126,7 +126,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        width = 12,
                                        height = 530,
                                        solidHeader = FALSE,
-                                       collapsible = TRUE,
+                                       collapsible = FALSE,
                                        plotOutput("top10CitiesBar")
                                      ) #End of Box
                               ) # End of column
@@ -138,7 +138,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        status = "primary",
                                        width = 12,
                                        solidHeader = FALSE,
-                                       collapsible = TRUE,
+                                       collapsible = FALSE,
                                        plotOutput("topTenDrugPriceChangeTimeSeries")
                                      ) #End of Box
                               ),# end of column
@@ -148,7 +148,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        status = "primary",
                                        width = 12,
                                        solidHeader = FALSE,
-                                       collapsible = TRUE,
+                                       collapsible = FALSE,
                                        plotOutput("drugPricesVSBitcoinVSPharma")
                                      ) #End of Box
                               )# end of column
@@ -176,7 +176,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("postsPerDayWithDrugColor")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -186,7 +186,7 @@ dashboardPage(dashboardHeader(title = programName,
                                                   status = "primary",
                                                   width = 12,
                                                   solidHeader = FALSE,
-                                                  collapsible = TRUE,
+                                                  collapsible = FALSE,
                                                   plotOutput("mostCommonDrugsHist")
                                                 )# end of box
                                        ),# end of fluidRow
@@ -196,7 +196,7 @@ dashboardPage(dashboardHeader(title = programName,
                                                   status = "primary",
                                                   width = 12,
                                                   solidHeader = FALSE,
-                                                  collapsible = TRUE,
+                                                  collapsible = FALSE,
                                                   plotOutput("mostPopularMarkets"),
                                                   radioButtons("radialMostActive", 
                                                                label = h3("Options:"),
@@ -212,7 +212,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            dataTableOutput("mostCommonCountryAndMarketForEachDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -222,7 +222,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("numberOfDrugsAvailablePerMarket"),
                                            radioButtons("numberOfDrugsRadial", 
                                                         label = h3("Options:"),
@@ -237,7 +237,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("pricePerDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -247,7 +247,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("drugPrices")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -257,7 +257,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("pricesComparedToBicoinPrice")
                                          ) #End of Box
                                        # ),# end of fluidRow
@@ -267,7 +267,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        #     status = "primary",
                                        #     width = 12,
                                        #     solidHeader = FALSE,
-                                       #     collapsible = TRUE,
+                                       #     collapsible = FALSE,
                                        #     DT::dataTableOutput('dataTableViewOfDrugs')
                                        #   )# end of box
                                        )# end of fluidrow
