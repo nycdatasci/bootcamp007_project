@@ -28,13 +28,14 @@ library("leaflet")
 library("wordcloud")
 library("RColorBrewer")
 library("DataCombine")
+library("data.table")
 #===============================================================================
 #                                SETUP PARALLEL                                #
 #===============================================================================
 library("foreach")
 library("parallel")
 library("doParallel")
-cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
+cores.Number = max(1, detectCores() - 1)
 cl <- makeCluster(2)
 registerDoParallel(cl, cores=cores.Number)
 #===============================================================================
@@ -61,16 +62,18 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Darknet Data
   dataLocale = '/Volumes/SDExpansion/Data Files/Darknet Data/'
 }
 if (!exists("dnmData")) { 
-  dnmData <- read.csv(paste0(dataLocale,"DNMdata.csv"), header = TRUE)
+  dnmData <- data.frame(fread(paste0(dataLocale,"DNMdata.csv"), header = TRUE, nrows = 500000*1.5,
+                              stringsAsFactors = TRUE,
+                              drop = c("X","V1","Ask","Bid","Last","BitcoinVolume","Item_Name_Full_Text",
+                                       "Vendor_Name","Drug_Quantity","Drug_Quantity_In_Order_Unit","Drug_Weight",
+                                       "Price","Drug_Weight_Unit")))
   dnmData$Sheet_Date = as.Date(dnmData$Sheet_Date)
   dnmData$Time_Added = as.Date(dnmData$Time_Added)
-  dnmData = VarDrop(dnmData, c("X","V1","Ask","Bid","Last","BitcoinVolume","Item_Name_Full_Text",
-                               "Vendor_Name","Drug_Quantity","Drug_Quantity_In_Order_Unit","Drug_Weight",
-                               "Price","Drug_Weight_Unit"))
+  unlist(lapply(dnmData,class))
   dnmData = dnmData[dnmData$Price_Per_Gram <= 150000,]
   dnmData = dnmData[!is.na(dnmData$Market_Name),]
   dnmData$Price_Per_Gram[is.infinite(abs(dnmData$Price_Per_Gram))] = NA
-  dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
+  # dnmData$Price_Per_Gram[dnmData$Price_Per_Gram == 0] = NA
 }
 #===============================================================================
 #                                SETUP VARIABLES                               #
@@ -78,5 +81,9 @@ if (!exists("dnmData")) {
 unitString = "grams"
 timeAddedRange = range(dnmData$Time_Added, na.rm = TRUE)
 sheetDateRange = range(dnmData$Sheet_Date, na.rm = TRUE)
+AvailableMarkets = str_title_case(sort(c(as.character(unique(dnmData$Market_Name)))))
+AvailableDrugs = str_title_case(sort(c(as.character(unique(dnmData$Drug_Type)))))
+AvailableCountries = str_title_case(sort(c(as.character(unique(dnmData$Shipped_From)))))
 maxPricePerWeight = roundUpNice(max(dnmData$Price_Per_Gram, na.rm = TRUE))
 par(bg="transparent")
+stopCluster(cl)
