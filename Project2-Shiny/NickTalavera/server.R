@@ -186,7 +186,12 @@ shinyServer(function(input, output, session) {
       # Get Data
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
-      temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=6))) # create a df or something else with the summary output.
+      if (length(dataSet$Drug_Type) <= 10) {
+        topValues = length(dataSet$Drug_Type)
+      } else {
+        topValues = 6
+      }
+      temp <- row.names(as.data.frame(summary(dataSet$Drug_Type, max=topValues))) # create a df or something else with the summary output.
       print(temp)
       dataSet$Drug_Type <- as.character(dataSet$Drug_Type)
       dataSet$top <- ifelse(
@@ -201,6 +206,7 @@ shinyServer(function(input, output, session) {
       platteNew = getPalette(colourCount)
       g = ggplot(data = dataSet, aes(x = reorder_size(top), fill=reorder_size(top)))
       g + geom_bar(stat="count") + ylab('Number of Postings') + xlab('Drug') + guides(color = "colorbar") + scale_fill_manual(values = platteNew) + theme(legend.position="none")
+      
     })
   })
   
@@ -217,7 +223,12 @@ shinyServer(function(input, output, session) {
       }
       dataSet <- getDataSetToUse()
       dataSet = dataSet[!is.na(dataSet[,choice]),]
-      temp <- row.names(as.data.frame(summary(dataSet[,choice], max=6))) # create a df or something else with the summary output.
+      if (length(dataSet[,choice]) <= 10) {
+        topValues = length(dataSet[,choice])
+      } else {
+        topValues = 6
+      }
+      temp <- row.names(as.data.frame(summary(dataSet[,choice], max=topValues))) # create a df or something else with the summary output.
       print(temp)
       dataSet[,choice] <- as.character(dataSet[,choice])
       dataSet$top <- ifelse(
@@ -526,6 +537,8 @@ shinyServer(function(input, output, session) {
       theme(axis.title.x=element_blank(),
             axis.text.x=element_blank(),
             axis.ticks.x=element_blank())
+      } else {
+        g = g + theme(legend.position="none")
       }
       g
     })

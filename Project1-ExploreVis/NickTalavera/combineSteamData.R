@@ -1,19 +1,21 @@
-rm(list = ls()) #If I want my environment reset for testing.
+# rm(list = ls()) #If I want my environment reset for testing.
 #===============================================================================
 #                                   LIBRARIES                                  #
 #===============================================================================
 library(jsonlite)
 library(dplyr)
 library(stringr)
+
+library(kknn) #Load the weighted knn library.
+library(VIM) #For the visualization and imputation of missing values.
+library(class)
+library(DataCombine)
 #===============================================================================
 #                                SETUP PARALLEL                                #
 #===============================================================================
 library(foreach)
 library(parallel)
 library(doParallel)
-library(DataCombine)
-library(kknn) #Load the weighted knn library.
-library(VIM) #For the visualization and imputation of missing values.
 cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
 cl <- makeCluster(2)
 registerDoParallel(cl, cores=cores.Number)
@@ -60,18 +62,21 @@ steamSpySaleCSVPreparer <- function() {
   )
   saleStrings = str_split_fixed(steamSummerSaleNew$Maximum_Percent_Sale_and_Minimum_Price_With_Sale, " ", 2)
   steamSummerSaleNew$Sale_Percent = saleStrings[,1]
-  steamSummerSaleNew$Price_After_Sale = saleStrings[,2]
+  steamSummerSaleNew$Price_During_Sale = saleStrings[,2]
   reviewScoreStrings = str_split_fixed(steamSummerSaleNew$Userscore_And_Metascore, " ", 2)
   steamSummerSaleNew$Review_Score_Steam_Users = reviewScoreStrings[,1]
   steamSummerSaleNew$Review_Score_Metacritic = reviewScoreStrings[,2]
   steamSummerSaleNew$Owners_Before = stringr::str_replace_all(steamSummerSaleNew$Owners_Before," ","")
   steamSummerSaleNew$Owners_After = stringr::str_replace_all(steamSummerSaleNew$Owners_After," ","")
   steamSummerSaleNew$Price_Before_Sale = as.character(steamSummerSaleNew$Price_Before_Sale)
-  columnsToNumeric = c("Sale_Percent","Price_After_Sale","Price_Before_Sale","Review_Score_Steam_Users","Review_Score_Metacritic","Owners_Before","Owners_After","Increase")
+  columnsToNumeric = c("Sale_Percent","Price_During_Sale","Price_Before_Sale","Review_Score_Steam_Users","Review_Score_Metacritic","Owners_Before","Owners_After","Increase")
   steamSummerSaleNew[columnsToNumeric] <- parSapply(cl=cl, steamSummerSaleNew[columnsToNumeric], as.numeric)
+  steamSummerSaleNew$Sales = steamSummerSaleNew$Owners_After - steamSummerSaleNew$Owners_Before
   steamSummerSaleNew = dplyr::select(steamSummerSaleNew, 
                                      -Userscore_And_Metascore, 
-                                     -Maximum_Percent_Sale_and_Minimum_Price_With_Sale)
+                                     -Maximum_Percent_Sale_and_Minimum_Price_With_Sale,
+                                     -Owners_After,
+                                     -Owners_Before)
   return(steamSummerSaleNew)
 }
 
@@ -79,7 +84,7 @@ steamspyJson = function() {
   if (file.exists(paste0(dataLocale,"steamSpyAll.csv"))) {
     print("The SteamSpy API data named \"steamSpyAll.csv\" exists")
     steamSpyCSV = read.csv(paste0(dataLocale,"steamSpyAll.csv"), na.strings=c("","NA"))
-    steamSpyCSV = dplyr::select(steamSpyCSV, -X, -median_forever, -average_forever)
+    steamSpyCSV = dplyr::select(steamSpyCSV, -X, -median_forever, -average_forever, -Players_Forever_As_Of_Today, -Owners_As_Of_Today)
     return(steamSpyCSV)
   }
   else {
@@ -88,7 +93,7 @@ steamspyJson = function() {
     steamSpyDataToOutput = foreach (i = 1:length(steamSpyDataJsonFormat), .combine=rbind) %dopar% {
       return(data.frame(Name=steamSpyDataJsonFormat[i]$name, appid=steamSpyDataJsonFormat[i]$appid, Owners_As_Of_Today=steamSpyDataJsonFormat[i]$owners, Players_Forever_As_Of_Today=steamSpyDataJsonFormat[i]$players_forever, average_forever=steamSpyDataJsonFormat[i]$average_forever, median_forever=steamSpyDataJsonFormat[i]$median_forever))
     }
-    dplyr::select(steamSpyDataToOutput, -X, -median_forever, -average_forever)
+    dplyr::select(steamSpyDataToOutput, -X, -median_forever, -average_forever, -Players_Forever_As_Of_Today, -Owners_As_Of_Today)
     write.csv(steamSpyDataToOutput,paste0(dataLocale,"steamSpyAll.csv"))
     return(steamSpyDataToOutput)
   }
@@ -109,9 +114,9 @@ ignCSVPreparer <- function() {
   ignReviews$Release_Date = as.Date(paste0(ignReviews$release_year,ignReviews$release_month,ignReviews$release_day), format = "%Y%m%d")
   ignReviews = dplyr::select(ignReviews, "Name" = title, "Review_Score_IGN" = score, "Genre" = genre, "Platform" = platform, Release_Date)
   colnames(ignReviews)[colnames(ignReviews) == "editors_choice"] = "IGN_Editors_Choice"
-  ignReviewsNotPCorMobile= ignReviews[ignReviews$Platform %!in% c("Wireless","PlayStation Vita","ios","3ds","PlayStation Portable","Nintendo DS","Nintendo 3DS","iPhone","iPad"),]
+  # ignReviewsNotPCorMobile= ignReviews[ignReviews$Platform %!in% c("Wireless","PlayStation Vita","ios","3ds","PlayStation Portable","Nintendo DS","Nintendo 3DS","iPhone","iPad"),]
   ignReviews = ignReviews[ignReviews$Platform %in% c("PC"),]
-  ignReviews[is.na(ignReviews)] = ignReviewsNotPCorMobile[is.na(ignReviews)]
+  # ignReviews[is.na(ignReviews)] = ignReviews[is.na(ignReviews)]
   ignReviews = dplyr::select(ignReviews, -Platform)
   ignReviews = unique(ignReviews)
   return(ignReviews)
@@ -145,8 +150,6 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
   }
   dataX = datasWNameModded[[1]]
   dataY = datasWNameModded[[2]]
-  print(str(dataX))
-  print(str(dataY))
   if (tolower(mergeType) == "all") {
     data = merge(x = dataX, y = dataY, by = "NameModded", all = TRUE)
   } else if (tolower(mergeType) == "all.x") {
@@ -205,11 +208,50 @@ steamMerged = generousNameMerger(steamMerged,ignReviewsData,mergeType="all.x",ke
 steamMerged = generousNameMerger(steamMerged,metacriticReviewsData,mergeType="all.x",keepName = "x")
 steamMerged = generousNameMerger(steamMerged,howLongToBeatData,mergeType="all.x",keepName = "x")
 steamMerged$Release_Date[is.na(steamMerged$Release_Date)] = steamMerged$release[is.na(steamMerged$Release_Date)]
-steamSummerSaleFirstDay = as.Date('2016-06-23', "%Y-%m-%d")
-steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date + 1
-steamMerged$Sales = steamMerged$Owners_After - steamMerged$Owners_Before
+steamMerged$Review_Score_Metacritic[is.na(steamMerged$Release_Date)] = steamMerged$score[is.na(steamMerged$Release_Date)]
+steamMerged$Review_Score_Metacritic[is.na(steamMerged$Genre)] = steamMerged$score[is.na(steamMerged$genre)]
 steamMerged = MoveFront(steamMerged, c("Name",'CampaignLength',"Review_Score_Metacritic","Review_Score_Steam_Users","Review_Score_IGN","Release_Date"))
-steamMerged = VarDrop(steamMerged, "release")
-dataUltKNN = kNN(steamMerged)[,1:ncol(steamMerged)]
-write.csv(dataUltKNN, file = paste0(dataLocale, "steamDatabaseAllCombined.csv"))
+steamMerged = data.frame(VarDrop(steamMerged, c("release", "appid", "platform","genre","score")))
+steamMerged$Genre = gsub("\\,.*","",steamMerged$Genre)
+steamMerged$Release_Date = as.numeric(steamMerged$Release_Date)
+
+rownames(steamMerged) = steamMerged$Name
+steamMerged = DropNA(steamMerged, Var = c("Sales","Increase"))
+library(mice)
+md.pattern(steamMerged)
+steamMerged = kNN(steamMerged, k = sqrt(ncol(steamMerged)), imp_var = FALSE)
+# steamMerged = mice(steamMerged,m=5,maxit=50,meth='pmm',seed=500)
+steamSummerSaleFirstDay = as.Date('2016-06-23', "%Y-%m-%d")
+steamMerged$GameAge = as.numeric(steamSummerSaleFirstDay) - as.numeric(steamMerged$Release_Date) + 1
+write.csv(steamMerged, file = paste0(dataLocale, "steamDatabaseAllCombined.csv"), row.names=FALSE)
+
+
+
+unlist(lapply(steamMerged,class))
+steamMerged$Gross = log(steamMerged$Sales * steamMerged$Price_During_Sale)
+steamMerged$Sales = log(steamMerged$Sales)
+steamMerged$Sale_Percent = log(steamMerged$Sale_Percent)
+steamMerged$CampaignLength = log(steamMerged$CampaignLength)
+steamMerged$Price_Before_Sale = log(steamMerged$Price_Before_Sale)
+steamMerged$Price_During_Sale = log(steamMerged$Price_During_Sale)
+steamMerged$Gross[!is.finite(steamMerged$Gross)] = 0
+steamMerged$Sale_Percent[!is.finite(steamMerged$Sale_Percent)] = 0
+steamMerged$Price_During_Sale[!is.finite(steamMerged$Price_During_Sale)] = 0
+steamMerged$Price_Before_Sale[!is.finite(steamMerged$Price_Before_Sale)] = 0
+steamMerged$CampaignLength[is.nan(steamMerged$CampaignLength) | is.infinite(abs(steamMerged$CampaignLength))] = 0
+sapply(steamMerged, function(y) sum(length(which(is.na(y)))))
+model.empty = lm(Gross ~ 1, data = steamMerged) #The model with an intercept ONLY.
+model.full = lm(Gross ~ . -Sales -Increase -Name -Genre -publisher -Release_Date, data = steamMerged) #The model with ALL variables.
+scope = list(lower = formula(model.empty), upper = formula(model.full))
+library(MASS)
+forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
+model.overall = eval(forwardAIC$call)
+library(car)
+influencePlot(model.overall)
+
+vif(model.overall)
+avPlots(model.overall)
+
+
+
 stopCluster(cl)

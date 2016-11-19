@@ -27,22 +27,25 @@ dashboardPage(dashboardHeader(title = programName,
                                      selectInput("marketName",
                                                  "Choose your markets:",
                                                  choices = str_title_case(sort(c(as.character(unique(dnmData$Market_Name))))),
-                                                 multiple = TRUE),
+                                                 multiple = TRUE,
+                                                 selected = c("Agora","Silk Road 2", "Evolution")),
 
                                      selectInput("drugName",
                                                  "Choose your drugs:",
                                                  choices = str_title_case(sort(c(as.character(unique(dnmData$Drug_Type))))),
-                                                 multiple = TRUE),
+                                                 multiple = TRUE,
+                                                 selected = c("Ecstasy (Mdma)","Marijuana","Cocaine","Speed (Amphetamine)","Lsd (Lysergic Acid)","Heroin","Ghb")),
                                      selectInput("shippedFrom",
                                                  "Choose where the drugs are shipped from:",
                                                  choices = str_title_case(sort(c(as.character(unique(dnmData$Shipped_From))))),
-                                                 multiple = TRUE),
+                                                 multiple = TRUE,
+                                                 selected = c("United States","China","Mexico","United Kingdom","South Africa","France","Chile","Colombia")),
 
-                                     selectInput("weightUnits",
-                                                 "Choose your units of weight:",
-                                                 choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
-                                                 selected = "grams"
-                                     ),
+                                     # selectInput("weightUnits",
+                                     #             "Choose your units of weight:",
+                                     #             choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
+                                     #             selected = "grams"
+                                     # ),
 
                                      # sliderInput("weightValue",
                                      #             paste("Choose the the total weight of the drug in ", "grams", ":"),
@@ -224,7 +227,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            radioButtons("numberOfDrugsRadial", 
                                                         label = h3("Options:"),
                                                         choices = list("Per Market" = "Per Market", "Per Country" = "Per Country"), 
-                                                        selected = "Per Market",
+                                                        selected = "Per Country",
                                                         inline = TRUE)
                                          ) #End of Box
                                        ),# end of fluidRow
