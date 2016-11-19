@@ -225,6 +225,7 @@ steamMerged = generousNameMerger(steamMerged,howLongToBeatData,mergeType="all.x"
 # ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
 steamSummerSaleFirstDay = as.Date('2016-06-23', "%Y-%m-%d")
 steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date + 1
+steamMerged$Sales = steamMerged$Owners_After - steamMerged$Owners_Before
 steamMerged = MoveFront(steamMerged, c("Name",'CampaignLength',"Review_Score_Metacritic","Review_Score_Steam_Users","Review_Score_IGN","Release_Date"))
 dataUltKNN = kNN(steamMerged)[,1:ncol(steamMerged)]
 write.csv(steamMerged, file = paste0(dataLocale, "steamDatabaseAllCombined.csv"))
