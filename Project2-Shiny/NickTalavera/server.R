@@ -147,7 +147,6 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  # Render number of cities box
   output$mostPopularMarketForDrugXBox <- renderValueBox({
     dataSet = summarise(group_by(dnmData, Drug_Type, Market_Name), mnPrice = mean(Price_Per_Gram_BTC))
     drugRandom = sample(unique(dataSet$Drug_Type),1)
@@ -160,17 +159,13 @@ shinyServer(function(input, output, session) {
     )
   })
   
-  
-  
   #===============================================================================
   #                         MARKET EXPLORER FUNCTIONS                            #
   #===============================================================================
-  
-  
   output$mostCommonDrugsHist <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       if (length(dataSet$Drug_Type) <= 10) {
         topValues = length(dataSet$Drug_Type)
@@ -207,7 +202,7 @@ shinyServer(function(input, output, session) {
         choice = "Shipped_From"
         xlabel ="Country Shipped From"
       }
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet[,choice]),]
       if (length(dataSet[,choice]) <= 10) {
         topValues = length(dataSet[,choice])
@@ -237,7 +232,7 @@ shinyServer(function(input, output, session) {
   }, bg="transparent")
   
   output$mostCommonCountryAndMarketForEachDrug <- DT::renderDataTable({
-    dataSet <- getDataSetToUse()
+    dataSet <- getDataSetFromSearch()
     dataSet = summarise(group_by(dataSet,Drug_Type), "Country" = names(which.max(table(Shipped_From))), "Market" = names(which.max(table(Market_Name))))
     DT::datatable(dataSet, 
                   options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 5, 
@@ -245,18 +240,16 @@ shinyServer(function(input, output, session) {
   }
   )
   
-  
   #=============================================================================
   #                        DASHBOARD SERVER FUNCTIONS                          #
   #=============================================================================
   
-  #Render Top Markets by Home Value Growth TimeSeries
   output$topMarketsTS <- renderChart({
     
     withProgress(message = "Rendering Top Market Time Series", {
       
       # Get Data
-      d <- getDataSetToUse()
+      d <- getDataSetFromSearch()
       
       # Set number of markets to plot.  Markets are sorted by Growth (desc)
       numMarkets <- 10
@@ -290,10 +283,8 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  # Render Top 10 States bar chart
   output$top10StatesBar <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
-      # Get Data
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
@@ -315,10 +306,8 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  # Render Top 10 Cities bar chart
   output$top10CitiesBar <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
-      # Get Data
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Market_Name),]
       dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
@@ -370,12 +359,9 @@ shinyServer(function(input, output, session) {
   
   output$drugPricesVSBitcoinVSPharma <- renderPlot({
     withProgress(message = "Number of Posts in Each Darknet Market Time Series Compared to Bitcoin Prices (USD)", {
-      # Get Data
-      # gramMult = 28
       dataSet <- dnmData
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
-      # dataSet = dataSet[as.character(dataSet$Drug_Type) == "Marijuana",]
       dataSet = summarise(group_by(dataSet, Sheet_Date), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC), meanBTC = mean(BitcoinPriceUSD))
       dataSet = dataSet[dataSet$meanPrice_Per_Gram_BTC <= 1000,]
       colourCount = length(unique(dataSet$meanPrice_Per_Gram_BTC))
@@ -422,7 +408,7 @@ shinyServer(function(input, output, session) {
   output$postsPerDayWithDrugColor <- renderPlot({
     withProgress(message = "Number of postings per day over time for each darknet", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
       # dataSet = summarise(group_by(dataSet, Time_Added, Market_Name))
@@ -448,7 +434,6 @@ shinyServer(function(input, output, session) {
     if(type[1]=="file") text <- readLines(x)
     else if(type[1]=="url") text <- html_to_text(x)
     else if(type[1]=="text") text <- x
-    
     # Load the text as a corpus
     docs <- Corpus(VectorSource(text))
     # Convert the text to lower case
@@ -491,11 +476,11 @@ shinyServer(function(input, output, session) {
         dataWords = read.csv(paste0(dataLocale,"DNMdataDescriptionsOnly.csv"))
         dataWords$X = NULL
         repeatable(rquery.wordcloud(dataWords, type= "text", min.freq = 50, max.words= 60, 
-                         excludeWords = c("get","will","can","like","one","say","items","see","read","src","non",
-                                          "com",'links',"www","http","note","case","theres","good","listing",
-                                          "via","yet","full","usd","may","user","even","watches","watch","little","additional",
-                                          "around","just",
-                                          "item","don","much","many","way","first","also","per","sphotobuckcom","back")))
+                                    excludeWords = c("get","will","can","like","one","say","items","see","read","src","non",
+                                                     "com",'links',"www","http","note","case","theres","good","listing",
+                                                     "via","yet","full","usd","may","user","even","watches","watch","little","additional",
+                                                     "around","just",
+                                                     "item","don","much","many","way","first","also","per","sphotobuckcom","back")))
       })
     })
   })
@@ -511,7 +496,7 @@ shinyServer(function(input, output, session) {
         choice = "Shipped_From"
         xlabel = "Country Shipped From"
       }
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet[,choice] = as.character(dataSet[,choice])
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = summarise(group_by_(dataSet, choice), drugCount = length(unique(Drug_Type)))
@@ -522,9 +507,9 @@ shinyServer(function(input, output, session) {
       g = g + geom_bar(stat="identity") + ylab('Number of Drugs') + xlab(xlabel) + scale_fill_manual(values = platteNew, guide = guide_legend(title = xlabel))
       if (colourCount >= 10) {
         g = g + theme(legend.position="bottom") +
-      theme(axis.title.x=element_blank(),
-            axis.text.x=element_blank(),
-            axis.ticks.x=element_blank())
+          theme(axis.title.x=element_blank(),
+                axis.text.x=element_blank(),
+                axis.ticks.x=element_blank())
       } else {
         g = g + theme(legend.position="none")
       }
@@ -532,11 +517,10 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  
   output$pricePerDrug <- renderPlot({
     withProgress(message = "Rendering Most Common Drug Listing by Count Bar Graph", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
@@ -566,7 +550,7 @@ shinyServer(function(input, output, session) {
   output$mostActiveCountryDaily <- renderPlot({
     withProgress(message = "Rendering Most Active Country Daily", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       mostPostedInCountry = names(sort(summary(as.factor(dnmData$Shipped_From), decreasing=T)))[1]
       #       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       #       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
@@ -591,7 +575,7 @@ shinyServer(function(input, output, session) {
   output$drugPrices <- renderPlot({
     withProgress(message = "Rendering Drug Price Line Graph", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Market_Name),]
       dataSet = dataSet[!is.na(dataSet$Price_Per_Gram_BTC),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
@@ -616,7 +600,7 @@ shinyServer(function(input, output, session) {
   output$pricesComparedToBicoinPrice <- renderPlot({
     withProgress(message = "Average prices of drugs against price of bitcoins", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
       dataSet = summarise(group_by(dataSet, Sheet_Date, Drug_Type), meanPrice_Per_Gram_BTC=mean(Price_Per_Gram_BTC)/max(Price_Per_Gram_BTC), meanBTC = mean(BitcoinPriceUSD, na.rm = TRUE))
@@ -638,7 +622,7 @@ shinyServer(function(input, output, session) {
   })
   output$postsComparedToBicoinPrice <- renderPlot({
     withProgress(message = "Number of posts compared to bitcoin price (colored by country)", {
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Shipped_From),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
       dataSet$Time_Added = as.character(dataSet$Time_Added)
@@ -654,7 +638,7 @@ shinyServer(function(input, output, session) {
   output$drugPricesVSBitcoinVSPharmaMarketExplorer <- renderPlot({
     withProgress(message = "Number of Posts in Each Darknet Market Time Series Compared to Bitcoin Prices (USD)", {
       # Get Data
-      dataSet <- getDataSetToUse()
+      dataSet <- getDataSetFromSearch()
       dataSet = dataSet[!is.na(dataSet$Drug_Type),]
       dataSet = dataSet[dataSet$Price_Per_Gram_BTC <= 3000,]
       # dataSet = dataSet[as.character(dataSet$Drug_Type) == "Marijuana",]
@@ -673,7 +657,7 @@ shinyServer(function(input, output, session) {
   ######################
   
   # Return the requested dataset
-  getDataSetToUse <- eventReactive(input$query, {
+  getDataSetFromSearch <- eventReactive(input$query, {
     dataToDisplay = dnmData
     if (!is.null(input$marketName)) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$Market_Name%in%input$marketName)),]
@@ -709,7 +693,7 @@ shinyServer(function(input, output, session) {
   }, ignoreNULL = FALSE)
   
   output$dataTableViewOfDrugs <- DT::renderDataTable({
-    dataSet = getDataSetToUse()
+    dataSet = getDataSetFromSearch()
     dataSet$Shipped_From = str_title_case(dataSet$Shipped_From)
     dataSet$Drug_Type = str_title_case(dataSet$Drug_Type)
     dataSet$Market_Name = str_title_case(dataSet$Market_Name)
