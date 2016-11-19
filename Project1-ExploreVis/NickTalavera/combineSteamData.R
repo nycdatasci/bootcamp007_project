@@ -97,10 +97,10 @@ steamspyJson = function() {
 metacriticCSVPreparer <- function() {
   metacriticReviews = read.csv(paste0(dataLocale,"metacritic-20151227.csv"),sep=";",stringsAsFactors = FALSE, na.strings=c("","NA"))
   metacriticReviews = rename(metacriticReviews, "Name" = title)
-  metacriticReviews$release = as.Date(as.character(metacriticReviews$release),"%b %d, %Y")
   metacriticReviews = metacriticReviews[metacriticReviews$platform %!in% c("ios","gba","ds","3ds","psp","vita"),] 
   # metacriticReviews = metacriticReviews[metacriticReviews$platform %in% c("pc"),]
   metacriticReviews = dplyr::select(metacriticReviews, -user_score)
+  metacriticReviews$release = as.Date(as.character(metacriticReviews$release),"%b %d, %Y")
   return(metacriticReviews)
 }
 
@@ -109,8 +109,9 @@ ignCSVPreparer <- function() {
   ignReviews$Release_Date = as.Date(paste0(ignReviews$release_year,ignReviews$release_month,ignReviews$release_day), format = "%Y%m%d")
   ignReviews = dplyr::select(ignReviews, "Name" = title, "Review_Score_IGN" = score, "Genre" = genre, "Platform" = platform, Release_Date)
   colnames(ignReviews)[colnames(ignReviews) == "editors_choice"] = "IGN_Editors_Choice"
-  ignReviews = ignReviews[ignReviews$Platform %!in% c("Wireless","PlayStation Vita","ios","3ds","PlayStation Portable","Nintendo DS","Nintendo 3DS","iPhone","iPad"),]
-  # ignReviews = ignReviews[ignReviews$Platform != "PC",]
+  ignReviewsNotPCorMobile= ignReviews[ignReviews$Platform %!in% c("Wireless","PlayStation Vita","ios","3ds","PlayStation Portable","Nintendo DS","Nintendo 3DS","iPhone","iPad"),]
+  ignReviews = ignReviews[ignReviews$Platform %in% c("PC"),]
+  ignReviews[is.na(ignReviews)] = ignReviewsNotPCorMobile[is.na(ignReviews)]
   ignReviews = dplyr::select(ignReviews, -Platform)
   ignReviews = unique(ignReviews)
   return(ignReviews)
@@ -126,24 +127,6 @@ howLongToBeatCSVPreparer <- function() {
 #===============================================================================
 #                               SPECIALIZED MERGING                            #
 #===============================================================================
-ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale, howLongToBeat) {
-  ignMetacritcMerged = merge(x = metacriticReviews, y = ignReviews, by = "Name", all.x = TRUE)
-  ignMetacritcMerged$Release_Date[is.na(ignMetacritcMerged$Release_Date) == TRUE & is.na(ignMetacritcMerged$release) == FALSE  & as.character(ignMetacritcMerged$platform) == "pc"] = ignMetacritcMerged$release[is.na(ignMetacritcMerged$Release_Date) == TRUE & is.na(ignMetacritcMerged$release) == FALSE & as.character(ignMetacritcMerged$platform) == "pc"]
-  ignMetacritcMerged$Release_Date[is.na(ignMetacritcMerged$Release_Date) == TRUE & is.na(ignMetacritcMerged$release) == FALSE] = ignMetacritcMerged$release[is.na(ignMetacritcMerged$Release_Date) == TRUE & is.na(ignMetacritcMerged$release) == FALSE]
-  ignMetacritcMerged$release = NULL
-  ignMetacritcMerged$Review_Score_Metacritic[is.na(ignMetacritcMerged$Review_Score_Metacritic) == TRUE & is.na(ignMetacritcMerged$score) == FALSE] = ignMetacritcMerged$score[is.na(ignMetacritcMerged$Review_Score_Metacritic) == TRUE & is.na(ignMetacritcMerged$score) == FALSE]
-  ignMetacritcMerged = ignMetacritcMerged[is.na(ignMetacritcMerged$Release_Date) == FALSE | is.na(ignMetacritcMerged$platform) == FALSE,]
-  ignMetacritcMerged = merge(x = dplyr::select(steamSummerSale,Name), y = ignMetacritcMerged, by = "Name", all.x = TRUE)
-  hltbMerged = merge(x = dplyr::select(steamSummerSale, Name), y = howLongToBeat, by = "Name", all.x = TRUE)
-  hltbMerged = hltbMerged[is.na(hltbMerged$CampaignLength) == FALSE,]
-  print(head(hltbMerged))
-  ignMetacritcMerged = merge(x = ignMetacritcMerged, y = hltbMerged, by = "Name", all.x = TRUE)
-  ignMetacritcMerged = ignMetacritcMerged[ignMetacritcMerged$platform == "pc",]
-  ignMetacritcMerged$platform = NULL
-  ignMetacritcMerged = unique(ignMetacritcMerged)
-  return(ignMetacritcMerged)
-}
-
 generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
   dataList = list(dataX, dataY)
   datasWNameModded = foreach(i=1:length(dataList)) %dopar% {
@@ -180,7 +163,7 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
   }
   # data = unique(data)
   # data$NameModded = NULL
-  data = dplyr::select(data, -Name.y, -Name.x, -NameModded)
+  data = VarDrop(data, c("Name.y", "Name.x", "NameModded"))
   data = gameRemover(data)
   data = keepLargestDuplicate(data)
   return (data)
@@ -221,12 +204,12 @@ steamMerged = generousNameMerger(steamSummerSaleData,steamSpyAllData,mergeType="
 steamMerged = generousNameMerger(steamMerged,ignReviewsData,mergeType="all.x",keepName = "x")
 steamMerged = generousNameMerger(steamMerged,metacriticReviewsData,mergeType="all.x",keepName = "x")
 steamMerged = generousNameMerger(steamMerged,howLongToBeatData,mergeType="all.x",keepName = "x")
-# steamMergedDuplicates = grepl.sub(steamMerged,FindDups(steamMerged, c("Name")),c("Name"))
-# ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
+steamMerged$Release_Date[is.na(steamMerged$Release_Date)] = steamMerged$release[is.na(steamMerged$Release_Date)]
 steamSummerSaleFirstDay = as.Date('2016-06-23', "%Y-%m-%d")
 steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date + 1
 steamMerged$Sales = steamMerged$Owners_After - steamMerged$Owners_Before
 steamMerged = MoveFront(steamMerged, c("Name",'CampaignLength',"Review_Score_Metacritic","Review_Score_Steam_Users","Review_Score_IGN","Release_Date"))
+steamMerged = VarDrop(steamMerged, "release")
 dataUltKNN = kNN(steamMerged)[,1:ncol(steamMerged)]
-write.csv(steamMerged, file = paste0(dataLocale, "steamDatabaseAllCombined.csv"))
+write.csv(dataUltKNN, file = paste0(dataLocale, "steamDatabaseAllCombined.csv"))
 stopCluster(cl)
