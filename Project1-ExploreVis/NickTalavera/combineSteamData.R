@@ -11,6 +11,7 @@ library(stringr)
 library(foreach)
 library(parallel)
 library(doParallel)
+library(DataCombine)
 cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
 cl <- makeCluster(2)
 registerDoParallel(cl, cores=cores.Number)
@@ -19,18 +20,34 @@ registerDoParallel(cl, cores=cores.Number)
 #===============================================================================
 removeSymbols = function(namesArray) {
   newNames = namesArray
-  newNames = str_replace_all(newNames,"[[:punct:]]","")
-  newNames = str_replace_all(newNames, "[^[:alnum:]]", " ")
-  newNames = str_trim(newNames)
+  newNames = stringr::str_replace_all(newNames,"[[:punct:]]","")
+  newNames = stringr::str_replace_all(newNames, "[^[:alnum:]]", " ")
+  newNames = stringr::str_trim(newNames)
   newNames = rm_white(newNames)
   return(newNames)
 }
 '%!in%' <- function(x,y)!('%in%'(x,y))
+keepLargestDuplicate = function(data,duplicateColumn) {
+  nums <- parSapply(cl = cl, data, is.numeric)
+  nums = names(nums[nums==TRUE])
+  columnsToKeep = ncol(data)
+  # data = data.frame(foreach(i=1:length(nums)) %do% {
+    # data <- data[order(data[,duplicateColumn], -abs(data[,nums[i]])),] #sort by id and reverse of abs(value)
+    # data[!duplicated(data[,duplicateColumn]),]
+    data = summarise_each(group_by(data,Name),funs(max))
+  # })
+  # data = data[,1:columnsToKeep]
+  print(nums)
+  return(data)
+}
 #===============================================================================
 #                          DATA PROCESSING FUNCTIONS                           #
 #===============================================================================
 steamSpySaleCSVPreparer <- function() {
   steamSummerSaleNew = as.data.frame(read.csv(paste0(dataLocale, 'Steam Summer Sale - SteamSpy - All the data and stats about Steam games.csv'),sep=',', stringsAsFactors = FALSE))
+  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, sub, pattern = "N/A", replacement = NA, fixed = TRUE))
+  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, as.character))
+  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, gsub, pattern = "\\±|\\,|\\$|\\%|\\(|\\)", replacement = "", fixed = FALSE))
   steamSummerSaleNew = dplyr::select(steamSummerSaleNew, 'Name' = Game,
                                      'Price_Before_Sale' = Price,
                                      'Maximum_Percent_Sale_and_Minimum_Price_With_Sale' = Max.discount,
@@ -39,17 +56,20 @@ steamSpySaleCSVPreparer <- function() {
                                      "Userscore_And_Metascore" = Userscore..Metascore.,
                                      Increase
   )
-  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, sub, pattern = "N/A", replacement = NA, fixed = TRUE))
-  steamSummerSaleNew = data.frame(parLapply(cl = cl, steamSummerSaleNew, gsub, pattern = "\\±|\\,|\\$|\\%|\\(|\\)", replacement = "", fixed = FALSE))
   saleStrings = str_split_fixed(steamSummerSaleNew$Maximum_Percent_Sale_and_Minimum_Price_With_Sale, " ", 2)
   steamSummerSaleNew$Sale_Percent = saleStrings[,1]
   steamSummerSaleNew$Price_After_Sale = saleStrings[,2]
   reviewScoreStrings = str_split_fixed(steamSummerSaleNew$Userscore_And_Metascore, " ", 2)
   steamSummerSaleNew$Review_Score_Steam_Users = reviewScoreStrings[,1]
   steamSummerSaleNew$Review_Score_Metacritic = reviewScoreStrings[,2]
-  steamSummerSaleNew$Owners_Before = str_replace_all(steamSummerSaleNew$Owners_Before," ","")
-  steamSummerSaleNew$Owners_After = str_replace_all(steamSummerSaleNew$Owners_After," ","")
-  steamSummerSaleNew = dplyr::select(steamSummerSaleNew, -Userscore_And_Metascore, -Maximum_Percent_Sale_and_Minimum_Price_With_Sale)
+  steamSummerSaleNew$Owners_Before = stringr::str_replace_all(steamSummerSaleNew$Owners_Before," ","")
+  steamSummerSaleNew$Owners_After = stringr::str_replace_all(steamSummerSaleNew$Owners_After," ","")
+  steamSummerSaleNew$Price_Before_Sale = as.character(steamSummerSaleNew$Price_Before_Sale)
+  columnsToNumeric = c('Sale_Percent','Price_After_Sale','Price_Before_Sale','Review_Score_Steam_Users','Review_Score_Metacritic','Owners_Before','Owners_After','Increase')
+  steamSummerSaleNew[columnsToNumeric] <- parSapply(cl=cl, steamSummerSaleNew[columnsToNumeric], as.numeric)
+  steamSummerSaleNew = dplyr::select(steamSummerSaleNew, 
+                                     -Userscore_And_Metascore, 
+                                     -Maximum_Percent_Sale_and_Minimum_Price_With_Sale)
   return(steamSummerSaleNew)
 }
 
@@ -124,13 +144,13 @@ ignMetacritcHLTBMerged <- function(ignReviews,metacriticReviews,steamSummerSale,
 
 generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
   dataList = list(dataX, dataY)
-  datasWNameModded = foreach(i=1:length(dataList)) %do% {
+  datasWNameModded = foreach(i=1:length(dataList)) %dopar% {
     datasOut = dataList[[i]]
     datasOut$Name = as.character(datasOut$Name)
     datasOut$NameModded = tolower(datasOut$Name)
-    lastWords = as.integer(str_trim(str_extract(datasOut$NameModded,pattern='[0-9]+')))
+    lastWords = as.integer(stringr::str_trim(stringr::str_extract(datasOut$NameModded,pattern='[0-9]+')))
     lastWords = as.character(as.roman(lastWords))
-    datasOut$NameModded[!is.na(lastWords)] = str_replace(datasOut$NameModded[!is.na(lastWords)], replacement = lastWords[!is.na(lastWords)], pattern = '[0-9]+')
+    datasOut$NameModded[!is.na(lastWords)] = stringr::str_replace(datasOut$NameModded[!is.na(lastWords)], replacement = lastWords[!is.na(lastWords)], pattern = '[0-9]+')
     removeWords = tolower(c("[^a-zA-Z0-9]"," ",'Remastered','Videogame','WWE','EA*SPORTS','Soccer','&',"™","®",'DVD$','of','DX','disney','Deluxe','Complete','Ultimate','Encore','definitive','for','edition','standard','special','game', 'the','Gold','Legendary','Base*Game','free*to*play','full*game', 'year','hd','movie','TM','Cabela\'s','and'," x$","s$"))
     for (i in removeWords) {
       datasOut$NameModded = gsub(i, "", datasOut$NameModded, ignore.case = TRUE)
@@ -158,8 +178,9 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
   }
   # data = unique(data)
   # data$NameModded = NULL
-  data = dplyr::select(data, -Name.y, Name.x)
+  data = dplyr::select(data, -Name.y, -Name.x, -NameModded)
   data = gameRemover(data)
+  data = MoveFront(data, c("Name"))
   return (data)
 }
 
@@ -197,6 +218,8 @@ metacriticReviewsData = metacriticCSVPreparer()
 howLongToBeatData = howLongToBeatCSVPreparer()
 ignReviewsData = ignCSVPreparer()
 steamMerged = generousNameMerger(steamSummerSaleData,steamSpyAllData,mergeType="all.x",keepName = "x")
+steamMerged = keepLargestDuplicate(steamMerged, "Name")
+# steamMergedDuplicates = grepl.sub(steamMerged,FindDups(steamMerged, c("Name")),c("Name"))
 # ignMetacritcHLTBMergedData = ignMetacritcHLTBMerged(ignReviewsData,metacriticReviewsData,steamSummerSaleData,howLongToBeatData)
 # steamMerged$GameAge = steamSummerSaleFirstDay - steamMerged$Release_Date
 # steamMerged$GameAge[steamMerged$GameAge < 0] = NA
