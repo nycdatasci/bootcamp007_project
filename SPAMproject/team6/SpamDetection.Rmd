@@ -1,0 +1,78 @@
+---
+title: "Analysis of Spam Emails via Trees"
+author: "Jhonasttan Regalado, Yehui He, Yisong Tao, Regan Yee, Connie Zhang"
+date: "November 21, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('kernlab')
+library(ggplot2)
+library(dplyr)
+library(tree)
+library(caret)
+library(VIM)
+library(corrplot)
+data(spam)
+```
+
+## EDA 
+
+```{r}
+## Summary functions of Spam Emails:
+dim(spam)
+colnames(spam)
+summary(spam)
+head(spam)
+```
+
+## SPAM dataset is complete (no NAs!!)
+```{r}
+aggr(spam) ## no missingness
+```
+
+##Correlation Analysis
+Used the caret function 'findCorrelation' to identify highly correlated predictors. Goal was to determine which of these predictors would not be considered signficant for model prediction in Random Forest.
+
+```{r}
+Cor<-cor(spam[,-58])
+HhighCorr<-findCorrelation(Cor, cutoff=0.50) 
+LhighCorr<-findCorrelation(Cor, cutoff=0.25)
+
+M2 <- cor(spam[,HhighCorr])
+M3 <- cor(spam[,LhighCorr])
+corrplot.mixed(M3, upper = "circle", order="hclust")
+
+corrplot.mixed(M2, upper = "circle", order="hclust")
+ggplot(data=spam, aes(num415, num857)) + geom_point()
+```
+
+
+## Box Plots
+```{r}
+## Box Plots
+spam2 = spam %>% select(your, you, all, our, will, type)
+for(i in 1:5){
+  g2 = ggplot(spam2, mapping = aes(x=type, y=spam2[,i], fill=type))
+  g2_plot = g2 + geom_boxplot() + 
+    xlab(names(spam2)[i]) + ggtitle(paste0("Boxplot of ", names(spam2)[i]))
+  print(g2_plot)
+}
+names(spam2)[1]
+```
+
+## Bar Plot of Type
+```{r}
+g = ggplot(spam, mapping = aes(x=type, fill=type))
+g + geom_bar()
+```
+
+## Trees
+Error in tree(type ~ ., split = "gini", data = spam.train) : 
+  maximum depth reached
+  
+Doing a normal tree doesn't make sense -- there are too many terminal nodes...
+R won't let you proceed as the maximum depth is reached.
+
+
