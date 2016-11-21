@@ -243,3 +243,67 @@ Adjusted R-squared:  0.289  only explains 28.9% of the variance in scores of ani
 To do:    
  - Normalize viewer/favorites against time since release;  
  - Use number of favorites on staff/actor pages to turn Director, Actor etc. into continuous variable.
+ 
+ 
+ 
+```{r model2, eval=F}
+people_df <- read.csv("AnimePeople/AnimePeople.csv", header = T, stringsAsFactors = F)
+df<-AnimeInfo_df
+df$DirectorScore <- 0
+df$ActorScore <- 0
+df$MusicianScore <- 0
+for (i in c(1:nrow(df))){
+    if(!is.na(df$Director[i])){
+        df$DirectorScore[i] <- people_df$anime_people_fav[which(people_df$anime_people == df$Director[i])[1]]
+    }
+    if(!is.na(df$Musician[i])){
+        df$MusicianScore[i] <- people_df$anime_people_fav[which(people_df$anime_people == df$Musician[i])[1]]
+    }
+    if(!is.na(df$Actor1[i])){
+        df$ActorScore[i] <- df$ActorScore[i] + people_df$anime_people_fav[which(people_df$anime_people == df$Actor1[i])[1]]
+    }
+    if(!is.na(df$Actor2[i])){
+        df$ActorScore[i] <- df$ActorScore[i] + people_df$anime_people_fav[which(people_df$anime_people == df$Actor2[i])[1]]
+    }
+    if(!is.na(df$Actor3[i])){
+        df$ActorScore[i] <- df$ActorScore[i] + people_df$anime_people_fav[which(people_df$anime_people == df$Actor3[i])[1]]
+    }
+    if(!is.na(df$Actor4[i])){
+        df$ActorScore[i] <- df$ActorScore[i] + people_df$anime_people_fav[which(people_df$anime_people == df$Actor4[i])[1]]
+    }
+}
+#model_lm <- lm(Score ~ ..., data = df)
+#after many trials, linear model still doesn't work
+#use random forest
+```
+```{r random forest}
+new_df <- readRDS("final_df.RDS")
+library(randomForest)
+set.seed(0)
+train <- sample(c(1:nrow(new_df)), 0.8*nrow(new_df))
+rf_df <- randomForest(Score ~ DirectorScore + ActorScore + MusicianScore + Viewer + Favorite + Type + Rating, data = new_df, subset = train, importance = TRUE)
+set.seed(0)
+oob.err <- numeric(7)
+for (mtry in 1:7) {
+    fit <- randomForest(Score ~ . - Title , data = new_df[train, ], mtry = mtry)
+    oob.err[mtry] <- fit$mse[500]  
+    cat("We're performing iteration", mtry, "\n")
+}
+plot(1:7, oob.err, pch = 16, type = "b",
+     xlab = "Variables Considered at Each Split",
+     ylab = "OOB Mean Squared Error",
+     main = "Random Forest OOB Error Rates\nby # of Variables")
+min(oob.err)
+which.min(oob.err)
+importance(rf_df, type = 1)
+varImpPlot(rf_df, type = 1)
+rf_df_final <- randomForest(Score ~ DirectorScore +
+                                ActorScore + MusicianScore +
+                                Viewer + Favorite + Type +
+                                Rating, 
+                            data = new_df, 
+                            subset = train, 
+                            mtry = 3)
+pred_test <- predict(rf_df_final, new_df[-train,])
+Metrics::rmse(new_df$Score[-train], pred_test)
+```
