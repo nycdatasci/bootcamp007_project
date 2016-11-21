@@ -1,23 +1,17 @@
-# This package will contain the spiders of your Scrapy project
-#
-# Please refer to the documentation for information on how to create and manage
-# your spiders.
-#class Major_Nelson_Blog_BC_List_Spider(scrapy.Spider):
 import scrapy
 from scrapy.selector import Selector
-# from scrapy.http import Request
 from XboxBC.items import UserVoiceItem
 import re
 
 class UserVoice(scrapy.Spider):
     name = "UserVoice"
     allowed_domains = ["xbox.uservoice.com"]
-
     start_urls = (
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility?filter=top&page=1',
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility/status/1222799?page=1',
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility/status/1222800?page=1'
     )
+    
     def parse(self, response):
         base_link = 'http://www.xbox.uservoice.com'
         print "=" * 50

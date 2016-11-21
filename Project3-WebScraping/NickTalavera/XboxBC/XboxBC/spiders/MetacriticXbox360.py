@@ -1,18 +1,11 @@
-# This package will contain the spiders of your Scrapy project
-#
-# Please refer to the documentation for information on how to create and manage
-# your spiders.
-#class Major_Nelson_Blog_BC_List_Spider(scrapy.Spider):
 import scrapy
 from scrapy.selector import Selector
-# from scrapy.http import Request
 from XboxBC.items import MetacriticXbox360Item
 import re
 
 class MetacriticXbox360(scrapy.Spider):
     name = "MetacriticXbox360"
     allowed_domains = ["metacritic.com"]
-
     start_urls = (
         'http://www.metacritic.com/browse/games/score/metascore/all/xbox360/all?hardware=all&page=0',
     )
@@ -36,14 +29,6 @@ class MetacriticXbox360(scrapy.Spider):
                 reviewScoreUser = onerow.xpath('div[4]/span[2]/text()').extract()[0].strip()
                 if reviewScoreUser== 'tbd':
                     reviewScoreUser = ''
-                print(gameName)
-                print(reviewScorePro)
-                print(reviewScoreUser)
-                # releaseDate
-                # isOnXboxOne
-                # publisher
-                # developer
-                # ESRBRating
                 metacriticGameItem['gameName'] = gameName
                 metacriticGameItem['reviewScorePro'] = reviewScorePro
                 metacriticGameItem['reviewScoreUser'] = reviewScoreUser

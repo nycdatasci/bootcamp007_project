@@ -1,13 +1,11 @@
 from scrapy.selector import HtmlXPathSelector
 from scrapy.spider import BaseSpider
-
 from w3lib.html import remove_tags
 from XboxBC.items import WikipediaXB360ExclusiveItem
 
 class WikipediaXB360Exclusive(BaseSpider):
     name = "WikipediaXB360Exclusive"
     allowed_domains = ['en.wikipedia.org']
-
     start_urls = (
         "https://en.wikipedia.org/wiki/List_of_video_game_exclusives_(seventh_generation)",
     )
@@ -18,7 +16,6 @@ class WikipediaXB360Exclusive(BaseSpider):
         print "=" * 50
         for i, onerow in enumerate(rows_in_big_table):
             WXB360ExclusiveItem = WikipediaXB360ExclusiveItem()
-
             gameName = onerow.xpath('td/i/a/text()')
             if len(gameName) != 0:
                 gameName = gameName[0].extract()
@@ -31,7 +28,6 @@ class WikipediaXB360Exclusive(BaseSpider):
             exclusiveType = onerow.xpath('td[4]/text()')
             if len(exclusiveType) != 0:
                 exclusiveType = exclusiveType[0].extract()
-
             WXB360ExclusiveItem['gameName'] = gameName
             WXB360ExclusiveItem['publisher'] = publisher
             WXB360ExclusiveItem['releaseDate'] = releaseDate

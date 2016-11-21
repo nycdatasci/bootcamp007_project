@@ -299,7 +299,9 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     }
-    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = 'www/custom.css'))
+    knittedFile = knit(file, quiet = TRUE)
+    rmarkdown::render(file)
+    HTML(markdown::markdownToHTML(knittedFile, stylesheet = 'www/custom.css'))
   })
   
   output$AboutMe <- renderUI({
@@ -310,6 +312,8 @@ shinyServer(function(input, output, session) {
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     }
-    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = 'www/custom.css'))
+    knittedFile = knit(file, quiet = TRUE)
+    rmarkdown::render(file)
+    HTML(markdown::markdownToHTML(knittedFile, stylesheet = 'www/custom.css'))
   })
 })

@@ -1,11 +1,5 @@
-# This package will contain the spiders of your Scrapy project
-#
-# Please refer to the documentation for information on how to create and manage
-# your spiders.
-#class Major_Nelson_Blog_BC_List_Spider(scrapy.Spider):
 import scrapy
 from scrapy.selector import Selector
-# from scrapy.http import Request
 from XboxBC.items import Xbox360_MS_Site_Item
 from XboxBC.pipelines import XboxbcPipeline
 import re
@@ -16,7 +10,6 @@ import time
 class Xbox360_MS_Site(scrapy.Spider):
     name = "Xbox360_MS_Site"
     allowed_domains = ['marketplace.xbox.com']
-
     start_urls = (
         'http://marketplace.xbox.com/en-US/Games/XboxArcadeGames?SortBy=BestSelling&PageSize=90&Page=1',
         'http://marketplace.xbox.com/en-US/Games/GamesOnDemand?pagesize=90&sortby=BestSelling&Page=1',
@@ -33,7 +26,6 @@ class Xbox360_MS_Site(scrapy.Spider):
         numberOfPages = int(math.ceil(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
         print(numberOfPages)
         for j in range(1,numberOfPages+1):
-        # for j in range(1,2):
             next_page = str(response.request.url)[0:len(response.request.url)-1] + str(j)
             print("Page" + str(j))
             print(next_page)
@@ -43,8 +35,6 @@ class Xbox360_MS_Site(scrapy.Spider):
     def xbPageFind(self, response):
         baseURL = "http://marketplace.xbox.com"
         rows_in_big_table = response.xpath('//*[@id="BodyContent"]/div[3]/ol/li')
-        # print(rows_in_big_table.extract())
-        #
         for i, onerow in enumerate(rows_in_big_table):
             xOne_item = Xbox360_MS_Site_Item()
             gameName = onerow.xpath('h2/a/text()').extract()[0].strip()
@@ -60,7 +50,6 @@ class Xbox360_MS_Site(scrapy.Spider):
 
     def scrapeIndividualGames(self, response):
         xOne_item = response.meta['xOne_item']
-        # # return
         DLlist = response.xpath('//*[@id="navDownloadType"]/li/a/text()').extract()
         gameCount = ""
         DLdemos = ""
@@ -89,13 +78,10 @@ class Xbox360_MS_Site(scrapy.Spider):
             elif 'Xbox SmartGlass' in phrase:
                 DLsmartglass = re.findall('[0-9.]+',phrase)[0]
 
-
         if gameCount > 0:
             priceGold = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[2]/span/span[1]/text()').extract()
             if len(priceGold) != 0:
                 priceGold = priceGold[0].strip().lstrip("$")
-
-            # if 'COD' in xOne_item['gameName']:
             gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[1]/h2/text()').extract()
             if len(gameNameLong) != 0:
                 gameNameLong = gameNameLong[0].strip()
@@ -103,7 +89,6 @@ class Xbox360_MS_Site(scrapy.Spider):
                 if len(xOne_item['gameName']) < len(gameNameLong):
                     xOne_item['gameName'] = gameNameLong
             if len(gameNameLong) == 0:
-                print("FUCK")
                 gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div/h2/text()').extract()
                 gameNameLong = map(str.strip, map(str, gameNameLong))
             print(gameNameLong)
@@ -140,7 +125,6 @@ class Xbox360_MS_Site(scrapy.Spider):
         if len(publisher) != 0:
             publisher = publisher[0].strip()
             ProductPublishingCount = ProductPublishingCount + 1
-
         genre = ProductPublishing.xpath('li[' + str(ProductPublishingCount) + ']/text()').extract()
         if len(genre) != 0:
             genre = genre[0].strip()
@@ -155,9 +139,6 @@ class Xbox360_MS_Site(scrapy.Spider):
             price = price[0].strip().lstrip("$")
             if price == "Free":
                 price = 0
-
-
-
         highresboxart = Overview1.xpath('div[1]/img/@src').extract()
         if len(highresboxart) != 0:
             highresboxart = highresboxart[0].strip()
@@ -172,7 +153,6 @@ class Xbox360_MS_Site(scrapy.Spider):
         numberOfReviews = ProductTitleZone.xpath('div[2]/span/text()')
         if len(numberOfReviews) != 0:
             numberOfReviews = numberOfReviews.extract()[0].strip().strip(',')
-
         xOne_item['gameCount'] = gameCount
         xOne_item['developer'] = developer
         xOne_item['publisher'] = publisher
