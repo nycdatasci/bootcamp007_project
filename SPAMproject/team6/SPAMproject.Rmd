@@ -1,0 +1,107 @@
+---
+title: "SpamTreessDataset"
+author: "Jhonasttan Regalado"
+date: "11/21/2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Complete Project - Check points: 10:15
+
+## SPAM
+
+Scope:
+For supervised learners, you will focus more on prediction; however, it is expected that you find some insights regarding the relationships among variables. You may freely use the type variable when modeling.
+
+
+
+➢ Load the kernlab library.
+```{r}
+library(kernlab)
+library(PASWR)
+```
+➢ Use the data(spam) command to bring the data into your workspace.
+```{r}
+data(spam)
+```
+Determine spam / nonspam
+
+➢ Use the help(spam) command to understand the variables in the dataset.
+
+## EDA
+```{r}
+str(spam)
+#plot(spam)
+
+```
+
+SPAM dataset is complete (no NAs!!)
+```{r}
+
+library(VIM)
+aggr(spam) ## no missingness
+
+library(mice)
+md.pattern(spam)
+```
+
+Correlation analysis
+
+```{r}
+library(dplyr)
+library(corrplot)
+cor(spam[,-58])
+# corrplot.mixed(spam[,-58], upper = "square", order="hclust")
+# 
+# corrplot.mixed(spam[,c(1:10)], upper = "square", order="hclust")
+# 
+M <- cor(spam[,-58])
+# corrplot.mixed(M, upper = "square", order="hclust")
+# 
+# corrplot.mixed(M, lower = "ellipse", upper = "circle", order="hclust")
+# corrplot.mixed(M, lower = "square", upper = "circle", order="hclust")
+# corrplot.mixed(M, lower = "shade", upper = "circle", order="hclust")
+# corrplot.mixed(M, tl.pos = "lt", order="hclust")
+# corrplot.mixed(M, tl.pos = "lt", diag = "u", order="hclust")
+# corrplot.mixed(M, tl.pos = "lt", diag = "l", order="hclust")
+# corrplot.mixed(M, tl.pos = "n", order="hclust")
+
+```
+Used the caret function 'findCorrelation' to identify highly correlated predictors. Goal was to determine which of these predictors would not be considered signficant for model prediction in Random Forest.
+
+```{r}
+library(caret)
+library(ggplot2)
+Cor<-cor(spam[,-58])
+#highCor<-sum(abs(Cor[upper.tri(Cor)]) > 0.75)
+#highCor
+# Automated approach
+#DhighCorr<-findCorrelation(Cor, cutoff=0.1) # low cutoff used for demonstration
+HhighCorr<-findCorrelation(Cor, cutoff=0.50) 
+LhighCorr<-findCorrelation(Cor, cutoff=0.25)
+names(spam[,HhighCorr])
+#filtered_vars<-train[,-highCorr] # remove age from dataset
+
+M2 <- cor(spam[,HhighCorr])
+M3 <- cor(spam[,LhighCorr])
+corrplot(M2)
+#corrplot.mixed(M2, lower = "shade", upper = "circle", order="hclust")
+corrplot.mixed(M2, upper = "circle", order="hclust")
+ggplot(data=spam, aes(num415, num857)) + geom_point()
+corrplot.mixed(M3, upper = "circle", order="hclust")
+
+```
+
+Outcome:
+1. There are no NAs
+
+glm module to identify significant varibales
+
+```{r}
+glm.model <- glm(type ~ ., data = spam, family = "binomial")
+
+```
+
