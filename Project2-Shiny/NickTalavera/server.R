@@ -652,11 +652,21 @@ shinyServer(function(input, output, session) {
     })
   })
   
-  ######################
-  #Data sets
-  ######################
+  output$dataTableViewOfDrugs <- DT::renderDataTable({
+    dataSet = getDataSetFromSearch()
+    dataSet$Shipped_From = str_title_case(dataSet$Shipped_From)
+    dataSet$Drug_Type = str_title_case(dataSet$Drug_Type)
+    dataSet$Market_Name = str_title_case(dataSet$Market_Name)
+    dataSet = select(dataSet,"Market" = Market_Name, "Country of Origin" = Shipped_From, "Drug" = Drug_Type, "Price/Gram (Bitcoin)" = Price_Per_Gram_BTC, "Date Posted" = Time_Added, "Date Scraped" = Sheet_Date)
+    names(dataSet) = str_title_case(names(dataSet))
+    DT::datatable(dataSet, 
+                  options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 10, 
+                                 scrollY = TRUE, scrollX = TRUE), selection = "none", style = "bootstrap")
+  })
   
-  # Return the requested dataset
+  #=============================================================================
+  #                               SEARCH RESULTS                              #
+  #=============================================================================
   getDataSetFromSearch <- eventReactive(input$query, {
     dataToDisplay = dnmData
     if (!is.null(input$marketName)) {
@@ -669,7 +679,6 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$shippedFrom)) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$Shipped_From%in%input$shippedFrom)),]
     }
-    # switch(input$weightUnits)
     if (!is.null(input$weightUnits)) {
       drugUnitMutiplier = c(1000,1e+6,1,0.001,NA,0.035274,0.0022046249999752, 0.00000110231131)
       names(drugUnitMutiplier) = c("milligrams","ug","grams","kilograms","ml","ounces","pounds","tons")
@@ -678,7 +687,6 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$weightValue)) {
       dataToDisplay$Price_Per_Gram_BTC = dataToDisplay$Price_Per_Gram_BTC*as.numeric(input$weightValue)
     }
-    # dataToDisplay = dataToDisplay[is.finite(dataToDisplay$Price_Per_Gram_BTC),]
     if (!is.null(input$pricePerWeight)) {
       dataToDisplay = dataToDisplay[dataToDisplay$Price_Per_Gram_BTC >= input$pricePerWeight[1] & dataToDisplay$Price_Per_Gram_BTC <= input$pricePerWeight[2],]
     }
@@ -691,16 +699,4 @@ shinyServer(function(input, output, session) {
     dataToDisplay = dataToDisplay[!is.na(dataToDisplay$Market_Name),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
-  
-  output$dataTableViewOfDrugs <- DT::renderDataTable({
-    dataSet = getDataSetFromSearch()
-    dataSet$Shipped_From = str_title_case(dataSet$Shipped_From)
-    dataSet$Drug_Type = str_title_case(dataSet$Drug_Type)
-    dataSet$Market_Name = str_title_case(dataSet$Market_Name)
-    dataSet = select(dataSet,"Market" = Market_Name, "Country of Origin" = Shipped_From, "Drug" = Drug_Type, "Price/Gram (Bitcoin)" = Price_Per_Gram_BTC, "Date Posted" = Time_Added, "Date Scraped" = Sheet_Date)
-    names(dataSet) = str_title_case(names(dataSet))
-    DT::datatable(dataSet, 
-                  options = list(autoWidth = TRUE, orderClasses = TRUE, lengthMenu = c(5, 10, 30, 50), pageLength = 10, 
-                                 scrollY = TRUE, scrollX = TRUE), selection = "none", style = "bootstrap")
-  })
 })

@@ -7,7 +7,7 @@
 
 rm(list = ls()) #If I want my environment reset for testing.
 #===============================================================================
-#                                   LIBRARIES                                  #
+#                       LOAD PACKAGES AND MODULES                              #
 #===============================================================================
 library("ggplot2")
 library("plotly")

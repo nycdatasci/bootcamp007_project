@@ -2,80 +2,50 @@
 # Nick Talavera
 # Date: November 1, 2016
 
+# ui.R
+#===============================================================================
+#                                  LIBRARIES                                   #
+#===============================================================================
 library(shiny)
-roundUp <- function(x, nice=c(1,2,4,5,6,8,10)) {
-  if(length(x) != 1) stop("'x' must be of length 1")
-  10^floor(log10(x)) * nice[[which(x <= 10^floor(log10(x)) * nice)[[1]]]]
-}
-
-programName = "Xbox One Backwards Compatibility Predictor"
-sideBarWidth = 450
+#===============================================================================
+#                               GENERAL FUNCTIONS                              #
+#===============================================================================
 dashboardPage(
-  
+  #=============================================================================
+  #                               DASHBOARD HEADER                             #
+  #=============================================================================
   dashboardHeader(
     title = programName,
     titleWidth = sideBarWidth
   ),
+  #=============================================================================
+  #                              DASHBOARD SIDEBAR                             #
+  #=============================================================================
   dashboardSidebar(
     width = sideBarWidth,
-    sidebarMenu(id = "sbm",
+    sidebarMenu(id = "sideBarMenu",
                 menuItem("Lists", tabName = "Lists", icon = icon("gamepad")),
-                menuItem("Game Search", tabName = "Games", icon = icon("search")),
+                menuItem("Game Search", tabName = "Search", icon = icon("search")),
                 menuItem("Processing", tabName = "Processing", icon = icon("list-ol")),
                 menuItem("About", tabName = "AboutMe", icon = icon("user"))
     )# end of sidebarMenu
   ),#end of dashboardSidebar
+  #=============================================================================
+  #                                DASHBOARD BODY                              #
+  #=============================================================================
   dashboardBody(
+    theme = shinythemes::shinytheme("superhero"),
     includeCSS("www/custom.css"),
-    tags$head(tags$style(HTML('
-                                          
-                                          '))),
-    
-    
     tabItems(
-      tabItem(tabName = "Games",
+      tabItem(tabName = "Search",
               fluidPage(
-                title = "Games",
-                tags$head(tags$style(HTML('
-                                          .skin-blue .content-wrapper, .right-side{
-                                          background-color: #c2c2c2;
-                                          }
-                                          .box.box-solid.box-primary>.box-header{
-                                          background-color: #107c10;
-                                          }
-                                          .box.box-solid.box-primary {
-                                          border: 0.5px solid #3a3a3a;
-                                          }
-                                          .box-body {
-                                          border-radius: 0 0 3px 3px;
-                                          padding: 10px;
-                                          background-color: #f1f1f1;
-                                          }
-                                          .content {
-                                          min-height: 250px;
-                                          padding: 10px;
-                                          padding-top:10px;
-                                          padding-right: 10px;
-                                          padding-bottom: 10px;
-                                          padding-left: 10px;
-                                          margin-right: 10px;
-                                          margin-left: 10px;
-                                          }
-.irs-bar {
-    height: 8px;
-                                          top: 25px;
-                                          border-top: 0.5px solid #000000;
-                                          border-bottom: 0.5px solid #000000;
-                                          background: #5dc21e;
-}
-                                          '))),
+                title = "Search",
                 fluidRow(
                   box(
                     title = "Search",
-                    
                     status = "primary",
                     width = 12,
-                    # solidHeader = TRUE,
+                    solidHeader = FALSE,
                     collapsible = TRUE,
                     helpText("Note: You may leave fields empty or unchecked to select all."),
                     checkboxGroupInput("SEARCH_Is_Backwards_Compatible", label = h3("Is backwards compatible:"), 
@@ -214,6 +184,17 @@ dashboardPage(
               ) # End of fluidPage
       ), # End of tabItem
       tabItem(tabName = "Lists",
+              tags$head(tags$style(HTML('
+                                        .content {
+                                        min-height: 250px;
+                                        padding-top:0px;
+                                        padding-right: 0px;
+                                        padding-bottom: 0px;
+                                        padding-left: 0px;
+                                        margin-right: 0px;
+                                        margin-left: 0px;
+                                        }
+                                        '))),
               navbarPage(
                 title = 'Interesting Lists',
                 # position = "static-top",

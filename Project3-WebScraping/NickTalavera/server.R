@@ -7,79 +7,30 @@
 #===============================================================================
 #                               SHINYSERVER                                    #
 #===============================================================================
-str_Currency <- function(value, currency.sym="$", digits=2, sep=",", decimal=".") {
-  paste(
-    currency.sym,
-    formatC(value, format = "f", big.mark = sep, digits=digits, decimal.mark=decimal),
-    sep=""
-  )
-}
-
-reorder_size <- function(x) {
-  factor(x, levels = names(sort(table(x))))
-}
-
 shinyServer(function(input, output, session) {
-  
-  ######################
-  #Data sets
-  ######################
-  
-  # Return the requested dataset
+  #=============================================================================
+  #                              DATA PREPERATION                              #
+  #=============================================================================
   getDataSetToUse <- eventReactive(input$query, {
     dataToDisplay = getDataPresentable()
-    
-    # input$SEARCH_Is_Backwards_Compatible
-    # input$SEARCH_Predicted_to_become_Backwards_Compatible
-    # input$SEARCH_Backwards_Compatibility_Probability_Percent
-    # input$SEARCH_Release_date
-    # input$SEARCH_Is_Listed_on_XboxCom
-    # input$SEARCH_Is_Exclusive
-    # input$SEARCH_Xbox_One_Version_Available
-    # input$SEARCH_Is_On_Uservoice
-    # input$SEARCH_Uservoice_Votes
-    # input$SEARCH_Uservoice_Comments
-    # input$SEARCH_Is_Kinect_Supported
-    # input$SEARCH_Is_Kinect_Required
-    # input$SEARCH_Does_The_Game_Need_Special_Peripherals
-    # input$SEARCH_Is_The_Game_Retail_Only
-    # input$SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com
-    # input$SEARCH_Has_a_Demo_Available
-    # input$SEARCH_Xbox_User_Review_Score
-    # input$SEARCH_Xbox_User_Review_Counts
-    # input$SEARCH_Metacritic_Review_Score
-    # input$SEARCH_Metacritic_User_Review_Score
-    # input$SEARCH_Price_on_Xbox.com
-    # input$SEARCH_Publisher
-    # input$SEARCH_Developer
-    # input$SEARCH_Genre
-    # input$SEARCH_ESRB_Rating
-    # input$SEARCH_Features
-    # input$SEARCH_Smartglass_Compatible
-    # input$SEARCH_Number_of_Game_Add-Ons
-    # input$SEARCH_Number_of_Avatar_Items
-    # input$SEARCH_Number_of_GamerPics
-    # input$SEARCH_Number_of_Themes
-    # input$SEARCH_Number_of_Game_Videos
-    # print("NEW SEARCH")
-    # print(paste("SEARCH_Is_Backwards_Compatible", input$SEARCH_Is_Backwards_Compatible))
     if (!is.null(input$SEARCH_Is_Backwards_Compatible)) {
       dataToDisplay = dataToDisplay[dataToDisplay$isBCCompatible == input$SEARCH_Is_Backwards_Compatible[1] | dataToDisplay$isBCCompatible == input$SEARCH_Is_Backwards_Compatible[2],]
     }
-    # print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
     if (!is.null(input$SEARCH_Backwards_Compatibility_Probability_Percent)) {
       dataToDisplay = dataToDisplay[dataToDisplay$percentProb >= input$SEARCH_Backwards_Compatibility_Probability_Percent[1] & dataToDisplay$percentProb <= input$SEARCH_Backwards_Compatibility_Probability_Percent[2],]
     }
-    # print(paste("SEARCH_Is_Listed_on_XboxCom", input$SEARCH_Is_Listed_on_XboxCom))
-    # print(paste("SEARCH_Is_Exclusive", input$SEARCH_Is_Exclusive))
-    # print(paste("SEARCH_Xbox_One_Version_Available", input$SEARCH_Xbox_One_Version_Available))
-    # print(paste("SEARCH_Is_On_Uservoice", input$SEARCH_Is_On_Uservoice))
+
     if (!is.null(input$SEARCH_Uservoice_Votes)) {
       dataToDisplay = dataToDisplay[dataToDisplay$votes >= input$SEARCH_Uservoice_Votes[1] & dataToDisplay$votes <= input$SEARCH_Uservoice_Votes[2],]
     }
     if (!is.null(input$SEARCH_Uservoice_Comments)) {
       dataToDisplay = dataToDisplay[dataToDisplay$comments >= input$SEARCH_Uservoice_Comments[1] & dataToDisplay$comments <= input$SEARCH_Uservoice_Comments[2],]
     }
+    # print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
+    # print(paste("SEARCH_Is_Listed_on_XboxCom", input$SEARCH_Is_Listed_on_XboxCom))
+    # print(paste("SEARCH_Is_Exclusive", input$SEARCH_Is_Exclusive))
+    # print(paste("SEARCH_Xbox_One_Version_Available", input$SEARCH_Xbox_One_Version_Available))
+    # print(paste("SEARCH_Is_On_Uservoice", input$SEARCH_Is_On_Uservoice))
     # print(paste("SEARCH_Is_Kinect_Supported", input$SEARCH_Is_Kinect_Supported))
     # print(paste("SEARCH_Is_Kinect_Required", input$SEARCH_Is_Kinect_Required))
     # print(paste("SEARCH_Does_The_Game_Need_Special_Peripherals", input$SEARCH_Does_The_Game_Need_Special_Peripherals))
@@ -132,7 +83,6 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$SEARCH_Number_of_Game_Videos)) {
       dataToDisplay = dataToDisplay[dataToDisplay$DLgameVideos >= input$SEARCH_Number_of_Game_Videos[1] & dataToDisplay$DLgameVideos <= input$SEARCH_Number_of_Game_Videos[2],]
     }
-    # dataToDisplay = dataToDisplay[!is.na(dataToDisplay$gameName),]
     return(dataToDisplay)
   }, ignoreNULL = FALSE)
   
@@ -145,11 +95,14 @@ shinyServer(function(input, output, session) {
     return(dataToPresent)
   }
   
+  #=============================================================================
+  #                                 DATA TABLES                                #
+  #=============================================================================
   output$List_SearchResults <- DT::renderDataTable(
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -195,7 +148,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -219,7 +172,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = percentProb, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = as.numeric(price), 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -238,17 +191,12 @@ shinyServer(function(input, output, session) {
     )
   )
   
-  # # you can also use paging = FALSE to disable pagination
-  # output$ex3 <- DT::renderDataTable(
-  #   DT::datatable(iris, options = list(paging = FALSE))
-  # )
-  
   output$List_KinectGames <- DT::renderDataTable(
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isKinectSupported == TRUE | dataToPresent$isKinectRequired == TRUE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = percentProb, "Uservoice Votes" = votes, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = votes, 
                                       "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
                                       "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -310,7 +258,9 @@ shinyServer(function(input, output, session) {
     )
   )
   
-  
+  #=============================================================================
+  #                               NORMAL TABLES                                #
+  #=============================================================================
   output$PublisherBottom <- shiny::renderTable(
     head({
       dataToPresent = getDataPresentable()
@@ -338,6 +288,9 @@ shinyServer(function(input, output, session) {
     n = 25)
   )
   
+  #=============================================================================
+  #                                 HTML ELEMENTS                              #
+  #=============================================================================
   output$Explanation <- renderUI({
     if (file.exists("Markdowns/Explanation.Rmd")) {
       file = "Markdowns/Explanation.Rmd"

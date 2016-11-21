@@ -8,17 +8,13 @@ programName = "Darknet Market Analyzer"
 sidebarWidth = 250
 dashboardPage(dashboardHeader(title = programName,
                               titleWidth = sidebarWidth),
-              # skin = "red",
-              
               dashboardSidebar(
                 width = sidebarWidth,
-                sidebarMenu(id = "sbm",
-                            
+                sidebarMenu(id = "sideBarMenu",
                             # menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
                             # menuItem("Maps", tabName = "maps", icon = icon("search")), 
                             menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
-                            
-                            conditionalPanel("input.sbm == 'explorer'",
+                            conditionalPanel("input.sideBarMenu == 'explorer'",
                                         tabName = "explorer",
                                         icon = NULL,
                                      title = "Query Builder",
@@ -83,8 +79,8 @@ dashboardPage(dashboardHeader(title = programName,
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(
-                includeCSS("www/custom.css"),
                 theme = shinythemes::shinytheme("superhero"),
+                includeCSS("www/custom.css"),
                 tabItems(
                   tabItem(tabName = "dashboard",
                           fluidPage(
@@ -168,7 +164,7 @@ dashboardPage(dashboardHeader(title = programName,
                             title = "Market Explorer",
 
                             conditionalPanel(
-                              condition = "input.query | input.sbm == 'explorer'",
+                              condition = "input.query | input.sideBarMenu == 'explorer'",
                               # column(width = 10,
                                        fluidRow(
                                          box(

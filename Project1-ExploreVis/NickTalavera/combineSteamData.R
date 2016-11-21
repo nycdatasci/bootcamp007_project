@@ -5,7 +5,6 @@
 library(jsonlite)
 library(dplyr)
 library(stringr)
-
 library(kknn) #Load the weighted knn library.
 library(VIM) #For the visualization and imputation of missing values.
 library(class)

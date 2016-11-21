@@ -43,7 +43,7 @@ names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Wa
 Microsoft has said they need publishers and rights owners to agree to make their games backwards Compatible, so it is important to ensure publishers are up to date. Publishers also are often written inconsitently, but luckily many use unique names that make it easy like "Konami" or "Namco Bandai." This was mostly a matter of finding matching words in the name to update them to be consistent. However, it has been a decade since some of these games have been released and some publishers have fallen and others have risen from their ashes while others have been acquired. I researched and updated publishers and game to be closer to their modern day states as Microsoft would need to do. This is difficult and while I tried, there are probably a few mistakes or polishing that could still be done. 
 
 ## Missing values
-As I got toward the end of polishing, I realized I was still missing quite a few data points. I went back through my scrapers and grabbed even more information so I could fill in missing spots. However, that still left many missing values. There are 4132 missing values out of 66312 values (6.2%) though some are less important than others because I found later that I would not be using them (developers). This results in missingness, which occurs when at least some of an observation’s values are not present within the dataset. This messes up statistical and machine techniques because the algorithm won't understand how to crunch the numbers. Deleting games with a missing value doesn't help because it severely limits the amount of data we have for analysis. In this problem, we would lose 1343 out of 1842 lines of data. 
+As I got toward the end of polishing, I realized I was still missing quite a few data points. I went back through my scrapers and grabbed even more information so I could fill in missing spots. However, that still left many missing values. There are 3331 missing values out of 66312 values (5%) though some are less important than others because I found later that I would not be using them (developers). This results in missingness, which occurs when at least some of an observation’s values are not present within the dataset. This messes up statistical and machine techniques because the algorithm won't understand how to crunch the numbers. Deleting games with a missing value doesn't help because it severely limits the amount of data we have for analysis. In this problem, we would lose 1316 out of 1842 lines of data. 
 
 #### Imputation
 To solve this, we use imputation to fill in the missing values. The data is missing at random because certain points are missing from the dataset for because games weren't reviewed, submitted to uservoice or the point was simply missing. There isn't a  pattern to fill in the continuous or categorical values and it would be inappropriate to assign an average score where review scores are missing. I used K nearest neeighbors (KNN) to fill in missing values. KNN makes a tesselated boundary using existing data points and judges where in the boundary the missing point is. The formula uses the K closest observations to the missing data point, and predicts the majority class as the outcome. I used the square root of the number of rows (42.9) as a K value to strike a balance of being robust to outliers, stable boundaries and local variations.
@@ -54,158 +54,25 @@ I started by making a subset of the data that was either never going to be backw
 Once I had a model, I applied it to the entire dataset. Unfortunately, the truth table marked a much larger value of the true backwards Compatible values as false.
 
 #### Influence Plot
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
 
 ```
-                                  StudRes         Hat        CookD
-Block Party                 -0.0003172085 0.603966224 7.413479e-05
-Mass Effect 3                3.7113489887 0.003261879 2.748762e-01
-Minecraft: Xbox 360 Edition -3.4701885531 0.214247150 6.089149e-01
+Error in eval(expr, envir, enclos): could not find function "influencePlot"
 ```
 
 #### Variance Factors
 
 ```
-                          GVIF Df GVIF^(1/(2*Df))
-gamesOnDemandorArcade 1.920969  2        1.177281
-price                 1.323202  1        1.150305
-reviewScorePro        1.495966  1        1.223097
-isOnXboxOne           1.102592  1        1.050044
-isMetacritic          1.083634  1        1.040977
-isKinectRequired      1.000000  1        1.000000
-isConsoleExclusive    1.070122  1        1.034467
-xbox360Rating         1.714716  1        1.309472
-hasDemoAvailable      1.397634  1        1.182216
-isListedOnMSSite      1.725614  1        1.313626
-votes                 1.684826  1        1.298008
-numberOfReviews       1.942460  1        1.393722
-DLgameAddons          1.131993  1        1.063951
-DLavatarItems         1.449349  1        1.203889
-ESRBRating            1.382044  4        1.041275
+Error in eval(expr, envir, enclos): could not find function "vif"
 ```
 Variance factors are slightly more than 1 which proves the predictors are only slightly correlated but not enough to worry about colinearity.
 
 #### Coefficients
 
 ```
-                         (Intercept) gamesOnDemandorArcadeGames on Demand 
-                        1.074016e-03                         2.975601e+00 
-    gamesOnDemandorArcadeRetail Only                                price 
-                        1.904019e-01                         9.301107e-01 
-                      reviewScorePro                      isOnXboxOneTRUE 
-                        1.030424e+00                         2.391521e-01 
-                    isMetacriticTRUE                 isKinectRequiredTRUE 
-                        2.288119e+00                         2.629131e-07 
-              isConsoleExclusiveTRUE                        xbox360Rating 
-                        4.156885e+00                         2.691192e+00 
-                hasDemoAvailableTRUE                 isListedOnMSSiteTRUE 
-                        1.882399e+00                         2.194432e-01 
-                               votes                      numberOfReviews 
-                        9.999572e-01                         1.000005e+00 
-                        DLgameAddons                        DLavatarItems 
-                        9.677326e-01                         1.021798e+00 
-      ESRBRatingeC (Early Childhood)               ESRBRatingE (Everyone) 
-                        5.869419e-06                         1.532840e+00 
-                ESRBRatingM (Mature)                   ESRBRatingT (Teen) 
-                        8.131176e-01                         1.039226e+00 
-```
-
-#### McFadden's Pseudo R^2 Value
-28.4% of the variability in the backwards Compatibility variable appears to be explained by the predictors in the model.
-
-<!-- #### Confidence Intervals -->
-<!-- ```{r eval=TRUE, tidy=TRUE, echo=FALSE, comment=NA, warning=FALSE}  -->
-<!-- confint(glogit.optimizedFoAIC) -->
-<!-- ``` -->
-
-#### Model Summary
-
-```
-
-Call:
-glm(formula = isBCCompatible ~ gamesOnDemandorArcade + price + 
-    reviewScorePro + isOnXboxOne + isMetacritic + isKinectRequired + 
-    isConsoleExclusive + xbox360Rating + hasDemoAvailable + isListedOnMSSite + 
-    votes + numberOfReviews + DLgameAddons + DLavatarItems + 
-    ESRBRating, family = "binomial", data = dataUltKNN)
-
-Deviance Residuals: 
-    Min       1Q   Median       3Q      Max  
--2.4931  -0.5362  -0.2293  -0.0893   3.5026  
-
-Coefficients:
-                                       Estimate Std. Error z value
-(Intercept)                          -6.836e+00  1.227e+00  -5.573
-gamesOnDemandorArcadeGames on Demand  1.090e+00  7.643e-01   1.427
-gamesOnDemandorArcadeRetail Only     -1.659e+00  8.270e-01  -2.006
-price                                -7.245e-02  1.316e-02  -5.505
-reviewScorePro                        2.997e-02  7.627e-03   3.930
-isOnXboxOneTRUE                      -1.431e+00  3.808e-01  -3.757
-isMetacriticTRUE                      8.277e-01  2.776e-01   2.981
-isKinectRequiredTRUE                 -1.515e+01  3.697e+02  -0.041
-isConsoleExclusiveTRUE                1.425e+00  5.232e-01   2.723
-xbox360Rating                         9.900e-01  2.351e-01   4.212
-hasDemoAvailableTRUE                  6.325e-01  1.997e-01   3.167
-isListedOnMSSiteTRUE                 -1.517e+00  5.724e-01  -2.650
-votes                                -4.280e-05  1.467e-05  -2.916
-numberOfReviews                       4.746e-06  1.792e-06   2.649
-DLgameAddons                         -3.280e-02  1.351e-02  -2.428
-DLavatarItems                         2.156e-02  1.030e-02   2.094
-ESRBRatingeC (Early Childhood)       -1.205e+01  2.790e+03  -0.004
-ESRBRatingE (Everyone)                4.271e-01  2.240e-01   1.907
-ESRBRatingM (Mature)                 -2.069e-01  2.624e-01  -0.788
-ESRBRatingT (Teen)                    3.848e-02  2.307e-01   0.167
-                                     Pr(>|z|)    
-(Intercept)                          2.50e-08 ***
-gamesOnDemandorArcadeGames on Demand 0.153678    
-gamesOnDemandorArcadeRetail Only     0.044895 *  
-price                                3.70e-08 ***
-reviewScorePro                       8.51e-05 ***
-isOnXboxOneTRUE                      0.000172 ***
-isMetacriticTRUE                     0.002869 ** 
-isKinectRequiredTRUE                 0.967311    
-isConsoleExclusiveTRUE               0.006470 ** 
-xbox360Rating                        2.53e-05 ***
-hasDemoAvailableTRUE                 0.001539 ** 
-isListedOnMSSiteTRUE                 0.008060 ** 
-votes                                0.003541 ** 
-numberOfReviews                      0.008063 ** 
-DLgameAddons                         0.015165 *  
-DLavatarItems                        0.036229 *  
-ESRBRatingeC (Early Childhood)       0.996555    
-ESRBRatingE (Everyone)               0.056511 .  
-ESRBRatingM (Mature)                 0.430536    
-ESRBRatingT (Teen)                   0.867538    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-(Dispersion parameter for binomial family taken to be 1)
-
-    Null deviance: 1593.9  on 1841  degrees of freedom
-Residual deviance: 1141.8  on 1822  degrees of freedom
-AIC: 1181.8
-
-Number of Fisher Scoring iterations: 16
-```
-
-#### Truth Table
-
-```
-       prediction
-truth      0    1
-  FALSE 1521   34
-  TRUE   208   79
+Error in eval(expr, envir, enclos): object 'glogit.optimizedFoAIC' not found
 ```
 
 
-## Conclusions
-Metacritic, having a version on Xbox One, a lower price, higher user reviews on Xbox's website, and having a demo are the most significant predictors with Uservoice votes lagging slightly behind. There was also moderate help by having a newer release date, more avatar items, less game add ons and more reviews. Retail only games are also negatively related and has a somewhat significant relation. Also, having a Kinect requirement or required peripherals brought the probablity to zero.
 
-This makes me wonder if it is easier to test and approve games by usiner their demos. I am also glad that Uservoice votes positively significantly influenced their priorites. I am also not suprised they try to get higher reviewed games approved first. I imagine having a lower price and being available on their site makes them want to prioritize games people are likeliest to buy digitally on impulse.
 
-## Future Work
-* Implementing a method of machine learning called clustering to examine the data
-* Implementing a neural network if given the time
-* Automatically perform update scrape data and machine learning predictions
-* Scraping sales to give consumers advice on which Xbox 360 games to buy that week
-* Game covers are scraped but not implemented, which I feel would make the website prettier
+
