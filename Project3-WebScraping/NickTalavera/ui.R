@@ -228,6 +228,7 @@ dashboardPage(
                                           margin-left: 0px;
                                           }
                                           '))),
+                title = 'Xbox One Backwards Compatibility With The Xbox 360',
                 shiny::htmlOutput("Explanation", inline = TRUE)
                 # uiOutput(knitr::render_html())
               ) # End of fluidPage

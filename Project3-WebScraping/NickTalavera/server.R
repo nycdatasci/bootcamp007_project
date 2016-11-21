@@ -294,22 +294,22 @@ shinyServer(function(input, output, session) {
   output$Explanation <- renderUI({
     if (file.exists("Markdowns/Explanation.Rmd")) {
       file = "Markdowns/Explanation.Rmd"
-    } else  if (file.exists("./Markdowns/Explanation.Rmd")) {
-      file = "./Markdowns/Explanation.Rmd"
+    } else  if (file.exists("/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd")) {
+      file = "/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/Explanation.Rmd"
     }
-    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = NA))
+    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = 'www/custom.css'))
   })
   
   output$AboutMe <- renderUI({
     if (file.exists("Markdowns/AboutMe.Rmd")) {
       file = "Markdowns/AboutMe.Rmd"
-    } else  if (file.exists("./Markdowns/AboutMe.Rmd")) {
-      file = "./Markdowns/AboutMe.Rmd"
+    } else  if (file.exists("/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd")) {
+      file = "/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     } else if (file.exists("/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd")) {
       file = "/srv/shiny-server/bootcamp007_project/Project3-WebScraping/NickTalavera/Markdowns/AboutMe.Rmd"
     }
-    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = NA))
+    HTML(markdown::markdownToHTML(knit(file, quiet = TRUE), stylesheet = 'www/custom.css'))
   })
 })

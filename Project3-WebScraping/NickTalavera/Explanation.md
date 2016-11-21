@@ -1,12 +1,12 @@
 ---
-title: "Xbox One Backwards Compatibility With The Xbox 360"
+# title: "Xbox One Backwards Compatibility With The Xbox 360"
 runtime: shiny
 output: html_document
 ---
 ## Background
-I am a huge fan of the Xbox and Microsoft has made a lot of money off of me since they made the Xbox One backwards compatible with Xbox 360 games. I have a back catalog of games I've bought through Microsoft's weekly sales that has now put my Steam catalog to shame ([Steam Analysis](http://blog.nycdatascience.com/student-works/factors-affecting-sales-steams-2016-summer-sale/)). My problem is that during these sales, sometimes it's hard to guess which ones may become backwards compatible in the future. Last Friday was the one year anniversary of the backwards Compatibility update and I felt compelled to use my skills as a Data Scientist to make something fun, and hopefully useful.
+I am a huge fan of the Xbox and Microsoft has made a lot of money off of me since they made the Xbox One backwards compatible with Xbox 360 games. I have a back catalog of games I've bought through Microsoft's weekly sales that has now put my Steam catalog to shame ([Steam Analysis](http://blog.nycdatascience.com/student-works/factors-affecting-sales-steams-2016-summer-sale/)). My problem is that during these sales, sometimes it's hard to guess which ones may become backwards compatible in the future. Last Friday was the one year anniversary of the backwards compatibility update and I felt compelled to use my skills as a Data Scientist to make something fun, and hopefully useful.
 
-For those that are unaware, Microsoft has made many Xbox 360 games playable on the Xbox One. They have been making a few games a week compatible because it takes time to test that their software layer works properly with the game and they must get publishers and rights holders to agree to allow their games to be made Compatible. Publishers may not want certain games to be available for many reasons including complicated rights, timing, and remakes or remasters that may lose sales. Microsoft has also decided to not make Xbox 360 games that require the system's Kinect or other special peripherals (microphones, guitars, skateboards) compatible.
+For those that are unaware, Microsoft has made many Xbox 360 games playable on the Xbox One. They have been making a few games a week compatible because it takes time to test that their software layer works properly with the game and they must get publishers and rights holders to agree to allow their games to be made compatible. Publishers may not want certain games to be available for many reasons including complicated rights, timing, and remakes or remasters that may lose sales. Microsoft has also decided to not make Xbox 360 games that require the system's Kinect or other special peripherals (microphones, guitars, skateboards) compatible.
 
 ## Scraping
 Microsoft surely takes many factors into account when prioritizing their games, but I needed data to analyze so I could think more like them. I decided to collect data from websites using Scrapy, a free framework that plugs into Python. I first designed a "spider" to grab MajorNelson's backwards Compatibility list off of his blog because I figured it would be quickest to be updated. I then scraped game names, user and professional scores from Metacritic along with several other factoids like release dates in case another site is lacking. I know Microsoft has said in the past that they look at UserVoice votes to help make choices, which I confess I was skeptical of, and grabbed the votes and forum comment counts. Next, I grabbed the names and differentiations of Xbox 360 exclusives (console, regular) and Kinect games (required, supported) from Wikipedia. Remember that this is important because Microsoft says they won't support Kinect required games but games with optional Kinect functionality left me wondering. I pondered if also being on Xbox One in the form of remasters, remakes or cross-platform releases had much of an effect. For reference, I started with the list of Xbox One games off Microsoft's site and I even scraped a GameInformer article that gets regularly updated with the latest remasters. Based off these and further research, I made a list of games that could be found on both platforms. Most importantly, I grabbed the list of all Xbox 360 games and extracted every single piece of information I could find on their pages including publishers, developers, user review scores and their counts, release dates, Smartglass features, demo availability, multiplayer types, sound features, and the number of add-ons, themes, gamerpics and the like. After scraping these 8 sites, I felt ready to start processing the data into one master dataset. 
@@ -69,10 +69,110 @@ Variance factors are slightly more than 1 which proves the predictors are only s
 #### Coefficients
 
 ```
-Error in eval(expr, envir, enclos): object 'glogit.optimizedFoAIC' not found
+                         (Intercept) gamesOnDemandorArcadeGames on Demand 
+                        7.977845e+00                         2.626420e+00 
+    gamesOnDemandorArcadeRetail Only                                price 
+                        1.574758e-01                         5.251249e-01 
+                      reviewScorePro                      isOnXboxOneTRUE 
+                        1.589166e+00                         2.128426e-01 
+                isKinectRequiredTRUE               isConsoleExclusiveTRUE 
+                        3.271455e-07                         3.851984e+00 
+                hasDemoAvailableTRUE                        xbox360Rating 
+                        2.077581e+00                         1.461725e+00 
+                isListedOnMSSiteTRUE                        DLavatarItems 
+                        2.500326e-01                         1.193233e+00 
+                               votes                      numberOfReviews 
+                        5.955519e-01                         1.347898e+00 
+                        DLgameAddons                          releaseDate 
+                        3.843405e-01                         9.997637e-01 
+                     DLgamerPictures                     isInProgressTRUE 
+                        8.629458e-01                         8.932390e+00 
+```
+
+#### McFadden's Pseudo R^2 Value
+27.7% of the variability in the backwards Compatibility variable appears to be explained by the predictors in the model.
+
+#### Model Summary
+
+```
+
+Call:
+glm(formula = isBCCompatible ~ gamesOnDemandorArcade + price + 
+    reviewScorePro + isOnXboxOne + isKinectRequired + isConsoleExclusive + 
+    hasDemoAvailable + xbox360Rating + isListedOnMSSite + DLavatarItems + 
+    votes + numberOfReviews + DLgameAddons + releaseDate + DLgamerPictures + 
+    isInProgress, family = "binomial", data = dataUltTraining)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.9313  -0.5565  -0.2446  -0.1025   3.5987  
+
+Coefficients:
+                                       Estimate Std. Error z value
+(Intercept)                           2.077e+00  2.041e+00   1.018
+gamesOnDemandorArcadeGames on Demand  9.656e-01  7.595e-01   1.271
+gamesOnDemandorArcadeRetail Only     -1.848e+00  8.262e-01  -2.237
+price                                -6.441e-01  1.088e-01  -5.921
+reviewScorePro                        4.632e-01  9.827e-02   4.714
+isOnXboxOneTRUE                      -1.547e+00  3.867e-01  -4.001
+isKinectRequiredTRUE                 -1.493e+01  3.720e+02  -0.040
+isConsoleExclusiveTRUE                1.349e+00  5.309e-01   2.540
+hasDemoAvailableTRUE                  7.312e-01  1.969e-01   3.713
+xbox360Rating                         3.796e-01  1.010e-01   3.758
+isListedOnMSSiteTRUE                 -1.386e+00  5.678e-01  -2.442
+DLavatarItems                         1.767e-01  7.975e-02   2.215
+votes                                -5.183e-01  1.697e-01  -3.055
+numberOfReviews                       2.985e-01  1.015e-01   2.942
+DLgameAddons                         -9.562e-01  4.191e-01  -2.281
+releaseDate                          -2.363e-04  1.251e-04  -1.890
+DLgamerPictures                      -1.474e-01  9.095e-02  -1.621
+isInProgressTRUE                      2.190e+00  1.344e+00   1.629
+                                     Pr(>|z|)    
+(Intercept)                          0.308900    
+gamesOnDemandorArcadeGames on Demand 0.203581    
+gamesOnDemandorArcadeRetail Only     0.025261 *  
+price                                3.21e-09 ***
+reviewScorePro                       2.43e-06 ***
+isOnXboxOneTRUE                      6.32e-05 ***
+isKinectRequiredTRUE                 0.967980    
+isConsoleExclusiveTRUE               0.011078 *  
+hasDemoAvailableTRUE                 0.000205 ***
+xbox360Rating                        0.000171 ***
+isListedOnMSSiteTRUE                 0.014626 *  
+DLavatarItems                        0.026739 *  
+votes                                0.002253 ** 
+numberOfReviews                      0.003262 ** 
+DLgameAddons                         0.022520 *  
+releaseDate                          0.058816 .  
+DLgamerPictures                      0.105065    
+isInProgressTRUE                     0.103223    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1593.9  on 1841  degrees of freedom
+Residual deviance: 1152.7  on 1824  degrees of freedom
+AIC: 1188.7
+
+Number of Fisher Scoring iterations: 16
+```
+
+#### Truth Table
+
+```
+Error in table(truth = dataUltKNN$isBCCompatible, prediction = isBC.predicted): object 'dataUltKNN' not found
 ```
 
 
+## Conclusions
+Metacritic, having a version on Xbox One, a lower price, higher user reviews on Xbox's website, and having a demo are the most significant predictors with Uservoice votes lagging slightly behind. There was also moderate help by having a newer release date, more avatar items, less game add ons and more reviews. Retail only games are also negatively related and has a somewhat significant relation. Also, having a Kinect requirement or required peripherals brought the probablity to zero.
 
+This makes me wonder if it is easier to test and approve games by usiner their demos. I am also glad that Uservoice votes positively significantly influenced their priorites. I am also not suprised they try to get higher reviewed games approved first. I imagine having a lower price and being available on their site makes them want to prioritize games people are likeliest to buy digitally on impulse.
 
-
+## Future Work
+* Implementing a method of machine learning called clustering to examine the data
+* Implementing a neural network if given the time
+* Automatically perform update scrape data and machine learning predictions
+* Scraping sales to give consumers advice on which Xbox 360 games to buy that week
+* Game covers are scraped but not implemented, which I feel would make the website prettier
