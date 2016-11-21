@@ -2,7 +2,9 @@
 title: "Analysis of Spam Emails via Trees"
 author: "Jhonasttan Regalado, Yehui He, Yisong Tao, Regan Yee, Connie Zhang"
 date: "November 21, 2016"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -31,6 +33,40 @@ head(spam)
 ```{r}
 aggr(spam) ## no missingness
 ```
+
+```{r}
+library(kernlab)
+library(dplyr)
+
+data(spam)
+spam_features = spam %>% select (-type)
+spam_mean = sapply(spam_features, mean)
+
+spam_mean_bytype = spam %>% group_by(type) %>% summarise_each(funs(mean))
+
+spam_mean_bytype = as.data.frame(spam_mean_bytype)
+difference = data.frame()
+difference[1,1] = 'difference' 
+  
+  
+for (i in(2:ncol(spam_mean_bytype))) {
+  difference[1,i] = spam_mean_bytype[1,i] - spam_mean_bytype[2,i]
+}
+
+colnames = colnames(spam_mean_bytype)
+names(difference) = colnames
+
+NonspamVSspam = rbind(spam_mean_bytype, difference)
+
+
+DiffOnMean = t(NonspamVSspam)
+DiffOnMean= as.data.frame(DiffOnMean)
+colnames(DiffOnMean) = c('nonSpam','Spam','Mean Difference')
+DiffOnMean =DiffOnMean[2:nrow(DiffOnMean),]
+DiffOnMean
+
+```
+
 
 ##Correlation Analysis
 Used the caret function 'findCorrelation' to identify highly correlated predictors. Goal was to determine which of these predictors would not be considered signficant for model prediction in Random Forest.
@@ -144,7 +180,7 @@ table(tree.pred, spam.test$type)
 ```
 
 ![](./Rplot.png)
-![](./Rplot01.png)
+
 ![](./Rplot02.png)
 
 ## Performance of Random Forest:
@@ -189,3 +225,55 @@ Prediction nonspam spam
       Balanced Accuracy : 0.9381          
                                           
        'Positive' Class : nonspam  
+
+## GBM
+```{r cars}
+library(kernlab)
+library(gbm)
+data(spam)
+spam_scaled <- scale(spam[,-58])
+spam_scaled <- as.data.frame(spam_scaled)
+train <- sample(c(1:nrow(spam_scaled)), 0.7*nrow(spam_scaled))
+spam_scaled$type <- spam$type
+spam_scaled$type <- as.numeric(spam_scaled$type)-1  #1: spam; 0: nonspam
+sp_train <- spam_scaled[train,]
+sp_test <- spam_scaled[-train,]
+```
+```{r model_boosting, eval=F}
+set.seed(0)
+boost_sp <- gbm(type ~ ., data = sp_train,
+                distribution = "bernoulli",
+                n.trees = 10000,
+                interaction.depth = 4,
+                shrinkage = 0.001)
+```
+```{r model_eval}
+set.seed(0)
+boost_sp <-readRDS("tree.RDS")
+n_trees <- seq(from = 100, to = 10000, by = 100)
+predmat <- predict(boost_sp, newdata = sp_test, n.trees = n_trees, type = "response")
+predmat <- round(predmat)
+berr <- with(sp_test, apply((predmat - type)^2, 2, mean))
+which.min(berr) 
+1-min(berr)
+
+pred <- predmat[,which.min(berr)]
+pred <- as.factor(pred)
+truth <- sp_test$type
+table(truth, pred)
+
+accuracy = (table(truth, pred)[1,1]+table(truth, pred)[2,2])/1381
+accuracy
+
+sensitivity = (table(truth, pred)[2,2])/(table(truth, pred)[2,2]+table(truth, pred)[2,1]) #tpr
+sensitivity
+
+specificity = (table(truth, pred)[1,1])/(table(truth, pred)[1,1]+table(truth, pred)[1,2]) #tnr
+specificity
+
+plot(n_trees, berr, pch = 16,
+     ylab = "Classification Error",
+     xlab = "# Trees",
+     main = "Boosting Test Classification Error")
+abline(h = min(berr), col = "blue")  #boosted
+```
