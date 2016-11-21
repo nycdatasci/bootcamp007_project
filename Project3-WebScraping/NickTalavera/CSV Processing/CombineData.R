@@ -1,14 +1,27 @@
-library(qdapRegex)
-library(kknn) #Load the weighted knn library.
-library(VIM) #For the visualization and imputation of missing values.
-library(ggplot2)
-
+# rm(list = ls()) #If I want my environment reset for testing.
+#===============================================================================
+#                                   LIBRARIES                                  #
+#===============================================================================
+library(kknn)
+library(VIM)
 library(stringr)
 library(Hmisc)
 library(stringi)
 library(dplyr)
 library(DataCombine)
-library("data.table")
+library(data.table)
+#===============================================================================
+#                                SETUP PARALLEL                                #
+#===============================================================================
+library(foreach)
+library(parallel)
+library(doParallel)
+cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
+cl <- makeCluster(2)
+registerDoParallel(cl, cores=cores.Number)
+#===============================================================================
+#                              GENERAL FUNCTIONS                               #
+#===============================================================================
 moveMe <- function(data, tomove, where = "last", ba = NULL) {
   temp <- setdiff(names(data), tomove)
   x <- switch(
@@ -32,6 +45,9 @@ substrRight <- function(x, n){
 }
 na_count <-function (x) sapply(x, function(y) sum(is.na(y)))
 
+#===============================================================================
+#                             FIX DATA FUNCTIONS                               #
+#===============================================================================
 fixRemasters = function(data) {
   data$isRemastered = TRUE
   return(data)
@@ -80,39 +96,35 @@ fixUserVoice = function(data) {
 }
 
 fixXbox360_MS_Site = function(data) {
-  # data = unique.data.frame(data)/
   data = as.data.frame(data)
   data[data == ""] = NA
   data = data[!is.na(data$ESRBRating) & tolower(data$ESRBRating) != tolower('RP (Rating Pending)') & data$numberOfReviews != 0,]
   data = unique(data)
   data$price = as.numeric(as.character(data$price))
-  data$features = gsub("</?ul>", "", data$features)
-  data$features = gsub("\n", "", data$features)
-  data$features = gsub("</?li>", ",", data$features)
-  data$features = gsub("^,", "", data$features)
-  data$features = gsub(",$", "", data$features)
-  data$features = gsub(",+", ",", data$features)
-  # data$features =  strsplit(data$features,",")
-  print(data$features)
-  data$genre = gsub(".*Other,","",data$genre, ignore.case = TRUE)
-  data$genre = gsub("\\,.*","",data$genre)
-  # print(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
+  data$features = gsub(",+|,$|^,|</?ul>|</?li>", "", data$features)
+  data$features = gsub("\n", ",", data$features)
+  features =strsplit(data$features,",")
+  features <- t(sapply(features, "[", i = seq_len(max(sapply(features, length)))))
+  leaderboards = NULL
+  onlineMultiplayerPlayersMax = NULL
+  onlineMultiplayerPlayersMin = NULL
+  offlineMultiplayerPlayersMax = NULL
+  offlineMultiplayerPlayersMin = NULL
+  systemLinkMultiplayerPlayersMax = NULL
+  systemLinkMultiplayerPlayersMin = NULL
+  dolbyDigital = NULL
+  contentDownloads = NULL
+  harddriverequired = NULL
+  data$genre = gsub(".*Other,|\\,.*","",data$genre, ignore.case = TRUE)
   data$numberOfReviews = as.numeric(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
-  # data$Pricea = as.numeric(data$Price)
-
-  
-## FIX LATER
-  # data = data[!is.na(data$releaseDate) & !is.na(as.numeric(gsub("/", "",as.character(data$releaseDate)))),]
   releaseDateds = as.Date(as.Date(data$releaseDate, format = "%m/%d/%Y"))
   data$releaseDate = as.character(releaseDateds)
-  # data$releaseDates = releaseDateds
   data$gameName = str_trim(as.character(data$gameName))
   data$hasDemoAvailable[data$DLdemos>0] = TRUE
   data$hasDemoAvailable[is.na(data$DLdemos)] = FALSE
   data$isListedOnMSSite = TRUE
   data$DLdemos = NULL
-  data$isAvailableToPurchaseDigitally[data$gameCount == 1] = TRUE
-  # data$isAvailableToPurchaseDigitally[is.na(data$gameCount)] = TRUE
+  data$isAvailableToPurchaseDigitally[data$gameCount >= 1] = TRUE
   data$gameCount = NULL
   return(data)
 }
@@ -269,31 +281,21 @@ gameRemover = function(data) {
   keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
   gameNameMissed = tolower(data$gameName)
   notRemoved = unlist(lapply(gameNameMissed, (function (x) !is.na(str_extract(x,keywordsToRemoveRegex)))))
-  # notRemoved = unlist(lapply(data$gameNameMissed, (function (x) !is.na(str_match(x,keywordsToRemoveRegex)))))
   data = data[!notRemoved,]
   for (i in tolower(gamesToRemove)) {
-    # print(i)
     data = data[tolower(data$gameName) != i,]
   }
-  # print(sort(data$gameName[notRemoved]))
-  
   return(data)
 }
 
 fixPublishers = function(data) {
-  data$publisher = gsub("\\/.*","",data$publisher)
-  data$publisher = gsub("\\,.*","",data$publisher)
-  data$publisher = gsub("\\(.*", "", data$publisher)
-  data$publisher = gsub("\\.", "", data$publisher)
-  data$publisher = rm_white(str_trim(data$publisher))
+  data$publisher = gsub("\\.|\\(.*|\\/.*|\\,.*","",data$publisher)
   data$publisher = synonymousPublishers(data$publisher)
   data = gameCorrections(data)
-  print(paste(sort(unique(data$publisher))))
   return(data)
 }
 
 synonymousPublishers = function(PublisherStrings) {
-  # print(PublisherStrings)
   defunct = c('cdv Software Entertainment','Conspiracy Entertainment', 'Aq Interactive', 'Crave Entertainment','Destineer','Dtp Entertainment','Midway Games','MTV Games','Oxygen Games','Playlogic Entertainment, Inc.','Southpeak Games','Xs Games', 'Gamecock Media Group')
   PublisherStrings[grepl(PublisherStrings, pattern = 'Action & Adventure')] = NA
   PublisherStrings[grepl(PublisherStrings, pattern = 'Family')] = NA
@@ -332,7 +334,6 @@ synonymousPublishers = function(PublisherStrings) {
   PublisherStrings[grepl(PublisherStrings, pattern = 'CAVE', ignore.case = TRUE)] = 'CAVE Interactive'
   PublisherStrings[grepl(PublisherStrings, pattern = 'SouthPeak', ignore.case = TRUE)] = 'SouthPeak Interactive'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Kalypso', ignore.case = TRUE)] = 'Kalypso Media'
-  # PublisherStrings[grepl(PublisherStrings, pattern = 'Deep.Silver', ignore.case = TRUE)] = 'Deep Silver'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Mad.Catz', ignore.case = TRUE)] = 'Mad Catz Interactive'
   PublisherStrings[grepl(PublisherStrings, pattern = 'City.Interactive', ignore.case = TRUE)] = 'City Interactive'
   PublisherStrings[grepl(PublisherStrings, pattern = 'Lexis.Num', ignore.case = TRUE)] = 'Lexis Numerique'
@@ -401,19 +402,20 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keep = "x") {
   data = gameRemover(data)
   return (data)
 }
-
-rm(list = setdiff(ls(), lsf.str()))
+#===============================================================================
+#                              PROCESS THE DATA                                #
+#===============================================================================
 setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/CSV Processing')
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
-MajorNelsionBCList = namePrettier(fixMajorNelson(fread('Major_Nelson_Blog_BC_List.csv', stringsAsFactors = FALSE, header = TRUE)))
-UserVoice = namePrettier(fixUserVoice(fread('UserVoice.csv', stringsAsFactors = FALSE, header = TRUE)))
-WikipediaXB360Exclusive = namePrettier(fixWikipediaXB360KExclusive(fread('WikipediaXB360Exclusive.csv', stringsAsFactors = FALSE, header = TRUE)))
-WikipediaXB360Kinect = namePrettier(fixWikipediaXB360Kinect(fread('WikipediaXB360Kinect.csv', stringsAsFactors = FALSE, header = TRUE)))
-Xbox360_MS_Site = namePrettier(fixXbox360_MS_Site(as.data.frame(fread('Xbox360_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE))))
-XboxOne_MS_Site = namePrettier(fixMSXBone(fread('XboxOne_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE)))
-Remasters = namePrettier(fixRemasters(fread('RemastersXB.csv', stringsAsFactors = FALSE, header = TRUE)))
-MetacriticXbox360 = namePrettier(fixMetacritic(namePrettier(fread('MetacriticXbox360.csv', stringsAsFactors = FALSE))))
-RequiredPeripherals = fixRequiredPeripherals(fread('Special_Peripherals.csv', stringsAsFactors = FALSE))
+MajorNelsionBCList = namePrettier(fixMajorNelson(read.csv('Major_Nelson_Blog_BC_List.csv', stringsAsFactors = FALSE, header = TRUE)))
+UserVoice = namePrettier(fixUserVoice(read.csv('UserVoice.csv', stringsAsFactors = FALSE, header = TRUE)))
+WikipediaXB360Exclusive = namePrettier(fixWikipediaXB360KExclusive(read.csv('WikipediaXB360Exclusive.csv', stringsAsFactors = FALSE, header = TRUE)))
+WikipediaXB360Kinect = namePrettier(fixWikipediaXB360Kinect(read.csv('WikipediaXB360Kinect.csv', stringsAsFactors = FALSE, header = TRUE)))
+Xbox360_MS_Site = namePrettier(fixXbox360_MS_Site(as.data.frame(read.csv('Xbox360_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE))))
+XboxOne_MS_Site = namePrettier(fixMSXBone(read.csv('XboxOne_MS_Site.csv', stringsAsFactors = FALSE, header = TRUE)))
+Remasters = namePrettier(fixRemasters(read.csv('RemastersXB.csv', sep="\n", stringsAsFactors = FALSE, header = TRUE)))
+MetacriticXbox360 = namePrettier(fixMetacritic(namePrettier(read.csv('MetacriticXbox360.csv', stringsAsFactors = FALSE))))
+RequiredPeripherals = fixRequiredPeripherals(read.csv('Special_Peripherals.csv', stringsAsFactors = FALSE))
 
 
 dataUlt = generousNameMerger(WikipediaXB360Exclusive, WikipediaXB360Kinect)
@@ -424,8 +426,6 @@ dataUlt = generousNameMerger(dataUlt, MetacriticXbox360, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, XboxOne_MS_Site, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, Remasters, "all.x","x")
 dataUlt = generousNameMerger(dataUlt, RequiredPeripherals, "all.x","x")
-# Remasters
-# XboxOne_MS_Site
 dataUlt[dataUlt == ""] = NA
 dataUlt = unique(dataUlt)
 dataUlt = gameRemover(dataUlt)
@@ -441,20 +441,18 @@ dataUlt$isDiscOnly[is.na(dataUlt$isDiscOnly)] = FALSE
 dataUlt$isInProgress[is.na(dataUlt$isInProgress)] = FALSE
 dataUlt$hasDemoAvailable[is.na(dataUlt$hasDemoAvailable)] = FALSE
 dataUlt$usesRequiredPeripheral[is.na(dataUlt$usesRequiredPeripheral)] = FALSE
-dataUlt$highresboxart[is.na(dataUlt$highresboxart)] = "No Boxart"
-dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
 dataUlt$isOnXboxOne[is.na(dataUlt$isOnXboxOne)] = FALSE
 dataUlt$isAvailableToPurchaseDigitally[is.na(dataUlt$isAvailableToPurchaseDigitally)] = FALSE
-# dataUlt$votes[is.na(dataUlt$votes)] = 0
-# dataUlt$comments[is.na(dataUlt$comments)] = 0
+dataUlt$isDiscOnly[is.na(dataUlt$gamesOnDemandorArcade)] = TRUE
 dataUlt$DLsmartglass[is.na(dataUlt$DLsmartglass)] = 0
 dataUlt$DLgameVideos[is.na(dataUlt$DLgameVideos)] = 0
 dataUlt$DLgamerPictures[is.na(dataUlt$DLgamerPictures)] = 0
 dataUlt$DLgameAddons[is.na(dataUlt$DLgameAddons)] = 0
 dataUlt$DLavatarItems[is.na(dataUlt$DLavatarItems)] = 0
 dataUlt$DLthemes[is.na(dataUlt$DLthemes)] = 0
+dataUlt$highresboxart[is.na(dataUlt$highresboxart)] = "No Boxart"
+dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
 dataUlt$gameUrl[is.na(dataUlt$gameUrl)] = 'http://marketplace.xbox.com/en-US/Product'
-dataUlt$isDiscOnly[is.na(dataUlt$gamesOnDemandorArcade)] = TRUE
 dataUlt$isAvailableToPurchasePhysically[!is.na(dataUlt$isAvailableToPurchaseDigitally) | dataUlt$gamesOnDemandorArcade != "Arcade"] = TRUE
 dataUlt$isAvailableToPurchasePhysically[is.na(dataUlt$isAvailableToPurchasePhysically)] == FALSE
 dataUlt$isKinectSupported[grepl(dataUlt$genre,pattern = "Kinect", ignore.case = TRUE)] = TRUE
@@ -470,29 +468,11 @@ dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.n
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateExclusive[is.na(dataUlt$releaseDate)]
 dataUlt = fixPublishers(dataUlt)
 dataUlt = dataUlt[!is.na(dataUlt$gameName),]
-# IF GENRE OR NAME CONTAINS KINECT
-# dataUlt = dataUlt[dataUlt$numberOfReviews >= 0,]
-dataUlt$priceGold = NULL
-dataUlt$kinectSupport = NULL
-dataUlt$onlineFeatures = NULL
-dataUlt$gameNameModded = NULL
-dataUlt$isRemastered = NULL
-dataUlt$in_progress = NULL
-dataUlt$isDiscOnly = NULL
-dataUlt$dayRecorded = NULL
-dataUlt$publisherExclusive = NULL
-dataUlt$publisherKinect = NULL
-dataUlt$isAvailableToPurchasePhysically = NULL
-dataUlt$releaseDateExclusive = NULL
-dataUlt$releaseDateKinect = NULL
 dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = DataCombine::VarDrop(dataUlt, c("isOnUserVoice","isMetacritic","releaseDateKinect","releaseDateExclusive","isAvailableToPurchasePhysically","publisherKinect","publisherExclusive","dayRecorded","priceGold","kinectSupport","onlineFeatures","gameNameModded","isRemastered","in_progress","isDiscOnly"))
 na_count(dataUlt)
-# dataUltA = dataUlt[dataUlt$isListedOnMSSite == TRUE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-# dataUltN = dataUlt[dataUlt$isListedOnMSSite == TRUE  & !(dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-# dataUltMetMS = dataUlt[dataUlt$isListedOnMSSite == TRUE  & dataUlt$isMetacritic != TRUE,]
-# dataUltUVMS = dataUlt[dataUlt$isOnUserVoice == TRUE  & dataUlt$isListedOnMSSite != TRUE,]
-# dataUltG = dataUlt[dataUlt$isListedOnMSSite == FALSE  & (dataUlt$isMetacritic == TRUE | dataUlt$isBCCompatible == TRUE | dataUlt$isOnUserVoice == TRUE | dataUlt$isKinectSupported == TRUE | dataUlt$isExclusive == TRUE),]
-dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
+dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), dist_var = c("xbox360Rating","publisher","ESRBRating","usesRequiredPeripheral","releaseDate","reviewScorePro","votes","gamesOnDemandorArcade","isKinectSupported"), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')
+stopCluster(cl)

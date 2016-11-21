@@ -9,6 +9,7 @@ class MetacriticXbox360(scrapy.Spider):
     start_urls = (
         'http://www.metacritic.com/browse/games/score/metascore/all/xbox360/all?hardware=all&page=0',
     )
+    
     def parse(self, response):
         print "=" * 50
         numberOfPages = int(response.xpath('//*[@id="main"]/div[1]/div[2]/div/div[2]/ul/li[10]/a/text()').extract()[0])
