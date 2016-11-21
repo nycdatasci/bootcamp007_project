@@ -22,4 +22,7 @@ names(difference) = colnames
 NonspamVSspam = rbind(spam_mean_bytype, difference)
 
 spam_mean_bytype[3,] = c("Difference", colSums(y[,2:3]))
-
+DiffOnMean = t(NonspamVSspam)
+DiffOnMean= as.data.frame(DiffOnMean)
+colnames(DiffOnMean) = c('nonSpam','Spam','Mean Difference')
+DiffOnMean =DiffOnMean[2:nrow(DiffOnMean),]
