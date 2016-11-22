@@ -262,19 +262,19 @@ fixPublishers = function(data) {
 #===============================================================================
 #                         RENAME GAMES AND PUBLISHERS                          #
 #===============================================================================
-namePrettier = function(dataX) {
-  dataX$gameName = as.character(dataX$gameName)
-  dataX = dataX[dataX$gameName != "" & dataX$gameName != "gameName",]
-  dataX$gameName = gsub("™|®|Full.Game - |Full.Version|.-.FREE OFFER|.-.Full", "", dataX$gameName)
-  dataX$gameName = gsub("ñ", "n", dataX$gameName)
-  dataX$gameName = gsub("Crime.Scene.Investigation:", "", dataX$gameName)
-  dataX$gameName = gsub("DW:", "Dynasty Warriors:", dataX$gameName, ignore.case = FALSE)
-  dataX$gameName = gsub("PES", "Pro Evolution Soccer", dataX$gameName, ignore.case = FALSE)
-  dataX$gameName = gsub("LOTR", "Lord of the Rings", dataX$gameName, ignore.case = FALSE)
-  dataX$gameName = gsub("^KOF", "The King of Fighters", dataX$gameName, ignore.case = FALSE)
+namePrettier = function(data) {
+  data$gameName = as.character(data$gameName)
+  data = data[data$gameName != "" & data$gameName != "gameName",]
+  data$gameName = gsub("-|™|®|Full.Game - |Full.Version|.-.FREE OFFER|.-.Full", "", data$gameName)
+  data$gameName = gsub("ñ", "n", data$gameName)
+  data$gameName = gsub("Crime.Scene.Investigation:", "", data$gameName)
+  data$gameName = gsub("DW:", "Dynasty Warriors:", data$gameName, ignore.case = FALSE)
+  data$gameName = gsub("PES", "Pro Evolution Soccer", data$gameName, ignore.case = FALSE)
+  data$gameName = gsub("LOTR", "Lord of the Rings", data$gameName, ignore.case = FALSE)
+  data$gameName = gsub("^KOF", "The King of Fighters", data$gameName, ignore.case = FALSE)
   removeWords = tolower(c('Base Game','free to play','full game','(TM)$'))
   for (i in removeWords) {
-    dataX$gameName = gsub(i, "", dataX$gameName, ignore.case = TRUE)
+    data$gameName = gsub(i, "", data$gameName, ignore.case = TRUE)
   }
   # GALAGA
   # GALAGA LEGIONS
@@ -366,8 +366,8 @@ namePrettier = function(dataX) {
                           'NCAA Basketball March Madness Edition','MUD','MXGP','Mortal Kombat vs. DCU','Mortal Kombat Arcade','Lord of the Rings, BFME II','Fist of the North Star',
                           'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame'
                           ))
-  dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(dataX$gameName[tolower(dataX$gameName)%in%names(gameNameDict)])]
-  return(dataX)
+  data$gameName[tolower(data$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(data$gameName[tolower(data$gameName)%in%names(gameNameDict)])]
+  return(data)
 }
 
 gameRemover = function(data) {
@@ -455,6 +455,19 @@ synonymousPublishers = function(PublisherStrings) {
   return(PublisherStrings)
 }
 
+developerPrettier = function(developerStrings){
+  keywordsToRemove <- sort(c("\\sLLC$","\\sCo$","\\sLtd$","\\sInc$","\\sGmbH$","\\sSRL$"))
+  keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
+  keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
+  developerStrings = str_to_title(developerStrings)
+  developerStrings = iconv(developerStrings, "latin1", "ASCII", sub="")
+  developerStrings = gsub(pattern = "[[:punct:]]", replacement = "", x = developerStrings,ignore.case = TRUE)
+  developerStrings = gsub(pattern = keywordsToRemoveRegex, replacement = "", x = developerStrings,ignore.case = TRUE)
+  developerStrings = gsub("\\s+", " ", str_trim(developerStrings))
+  developerStrings = str_trim(developerStrings)
+  print(unique(sort(developerStrings)))
+  return(developerStrings)
+}
 #===============================================================================
 #                              PROCESS THE DATA                                #
 #===============================================================================
@@ -485,6 +498,7 @@ dataUlt = gameRemover(dataUlt)
 dataUlt = fixPublishers(dataUlt)
 dataUlt = keepLargestDuplicate(dataUlt,"gameName")
 dataUlt = dataUlt[!is.na(dataUlt$gameName),]
+dataUlt$developer = developerPrettier(dataUlt$developer)
 dataUlt = replaceDataInColumns(dataUlt,c("isAvailableToPurchaseDigitally","isOnXboxOne","usesRequiredPeripheral","hasDemoAvailable","isInProgress","isListedOnMSSite","isBCCompatible","isExclusive","isKinectSupported","isConsoleExclusive","isKinectRequired","isConsoleExclusive"),NA, FALSE)
 dataUlt = replaceDataInColumns(dataUlt,c("DLthemes","DLsmartglass","DLgameVideos","DLgamerPictures","DLgameAddons","DLavatarItems"),NA, 0)
 dataUlt$highresboxart[is.na(dataUlt$highresboxart)] = "No Boxart"
@@ -503,11 +517,9 @@ dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(data
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.na(dataUlt$releaseDate)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateExclusive[is.na(dataUlt$releaseDate)]
-dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = moveMe(dataUlt, c("gameName","votes","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 dataUlt = DataCombine::VarDrop(dataUlt, c("onlineFeatures","isOnUserVoice","isMetacritic","releaseDateKinect","releaseDateExclusive","isAvailableToPurchasePhysically","publisherKinect","publisherExclusive","dayRecorded","priceGold","kinectSupport","gameNameModded","isRemastered","in_progress","isDiscOnly"))
 na_count(dataUlt)
-dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), dist_var = c("xbox360Rating","publisher","ESRBRating","usesRequiredPeripheral","releaseDate","reviewScorePro","votes","gamesOnDemandorArcade","isKinectSupported"), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
-write.csv(dataUltKNN,'dataUltKNN.csv')
 write.csv(dataUlt,'dataUlt.csv')
 stopCluster(cl)
