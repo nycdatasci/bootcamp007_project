@@ -163,8 +163,6 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
     data$Name.y[is.na(data$Name.y)] =  data$Name.x[is.na(data$Name.y)]
     data$Name = data$Name.y
   }
-  # data = unique(data)
-  # data$NameModded = NULL
   data = VarDrop(data, c("Name.y", "Name.x", "NameModded"))
   data = gameRemover(data)
   data = keepLargestDuplicate(data)
@@ -223,10 +221,6 @@ steamMerged = kNN(steamMerged, k = sqrt(ncol(steamMerged)), imp_var = FALSE)
 steamSummerSaleFirstDay = as.Date('2016-06-23', "%Y-%m-%d")
 steamMerged$GameAge = as.numeric(steamSummerSaleFirstDay) - as.numeric(steamMerged$Release_Date) + 1
 write.csv(steamMerged, file = paste0(dataLocale, "steamDatabaseAllCombined.csv"), row.names=FALSE)
-
-
-
-unlist(lapply(steamMerged,class))
 steamMerged$Gross = log(steamMerged$Sales * steamMerged$Price_During_Sale)
 steamMerged$Sales = log(steamMerged$Sales)
 steamMerged$Sale_Percent = log(steamMerged$Sale_Percent)

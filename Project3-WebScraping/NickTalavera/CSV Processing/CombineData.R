@@ -45,9 +45,68 @@ substrRight <- function(x, n){
 }
 na_count <-function (x) sapply(x, function(y) sum(is.na(y)))
 
+keepLargestDuplicate = function(data,duplicateColumn) {
+  nums <- parSapply(cl = cl, data, is.numeric)
+  nums = names(nums[nums==TRUE])
+  columnsToKeep = ncol(data)
+  for (column in nums) {
+    print(column)
+    data <- data[order(data$gameName, -abs(data[,column]) ), ] #sort by id and reverse of abs(value)
+    data = data[!duplicated(data$gameName), ]  
+  }
+    
+  print(nums)
+  return(data)
+}
+
+replaceDataInColumns=function(data,columnNames,valueToReplace, replacement){
+  for (column in columnNames){
+    data[is.na(data[,column]),column] = replacement
+  }
+  return(data)
+}
+
+generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
+  dataList = list(dataX, dataY)
+  datasWNameModded = foreach(i=1:length(dataList)) %dopar% {
+    datasOut = dataList[[i]]
+    datasOut$gameName = as.character(datasOut$gameName)
+    datasOut$NameModded = tolower(datasOut$gameName)
+    lastWords = as.integer(stringr::str_trim(stringr::str_extract(datasOut$NameModded,pattern="[0-9]+")))
+    lastWords = as.character(as.roman(lastWords))
+    datasOut$NameModded[!is.na(lastWords)] = stringr::str_replace(datasOut$NameModded[!is.na(lastWords)], replacement = lastWords[!is.na(lastWords)], pattern = "[0-9]+")
+    removeWords = tolower(c("[^a-zA-Z0-9]"," ","Remastered","Videogame","WWE","EA*SPORTS","Soccer","&","™","®","DVD$","of","DX","disney","Deluxe","Complete","Ultimate","Encore","definitive","for","edition","standard","special","game", "the","Gold","Legendary\\S","Base*Game","free*to*play","full*game", "year","hd","movie","TM","Cabela\"s","and"," x$","s$"))
+    for (i in removeWords) {
+      datasOut$NameModded = gsub(i, "", datasOut$NameModded, ignore.case = TRUE)
+    }
+    datasOut$NameModded[datasOut$NameModded == "" & !is.na(datasOut$gameName)] = datasOut$gameName
+    return(datasOut)
+  }
+  dataX = datasWNameModded[[1]]
+  dataY = datasWNameModded[[2]]
+  if (tolower(mergeType) == "all") {
+    data = merge(x = dataX, y = dataY, by = "NameModded", all = TRUE)
+  } else if (tolower(mergeType) == "all.x") {
+    data = merge(x = dataX, y = dataY, by = "NameModded", all.x = TRUE)
+  } else if (tolower(mergeType) == "all.y") {
+    data = merge(x = dataX, y = dataY, by = "NameModded", all.y = TRUE)
+  }
+  if (tolower(keepName) == "x") {
+    data$gameName.x[is.na(data$gameName.x)] =  data$gameName.y[is.na(data$gameName.x)]
+    data$gameName = data$gameName.x
+  } else {
+    data$gameName.y[is.na(data$gameName.y)] =  data$gameName.x[is.na(data$gameName.y)]
+    data$gameName = data$gameName.y
+  }
+  data = VarDrop(data, c("gameName.y", "gameName.x", "NameModded"))
+  data = gameRemover(data)
+  return (data)
+}
+
 #===============================================================================
 #                             FIX DATA FUNCTIONS                               #
 #===============================================================================
+
 fixRemasters = function(data) {
   data$isRemastered = TRUE
   return(data)
@@ -85,13 +144,11 @@ fixMSXBone = function(data) {
 
 fixUserVoice = function(data) {
   data$gameName = str_trim(data$gameName)
-  # data = namePrettier(data)
   data$in_progress[data$in_progress == 'In-Progress'] = TRUE
-  data$UVclosed[data$in_progress == 'Closed'] = TRUE
+  # data$userVoiceClosed[data$in_progress == 'Closed'] = TRUE
   data$isInProgress = as.logical(data$in_progress)
   data = data[data$gameName != "",]
   data$isOnUserVoice = TRUE
-  data = summarise(group_by(data, gameName), isInProgress, votes = sum(votes), comments = sum(comments), isOnUserVoice)
   return(data)
 }
 
@@ -103,18 +160,63 @@ fixXbox360_MS_Site = function(data) {
   data$price = as.numeric(as.character(data$price))
   data$features = gsub(",+|,$|^,|</?ul>|</?li>", "", data$features)
   data$features = gsub("\n", ",", data$features)
-  features =strsplit(data$features,",")
-  features <- t(sapply(features, "[", i = seq_len(max(sapply(features, length)))))
-  leaderboards = NULL
-  onlineMultiplayerPlayersMax = NULL
-  onlineMultiplayerPlayersMin = NULL
-  offlineMultiplayerPlayersMax = NULL
-  offlineMultiplayerPlayersMin = NULL
-  systemLinkMultiplayerPlayersMax = NULL
-  systemLinkMultiplayerPlayersMin = NULL
-  dolbyDigital = NULL
-  contentDownloads = NULL
-  harddriverequired = NULL
+  # features <- t(sapply(features, "[", i = seq_len(max(sapply(features, length)))))
+  # features = strsplit(data$features,",")
+  # mat <- t(sapply(features, "[", i = seq_len(max(sapply(features, length)))))
+  # data$leaderboards = character(length = nrow(mat))
+  # data$onlineMultiplayerPlayersMax = character(length = nrow(mat))
+  # data$onlineMultiplayerPlayersMin = character(length = nrow(mat))
+  # data$offlineMultiplayerPlayersMax = character(length = nrow(mat))
+  # data$offlineMultiplayerPlayersMin = character(length = nrow(mat))
+  # data$systemLinkMultiplayerPlayersMax = character(length = nrow(mat))
+  # data$systemLinkMultiplayerPlayersMin = character(length = nrow(mat))
+  # data$dolbyDigital = character(length = nrow(mat))
+  # data$contentDownloads = character(length = nrow(mat))
+  # data$harddriverequired = character(length = nrow(mat))
+  # for (j in 1:nrow(mat)) {
+  #   for (i in 1:ncol(mat)) {
+  #     if (grepl(pattern = "Leaderboards", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$leaderboards[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Online", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$onlineMultiplayerPlayersMax[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Online", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$onlineMultiplayerPlayersMin[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Offline", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$offlineMultiplayerPlayersMax[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Offline", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$offlineMultiplayerPlayersMin[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "System", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$systemLinkMultiplayerPlayersMax[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "System", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$systemLinkMultiplayerPlayersMin[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Dolby", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$dolbyDigital[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Content", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$contentDownloads[j] = mat[j,i]
+  #       break
+  #     }
+  #     if (grepl(pattern = "Hard", x= mat[j,i], ignore.case = TRUE)) {
+  #       data$harddriverequired[j] = mat[j,i]
+  #       break
+  #     }
+  #   }
+  # }
   data$genre = gsub(".*Other,|\\,.*","",data$genre, ignore.case = TRUE)
   data$numberOfReviews = as.numeric(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
   releaseDateds = as.Date(as.Date(data$releaseDate, format = "%m/%d/%Y"))
@@ -124,6 +226,7 @@ fixXbox360_MS_Site = function(data) {
   data$hasDemoAvailable[is.na(data$DLdemos)] = FALSE
   data$isListedOnMSSite = TRUE
   data$DLdemos = NULL
+  data$features = NULL
   data$isAvailableToPurchaseDigitally[data$gameCount >= 1] = TRUE
   data$gameCount = NULL
   return(data)
@@ -148,29 +251,32 @@ fixMajorNelson = function(data){
   data$gameName[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))] =  gsub('(disc only)',"",data$isDiscOnly[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))])
   return(data)
 }
+
+fixPublishers = function(data) {
+  data$publisher = gsub("\\.|\\(.*|\\/.*|\\,.*","",data$publisher)
+  data$publisher = synonymousPublishers(data$publisher)
+  data$publisher[grepl(data$developer, pattern = 'Valve')] = 'Valve Corporation'
+  data = gameCorrections(data)
+  return(data)
+}
+
+#===============================================================================
+#                         RENAME GAMES AND PUBLISHERS                          #
+#===============================================================================
 namePrettier = function(dataX) {
   dataX$gameName = as.character(dataX$gameName)
   dataX = dataX[dataX$gameName != "" & dataX$gameName != "gameName",]
-  dataX$gameName = gsub("™", "", dataX$gameName)
-  dataX$gameName = gsub("®", "", dataX$gameName)
+  dataX$gameName = gsub("™|®|Full.Game - |Full.Version|.-.FREE OFFER|.-.Full", "", dataX$gameName)
   dataX$gameName = gsub("ñ", "n", dataX$gameName)
-  dataX$gameName = gsub("Full.Game - ", "", dataX$gameName)
-  dataX$gameName = gsub("Full.Version", "", dataX$gameName)
-  dataX$gameName = gsub(".-.FREE OFFER", "", dataX$gameName)
-  dataX$gameName = gsub(".-.Full", "", dataX$gameName)
   dataX$gameName = gsub("Crime.Scene.Investigation:", "", dataX$gameName)
-  # dataX$gameName = gsub("A.Telltale.Games.Series", "", dataX$gameName)
   dataX$gameName = gsub("DW:", "Dynasty Warriors:", dataX$gameName, ignore.case = FALSE)
   dataX$gameName = gsub("PES", "Pro Evolution Soccer", dataX$gameName, ignore.case = FALSE)
   dataX$gameName = gsub("LOTR", "Lord of the Rings", dataX$gameName, ignore.case = FALSE)
   dataX$gameName = gsub("^KOF", "The King of Fighters", dataX$gameName, ignore.case = FALSE)
-  # dataX$gameName = gsub("EA*Sports", "", dataX$gameName)
   removeWords = tolower(c('Base Game','free to play','full game','(TM)$'))
   for (i in removeWords) {
     dataX$gameName = gsub(i, "", dataX$gameName, ignore.case = TRUE)
   }
-  # dataX$gameName = gsub("FF\\s?", "Final Fantasy", dataX$gameName, ignore.case = FALSE)
-  # dataX$gameName = gsub("^KR:*AI", "Karaoke Revolution: American Idol", dataX$gameName, ignore.case = FALSE)
   # GALAGA
   # GALAGA LEGIONS
   # NARUTO
@@ -288,13 +394,6 @@ gameRemover = function(data) {
   return(data)
 }
 
-fixPublishers = function(data) {
-  data$publisher = gsub("\\.|\\(.*|\\/.*|\\,.*","",data$publisher)
-  data$publisher = synonymousPublishers(data$publisher)
-  data = gameCorrections(data)
-  return(data)
-}
-
 synonymousPublishers = function(PublisherStrings) {
   defunct = c('cdv Software Entertainment','Conspiracy Entertainment', 'Aq Interactive', 'Crave Entertainment','Destineer','Dtp Entertainment','Midway Games','MTV Games','Oxygen Games','Playlogic Entertainment, Inc.','Southpeak Games','Xs Games', 'Gamecock Media Group')
   PublisherStrings[grepl(PublisherStrings, pattern = 'Action & Adventure')] = NA
@@ -357,51 +456,6 @@ synonymousPublishers = function(PublisherStrings) {
   return(PublisherStrings)
 }
 
-gameCorrections = function(data) {
-  data$publisher[grepl(data$developer, pattern = 'Valve')] = 'Valve Corporation'
-  return(data)
-}
-
-generousNameMerger = function(dataX,dataY,mergeType="all",keep = "x") {
-  dataX$gameNameModded = tolower(dataX$gameName)
-  dataY$gameNameModded = tolower(dataY$gameName)
-  removeWords = tolower(c("[^[:alnum:] ]"," ",'Remastered','Videogame','WWE','EA*SPORTS','Soccer','&',"™","®",'DVD$','of','DX','disney','Deluxe','Complete','Ultimate','Encore','definitive','for','edition','standard','special','game', 'the','Gold','Legendary','Base*Game','free*to*play','full*game', 'year','hd','movie','TM','Cabela\'s','and'," x$","s$"))
-  
-  for (i in removeWords) {
-    dataX$gameNameModded = gsub(i, "", dataX$gameNameModded, ignore.case = TRUE)
-    dataY$gameNameModded = gsub(i, "", dataY$gameNameModded, ignore.case = TRUE)
-  }
-  
-  dataX$gameNameModded = gsub("IV$", "4", dataX$gameNameModded, ignore.case = TRUE)
-  dataY$gameNameModded = gsub("IV$", "4", dataY$gameNameModded, ignore.case = TRUE)
-  dataX$gameNameModded = gsub("III$", "3", dataX$gameNameModded, ignore.case = TRUE)
-  dataY$gameNameModded = gsub("III$", "3", dataY$gameNameModded, ignore.case = TRUE)
-  dataX$gameNameModded = gsub("II$", "2", dataX$gameNameModded, ignore.case = TRUE)
-  dataY$gameNameModded = gsub("II$", "2", dataY$gameNameModded, ignore.case = TRUE)
-  dataX$gameNameModded = gsub("I$", "1", dataX$gameNameModded, ignore.case = TRUE)
-  dataY$gameNameModded = gsub("I$", "1", dataY$gameNameModded, ignore.case = TRUE)
-  if (tolower(mergeType) == "all") {
-  data = merge(x = dataX, y = dataY, by = "gameNameModded", all = TRUE)
-  } else if (tolower(mergeType) == "all.x") {
-    data = merge(x = dataX, y = dataY, by = "gameNameModded", all.x = TRUE)
-  } else if (tolower(mergeType) == "all.y") {
-    data = merge(x = dataX, y = dataY, by = "gameNameModded", all.y = TRUE)
-  }
-  data = unique(data)
-  if (tolower(keep) == "x") {
-  data$gameName.x[is.na(data$gameName.x)] =  data$gameName.y[is.na(data$gameName.x)]
-  data$gameName = data$gameName.x
-  } else {
-    data$gameName.y[is.na(data$gameName.y)] =  data$gameName.x[is.na(data$gameName.y)]
-    data$gameName = data$gameName.y
-  }
-  data$gameName.y = NULL
-  
-  data$gameName.x = NULL
-  # data$gameNameModded = NULL
-  data = gameRemover(data)
-  return (data)
-}
 #===============================================================================
 #                              PROCESS THE DATA                                #
 #===============================================================================
@@ -429,30 +483,14 @@ dataUlt = generousNameMerger(dataUlt, RequiredPeripherals, "all.x","x")
 dataUlt[dataUlt == ""] = NA
 dataUlt = unique(dataUlt)
 dataUlt = gameRemover(dataUlt)
-dataUlt$isListedOnMSSite[is.na(dataUlt$isListedOnMSSite)] = FALSE
-dataUlt$isMetacritic[is.na(dataUlt$isMetacritic)] = FALSE
-dataUlt$isBCCompatible[is.na(dataUlt$isBCCompatible)] = FALSE
-dataUlt$isOnUserVoice[is.na(dataUlt$isOnUserVoice)] = FALSE
-dataUlt$isExclusive[is.na(dataUlt$isExclusive)] = FALSE
-dataUlt$isKinectSupported[is.na(dataUlt$isKinectSupported)] = FALSE
-dataUlt$isConsoleExclusive[is.na(dataUlt$isConsoleExclusive)] = FALSE
-dataUlt$isKinectRequired[is.na(dataUlt$isKinectRequired)] = FALSE
-dataUlt$isDiscOnly[is.na(dataUlt$isDiscOnly)] = FALSE
-dataUlt$isInProgress[is.na(dataUlt$isInProgress)] = FALSE
-dataUlt$hasDemoAvailable[is.na(dataUlt$hasDemoAvailable)] = FALSE
-dataUlt$usesRequiredPeripheral[is.na(dataUlt$usesRequiredPeripheral)] = FALSE
-dataUlt$isOnXboxOne[is.na(dataUlt$isOnXboxOne)] = FALSE
-dataUlt$isAvailableToPurchaseDigitally[is.na(dataUlt$isAvailableToPurchaseDigitally)] = FALSE
-dataUlt$isDiscOnly[is.na(dataUlt$gamesOnDemandorArcade)] = TRUE
-dataUlt$DLsmartglass[is.na(dataUlt$DLsmartglass)] = 0
-dataUlt$DLgameVideos[is.na(dataUlt$DLgameVideos)] = 0
-dataUlt$DLgamerPictures[is.na(dataUlt$DLgamerPictures)] = 0
-dataUlt$DLgameAddons[is.na(dataUlt$DLgameAddons)] = 0
-dataUlt$DLavatarItems[is.na(dataUlt$DLavatarItems)] = 0
-dataUlt$DLthemes[is.na(dataUlt$DLthemes)] = 0
+dataUlt = fixPublishers(dataUlt)
+dataUlt = keepLargestDuplicate(dataUlt,"gameName")
+dataUlt = dataUlt[!is.na(dataUlt$gameName),]
+dataUlt = replaceDataInColumns(dataUlt,c("isAvailableToPurchaseDigitally","isOnXboxOne","usesRequiredPeripheral","hasDemoAvailable","isInProgress","isListedOnMSSite","isBCCompatible","isExclusive","isKinectSupported","isConsoleExclusive","isKinectRequired","isConsoleExclusive"),NA, FALSE)
+dataUlt = replaceDataInColumns(dataUlt,c("DLthemes","DLsmartglass","DLgameVideos","DLgamerPictures","DLgameAddons","DLavatarItems"),NA, 0)
 dataUlt$highresboxart[is.na(dataUlt$highresboxart)] = "No Boxart"
-dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
 dataUlt$gameUrl[is.na(dataUlt$gameUrl)] = 'http://marketplace.xbox.com/en-US/Product'
+dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
 dataUlt$isAvailableToPurchasePhysically[!is.na(dataUlt$isAvailableToPurchaseDigitally) | dataUlt$gamesOnDemandorArcade != "Arcade"] = TRUE
 dataUlt$isAvailableToPurchasePhysically[is.na(dataUlt$isAvailableToPurchasePhysically)] == FALSE
 dataUlt$isKinectSupported[grepl(dataUlt$genre,pattern = "Kinect", ignore.case = TRUE)] = TRUE
@@ -466,10 +504,8 @@ dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(data
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.na(dataUlt$releaseDate)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateExclusive[is.na(dataUlt$releaseDate)]
-dataUlt = fixPublishers(dataUlt)
-dataUlt = dataUlt[!is.na(dataUlt$gameName),]
 dataUlt = moveMe(dataUlt, c("gameName","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
-dataUlt = DataCombine::VarDrop(dataUlt, c("isOnUserVoice","isMetacritic","releaseDateKinect","releaseDateExclusive","isAvailableToPurchasePhysically","publisherKinect","publisherExclusive","dayRecorded","priceGold","kinectSupport","onlineFeatures","gameNameModded","isRemastered","in_progress","isDiscOnly"))
+dataUlt = DataCombine::VarDrop(dataUlt, c("onlineFeatures","isOnUserVoice","isMetacritic","releaseDateKinect","releaseDateExclusive","isAvailableToPurchasePhysically","publisherKinect","publisherExclusive","dayRecorded","priceGold","kinectSupport","gameNameModded","isRemastered","in_progress","isDiscOnly"))
 na_count(dataUlt)
 dataUltKNN = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), dist_var = c("xbox360Rating","publisher","ESRBRating","usesRequiredPeripheral","releaseDate","reviewScorePro","votes","gamesOnDemandorArcade","isKinectSupported"), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
