@@ -51,10 +51,9 @@ keepLargestDuplicate = function(data,duplicateColumn) {
   columnsToKeep = ncol(data)
   for (column in nums) {
     print(column)
-    data <- data[order(data$gameName, -abs(data[,column]) ), ] #sort by id and reverse of abs(value)
-    data = data[!duplicated(data$gameName), ]  
+    data <- data[order(data[,duplicateColumn], -abs(data[,column]) ), ] #sort by id and reverse of abs(value)
   }
-    
+  data = data[!duplicated(data[,duplicateColumn]), ]  
   print(nums)
   return(data)
 }
