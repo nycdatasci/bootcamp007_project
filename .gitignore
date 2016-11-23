@@ -27,3 +27,5 @@ Project2-Shiny/NickTalavera/importBucket.R
 *.rdb
 
 *.rdb
+
+*.numbers

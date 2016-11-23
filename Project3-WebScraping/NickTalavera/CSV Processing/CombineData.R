@@ -2,8 +2,6 @@
 #===============================================================================
 #                                   LIBRARIES                                  #
 #===============================================================================
-library(kknn)
-library(VIM)
 library(stringr)
 library(Hmisc)
 library(stringi)
@@ -43,7 +41,7 @@ moveMe <- function(data, tomove, where = "last", ba = NULL) {
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
-na_count <-function (x) sapply(x, function(y) sum(is.na(y)))
+
 
 keepLargestDuplicate = function(data,duplicateColumn) {
   nums <- parSapply(cl = cl, data, is.numeric)

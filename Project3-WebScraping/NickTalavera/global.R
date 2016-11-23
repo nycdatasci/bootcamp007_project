@@ -47,14 +47,12 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Co
 }
 markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
 dataUlt = data.frame(fread(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE, drop = c("V1")))
-dataUltTraining = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), dist_var = c("xbox360Rating","publisher","ESRBRating","usesRequiredPeripheral","releaseDate","reviewScorePro","votes","gamesOnDemandorArcade","isKinectSupported"), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
-dataUltTraining$gameName = as.character(dataUltTraining$gameName)
-dataUltTraining$releaseDate = as.Date(dataUltTraining$releaseDate)
 dataUlt$gameName = as.character(dataUltTraining$gameName)
 dataUlt$releaseDate = as.numeric(dataUltTraining$releaseDate)
 dataUltTraining[sapply(dataUltTraining, is.numeric)] = as.data.frame(scale(dataUltTraining[sapply(dataUltTraining, is.numeric)]))
+dataUltTraining = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), dist_var = c("xbox360Rating","publisher","ESRBRating","usesRequiredPeripheral","releaseDate","reviewScorePro","votes","gamesOnDemandorArcade","isKinectSupported"), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
 # dataUltTraining = dataUltTraining[dataUltTraining$isBCCompatible == TRUE | dataUltTraining$usesRequiredPeripheral == TRUE | dataUltTraining$isKinectRequired == TRUE,]
-model.empty = glm(isBCCompatible ~ -gameName, family = "binomial", data = dataUltTraining) #The model with an intercept ONLY.
+model.empty = glm(isBCCompatible ~ -gameName, family = "binomial", data = dataUltTraining)
 model.full = glm(isBCCompatible ~ . -gameName, family = "binomial", data = dataUltTraining)
 scope = list(lower = formula(model.empty), upper = formula(model.full))
 forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
