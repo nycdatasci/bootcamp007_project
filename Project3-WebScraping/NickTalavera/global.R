@@ -46,26 +46,9 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Co
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }
 markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
-dataUlt = as.data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, drop = c("V1")))
-dataUlt$gameName = as.character(dataUlt$gameName)
-dataUlt$releaseDate = as.numeric(dataUlt$releaseDate)
-xboxData = dataUlt
-
-
-# programName = "Xbox One Backwards Compatibility Predictor"
-# sideBarWidth = 450
-# if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
-#   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
-# } else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
-#   dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
-#   setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera')
-# }  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
-#   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
-# }
-# markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
-# xboxData = data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, strip.white = TRUE))
-# xboxData$gameName = as.character(xboxData$gameName)
-# xboxData$releaseDate = as.Date(xboxData$releaseDate)
+xboxData = as.data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, drop = c("V1")))
+xboxData$gameName = as.character(xboxData$gameName)
+xboxData$releaseDate = as.numeric(xboxData$releaseDate)
 parSapply(cl, xboxData, class)
 # 
 for (i in names(xboxData)) {
