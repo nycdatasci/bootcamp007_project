@@ -8,6 +8,7 @@ library(stringi)
 library(dplyr)
 library(DataCombine)
 library(data.table)
+library(randomForest)
 #===============================================================================
 #                                SETUP PARALLEL                                #
 #===============================================================================
@@ -20,29 +21,6 @@ registerDoParallel(cl, cores=cores.Number)
 #===============================================================================
 #                              GENERAL FUNCTIONS                               #
 #===============================================================================
-moveMe <- function(data, tomove, where = "last", ba = NULL) {
-  temp <- setdiff(names(data), tomove)
-  x <- switch(
-    where,
-    first = data[c(tomove, temp)],
-    last = data[c(temp, tomove)],
-    before = {
-      if (is.null(ba)) stop("must specify ba column")
-      if (length(ba) > 1) stop("ba must be a single character string")
-      data[append(temp, values = tomove, after = (match(ba, temp)-1))]
-    },
-    after = {
-      if (is.null(ba)) stop("must specify ba column")
-      if (length(ba) > 1) stop("ba must be a single character string")
-      data[append(temp, values = tomove, after = (match(ba, temp)))]
-    })
-  x
-}
-substrRight <- function(x, n){
-  substr(x, nchar(x)-n+1, nchar(x))
-}
-
-
 keepLargestDuplicate = function(data,duplicateColumn) {
   nums <- parSapply(cl = cl, data, is.numeric)
   nums = names(nums[nums==TRUE])
@@ -517,7 +495,7 @@ dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(d
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.na(dataUlt$releaseDate)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateExclusive[is.na(dataUlt$releaseDate)]
 dataUlt$releaseDate = as.Date(dataUlt$releaseDate)
-dataUlt = moveMe(dataUlt, c("gameName","votes","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
+dataUlt = DataCombine::MoveFront(dataUlt, c("gameName","votes","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 dataUlt = DataCombine::VarDrop(dataUlt, c("onlineFeatures","isOnUserVoice","isMetacritic","releaseDateKinect","releaseDateExclusive","isAvailableToPurchasePhysically","publisherKinect","publisherExclusive","dayRecorded","priceGold","kinectSupport","gameNameModded","isRemastered","in_progress","isDiscOnly"))
 
 nums <- parSapply(cl = cl, dataUlt, is.logical) | parSapply(cl = cl, dataUlt, is.character)
@@ -526,7 +504,6 @@ for (column in nums) {
   dataUlt[,column] = as.factor(dataUlt[,column])
 }
 sapply(dataUlt,class)
-library(randomForest)
 dataUltImputed = dataUlt
 dataUltImputed$releaseDate = as.numeric(dataUltImputed$releaseDate)
 columnsToUseToImpute = c("votes","isListedOnMSSite","genre","ESRBRating","releaseDate","price","xbox360Rating","reviewScorePro","numberOfReviews","reviewScoreUser","comments")

@@ -1,4 +1,4 @@
-cd "/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/XboxBC/XboxBC"
+cd "/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Scraping/XboxBC"
 rm "/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/Major_Nelson_Blog_BC_List.csv"
 rm "/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/UserVoice.csv"
 rm "/Volumes/SDExpansion/Data Files/Xbox Back Compat Data/WikipediaXB360Kinect.csv"
