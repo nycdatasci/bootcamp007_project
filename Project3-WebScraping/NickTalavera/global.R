@@ -46,21 +46,30 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Co
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }
 markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
-dataUlt = data.frame(fread(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE, drop = c("V1")))
-dataUlt$gameName = as.character(dataUltTraining$gameName)
-dataUlt$releaseDate = as.numeric(dataUltTraining$releaseDate)
-dataUltTraining[sapply(dataUltTraining, is.numeric)] = as.data.frame(scale(dataUltTraining[sapply(dataUltTraining, is.numeric)]))
-dataUltTraining = kNN(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer), dist_var = c("xbox360Rating","publisher","ESRBRating","usesRequiredPeripheral","releaseDate","reviewScorePro","votes","gamesOnDemandorArcade","isKinectSupported"), k = sqrt(nrow(dataUlt)))[1:ncol(dplyr::select(dataUlt, -gameUrl, -highresboxart, -developer))]
-# dataUltTraining = dataUltTraining[dataUltTraining$isBCCompatible == TRUE | dataUltTraining$usesRequiredPeripheral == TRUE | dataUltTraining$isKinectRequired == TRUE,]
-model.empty = glm(isBCCompatible ~ -gameName, family = "binomial", data = dataUltTraining)
-model.full = glm(isBCCompatible ~ . -gameName, family = "binomial", data = dataUltTraining)
-scope = list(lower = formula(model.empty), upper = formula(model.full))
-forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
-logit.overall = eval(forwardAIC$call)
-predict(logit.overall, dataUltTraining, type = "response")
-xboxData = cbind(dataUlt,bcGuess = round(logit.overall$fitted.values), percentProb = round(logit.overall$fitted.values,3)*100)
-pchisq(logit.overall$deviance, logit.overall$df.residual, lower.tail = FALSE)
-isBC.predicted = round(logit.overall$fitted.values)
-table(truth = dataUltTraining$isBCCompatible, prediction = isBC.predicted)
-pchisq(logit.overall$deviance, logit.overall$df.residual, lower.tail = FALSE)
-1 - logit.overall$deviance/logit.overall$null.deviance
+dataUlt = as.data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, drop = c("V1")))
+dataUlt$gameName = as.character(dataUlt$gameName)
+dataUlt$releaseDate = as.numeric(dataUlt$releaseDate)
+xboxData = dataUlt
+
+
+# programName = "Xbox One Backwards Compatibility Predictor"
+# sideBarWidth = 450
+# if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
+#   dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
+# } else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
+#   dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
+#   setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera')
+# }  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
+#   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
+# }
+# markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
+# xboxData = data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, strip.white = TRUE))
+# xboxData$gameName = as.character(xboxData$gameName)
+# xboxData$releaseDate = as.Date(xboxData$releaseDate)
+parSapply(cl, xboxData, class)
+# 
+for (i in names(xboxData)) {
+  if (sum(xboxData[,i] == TRUE, na.rm = TRUE) + sum(xboxData[,i] == FALSE, na.rm = TRUE) + sum(is.na(xboxData[,i])) == nrow(xboxData)) {
+    xboxData[,i] = as.logical(xboxData[,i])
+  }
+}

@@ -32,7 +32,7 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Co
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }
 markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
-dataOriginal = data.frame(fread(paste0(dataLocale,'dataUltImputed.csv'), stringsAsFactors = TRUE, drop = c("V1")))
+dataOriginal = data.frame(fread(paste0(dataLocale,'dataUlt.csv'), stringsAsFactors = TRUE, drop = c("V1")))
 data = data.frame(fread(paste0(dataLocale,'dataUltImputed.csv'), stringsAsFactors = TRUE, drop = c("V1")))
 nums <- parSapply(cl = cl, data, is.logical)
 nums = names(nums[nums==TRUE])
@@ -104,13 +104,13 @@ sapply(data, function(y) sum(length(which(is.na(y)))))
 
 # Store and remove ids
 as_train = data[which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
-as_trainUnMod = as_train
+as_trainUnMod = dataOriginal[which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
 train_ids = as_train$gameName
 as_train = VarDrop(as_train, unwantedPredictors)
 train_BC = as_train$isBCCompatible
 # Store and remove ids
 as_test = data[-which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
-as_testUnMod = as_test
+as_testUnMod = dataOriginal[-which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
 test_ids = as_test$gameName
 as_test = VarDrop(as_test, unwantedPredictors)
 test_BC = as_test$isBCCompatible
@@ -239,6 +239,10 @@ dim(dm_train)
   # submission = data.frame(test_ids,predicted_isBCCompatible)
   submission = cbind(as_testUnMod, predicted_isBCCompatible)
   submission = rbind(submission, cbind(as_trainUnMod, predicted_isBCCompatible = as_trainUnMod$isBCCompatible))
+  for (column in nums) {
+    submission[,column] = as.logical(submission[,column])
+  }
+  submission = data.frame(as.data.frame(submission))
   write.csv(submission, file = file.path(dataLocale, "dataWPrediction.csv"), row.names = FALSE)
   print("...Done!")
 }

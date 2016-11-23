@@ -89,9 +89,10 @@ shinyServer(function(input, output, session) {
   
   getDataPresentable = function(){
     dataToPresent = xboxData
+    #  ADD BACK IF MY MODEL PRODUCES PERCENT PROBABILITIES
     dataToPresent = dataToPresent[dataToPresent$gameName != "TRUE",]
     # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100
-    dataToPresent$bcGuess = as.logical(dataToPresent$bcGuess)
+    dataToPresent$predicted_isBCCompatible = as.logical(dataToPresent$predicted_isBCCompatible)
     return(dataToPresent)
   }
   
@@ -102,7 +103,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = predicted_isBCCompatible, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -148,7 +149,7 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = bcGuess, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = predicted_isBCCompatible, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -171,8 +172,8 @@ shinyServer(function(input, output, session) {
     DT::datatable(
       {
         dataToPresent = getDataPresentable()
-        dataToPresent = dataToPresent[dataToPresent$bcGuess == TRUE & dataToPresent$isBCCompatible == FALSE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dataToPresent[dataToPresent$predicted_isBCCompatible == TRUE & dataToPresent$isBCCompatible == FALSE,]
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = as.numeric(price), 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -196,7 +197,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isKinectSupported == TRUE | dataToPresent$isKinectRequired == TRUE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Percent Probability" = as.numeric(percentProb), "Uservoice Votes" = votes, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Uservoice Votes" = votes, 
                                       "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
                                       "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
