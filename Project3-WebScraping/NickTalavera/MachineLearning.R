@@ -32,6 +32,7 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Co
   dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
 }
 markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
+dataOriginal = data.frame(fread(paste0(dataLocale,'dataUltImputed.csv'), stringsAsFactors = TRUE, drop = c("V1")))
 data = data.frame(fread(paste0(dataLocale,'dataUltImputed.csv'), stringsAsFactors = TRUE, drop = c("V1")))
 nums <- parSapply(cl = cl, data, is.logical)
 nums = names(nums[nums==TRUE])
@@ -67,16 +68,18 @@ sapply(data,class)
 # Add parallelization
 
 # Model parameters
-model_method = "gbm"
-model_grid <- expand.grid( n.trees = seq(100, 1000, 100), 
-                           interaction.depth = c(1, 3, 5, 7), 
-                           shrinkage = 0.1,
-                           n.minobsinnode = 20)
+# model_method = "nnet"
+# model_grid <- expand.grid(.decay = c(0.5, 0.1), .size = c(5, 6, 7))
+
+model_method = "nnet"
+# model_grid <- expand.grid(.decay = c(0.5, 0.1), .size = c(5, 6, 7))
+# model_grid <- expand.grid(.decay = c(0.4, 0.45, 0.5), .size = c(4, 4.25, 4.5))
+model_grid <- expand.grid(.decay = c(0.45), .size = c(4.25, 4.5, 4.75))
 
 # Misc Parameters
-subset_ratio = .01 # for testing purposes (set to 1 for full data)
+subset_ratio = 1 # for testing purposes (set to 1 for full data)
 partition_ratio = .8 # for cross-validation
-cv_folds = 2 # for cross-validation 
+cv_folds = 5 # for cross-validation 
 
 parallelize = TRUE # parallelize the computation?
 create_submission = TRUE # create a submission for Kaggle?
@@ -88,7 +91,7 @@ metric = 'Accuracy' # metric use for evaluating cross-validation
 #                                   MODELS                                     #
 #===============================================================================
 # Make array of unwanted columns
-unwantedPredictors = c("gameName","developer","gameUrl","highresboxart")
+unwantedPredictors = c("gameName","gameUrl","highresboxart")
 # Read training and test data
 sapply(data, function(y) sum(length(which(is.na(y)))))
 
@@ -101,11 +104,13 @@ sapply(data, function(y) sum(length(which(is.na(y)))))
 
 # Store and remove ids
 as_train = data[which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
+as_trainUnMod = as_train
 train_ids = as_train$gameName
 as_train = VarDrop(as_train, unwantedPredictors)
 train_BC = as_train$isBCCompatible
 # Store and remove ids
 as_test = data[-which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
+as_testUnMod = as_test
 test_ids = as_test$gameName
 as_test = VarDrop(as_test, unwantedPredictors)
 test_BC = as_test$isBCCompatible
@@ -130,7 +135,7 @@ print("Pre-processing...")
 # Convert categorical to dummy variables
 as_train = model.matrix(isBCCompatible ~ . -1 -isBCCompatible, data = as_train) # - 1 to ignore intercept
 as_test = model.matrix( ~ . -1 -isBCCompatible, data = as_test)
-as_train = cbind(as_train,bcCompatTrain)
+# as_train = cbind(as_train,bcCompatTrain)
 dim(as_train)
 # Run caret's pre-processing methods
 preProc <- preProcess(as_train,
@@ -138,10 +143,8 @@ preProc <- preProcess(as_train,
 
 # Transform the predictors
 dm_train = predict(preProc, newdata = as_train)
-dim(dm_train)
 dm_test = predict(preProc, newdata = as_test)
 # dm_train$isBCCompatible = bcCompat
-dim(dm_train)
 print("...Done!")
 
 # Setting up the cross-validatias_trainon
@@ -152,8 +155,6 @@ trainIdx <- createDataPartition(bcCompatTrain,
                                 p = partition_ratio,
                                 list = FALSE,
                                 times = 1)
-dim(dm_train)
-dim(trainIdx)
 sub_train <- dm_train[trainIdx,]
 sub_test <- dm_train[-trainIdx,]
 
@@ -169,8 +170,6 @@ fitCtrl <- trainControl(method = "cv",
 
 # Run the model on the bcCompat
 print("Running the model...")
-dim(sub_train)
-dim(bcCompatTrain)
 training_model <- train(x = sub_train,
                         y = isBCCompatible_train,
                         method = model_method,
@@ -207,26 +206,40 @@ model_results = list(grid = model_grid, train_control = fitCtrl, best_params = b
                      cv_results = cv_results, name = method_name, time_stamp = Sys.time())
 save(model_results, file = file.path(directory, "results.RData"))
 
+if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
+  dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
+} else if (dir.exists('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/')) {
+  dataLocale = '/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/Data/'
+  setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera')
+}  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
+  dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
+}
+
 # Create the final file
 if(create_submission){
   print("Training final model...")
   # Train final model on all of the data with best tuning parameters
+dim(dm_train)
+  length(bcCompatTrain)
+  
   final_model = train(x = dm_train,
-                      y = isBCCompatible_train,
+                      y = bcCompatTrain,
                       method = model_method,
                       tuneGrid = best_params,
-                      metric = metric,
+                      metric = metric, maxit = 1000,
                       maximize = FALSE)
-
+  print("Finished processing final model...")
   # Get the predicted isBCCompatible for the test set
+  sort(names(final_model$trainingData))
   predicted_isBCCompatible = predict(final_model, newdata = dm_test)
   if(use_log){
     predicted_isBCCompatible = exp(predicted_isBCCompatible) - 1
   }
-
   # Output final file
-  submission = data.frame(id=test_ids, isBCCompatible=predicted_isBCCompatible)
-  write.csv(submission, file = file.path(directory, "dataPredicted.csv"), row.names = FALSE)
+  # submission = data.frame(test_ids,predicted_isBCCompatible)
+  submission = cbind(as_testUnMod, predicted_isBCCompatible)
+  submission = rbind(submission, cbind(as_trainUnMod, predicted_isBCCompatible = as_trainUnMod$isBCCompatible))
+  write.csv(submission, file = file.path(dataLocale, "dataWPrediction.csv"), row.names = FALSE)
   print("...Done!")
 }
 
@@ -234,3 +247,4 @@ if(create_submission){
 if(parallelize & !exists("cl")){
   stopCluster(cl)
 }
+submissionNew = submission[submission$isBCCompatible==FALSE & submission$isKinectRequired == FALSE & submission$usesRequiredPeripheral == FALSE & submission$predicted_isBCCompatible == FALSE,]
