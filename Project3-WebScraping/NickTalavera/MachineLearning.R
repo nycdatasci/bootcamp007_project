@@ -1,7 +1,9 @@
+rm(list = ls())
 #===============================================================================
 #                       LOAD PACKAGES AND MODULES                              #
 #===============================================================================
-library(data.table)
+library("data.table")
+library("DataCombine")
 library(dplyr)
 na_count <-function (x) sapply(x, function(y) sum(is.na(y)))
 #===============================================================================
@@ -10,9 +12,12 @@ na_count <-function (x) sapply(x, function(y) sum(is.na(y)))
 library(foreach)
 library(parallel)
 library(doParallel)
-cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
-cl <- makeCluster(2)
-registerDoParallel(cl, cores=cores.Number)
+if(!exists("cl")){
+  library(doParallel)
+  cores.number = detectCores(all.tests = FALSE, logical = TRUE)
+  cl = makeCluster(2)
+  registerDoParallel(cl, cores=cores.number)
+}
 
 
 #===============================================================================
@@ -37,6 +42,7 @@ na_count(data)
 data$gameName = as.character(data$gameName)
 data$releaseDate = as.numeric(data$releaseDate)
 sapply(data,class)
+dataToModel = VarDrop(data,c("gameUrl","highresboxart"))
 #===============================================================================
 #                               MACHINE LEARNING                               #
 #===============================================================================
@@ -59,21 +65,7 @@ sapply(data,class)
 # 
 # data_path - data path containing train and test sets
 # output_path - output path for storing results
-
 # Add parallelization
-if(parallelize & !exists("cl")){
-  library(doParallel)
-  cores.number = detectCores(all.tests = FALSE, logical = TRUE)
-  cl = makeCluster(2)
-  registerDoParallel(cl, cores=cores.number)
-}
-
-#===============================================================================
-#                                   GBM                                        #
-#===============================================================================
-# Directory parameters
-local_dir = '~/Courses/nyc_data_science_academy/projects/Allstate-Kaggle---Team-Datasaurus-Rex/'
-server_dir = '~/ML'
 
 # Model parameters
 model_method = "gbm"
@@ -93,25 +85,16 @@ use_log = FALSE # take the log transform of the response?
 verbose_on = TRUE
 metric = 'MAE' # metric use for evaluating cross-validation
 
-data_path = "Data" # data path containing train and test sets
-output_path = "Output" # output path for storing results
-group_path = "Group"
-
 #===============================================================================
 #                                   MODELS                                     #
 #===============================================================================
 # Read training and test data
-library(data.table)
-library(dplyr)
-as_train <- fread(file.path(data_path, "train.csv"), stringsAsFactors = TRUE)
+train_ids = dataToModel$gameName
 # Store and remove ids
-train_ids = as_train$id
-as_train = as_train %>% dplyr::select(-id)
+as_train = dataToModel[which(dataToModel$isBCCompatible == TRUE | dataToModel$usesRequiredPeripheral == TRUE | dataToModel$isKinectRequired == TRUE),]
 
-as_test <- fread(file.path(data_path, "test.csv"), stringsAsFactors = TRUE)
 # Store and remove ids
-test_ids = as_test$id
-as_test = as_test %>% dplyr::select(-id)
+as_test = data[-which(dataToModel$isBCCompatible == TRUE | dataToModel$usesRequiredPeripheral == TRUE | dataToModel$isKinectRequired == TRUE),]
 
 # Subset the data
 library(caret)
@@ -119,19 +102,19 @@ set.seed(0)
 training_subset = createDataPartition(y = train_ids, p = subset_ratio, list = FALSE)
 as_train <- as_train[training_subset, ]
 
-# Transform the loss to log
+# Transform the isBCCompatible to log
 if(use_log){
-  loss = log(as_train$loss + 1)
+  isBCCompatible = log(as_train$isBCCompatible + 1)
 }else{
-  loss = as_train$loss
+  isBCCompatible = as_train$isBCCompatible
 }
 
 # Pre-processing
 print("Pre-processing...")
 
 # Convert categorical to dummy variables
-as_train = model.matrix(loss ~ . -1, data = as_train) # - 1 to ignore intercept
-as_test = model.matrix( ~ . -1, data = as_test)
+as_train = model.matrix(isBCCompatible ~ . -1 -gameName -developer, data = as_train) # - 1 to ignore intercept
+as_test = model.matrix( ~ . -1 -gameName -developer, data = as_test)
 
 # Run caret's pre-processing methods
 preProc <- preProcess(as_train, 
@@ -146,14 +129,14 @@ print("...Done!")
 set.seed(0)
 
 # Partition training data into train and test split
-trainIdx <- createDataPartition(loss, 
+trainIdx <- createDataPartition(isBCCompatible, 
                                 p = partition_ratio,
                                 list = FALSE,
                                 times = 1)
 sub_train <- dm_train[trainIdx,]
 sub_test <- dm_train[-trainIdx,]
-loss_train <- loss[trainIdx]
-loss_test <- loss[-trainIdx]
+isBCCompatible_train <- isBCCompatible[trainIdx]
+isBCCompatible_test <- isBCCompatible[-trainIdx]
 
 # Setting up the model
 library(Metrics)
@@ -176,10 +159,10 @@ fitCtrl <- trainControl(method = "cv",
                         summaryFunction = summary_function,
                         allowParallel = parallelize)
 
-# Run the model on the loss
+# Run the model on the isBCCompatible
 print("Running the model...")
 training_model <- train(x = sub_train, 
-                        y = loss_train,
+                        y = isBCCompatible_train,
                         method = model_method, 
                         trControl = fitCtrl,
                         tuneGrid = model_grid,
@@ -191,10 +174,10 @@ print("...Done!")
 test.predicted <- predict(training_model, sub_test)
 if(use_log){
   test.predicted = exp(test.predicted) - 1
-  loss_test = exp(loss_test) - 1
+  isBCCompatible_test = exp(isBCCompatible_test) - 1
 }
-estimated_rmse = postResample(pred = test.predicted, obs = loss_test)
-estimated_mae = Metrics::mae(loss_test, test.predicted)
+estimated_rmse = postResample(pred = test.predicted, obs = isBCCompatible_test)
+estimated_mae = Metrics::mae(isBCCompatible_test, test.predicted)
 
 cv_results = training_model$results
 method_name = training_model$method
@@ -220,20 +203,20 @@ if(create_submission){
   print("Training final model for Kaggle...")
   # Train final model on all of the data with best tuning parameters
   final_model = train(x = dm_train,
-                      y = loss,
+                      y = isBCCompatible,
                       method = model_method,
                       tuneGrid = best_params,
                       metric = metric,
                       maximize = FALSE)
   
-  # Get the predicted loss for the test set
-  predicted_loss = predict(final_model, newdata = dm_test)
+  # Get the predicted isBCCompatible for the test set
+  predicted_isBCCompatible = predict(final_model, newdata = dm_test)
   if(use_log){
-    predicted_loss = exp(predicted_loss) - 1
+    predicted_isBCCompatible = exp(predicted_isBCCompatible) - 1
   }
   
   # Output Kaggle submission
-  submission = data.frame(id=test_ids, loss=predicted_loss)
+  submission = data.frame(id=test_ids, isBCCompatible=predicted_isBCCompatible)
   write.csv(submission, file = file.path(directory, "kaggle_submission.csv"), row.names = FALSE)
   print("...Done!")
 }
