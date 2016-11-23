@@ -1,4 +1,4 @@
-# rm(list = ls()) #If I want my environment reset for testing.
+rm(list = ls()) #If I want my environment reset for testing.
 #===============================================================================
 #                                   LIBRARIES                                  #
 #===============================================================================
@@ -253,7 +253,6 @@ fixPublishers = function(data) {
   data$publisher = gsub("\\.|\\(.*|\\/.*|\\,.*","",data$publisher)
   data$publisher = synonymousPublishers(data$publisher)
   data$publisher[grepl(data$developer, pattern = 'Valve')] = 'Valve Corporation'
-  data = gameCorrections(data)
   return(data)
 }
 
@@ -365,6 +364,7 @@ namePrettier = function(data) {
                           'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame'
                           ))
   data$gameName[tolower(data$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(data$gameName[tolower(data$gameName)%in%names(gameNameDict)])]
+  data$gameName = str_trim(data$gameName)
   return(data)
 }
 
@@ -499,6 +499,7 @@ dataUlt = dataUlt[!is.na(dataUlt$gameName),]
 dataUlt$developer = developerPrettier(dataUlt$developer)
 dataUlt = replaceDataInColumns(dataUlt,c("isAvailableToPurchaseDigitally","isOnXboxOne","usesRequiredPeripheral","hasDemoAvailable","isInProgress","isListedOnMSSite","isBCCompatible","isExclusive","isKinectSupported","isConsoleExclusive","isKinectRequired","isConsoleExclusive"),NA, FALSE)
 dataUlt = replaceDataInColumns(dataUlt,c("DLthemes","DLsmartglass","DLgameVideos","DLgamerPictures","DLgameAddons","DLavatarItems"),NA, 0)
+dataUlt = replaceDataInColumns(dataUlt,c("developer","publisher","genre"),NA, "Unkown")
 dataUlt$highresboxart[is.na(dataUlt$highresboxart)] = "No Boxart"
 dataUlt$gameUrl[is.na(dataUlt$gameUrl)] = 'http://marketplace.xbox.com/en-US/Product'
 dataUlt$isOnXboxOne[!is.na(dataUlt$isRemastered)] = dataUlt$isRemastered[!is.na(dataUlt$isRemastered)]
@@ -515,9 +516,31 @@ dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherKinect[is.na(data
 dataUlt$publisher[is.na(dataUlt$publisher)] = dataUlt$publisherExclusive[is.na(dataUlt$publisher)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateKinect[is.na(dataUlt$releaseDate)]
 dataUlt$releaseDate[is.na(dataUlt$releaseDate)] = dataUlt$releaseDateExclusive[is.na(dataUlt$releaseDate)]
+dataUlt$releaseDate = as.Date(dataUlt$releaseDate)
 dataUlt = moveMe(dataUlt, c("gameName","votes","isListedOnMSSite","isMetacritic",'isOnXboxOne',"isBCCompatible","isOnUserVoice","isExclusive","isKinectSupported"), "first")
 dataUlt = DataCombine::VarDrop(dataUlt, c("onlineFeatures","isOnUserVoice","isMetacritic","releaseDateKinect","releaseDateExclusive","isAvailableToPurchasePhysically","publisherKinect","publisherExclusive","dayRecorded","priceGold","kinectSupport","gameNameModded","isRemastered","in_progress","isDiscOnly"))
-na_count(dataUlt)
+
+nums <- parSapply(cl = cl, dataUlt, is.logical) | parSapply(cl = cl, dataUlt, is.character)
+nums = names(nums[nums==TRUE])
+for (column in nums) {
+  dataUlt[,column] = as.factor(dataUlt[,column])
+}
+sapply(dataUlt,class)
+library(randomForest)
+dataUltImputed = dataUlt
+dataUltImputed$releaseDate = as.numeric(dataUltImputed$releaseDate)
+columnsToUseToImpute = c("votes","isListedOnMSSite","genre","ESRBRating","releaseDate","price","xbox360Rating","reviewScorePro","numberOfReviews","reviewScoreUser","comments")
+dataUltImputed[,columnsToUseToImpute] = VarDrop(rfImpute(x = dataUltImputed[,columnsToUseToImpute], y=dataUltImputed$isBCCompatible, iter=1, ntree=300),"dataUltImputed$isBCCompatible")
+dataUltImputed$releaseDate = as.Date.numeric(dataUltImputed$releaseDate, origin="1970-01-01")
+dataUltImputed$comments = round(dataUltImputed$comments,digits = 0)
+dataUltImputed$reviewScorePro = round(dataUltImputed$reviewScorePro,digits = 0)
+dataUltImputed$reviewScoreUser = round(dataUltImputed$reviewScoreUser,digits = 1)
+dataUltImputed$xbox360Rating = round(dataUltImputed$xbox360Rating,digits = 2)
+dataUltImputed$price = round(dataUltImputed$price,digits = 2)
+sapply(dataUltImputed, function(y) sum(length(which(is.na(y)))))
+sapply(dataUltImputed,class)
+
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUlt,'dataUlt.csv')
+write.csv(dataUltImputed,'dataUltImputed.csv')
 stopCluster(cl)
