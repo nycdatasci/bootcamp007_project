@@ -42,7 +42,6 @@ na_count(data)
 data$gameName = as.character(data$gameName)
 data$releaseDate = as.numeric(data$releaseDate)
 sapply(data,class)
-dataToModel = VarDrop(data,c("gameUrl","highresboxart"))
 #===============================================================================
 #                               MACHINE LEARNING                               #
 #===============================================================================
@@ -88,140 +87,137 @@ metric = 'MAE' # metric use for evaluating cross-validation
 #===============================================================================
 #                                   MODELS                                     #
 #===============================================================================
+# Make array of unwanted columns
+unwantedPredictors = c("gameName","developer","gameUrl","highresboxart")
 # Read training and test data
-train_ids = dataToModel$gameName
+sapply(data, function(y) sum(length(which(is.na(y)))))
+library(mice)
+data <- mice(data,m=1,maxit=1,meth='pmm',seed=0)
 # Store and remove ids
-as_train = dataToModel[which(dataToModel$isBCCompatible == TRUE | dataToModel$usesRequiredPeripheral == TRUE | dataToModel$isKinectRequired == TRUE),]
+as_train = data[which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
+train_ids = as_train$gameName
+as_train = VarDrop(as_train, unwantedPredictors)
 
 # Store and remove ids
-as_test = data[-which(dataToModel$isBCCompatible == TRUE | dataToModel$usesRequiredPeripheral == TRUE | dataToModel$isKinectRequired == TRUE),]
+as_test = data[-which(data$isBCCompatible == TRUE | data$usesRequiredPeripheral == TRUE | data$isKinectRequired == TRUE),]
+test_ids = as_test$gameName
+as_test = VarDrop(as_test, unwantedPredictors)
 
 # Subset the data
 library(caret)
 set.seed(0)
+duplicated(train_ids)
 training_subset = createDataPartition(y = train_ids, p = subset_ratio, list = FALSE)
 as_train <- as_train[training_subset, ]
 
-# Transform the isBCCompatible to log
+# Transform the bcCompat to log
 if(use_log){
-  isBCCompatible = log(as_train$isBCCompatible + 1)
+  bcCompat = log(as_train$isBCCompatible + 1)
 }else{
-  isBCCompatible = as_train$isBCCompatible
+  bcCompat = as_train$isBCCompatible
 }
 
 # Pre-processing
 print("Pre-processing...")
 
 # Convert categorical to dummy variables
-as_train = model.matrix(isBCCompatible ~ . -1 -gameName -developer, data = as_train) # - 1 to ignore intercept
-as_test = model.matrix( ~ . -1 -gameName -developer, data = as_test)
-
-# Run caret's pre-processing methods
-preProc <- preProcess(as_train, 
-                      method = c("nzv"))
-
-# Transform the predictors
-dm_train = predict(preProc, newdata = as_train)
-dm_test = predict(preProc, newdata = as_test)
-print("...Done!")
-
-# Setting up the cross-validation
-set.seed(0)
-
-# Partition training data into train and test split
-trainIdx <- createDataPartition(isBCCompatible, 
-                                p = partition_ratio,
-                                list = FALSE,
-                                times = 1)
-sub_train <- dm_train[trainIdx,]
-sub_test <- dm_train[-trainIdx,]
-isBCCompatible_train <- isBCCompatible[trainIdx]
-isBCCompatible_test <- isBCCompatible[-trainIdx]
-
-# Setting up the model
-library(Metrics)
-maeSummary <- function (data,
-                        lev = NULL,
-                        model = NULL) {
-  out <- Metrics::mae(data$obs, data$pred)  
-  names(out) <- "MAE"
-  out
-}
-
-if(metric == 'MAE'){
-  summary_function = maeSummary
-}else{
-  summary_function = defaultSummary
-}
-fitCtrl <- trainControl(method = "cv",
-                        number = cv_folds,
-                        verboseIter = verbose_on,
-                        summaryFunction = summary_function,
-                        allowParallel = parallelize)
-
-# Run the model on the isBCCompatible
-print("Running the model...")
-training_model <- train(x = sub_train, 
-                        y = isBCCompatible_train,
-                        method = model_method, 
-                        trControl = fitCtrl,
-                        tuneGrid = model_grid,
-                        metric = metric,
-                        maximize = FALSE)
-print("...Done!")
-
-# Estimated RMSE and MAE
-test.predicted <- predict(training_model, sub_test)
-if(use_log){
-  test.predicted = exp(test.predicted) - 1
-  isBCCompatible_test = exp(isBCCompatible_test) - 1
-}
-estimated_rmse = postResample(pred = test.predicted, obs = isBCCompatible_test)
-estimated_mae = Metrics::mae(isBCCompatible_test, test.predicted)
-
-cv_results = training_model$results
-method_name = training_model$method
-best_params = training_model$bestTune
-
-# Output plot
-tryCatch({
-  png(file.path(directory, 'tuning_plot.png'))
-  print(plot(training_model))
-  dev.off()
-}, error = function(e){
-  print("No tuning parameters found. Skipping plot.")
-})
-
-# Output grid, control, time stamp, and model name
-model_results = list(grid = model_grid, train_control = fitCtrl, best_params = best_params,
-                     estimated_rmse = estimated_rmse, estimated_mae = estimated_mae,
-                     cv_results = cv_results, name = method_name, time_stamp = Sys.time())
-save(model_results, file = file.path(directory, "results.RData"))
-
-# Create the Kaggle submission file
-if(create_submission){
-  print("Training final model for Kaggle...")
-  # Train final model on all of the data with best tuning parameters
-  final_model = train(x = dm_train,
-                      y = isBCCompatible,
-                      method = model_method,
-                      tuneGrid = best_params,
-                      metric = metric,
-                      maximize = FALSE)
-  
-  # Get the predicted isBCCompatible for the test set
-  predicted_isBCCompatible = predict(final_model, newdata = dm_test)
-  if(use_log){
-    predicted_isBCCompatible = exp(predicted_isBCCompatible) - 1
-  }
-  
-  # Output Kaggle submission
-  submission = data.frame(id=test_ids, isBCCompatible=predicted_isBCCompatible)
-  write.csv(submission, file = file.path(directory, "kaggle_submission.csv"), row.names = FALSE)
-  print("...Done!")
-}
-
-# Stop parallel clusters
-if(parallelize & !exists("cl")){
-  stopCluster(cl)
-}
+as_train = model.matrix(bcCompat ~ . -1 , data = as_train) # - 1 to ignore intercept
+as_test = model.matrix( ~ . -1, data = as_test)
+dim(as_train)
+# # Run caret's pre-processing methods
+# preProc <- preProcess(as_train,
+#                       method = c("nzv","knnImpute"))
+# 
+# # Transform the predictors
+# dm_train = predict(preProc, newdata = as_train)
+# dim(dm_train)
+# dm_test = predict(preProc, newdata = as_test)
+# print("...Done!")
+# 
+# # Setting up the cross-validatias_trainon
+# set.seed(0)
+# 
+# # Partition training data into train and test split
+# trainIdx <- createDataPartition(bcCompat,
+#                                 p = partition_ratio,
+#                                 list = FALSE,
+#                                 times = 1)
+# dim(dm_train)
+# dim(trainIdx)
+# sub_train <- dm_train[trainIdx,]
+# sub_test <- dm_train[-trainIdx,]
+# isBCCompatible_train <- bcCompat[trainIdx]
+# isBCCompatible_test <- bcCompat[-trainIdx]
+# 
+# # Setting up the model
+# fitCtrl <- trainControl(method = "cv",
+#                         number = cv_folds,
+#                         verboseIter = verbose_on,
+#                         summaryFunction = defaultSummary,
+#                         allowParallel = parallelize)
+# 
+# # Run the model on the bcCompat
+# print("Running the model...")
+# training_model <- train(x = sub_train,
+#                         y = isBCCompatible_train,
+#                         method = model_method,
+#                         trControl = fitCtrl,
+#                         tuneGrid = model_grid,
+#                         metric = metric,
+#                         maximize = FALSE)
+# print("...Done!")
+# 
+# # Estimated RMSE and MAE
+# test.predicted <- predict(training_model, sub_test)
+# if(use_log){
+#   test.predicted = exp(test.predicted) - 1
+#   isBCCompatible_test = exp(isBCCompatible_test) - 1
+# }
+# estimated_rmse = postResample(pred = test.predicted, obs = isBCCompatible_test)
+# 
+# cv_results = training_model$results
+# method_name = training_model$method
+# best_params = training_model$bestTune
+# 
+# # Output plot
+# tryCatch({
+#   png(file.path(directory, 'tuning_plot.png'))
+#   print(plot(training_model))
+#   dev.off()
+# }, error = function(e){
+#   print("No tuning parameters found. Skipping plot.")
+# })
+# 
+# # Output grid, control, time stamp, and model name
+# model_results = list(grid = model_grid, train_control = fitCtrl, best_params = best_params,
+#                      estimated_rmse = estimated_rmse, estimated_mae = estimated_mae,
+#                      cv_results = cv_results, name = method_name, time_stamp = Sys.time())
+# save(model_results, file = file.path(directory, "results.RData"))
+# 
+# # Create the Kaggle submission file
+# if(create_submission){
+#   print("Training final model for Kaggle...")
+#   # Train final model on all of the data with best tuning parameters
+#   final_model = train(x = dm_train,
+#                       y = isBCCompatible,
+#                       method = model_method,
+#                       tuneGrid = best_params,
+#                       metric = metric,
+#                       maximize = FALSE)
+# 
+#   # Get the predicted isBCCompatible for the test set
+#   predicted_isBCCompatible = predict(final_model, newdata = dm_test)
+#   if(use_log){
+#     predicted_isBCCompatible = exp(predicted_isBCCompatible) - 1
+#   }
+# 
+#   # Output Kaggle submission
+#   submission = data.frame(id=test_ids, isBCCompatible=predicted_isBCCompatible)
+#   write.csv(submission, file = file.path(directory, "kaggle_submission.csv"), row.names = FALSE)
+#   print("...Done!")
+# }
+# 
+# # Stop parallel clusters
+# if(parallelize & !exists("cl")){
+#   stopCluster(cl)
+# }
