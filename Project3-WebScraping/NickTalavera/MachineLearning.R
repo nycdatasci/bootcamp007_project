@@ -68,6 +68,38 @@ if(parallelize & !exists("cl")){
   registerDoParallel(cl, cores=cores.number)
 }
 
+#===============================================================================
+#                                   GBM                                        #
+#===============================================================================
+# Directory parameters
+local_dir = '~/Courses/nyc_data_science_academy/projects/Allstate-Kaggle---Team-Datasaurus-Rex/'
+server_dir = '~/ML'
+
+# Model parameters
+model_method = "gbm"
+model_grid <- expand.grid( n.trees = seq(100, 1000, 100), 
+                           interaction.depth = c(1, 3, 5, 7), 
+                           shrinkage = 0.1,
+                           n.minobsinnode = 20)
+
+# Misc Parameters
+subset_ratio = .01 # for testing purposes (set to 1 for full data)
+partition_ratio = .8 # for cross-validation
+cv_folds = 2 # for cross-validation 
+
+parallelize = TRUE # parallelize the computation?
+create_submission = FALSE # create a submission for Kaggle?
+use_log = FALSE # take the log transform of the response?
+verbose_on = TRUE
+metric = 'MAE' # metric use for evaluating cross-validation
+
+data_path = "Data" # data path containing train and test sets
+output_path = "Output" # output path for storing results
+group_path = "Group"
+
+#===============================================================================
+#                                   MODELS                                     #
+#===============================================================================
 # Read training and test data
 library(data.table)
 library(dplyr)
