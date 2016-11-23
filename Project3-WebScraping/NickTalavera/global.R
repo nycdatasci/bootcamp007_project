@@ -49,10 +49,8 @@ markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
 xboxData = as.data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, drop = c("V1")))
 xboxData$gameName = as.character(xboxData$gameName)
 xboxData$releaseDate = as.numeric(xboxData$releaseDate)
-parSapply(cl, xboxData, class)
-# 
-for (i in names(xboxData)) {
-  if (sum(xboxData[,i] == TRUE, na.rm = TRUE) + sum(xboxData[,i] == FALSE, na.rm = TRUE) + sum(is.na(xboxData[,i])) == nrow(xboxData)) {
-    xboxData[,i] = as.logical(xboxData[,i])
+for (i in 1:length(names(xboxData))) {
+  if (sum(xboxData[,names(xboxData)[i]] == TRUE, na.rm = TRUE) + sum(xboxData[,names(xboxData)[i]] == FALSE, na.rm = TRUE) + sum(is.na(xboxData[,names(xboxData)[i]])) == nrow(xboxData)) {
+    xboxData[,names(xboxData)[i]] = as.logical(xboxData[,names(xboxData)[i]])
   }
 }
