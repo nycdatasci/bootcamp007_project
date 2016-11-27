@@ -11,16 +11,12 @@ class UserVoice(scrapy.Spider):
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility/status/1222799?page=1',
     'https://xbox.uservoice.com/forums/298503-backwards-compatibility/status/1222800?page=1'
     )
-    
+
     def parse(self, response):
         base_link = 'http://www.xbox.uservoice.com'
-        print "=" * 50
         numberOfPages = int(response.xpath("/html/body/div[2]/div/div/div[1]/article/section[3]/div[2]/a/text()")[-2].extract())
-        print(numberOfPages)
-        print "=" * 50
         for j in range(1,numberOfPages+1):
             next_page = str(response.request.url)[0:len(response.request.url)-1] + str(j)
-            print("Page" + str(j))
             yield scrapy.Request(next_page, callback=self.userVoiceFind)
 
     def userVoiceFind(self, response):
@@ -43,5 +39,4 @@ class UserVoice(scrapy.Spider):
             user_voice_item['comments'] = comments
             user_voice_item['votes'] = votes
             user_voice_item['in_progress'] = in_progress
-            print "=" * 50
             yield user_voice_item

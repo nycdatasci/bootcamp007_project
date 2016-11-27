@@ -1,11 +1,7 @@
-import scrapy
+import scrapy, re, math, datetime, time
 from scrapy.selector import Selector
 from XboxBC.items import Xbox360_MS_Site_Item
 from XboxBC.pipelines import XboxbcPipeline
-import re
-import math
-import datetime
-import time
 
 class Xbox360_MS_Site(scrapy.Spider):
     name = "Xbox360_MS_Site"
@@ -17,20 +13,13 @@ class Xbox360_MS_Site(scrapy.Spider):
     )
 
     def parse(self, response):
-        print "=" * 50
         numberOfPages = response.xpath('//*[@id="BodyContent"]/div[3]/div[2]/div[1]/text()').extract()[0]
-        print(numberOfPages)
         numberOfPages = re.sub(",","",numberOfPages)
         numberOfPages = re.findall('[0-9.]+',numberOfPages)[-1]
-        print(numberOfPages)
         numberOfPages = int(math.ceil(float(re.findall("[0-9]+", numberOfPages)[-1])/90))
-        print(numberOfPages)
         for j in range(1,numberOfPages+1):
             next_page = str(response.request.url)[0:len(response.request.url)-1] + str(j)
-            print("Page" + str(j))
-            print(next_page)
             yield scrapy.Request(next_page, callback=self.xbPageFind)
-
 
     def xbPageFind(self, response):
         baseURL = "http://marketplace.xbox.com"
@@ -77,7 +66,6 @@ class Xbox360_MS_Site(scrapy.Spider):
                 DLavatarItems = re.findall('[0-9.]+',phrase)[0]
             elif 'Xbox SmartGlass' in phrase:
                 DLsmartglass = re.findall('[0-9.]+',phrase)[0]
-
         if gameCount > 0:
             priceGold = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div[2]/span/span[1]/text()').extract()
             if len(priceGold) != 0:
@@ -91,18 +79,8 @@ class Xbox360_MS_Site(scrapy.Spider):
             if len(gameNameLong) == 0:
                 gameNameLong = response.xpath('//*[@id="LiveZone"]/div[2]/ol/li/div/div/h2/text()').extract()
                 gameNameLong = map(str.strip, map(str, gameNameLong))
-            print(gameNameLong)
-        print(priceGold)
-
-        if ' theme' in xOne_item['gameName'].lower():
+        if 'E3 2' in xOne_item['gameName'] or 'trial game' in xOne_item['gameName'].lower() or ' pics' in xOne_item['gameName'].lower() or ' theme' in xOne_item['gameName'].lower():
             return
-        if ' pics' in xOne_item['gameName'].lower():
-            return
-        if 'E3 2' in xOne_item['gameName']:
-            return
-        if 'trial game' in xOne_item['gameName'].lower():
-            return
-
         ProductPublishing = response.xpath('//*[@id="ProductPublishing"]')
         Overview1 = response.xpath('//*[@id="overview1"]')
         Overview2 = response.xpath('//*[@id="overview2"]')
@@ -112,8 +90,6 @@ class Xbox360_MS_Site(scrapy.Spider):
         if len(releaseDate) != 0:
             releaseDate = releaseDate[0].strip()
             if releaseDate.replace("/", "").isdigit() == False:
-                print("RELEASE DATE ERROR")
-                print(ProductPublishing.xpath('li/text()').extract())
                 releaseDate = ""
             else:
                 ProductPublishingCount = ProductPublishingCount + 1

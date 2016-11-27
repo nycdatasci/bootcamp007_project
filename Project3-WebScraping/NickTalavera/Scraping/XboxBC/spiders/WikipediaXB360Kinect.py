@@ -13,7 +13,6 @@ class WikipediaXB360Kinect(BaseSpider):
     def parse(self, response):
         base_link = 'https://en.wikipedia.org'
         rows_in_big_table = response.xpath('//*[@id="mw-content-text"]/table/tr')
-        print "=" * 50
         for i, onerow in enumerate(rows_in_big_table):
             WXB360KinectItem = WikipediaXB360KinectItem()
             gameName = onerow.xpath('td/i/a/text()')
@@ -36,5 +35,4 @@ class WikipediaXB360Kinect(BaseSpider):
             WXB360KinectItem['releaseDate'] = releaseDate
             WXB360KinectItem['kinectRequired'] = kinectRequired
             WXB360KinectItem['kinectSupport'] = kinectSupport
-            print "=" * 50
             yield WXB360KinectItem

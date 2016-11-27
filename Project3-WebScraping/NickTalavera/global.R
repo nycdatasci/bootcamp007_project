@@ -23,8 +23,8 @@ library(foreach)
 library(parallel)
 library(doParallel)
 cores.Number = detectCores(all.tests = FALSE, logical = TRUE)
-cl <- makeCluster(2)
-registerDoParallel(cl, cores=cores.Number)
+# cl <- makeCluster(2)
+# registerDoParallel(cl, cores=cores.Number)
 #===============================================================================
 #                               GENERAL FUNCTIONS                              #
 #===============================================================================

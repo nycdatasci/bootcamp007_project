@@ -37,6 +37,7 @@ shinyServer(function(input, output, session) {
     # print(paste("SEARCH_Is_The_Game_Retail_Only", input$SEARCH_Is_The_Game_Retail_Only))
     # print(paste("SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com", input$SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com))
     # print(paste("SEARCH_Has_a_Demo_Available", input$SEARCH_Has_a_Demo_Available))
+    # print(paste("SEARCH_Smartglass_Compatible", input$SEARCH_Smartglass_Compatible))
     if (!is.null(input$SEARCH_Xbox_User_Review_Score)) {
       dataToDisplay = dataToDisplay[dataToDisplay$xbox360Rating >= input$SEARCH_Xbox_User_Review_Score[1] & dataToDisplay$xbox360Rating <= input$SEARCH_Xbox_User_Review_Score[2],]
     }
@@ -67,7 +68,6 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$SEARCH_Features)) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
     }
-    # print(paste("SEARCH_Smartglass_Compatible", input$SEARCH_Smartglass_Compatible))
     if (!is.null(input$SEARCH_Number_of_Game_Add_Ons)) {
       dataToDisplay = dataToDisplay[dataToDisplay$DLgameAddons >= input$SEARCH_Number_of_Game_Add_Ons[1] & dataToDisplay$DLgameAddons <= input$SEARCH_Number_of_Game_Add_Ons[2],]
     }

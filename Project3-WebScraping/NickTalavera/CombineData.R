@@ -81,58 +81,44 @@ generousNameMerger = function(dataX,dataY,mergeType="all",keepName = "x") {
 #===============================================================================
 #                             FIX DATA FUNCTIONS                               #
 #===============================================================================
-
 fixRemasters = function(data) {
   data$isRemastered = TRUE
-  return(data)
+  return(unique(data))
 }
 
 fixWikipediaXB360Kinect = function(data) {
-  data$gameName = str_trim(data$gameName)
-  colnames(data)[colnames(data) == 'publisher'] = "publisherKinect"
-  colnames(data)[colnames(data) == 'kinectRequired'] = "isKinectRequired"
-  colnames(data)[colnames(data) == 'kinectSupport'] = "isKinectSupported"
-  colnames(data)[colnames(data) == 'releaseDate'] = "releaseDateKinect"
-  data$isKinectRequired = as.character(data$isKinectRequired)
-  data = data[data$gameName != "",]
+  data = dplyr::select(data, gameName, publisherKinect = publisher, isKinectRequired = kinectRequired, releaseDateKinect = releaseDate)
   data$isKinectSupported = TRUE
   data$isKinectRequired[data$isKinectRequired == 'No'] = FALSE
   data$isKinectRequired[data$isKinectRequired == 'Yes'] = TRUE
   data$isKinectRequired = as.logical(data$isKinectRequired)
-  return(data)
+  return(unique(data))
 }
+
 fixWikipediaXB360KExclusive = function(data) {
-  colnames(data)[colnames(data) == 'publisher'] = "publisherExclusive"
-  colnames(data)[colnames(data) == 'releaseDate'] = "releaseDateExclusive"
   data$isConsoleExclusive[data$exclusiveType == "Console"] = TRUE
   data$isConsoleExclusive[data$exclusiveType != "Console"] = FALSE
   data$isExclusive = TRUE
-  data$exclusiveType = NULL
-  return(data)
+  data = dplyr::select(data,gameName, publisherExclusive = publisher, releaseDateExclusive = releaseDate, isExclusive, isConsoleExclusive)
+  return(unique(data))
 }
 
 fixMSXBone = function(data) {
   data = dplyr::select(data,gameName)
   data$isOnXboxOne = TRUE
-  return(data)
+  return(unique(data))
 }
 
 fixUserVoice = function(data) {
-  data$gameName = str_trim(data$gameName)
-  data$in_progress[data$in_progress == 'In-Progress'] = TRUE
-  # data$userVoiceClosed[data$in_progress == 'Closed'] = TRUE
-  data$isInProgress = as.logical(data$in_progress)
-  data = data[data$gameName != "",]
-  data$isOnUserVoice = TRUE
-  return(data)
+  data$isInProgress[data$in_progress == 'In-Progress'] = TRUE #Games that have been marked as in-progress are stored in a new column
+  # data$userVoiceClosed[data$in_progress == 'Closed'] = TRUE #Games that have been marked closed are stored in a new column
+  data$isOnUserVoice = TRUE  #Make a column to mark if the game was found on UserVoice
+  return(unique(data))
 }
 
 fixXbox360_MS_Site = function(data) {
-  data = as.data.frame(data)
-  data[data == ""] = NA
-  data = data[!is.na(data$ESRBRating) & tolower(data$ESRBRating) != tolower('RP (Rating Pending)') & data$numberOfReviews != 0,]
-  data = unique(data)
-  data$price = as.numeric(as.character(data$price))
+  data[data == ""] = NA #Turn empty quotes into a proper missing value
+  data = data[!is.na(data$ESRBRating) & tolower(data$ESRBRating) != tolower('RP (Rating Pending)') & data$numberOfReviews != 0,] #Remove games that were never released
   data$features = gsub(",+|,$|^,|</?ul>|</?li>", "", data$features)
   data$features = gsub("\n", ",", data$features)
   # features <- t(sapply(features, "[", i = seq_len(max(sapply(features, length)))))
@@ -192,37 +178,30 @@ fixXbox360_MS_Site = function(data) {
   #     }
   #   }
   # }
-  data$genre = gsub(".*Other,|\\,.*","",data$genre, ignore.case = TRUE)
-  data$numberOfReviews = as.numeric(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE))
-  releaseDateds = as.Date(as.Date(data$releaseDate, format = "%m/%d/%Y"))
-  data$releaseDate = as.character(releaseDateds)
-  data$gameName = str_trim(as.character(data$gameName))
-  data$hasDemoAvailable[data$DLdemos>0] = TRUE
-  data$hasDemoAvailable[is.na(data$DLdemos)] = FALSE
-  data$isListedOnMSSite = TRUE
-  data$DLdemos = NULL
-  data$features = NULL
-  data$isAvailableToPurchaseDigitally[data$gameCount >= 1] = TRUE
-  data$gameCount = NULL
-  return(data)
+  data$genre = gsub(".*Other,|\\,.*","",data$genre, ignore.case = TRUE) #Remove "Other" if the genre list is longer
+  data$numberOfReviews = as.numeric(gsub(pattern = ",", replacement = "", x = data$numberOfReviews,ignore.case = TRUE)) #Strip commas from reviews to make the number numeric
+  data$releaseDate = as.character(as.Date(data$releaseDate, format = "%m/%d/%Y")) #Convert the data to be readable by R
+  data$hasDemoAvailable[data$DLdemos>0] = TRUE #If there are demos, mark hasDemoAvailable to be true
+  data$isAvailableToPurchaseDigitally[data$gameCount >= 1] = TRUE #If a game was found for sale, mark as available to download
+  data$isListedOnMSSite = TRUE #Mark as available on Microsoft's site
+  data = dplyr::select(data, -DLdemos, -features, -gameCount) #Toss unneeded variables
+  return(unique(data))
 }
 
 fixRequiredPeripherals = function(data) {
   data$usesRequiredPeripheral = TRUE
-  data=unique(data)
-  return(data)
+  return(unique(data))
 }
 
 fixMetacritic = function(data) {
   data$gameName = str_trim(as.character(data$gameName))
   data$isMetacritic = TRUE
-  return(data)
+  return(unique(data))
 }
 
 fixMajorNelson = function(data){
+  data = dplyr::select(data, gameName, isBCCompatible = BCCompatible)
   data$isDiscOnly[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))] = TRUE
-  data$isBCCompatible = TRUE
-  data$BCCompatible = NULL
   data$gameName[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))] =  gsub('(disc only)',"",data$isDiscOnly[unlist(lapply(data$gameName, function(x) grepl('(disc only)',tolower(x))))])
   return(data)
 }
@@ -238,7 +217,7 @@ fixPublishers = function(data) {
 #                         RENAME GAMES AND PUBLISHERS                          #
 #===============================================================================
 namePrettier = function(data) {
-  data$gameName = as.character(data$gameName)
+  data$gameName = str_trim(as.character(data$gameName))
   data = data[data$gameName != "" & data$gameName != "gameName",]
   data$gameName = gsub("-|™|®|Full.Game - |Full.Version|.-.FREE OFFER|.-.Full", "", data$gameName)
   data$gameName = gsub("ñ", "n", data$gameName)
@@ -447,7 +426,6 @@ developerPrettier = function(developerStrings){
 #===============================================================================
 #                              PROCESS THE DATA                                #
 #===============================================================================
-setwd('/Volumes/SDExpansion/Data Files/bootcamp007_project/Project3-WebScraping/NickTalavera/CSV Processing')
 setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 MajorNelsionBCList = namePrettier(fixMajorNelson(read.csv('Major_Nelson_Blog_BC_List.csv', stringsAsFactors = FALSE, header = TRUE)))
 UserVoice = namePrettier(fixUserVoice(read.csv('UserVoice.csv', stringsAsFactors = FALSE, header = TRUE)))
@@ -509,7 +487,7 @@ dataUltImputed$releaseDate = as.numeric(dataUltImputed$releaseDate)
 columnsToUseToImpute = c("votes","isListedOnMSSite","genre","ESRBRating","releaseDate","price","xbox360Rating","reviewScorePro","numberOfReviews","reviewScoreUser","comments")
 dataUltImputed[,columnsToUseToImpute] = VarDrop(rfImpute(x = dataUltImputed[,columnsToUseToImpute], y=dataUltImputed$isBCCompatible, iter=1, ntree=300),"dataUltImputed$isBCCompatible")
 dataUltImputed$releaseDate = as.Date.numeric(dataUltImputed$releaseDate, origin="1970-01-01")
-dataUltImputed$votes = round(dataUltImputed$comments,votes = 0)
+dataUltImputed$votes = round(dataUltImputed$votes,digits = 0)
 dataUltImputed$comments = round(dataUltImputed$comments,digits = 0)
 dataUltImputed$reviewScorePro = round(dataUltImputed$reviewScorePro,digits = 0)
 dataUltImputed$reviewScoreUser = round(dataUltImputed$reviewScoreUser,digits = 1)

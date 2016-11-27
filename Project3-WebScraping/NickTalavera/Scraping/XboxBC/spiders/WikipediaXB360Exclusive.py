@@ -13,7 +13,6 @@ class WikipediaXB360Exclusive(BaseSpider):
     def parse(self, response):
         base_link = 'https://en.wikipedia.org'
         rows_in_big_table = response.xpath('//*[@id="mw-content-text"]/table[4]/tr')
-        print "=" * 50
         for i, onerow in enumerate(rows_in_big_table):
             WXB360ExclusiveItem = WikipediaXB360ExclusiveItem()
             gameName = onerow.xpath('td/i/a/text()')
@@ -32,5 +31,4 @@ class WikipediaXB360Exclusive(BaseSpider):
             WXB360ExclusiveItem['publisher'] = publisher
             WXB360ExclusiveItem['releaseDate'] = releaseDate
             WXB360ExclusiveItem['exclusiveType'] = exclusiveType
-            print "=" * 50
             yield WXB360ExclusiveItem
