@@ -5,9 +5,12 @@ dm_test_kmeans <- as.data.frame(dm_test)
 #names(dm_train_kmeans)
 set.seed(123)
 test_idx <- sample(1:nrow(dm_test_kmeans), 0.01*nrow(dm_test_kmeans))
+set.seed(123)
 train_idx <- sample(1:nrow(dm_train_kmeans), 0.01*nrow(dm_train_kmeans))
 dm_train_kmeans_1 <- dm_train_kmeans[train_idx,]
+dm_train_kmeans_1 <- scale(dm_train_kmeans_1)
 dm_test_kmeans_1 <- dm_test_kmeans[test_idx,]
+dm_test_kmeans_1 <- scale(dm_test_kmeans_1)
 wss = function(data, nc = 15, seed = 0) {
     wss = (nrow(data) - 1) * sum(apply(data, 2, var))
     for (i in 2:nc) {
