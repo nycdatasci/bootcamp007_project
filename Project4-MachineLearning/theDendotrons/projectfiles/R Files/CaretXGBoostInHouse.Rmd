@@ -1,0 +1,239 @@
+---
+title: "XGBoost"
+author: "Jason Sippie"
+date: "November 19, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(caret)
+library(dtplyr)
+library(data.table)
+library(Matrix)
+library(Metrics)
+library(doMC)
+
+library(doParallel)
+
+
+```
+
+## Preprocessing
+
+```{r cars}
+
+cl <- makeCluster(8)
+registerDoParallel(cl)
+
+
+# read in data
+t.train = read.csv("train.csv", stringsAsFactors = F)
+
+
+# Reduce the number of columns based on sparsity
+# nzv <- nearZeroVar(t.train)
+# t.train = t.train[,-nzv]
+
+
+ID = 'id'
+TARGET = 'loss'
+SEED = 0
+
+# to shrink down the initial set
+# set.seed(313)
+# index.sub = createDataPartition(t.train$cat80, p=0.5,list = FALSE)
+# t.train = t.train[index.sub,]
+
+set.seed(313)
+index.sub = createDataPartition(t.train$cat80, p=0.8,list = FALSE)
+
+train <- t.train[index.sub,]
+test <- t.train[-index.sub,]
+
+
+y_train = train[,TARGET]
+y_test = test[,TARGET]
+
+train[, c(ID)] = NULL
+test[, c(ID)] = NULL
+
+
+ntrain = nrow(train)
+train_test = rbind(train, test)
+
+
+# turn characters into integers
+features = names(train)
+for (f in features) {
+  if (class(train_test[[f]])=="character") {
+    levels <- unique(train_test[[f]])
+    train_test[[f]] <- as.integer(factor(train_test[[f]], levels=levels))
+  }
+}
+
+x_train = train_test[1:ntrain,]
+x_test = train_test[(ntrain+1):nrow(train_test),]
+
+
+# create matrix with factors as digitals
+dm_train <- model.matrix(loss ~ ., data = x_train)
+dm_test <- model.matrix(loss ~ ., data = x_test)
+
+# error minimizing function
+x_mae <-function (data, lev = NULL, model = NULL,...) 
+{ 
+  require(Metrics)
+  m <- try(Metrics::mae(data$obs, data$pred),silent=TRUE)
+  out<-c(m)
+  names(out) <- c("MAE")
+  out 
+}
+
+
+xgbTuneGrid_1 <- expand.grid(
+  nrounds= 900,
+  max_depth=5,
+  eta=0.05,
+  gamma=0,
+  colsample_bytree=1,
+  min_child_weight=1,
+  subsample=1
+)
+
+
+
+
+xgb_trcontrol <- trainControl(
+  method="cv",
+  number = 5,
+  verboseIter = TRUE,
+  returnData=FALSE,
+  returnResamp = "all",
+  allowParallel = TRUE,
+  summaryFunction = x_mae
+)
+
+
+
+
+xgb_train_1 <- train(
+  x = dm_train,
+  y= y_train,
+ trControl = xgb_trcontrol,
+ tuneGrid = xgbTuneGrid_1,
+ metric= "MAE",
+ method="xgbTree",
+ verbose=1,
+ maximize=F
+)
+
+
+# has an MAE of about 1150 on cross-train data. 834 trees, 5 tree depnt, and eta 0.05, and 5 fold cv
+
+
+
+#save(xgb_train_1, file="caratxgb_modelInHouseSmall_20161121")
+
+#caratxgb_modelInHouse_20161121 -- 900 trees eta 0.05, cv= 5 fold. All columns. 80% of training data. Resample MAE 1185.485
+#caratxgb_modelInHouseSmall_20161121 -- SAA but cat 166 is shrunk
+
+plot(xgb_train_1)
+
+xgb_train_1$results
+
+train.predict = predict(xgb_train_1, dm_train)
+trainRes = data.frame(train.predict, y_train)
+trainRes$absDiff = abs((trainRes[,1])-(trainRes[,2]))
+mean(trainRes$absDiff)
+
+plot(trainRes[,1], trainRes[,2])
+
+# 1228 with the extra high points
+# testing set
+test.predict = predict(xgb_train_1, dm_test)
+testRes = data.frame(pred=test.predict, obs=y_test)
+testRes$diff = (testRes$pred)-(testRes$obs)
+testRes$absDiff = abs(testRes$diff)
+testRes$absLogDiff = log(testRes$absDiff)*sign(testRes$diff)
+mean(testRes$absDiff)
+mean(testRes$diff)
+View(xgb_train_1$bestTune)
+
+plot(log(testRes$obs), testRes$absLogDiff)
+
+testResXGB_cat80B = testRes
+
+
+ModelXGB_cat80B$bestTune$nrounds
+ModelXGB_cat80D$bestTune$nrounds
+
+
+testResXGB_cat80B$cat = "B"
+
+r = rbind(testResXGB_cat80B, testResXGB_cat80D)
+
+r$diff = r$obs - r$pred
+ggplot(r, aes(x=log(obs), y= log(pred), color=cat)) + geom_point(shape=21, alpha=0.4)
+
+ModelXGB_cat80B = xgb_train_1
+
+save(testResXGB_cat80B, file='testResXGB_cat80B')
+save(ModelXGB_cat80B, file='ModelXGB_cat80B')
+
+
+
+v = varImp(xgb_train_1, scale=FALSE)
+
+ggplot(r, aes(x=log(obs), y=absLogDiff, color=Model)) + 
+  geom_point(shape=21, alpha=0.4)+
+#  scale_x_continuous(limits = c(5, 11)) +
+#  scale_y_continuous(limits = c(-25000, 35000)) +
+#  geom_smooth() + 
+  theme_minimal() + 
+  labs(x = "log(Oberserved Loss $)", y="Observed - Predicted $") +
+  theme(axis.text=element_text(size=14))
+
+
+```
+
+
+## Submission
+
+```{r}
+
+testSub = data.frame(cbind(t.test$id, round(test.predict,2)))
+colnames(testSub) = c("id","loss")
+
+
+# submission
+
+options(scipen = 500)
+
+write.table(testSub, SUBMISSION_FILE, append=F, row.names=F, sep=",")
+
+
+## replace cat116 with something simpler
+
+load("meansByLevel")
+
+
+v = t.catSummary  %>% filter(catName == "cat116" & (llossMean <= 6.8)) %>% select(cat116=x)
+v1<-cbind(v, cat116s=rep("low",length(v)))
+
+v = t.catSummary  %>% filter(catName == "cat116" & (llossMean >= 9)) %>% select(cat116=x)
+v2<-cbind(v, cat116s=rep("high",length(v)))
+
+v = t.catSummary  %>% filter(catName == "cat116" & (llossMean > 6.8 & llossMean < 9)) %>% select(cat116=x)
+v3<-cbind(v, cat116s=rep("med",length(v)))
+
+v = rbind(v1, v2, v3)
+t.train <- inner_join(t.train, v, by="cat116")
+t.train$cat116 = NULL
+
+ 
+
+
+
+```
