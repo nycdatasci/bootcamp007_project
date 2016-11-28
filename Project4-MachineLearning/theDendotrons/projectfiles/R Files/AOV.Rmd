@@ -1,0 +1,86 @@
+---
+title: "BoxPlots"
+author: "Jason Sippie"
+date: "November 19, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(gridExtra)
+library(dplyr)
+
+```
+
+
+```{r}
+
+# Box plots by category
+
+# plot one
+# i=predictor, lab=lloss
+plotBox <- function(data_in, i, lab) {
+  data <- data.frame(x=data_in[[i]], y=lab)
+  p <- ggplot(data=data, aes(x=x, y=y)) +geom_boxplot()+ xlab(colnames(data_in)[i]) + theme_light() +   ylab("log(loss)") + theme(axis.text.x = element_text(angle = 90, hjust =1))
+  return (p)
+}
+
+# make a box plot for all columns passed to it
+doPlots <- function(data_in, fun, ii, lab, ncol=3) {
+  pp <- list()
+  for (i in ii) {
+    p <- fun(data_in=data_in, i=i, lab=lab)
+    pp <- c(pp, list(p))
+  }
+  do.call("grid.arrange", c(pp, ncol=ncol))
+}
+
+# Generate box plots for first 20 categorical variables
+doPlots(t.train, plotBox, 2:20, t.train$lloss)
+
+
+
+
+# aggregate means and record counts by factor levels
+aggData <- function(data_in, i, yVal){
+  data <- data.frame(x=data_in[[i]], y=yVal)
+  nr = NROW(data)
+  data <- data %>% group_by(x) %>% summarize(pct=n()/nr, llossMean=mean(y))
+  return(data)
+}
+
+# only categorical variables
+t.train.cat = t.train[c(1:117,133)]
+
+
+# get counts and mean losses by factor level
+
+# initialize data frame
+t.catSummary = data_frame(cat=character(), catLevel=character(), pct=double(), llossMean=double())
+
+# iterate over column factors and append summary data to above data frame
+for (i in 2:117) {
+  aggTemp = aggData(t.train.cat, i, t.train.cat$lloss)
+  catName = rep(colnames(t.train.cat)[i] ,length(levels(t.train.cat[,i])))
+  t.catS = cbind(catName, aggTemp)
+  t.catSummary = rbind(t.catS, t.catSummary)
+}
+
+
+# Do one way AOV on all category variables
+# AOV
+t.catAOV = data_frame(cat=character(), pTest=double())
+for (i in 2:117) {
+  data <- data.frame(x=t.train.cat[[i]], y=t.train.cat$lloss)
+  v = aov(y ~ x, data=data)
+  p = as.numeric(unlist(summary(v))[["Pr(>F)1"]])
+  tempt = data.frame(cat=colnames(t.train.cat)[i], pTest=p)
+  t.catAOV = rbind(tempt, t.catAOV)
+}
+
+
+
+
+```
+
