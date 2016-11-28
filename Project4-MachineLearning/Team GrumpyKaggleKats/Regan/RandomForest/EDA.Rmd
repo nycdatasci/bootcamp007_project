@@ -1,0 +1,161 @@
+---
+title: "EDA"
+author: "Regan Yee"
+date: "November 16, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+library(Hmisc)
+library(corrplot)
+library(DT)
+library(caret)
+setwd("~/Documents/Project/4-Kaggle/")
+train = readRDS(file = "train.RDS")
+test = readRDS(file = "test.RDS")
+
+# Multiple plot function
+#
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+## Allstate Kaggle
+
+**Allstate Kaggle EDA:** <https://www.kaggle.com/c/allstate-claims-severity>
+Training set is 188318 rows 
+131 variables (without loss variable)
+id + 116 categorical + 14 continuous variables
+
+
+Test set is 125546 rows
+Total data set is 313864 items.
+
+Possible Insights:
+- All the categorical values are between 0 and 1
+
+## Summaries
+
+```{r summary}
+summary(train)
+summary(test)
+```
+
+## Plot of Losses Distribution
+
+```{r plot_losses, echo=FALSE, warning=FALSE}
+g = ggplot(train, mapping = aes(x=loss))
+g + geom_histogram(binwidth = 30)
+
+g = ggplot(train, mapping = aes(x=log(loss)))
+g + geom_histogram(binwidth = .1)
+```
+
+## Plot Correlations of Categorical Features
+```{r binmap, echo=FALSE}
+## 116 categorical variables:2-116
+names(train)
+xplots = list()
+for(i in 2:116){
+  g2 = ggplot(train, mapping = aes(x=id, y=log(loss), fill=train[,i]))
+  g2_plot = g2 + 
+            geom_bin2d(bins=100) + 
+            xlab(names(train)[i])  + 
+            ggtitle(paste0("Binmap of ", names(train)[i]))+
+            scale_fill_discrete(name = names(train)[i])
+  print(g2_plot)
+}
+
+g2 = ggplot(train, mapping = aes(x=id, y=log(loss), fill=cat1))
+
+g2_plot = g2 + geom_bin2d(bins=100) + facet_grid(~ train$cat1)
+            xlab(names(train)[i])  + 
+            ggtitle(paste0("Binmap of ", names(train)[i]))+
+            scale_fill_discrete(name = names(train)[i])
+```
+
+## cat116
+```{r cat116}
+cat116_analysis = train %>% 
+      select(cat116,loss) %>% 
+      group_by(cat116) %>% 
+      summarise(count=n()) %>% 
+      arrange(desc(count))
+datatable(cat116_analysis)
+
+cat116_analysis2 = train %>% 
+      select(cat116,loss) %>% 
+      group_by(cat116) %>% 
+      summarise(mean=mean(loss)) %>% 
+      arrange(desc(mean))
+datatable(cat116_analysis2)
+```
+
+## cat112
+```{r cat112}
+## 51 Levels
+table(train$cat112)
+```
+
+## Correlation Plot
+```{r corr}
+M = cor(train[,118:132], method="pearson")
+corrplot.mixed(M, upper = "circle", order="hclust")
+```
+
+
+## Preprocess Predictors with near zero-variance
+preProc = preProcess(train, method = "nzv")
+preProc
+
+## ANOVA
+```{r}
+summary(aov(train$cont1 ~ train$cont2))
+```
+
+unique(cat116_analysis2) = train %>% 
+      select(cat116,loss)
