@@ -1,0 +1,1077 @@
+---
+title: "allstateKaggleCompetition"
+author: "Jhonasttan Regalado"
+date: "11/16/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Allstate Kaggle competition
+
+Allstate is currently developing automated methods of predicting the cost, and hence severity, of claims. In this recruitment challenge, Kagglers are invited to show off their creativity and flex their technical chops by creating an algorithm which accurately predicts claims severity. Aspiring competitors will demonstrate insight into better ways to predict claims severity for the chance to be part of Allstate’s efforts to ensure a worry-free customer experience.
+
+### Technical scope (major points)
+
+● Demonstration of EDA skills:
+  ○ Numeric methodology.
+  ○ Graphic methodology.
+● Demonstration of machine learning skills:
+  ○ Supervised methodology.
+  ○ Unsupervised methodology.
+● Ability to research and implement new machine learning skills including, but not limited to, the following:
+  ○ Sensitivity
+  ○ Specificity
+  ○ Receiver Operating Characteristic Curve
+  ○ Area Under the Curve Metric
+● Ability to assess model weaknesses and identify improvements.
+● Ability to manage a team workflow.
+
+#### Load Allstate training data
+
+Each row in this dataset represents an insurance claim. You must predict the value for the 'loss' column. Variables prefaced with 'cat' are categorical, while those prefaced with 'cont' are continuous.
+
+File descriptions:
+train.csv - the training set
+test.csv - the test set. You must predict the loss value for the ids in this file.
+sample_submission.csv - a sample submission file in the correct format
+
+
+Observations: 188,318
+Variables: 132
+```{r}
+#allstate <- read.csv('~/Documents/DataScience/bootcamp7/project4/data/train.csv')
+#allstate.test <- read.csv('~/Documents/DataScience/bootcamp7/project4/data/test.csv')
+allstate <- read.csv('~/Documents/DataScience/bootcamp7/project4/data/sandbox.csv')
+
+dim(allstate)
+glimpse(allstate)
+index.sub = createDataPartition(allstate$loss, p=0.7,list = FALSE)
+allstate.sample = allstate[index.sub,]
+dim(allstate.sample)
+summary(allstate.sample)
+as_train <- allstate[index.sub,]
+as_test <- allstate[-index.sub,]
+
+```
+
+#### EDA
+
+-- Shu's content
+
+Visualizing Loss (independent variable)
+```{r}
+library(ggplot2)
+library(gridExtra)
+library(caret)
+grid.arrange(
+  ggplot(as_train) + geom_histogram(aes(loss), bins = 50),
+  ggplot(as_train) + geom_histogram(aes(log(loss + 1)), bins = 50),
+  ncol = 2)
+```
+
+Correlation analysis
+```{r}
+library(corrplot)
+cor.df <- as_train %>% select(contains("cont"))
+corrs <- cor(cor.df, method = "pearson")
+corrplot.mixed(corrs, upper = "square", order="hclust")
+#cor.high <- findCorrelation(corrs, cutoff=0.80)
+#cor.high.M <- cor(cor.df[,cor.high])
+#corrplot.mixed(corrs[,cor.high], upper = "square")
+```
+Preprocessing
+```{r}
+table(as_train$cat112)
+```
+create subset with cat112 == "E"
+```{r}
+train_e <- as_train %>% filter(cat112 == "E") %>% select(-cat112, -id)
+test_e <- as_test %>% filter(cat112 == "E") %>% select(-cat112, -id)
+```
+log transform loss
+```{r}
+loss_e <- log(train_e$loss + 1)
+```
+CREATING DUMMY VARIABLES
+The base R function model.matrix can be used to generate dummy variables:
+```{r}
+dm_train <- model.matrix(loss ~ ., data = train_e)
+head(dm_train, n = 4)
+
+```
+REMOVING NEAR ZERO-VARIANCE PREDICTORS WITH PREPROCESS
+method = "nzv" apply nearZeroVar with the default parameters (freqCut = 95/5) to exclude “near zero-variance” predictors:
+```{r}
+preProc <- preProcess(dm_train,
+                      method = "nzv")
+preProc
+```
+
+TRANSFORMATIONS
+from where is dm_test created?
+```{r}
+dm_train <- predict(preProc, dm_train)
+dim(dm_train)
+
+dm_test <- as_test
+dm_test <- predict(preProc, dm_test)
+dim(dm_test)
+```
+
+Training the model
+```{r}
+set.seed(321)
+trainIdx <- createDataPartition(loss_e, 
+                                p = .8,
+                                list = FALSE,
+                                times = 1)
+ctrl <- trainControl(
+                     savePredictions = TRUE)
+
+subTrain <- dm_train[trainIdx,]
+subTest <- dm_train[-trainIdx,]
+lossTrain <- loss_e[trainIdx]
+lossTest <- loss_e[-trainIdx]
+```
+
+TRAIN OUR FIRST LM MODEL
+```{r}
+#data(Sonar)
+#ctrl <- trainControl(method="cv", 
+#                      summaryFunction=twoClassSummary, 
+#                      classProbs=T,
+#                      savePredictions = T)
+# rfFit <- train(Class ~ ., data=Sonar, 
+#                method="rf", preProc=c("center", "scale"), 
+#                trControl=ctrl)
+# library(pROC)
+# # Select a parameter setting
+# selectedIndices <- rfFit$pred$mtry == 2
+# # Plot:
+# plot.roc(rfFit$pred$obs[selectedIndices],
+#          rfFit$pred$M[selectedIndices])
+
+lmFit <- train(x = subTrain, 
+               y = lossTrain,
+               trControl = ctrl,
+               method = "lm")
+```
+
+Summary of model
+```{r}
+summary(lmFit)
+```
+
+PRINT ROC Curve (not working)
+```{r}
+library(pROC)
+pred.roc <- predict(lmFit, subTest)
+# # Select a parameter setting
+selectedIndices <- lmFit$pred$mtry == 2
+# # Plot:
+plot.roc(lmFit$pred$obs[selectedIndices],
+          lmFit$pred$M[selectedIndices])
+```
+
+
+VARIABLE IMPORTANCE
+```{r}
+lmImp <- varImp(lmFit, scale = FALSE)
+lmImp
+```
+
+Plot variable importance
+```{r}
+plot(lmImp,top = 20)
+```
+
+PERFORMANCE MEASURES FOR REGRESSION
+```{r}
+mean(lmFit$resample$RMSE)
+```
+
+Predict on subTest data
+```{r}
+predicted <- predict(lmFit, subTest)
+RMSE(pred = predicted, obs = lossTest)
+```
+
+PERFORMANCE MEASURES FOR REGRESSION
+```{r}
+plot(x = predicted, y = lossTest)
+```
+
+THE TRAIN FUNCTION IN CARET PACKAGE
+The train function can be used to evaluate the effect of model tuning parameters on performance choose the “optimal” model across these parameters estimate model performance from a training set.
+
+AN EXAMPLE WITH GBM
+For a gradient boosting machine (GBM) model, there are three main tuning parameters:
+* n.trees: number of iterations
+* interaction.depth: complexity of the tree
+* shrinkage: learning rate: how quickly the algorithm adapts
+* n.minobsinnode: the minimum number of training set samples in a node to commence splitting
+
+RESAMPLING
+By default, simple bootstrap resampling is used. The function trainControl can be used to specifiy the type of resampling:
+```{r}
+# fitCtrl <- trainControl(method = "cv",
+#                         number = 5,
+#                         verboseIter = TRUE,
+#                         summaryFunction=defaultSummary)
+
+x_mae <-function (data, lev = NULL, model = NULL,...) { 
+  require(Metrics)
+  m <- try(Metrics::mae(exp(data$obs), exp(data$pred)),silent=TRUE)
+  out<-c(m)
+  names(out) <- c("MAE")
+  out 
+}
+
+
+fitCtrl <- trainControl(method = "cv",
+                        number = 5,
+                        verboseIter = TRUE,
+                        summaryFunction = x_mae)
+
+```
+
+TUNING GRIDS
+The tuning parameter grid can be specified by the user and pass to the train via argument tuneGrid
+```{r}
+gbmGrid <- expand.grid( n.trees = seq(100,500,50), 
+                        interaction.depth = c(1,3,5,7), 
+                        shrinkage = 0.1,
+                        n.minobsinnode = 20)
+```
+
+MODEL TRAINING
+Now it’s time to take a break…
+```{r}
+gbmFit <- train(x = subTrain, 
+                y = lossTrain,
+                method = "gbm", 
+                trControl = fitCtrl,
+                tuneGrid = gbmGrid,
+                metric = 'MAE', # metric = 'RMSE' #<<-- changed in light of kaggle competition wanting MAE instead of RMSE
+                maximize = FALSE)
+
+```
+> gbmFit$bestTune
+   n.trees interaction.depth shrinkage n.minobsinnode
+24     350                 5       0.1             20
+
+PLOTTING THE RESAMPLING PROFILE
+```{r}
+plot(gbmFit)
+```
+
+PLOTTING THE RESAMPLING PROFILE
+```{r}
+plot(gbmFit, plotType = "level")
+```
+
+VARIABLE IMPORTANCE IN GBM
+```{r}
+gbmImp <- varImp(gbmFit, scale = FALSE)
+plot(gbmImp,top = 20)
+```
+
+PERFORMANCE MEASURES FOR GBM
+```{r}
+#mean(gbmFit$resample$RMSE)
+mean(gbmFit$resample$MAE) #<-- for Kaggle
+
+predicted <- predict(gbmFit, subTest)
+RMSE(pred = predicted, obs = lossTest)
+mae(predicted = predicted, actual = lossTest)
+```
+
+PERFORMANCE MEASURES FOR GBM
+```{r}
+plot(x = lossTest, y = predict(gbmFit, subTest))
+```
+
+Predict on test set to submit
+```{r}
+library(gbm)
+gbmFit.manual <- gbm(log(loss) ~ ., data = as_train,
+                     n.trees = 350,
+                     interaction.depth = 5,
+                     shrinkage = 0.1,
+                     n.minobsinnode = 20)
+
+pred.test <- predict(gbmFit.manual, as_test) #need to exponentiate results
+```
+
+
+PARALLEL PROCESSING
+The computations could be spread across multiple processors or cores to increase the computational efficiency.
+```{r}
+library(doMC)
+library(parallel)
+number_of_cores <- detectCores()
+registerDoMC(cores = number_of_cores/2) ## use half of the cores
+```
+
+Note that as the number of workers increases, the memory required also increase.
+
+Advanced Topics:
+Ensemble:
+Tutorial - http://mlwave.com/kaggle-ensembling-guide/
+Caret Ensemble - https://cran.r-project.org/web/packages/caretEnsemble/vignettes/caretEnsemble-intro.html 
+
+Stacking - http://machinelearningmastery.com/machine-learning-ensembles-with-r/
+
+
+--End of Shu's content
+
+Hierarchical Clustering of categorical values
+```{r}
+library(flexclust)
+d = dist(allstate.sample[,c(1:117)])
+#Using the hclust() function, we define the linkage manner by which we will
+#cluster our data.
+fit.single = hclust(d, method = "single")
+fit.complete = hclust(d, method = "complete")
+fit.average = hclust(d, method = "average")
+
+#Creating various dendrograms.
+par(mfrow = c(1, 3))
+#plot(fit.single, main = "Dendrogram of Single Linkage")
+
+plot(fit.single, hang = -1, main = "Dendrogram of Single Linkage")
+plot(fit.complete, hang = -1, main = "Dendrogram of Complete Linkage")
+plot(fit.average, hang = -1, main = "Dendrogram of Average Linkage")
+```
+
+Too many variables to show a meaningful graph
+```{r}
+#Cut the dendrogram into groups of data.
+clusters.average = cutree(fit.average, k = 5)
+clusters.average #numbers indicate what label applies to the rowname
+
+#Viewing the groups of data.
+table(clusters.average)
+
+#Aggregating the original data by the cluster assignments.
+aggregate(nutrient, by = list(cluster = clusters.average), median)
+
+#Aggregating the scaled data by the cluster assignments.
+aggregate(nutrient.scaled, by = list(cluster = clusters.average), median)
+
+#Visualizing the groups in the dendrogram.
+par(mfrow = c(1, 1))
+plot(fit.average, hang = -1, main = "Dendrogram of Average Linkage\n5 Clusters")
+rect.hclust(fit.average, k = 5)
+
+```
+
+Hierarchical Clustering of continous values
+```{r}
+
+c = dist(allstate.sample[,c(118:132)])
+#Using the hclust() function, we define the linkage manner by which we will
+#cluster our data.
+c.fit.single = hclust(c, method = "single")
+c.fit.complete = hclust(c, method = "complete")
+c.fit.average = hclust(c, method = "average")
+
+#Creating various dendrograms.
+par(mfrow = c(1, 3))
+#plot(fit.single, main = "Dendrogram of Single Linkage")
+
+plot(c.fit.single, hang = -1, main = "Dendrogram of Single Linkage")
+plot(c.fit.complete, hang = -1, main = "Dendrogram of Complete Linkage")
+plot(c.fit.average, hang = -1, main = "Dendrogram of Average Linkage")
+```
+
+Too many variables to show a meaningful graph
+```{r}
+#Cut the dendrogram into groups of data.
+c.clusters.average = cutree(c.fit.average, k = 5)
+c.clusters.average #numbers indicate what label applies to the rowname
+
+#Viewing the groups of data.
+table(c.clusters.average)
+
+#Aggregating the original data by the cluster assignments.
+aggregate(allstate.sample[,c(117:132)], by = list(cluster = c.clusters.average), median)
+
+#Aggregating the scaled data by the cluster assignments.
+#aggregate(nutrient.scaled, by = list(cluster = clusters.average), median)
+
+#Visualizing the groups in the dendrogram.
+par(mfrow = c(1, 1))
+plot(c.fit.average, hang = -1, main = "Dendrogram of Average Linkage\n5 Clusters")
+rect.hclust(c.fit.average, k = 5)
+
+```
+
+
+### KMeans Analysis
+```{r}
+sandbox <- read.csv("~/Documents/DataScience/bootcamp7/project4/data/sandbox.csv")
+glimpse(sandbox)
+summary(sandbox$loss)
+#feature engineering
+sandbox.mod <- sandbox %>% mutate(profile = as.factor(ifelse(loss <= 4500, "Low", "High")))
+summary(sandbox.mod$profile)
+sandbox.mod <- sandbox.mod[,-c(1,2,133)]
+#sandbox.mod.names <- colnames(sandbox.mod)
+set.seed(0)
+sandbox.scale <- as.data.frame(scale(sapply(sandbox.mod,as.numeric)))
+
+```
+
+
+#### Perform PCA analysis on continous features
+
+#### Perform MCA on categorical features
+
+### ML with these concepts in mind:
+  ○ Sensitivity
+  ○ Specificity
+  ○ Receiver Operating Characteristic Curve
+  ○ Area Under the Curve Metric
+  
+#### Perform Hierarchical Clustering
+
+```{r}
+library(e1071)
+
+set.seed(0)
+d = dist(sandbox.mod)
+
+library(flexclust)
+fit.single = hclust(d, method = "single")
+fit.complete = hclust(d, method = "complete")
+fit.average = hclust(d, method = "average")
+
+
+par(mfrow = c(1, 3))
+plot(fit.single, hang = -1, main = "Dendrogram of Single Linkage")
+plot(fit.complete, hang = -1, main = "Dendrogram of Complete Linkage")
+plot(fit.average, hang = -1, main = "Dendrogram of Average Linkage")
+
+##Jason's lm for significant categorical values
+hh_cv <- c("cat1", "cat100", "cat104", "cat109", "cat110", "cat111", "cat112", "cat113", "cat116", "cat53", "cat55", "cat72", "cat73", "cat75", "cat76", "cat77", "cat79", "cat80", "cat81", "cat82", "cat83", "cat84", "cat87", "cat88", "cat91", "cat93", "cat94")
+
+sandbox.mod.hc <- select(sandbox.mod, one_of(hh_cv))
+
+library(VIM)
+aggr(sandbox.mod.hc)
+
+d.hc = dist(sandbox.mod.hc)
+
+fit.single.hc = hclust(d.hc, method = "single")
+fit.complete.hc = hclust(d.hc, method = "complete")
+fit.average.hc = hclust(d.hc, method = "average")
+
+
+par(mfrow = c(1, 3))
+plot(fit.single, hang = -1, main = "SC Dendrogram of Single Linkage")
+plot(fit.complete, hang = -1, main = "SC Dendrogram of Complete Linkage")
+plot(fit.average, hang = -1, main = "SC Dendrogram of Average Linkage")
+```
+
+#### Lasso
+
+```{r}
+#Values of lambda over which to check.
+grid = 10^seq(5, -2, length = 100)
+
+#Fitting the ridge regression. Alpha = 0 for ridge regression and Alpha = 1 for Lasso.
+library(glmnet)
+
+lasso.models = glmnet(sandbox.mod[,-131], sandbox.mod$profile, family="multinomial", type.multinomial="grouped", alpha = 1, lambda = grid)
+
+sanb.m <- as.matrix(sandbox.mod[,-131])
+lasso.models = glmnet(sanb.m, as.matrix(sandbox.mod$profile), family="multinomial", type.multinomial="grouped", alpha = 1, lambda = grid)
+
+
+plot(lasso.models, xvar = "lambda", label = TRUE, main = "Lasso Regression")
+
+#https://rpubs.com/ryankelly/reg
+#best subset
+library(leaps)
+set.seed(0)
+regfit <- regsubsets(profile ~ ., sandbox.mod, really.big=TRUE)
+summary(regfit)
+
+set.seed(0)
+t.index <- createDataPartition(sandbox.mod$profile, p=0.7, list = FALSE)
+sandbox.mod.train <- sandbox.mod[t.index,]
+sandbox.mod.test <- sandbox.mod[-t.index,]
+gbm.mod <- train(profile ~ ., data= sandbox.mod.train, method = "gbm" )
+#rfFit <- train(Class ~ ., data=Sonar, 
+#                method="rf", preProc=c("center", "scale"), 
+#                trControl=ctrl)
+
+print(gbm.mod$finalModel)
+#make prediction with classifier model
+plot(gbm.mod)
+gbm.pred <- predict(gbm.mod, sandbox.mod.test)
+confusionMatrix(gbm.pred, sandbox.mod.test$profile)
+
+inHouse.Train <- read.csv('~/Documents/DataScience/bootcamp7/project4/data/inHouseTrain.csv')
+inHouse.test<- read.csv('~/Documents/DataScience/bootcamp7/project4/data/inHouseTest.csv')
+
+inHouse.train.m <- inHouse.Train %>% mutate(profile = as.factor(ifelse(loss <= 4500, "Low", "High")))
+inHouse.test.m <- inHouse.test %>% mutate(profile = as.factor(ifelse(loss <= 4500, "Low", "High")))
+
+inHouse.train.m <- inHouse.train.m[,-c(1,2,133)]
+inHouse.test.m <- inHouse.test.m[,-c(1,2,133)]
+
+set.seed(0)
+i.train <- createDataPartition(inHouse.train.m$profile, p=0.7, list = FALSE)
+
+sub.train <- inHouse.train.m[i.train,] 
+sub.test <- inHouse.test.m[-i.train,]
+
+sub.train.model <- train(profile ~. , data = sub.train, method = "gbm")
+
+print(sub.train.model$finalModel)
+
+# > print(sub.train.model$finalModel)
+# A gradient boosted model with bernoulli loss function.
+# 150 iterations were performed.
+# There were 1005 predictors of which 85 had non-zero influence.
+
+sub.train.model$bestTune
+# > sub.train.model$bestTune
+#   n.trees interaction.depth shrinkage n.minobsinnode
+#      150                 3       0.1             10
+
+plot(sub.train.model)
+
+sub.train.pred <- predict(sub.train.model, sub.test[,-131] %>% filter(cat103 != 'N', 
+                                                                      !(cat109 %in% c("AK","BT")),
+                                                                      cat110 != "DV",
+                                                                      cat114 != "W",
+                                                                      !(cat116 %in% c("AT", "BI", "CJ", "HU", "IB"))))
+
+sub.test.filtered <- sub.test %>% filter(cat103 != 'N', 
+                                                                      !(cat109 %in% c("AK","BT")),
+                                                                      cat110 != "DV",
+                                                                      cat114 != "W",
+                                                                      !(cat116 %in% c("AT", "BI", "CJ", "HU", "IB")))
+
+confusionMatrix(sub.train.pred,  sub.test.filtered$profile)
+
+# Confusion Matrix and Statistics
+# 
+#           Reference
+# Prediction  High   Low
+#       High  1684   537
+#       Low   1641 13097
+#                                           
+#                Accuracy : 0.8716          
+#                  95% CI : (0.8664, 0.8766)
+#     No Information Rate : 0.8039          
+#     P-Value [Acc > NIR] : < 2.2e-16       
+#                                           
+#                   Kappa : 0.5341          
+#  Mcnemar's Test P-Value : < 2.2e-16       
+#                                           
+#             Sensitivity : 0.5065          
+#             Specificity : 0.9606          
+#          Pos Pred Value : 0.7582          
+#          Neg Pred Value : 0.8887          
+#              Prevalence : 0.1961          
+#          Detection Rate : 0.0993          
+#    Detection Prevalence : 0.1310          
+#       Balanced Accuracy : 0.7335          
+#                                           
+#        'Positive' Class : High           
+
+
+
+rpart.mod <- train(profile ~ ., data= sandbox.mod.train, method = "rpart" )
+print(rpart.mod$finalModel)
+plot(rpart.mod$finalModel, uniform=TRUE,
+     main="Classification Tree")
+text(rpart.mod$finalModel, use.n=TRUE, all=TRUE, cex=.8)
+
+library(rattle)
+fancyRpartPlot(rpart.mod$finalModel)
+```
+
+
+#### Run Tree / Random Forest / xgboost 
+1. Create training and test set from training data
+
+#### Use GLM to create model
+
+#### XGBOOST
+A first time run using xgboost default paremeters ranked me within the 75% range.
+1683	new	Jhonasttan 1213.24728 1	Sat, 19 Nov 2016 15:41:17
+```{r}
+library(xgboost)
+library(dplyr)
+library(caret)
+library(hydroGOF)
+library(Metrics)
+
+train = read.csv('~/Documents/DataScience/bootcamp7/project4/data/train.csv')
+test = read.csv('~/Documents/DataScience/bootcamp7/project4/data/test.csv')
+
+# Convert character to factor variables
+train[, 2:117] <- lapply(train[, 2:117], as.factor)
+
+#Transform the Loss feature (independence variable) to convert the data from skewed to normal distribution.
+shift = 200
+ggplot(train, aes(train$loss)) + geom_histogram()
+train$loss <- log(train$loss + shift)
+ggplot(train, aes(train$loss)) + geom_histogram()
+
+
+
+# Extract the predictor variables
+
+#trainX <- data.matrix(select(train, -loss, -id))
+trainX <- data.matrix(train %>% filter(loss < 30000) %>% select(., -loss, -id))
+testX <- data.matrix(select(test, -id))
+#testX<- log(testX + shift)
+
+trainX.xgb.DMatrix <- xgb.DMatrix(trainX, label=train$loss)
+
+testX.xgb.DMatrix <- xgb.DMatrix(testX)
+
+#evalerror <- function(preds, dtrain){
+#    labels = names(dtrain)
+#    cat('mae', mae(exp(preds), exp(dtrain$loss)))
+#}
+
+x_mae <-function (data, lev = NULL, model = NULL,...) { 
+  require(Metrics)
+  m <- try(Metrics::mae(exp(data$obs), exp(data$pred)),silent=TRUE)
+  out<-c(m)
+  names(out) <- c("MAE")
+  out 
+}
+
+
+fitCtrl <- trainControl(method = "cv",
+                        number = 5,
+                        verboseIter = TRUE,
+                        summaryFunction = x_mae)
+
+# Build the model
+set.seed(0)
+#xgb = xgboost(data=trainX, label=train$loss, nrounds=1000, object = "binary:logistic")
+#test.predict = predict(xgb, testX)
+
+RANDOM_STATE = 2016
+#parameters explained - https://github.com/dmlc/xgboost/blob/master/doc/parameter.md 
+params = list(
+        min_child_weight = 1,
+        eta = 0.01,
+        colsample_bytree = 0.5,
+        max_depth = 12,
+        subsample = 0.8,
+        alpha = 1,
+        gamma = 1,
+        silent = 0,
+        verbose_eval = TRUE,
+        seed = RANDOM_STATE
+)
+
+#model = xgb.train(params = params, trainX.xgb.DMatrix, as.integer(2012 / 0.9), feval=evalerror)
+##Try this one
+model = xgb.train(params = params, trainX.xgb.DMatrix, nrounds = 1000, metric="MAE", trControl = fitCtrl)
+
+#prediction = exp(predict(model,testX)) - shift
+prediction = predict(model,testX)
+
+importance_matrix <- xgb.importance(model = model)
+print(importance_matrix)
+library(Ckmeans.1d.dp)
+xgb.plot.importance(importance_matrix = importance_matrix)
+xgb.plot.importance(importance_matrix[importance_matrix$Frequence >= 0.0031651,])
+
+# save model to binary local file - http://xgboost.readthedocs.io/en/latest/R-package/xgboostPresentation.html
+xgb.save(model, "~/Documents/DataScience/bootcamp7/project4/xgboostall.model")
+# load binary model to R
+#bst2 <- xgb.load("xgboost.model")
+#pred2 <- predict(bst2, test$data)
+
+#submission = data.frame(id=test$id, loss=test.predict)
+submission = data.frame(id=test$id, loss=prediction)
+
+write.csv(submission, '~/Documents/DataScience/bootcamp7/project4/11.22.2_xgboost_submission.csv',row.names = FALSE)
+
+catName <- function(x) {
+  colnames(train)[x]
+}
+```
+
+#### XGBOOST - Removing the 
+
+#### Neural Network
+FAQ: http://www.faqs.org/faqs/ai-faq/neural-nets/part2/ 
+```{r}
+###################################
+#####Tools for Neural Networks#####
+###################################
+#Reading in the data and inspecting its contents.
+concrete_train = read.csv("~/Documents/DataScience/bootcamp7/project4/train.csv")
+concrete_test = read.csv('~/Documents/DataScience/bootcamp7/project4/test.csv')
+
+#Change categorical values to factors
+#concrete_train[, 2:117] <- lapply(concrete_train[, 2:117], as.factor)
+#concrete_test[, 2:117] <- lapply(concrete_test[, 2:117], as.factor)
+
+#Change categorical values to numeric
+concrete_train[, 2:117] <- lapply(concrete_train[, 2:117], as.numeric)
+concrete_test[, 2:117] <- lapply(concrete_test[, 2:117], as.numeric)
+
+# Neural net fitting
+
+# Scaling data for the NN
+maxs <- apply(data, 2, max) 
+mins <- apply(data, 2, min)
+scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+
+#using RSNNS libray for normalization - convert dataframe to matrix after converting categorical values to numeric
+library(RSNNS)
+concrete_train = read.csv("~/Documents/DataScience/bootcamp7/project4/train.csv")
+concrete_train <- concrete_train[,-1]
+summary(concrete_train)
+#concrete_train <- lapply(concrete_train[,1;116], as.factor)
+concrete.train.m <- as.matrix(concrete.train)
+concrete.train.m.n <- normalizeData(concrete.train.m)
+# Train-test split
+concrete_train <- scaled[index,]
+concrete_test <- scaled[-index,]
+
+str(concrete_train)
+str(concrete_test)
+summary(concrete_train)
+
+#We notice that our data range from values of 0 to upwards of 1,000; neural
+#networks work best when we account for the differences in our variables and
+#scale accordingly such that values are close to 0. Let's define our own
+#normalize function as follows:
+normalize = function(x) { 
+  return((x - min(x)) / (max(x) - min(x))) #anything that isn't tree or generalized linear models should be normalized
+}
+
+#We now apply our normalization function to all the variables within our dataset;
+#we store the result as a data frame for future manipulation.
+#concrete_train_norm = as.data.frame(lapply(concrete_train, normalize))
+#http://stats.stackexchange.com/questions/33083/how-to-deal-with-a-mix-of-binary-and-continuous-inputs-in-neural-networks
+concrete_train_norm = as.data.frame(lapply(concrete_train, scale))
+concrete_test_norm = as.data.frame(lapply(concrete_test, scale))
+
+#Inspecting the output to ensure that the range of each variable is now between
+#0 and 1.
+summary(concrete_train_norm)
+
+#Loading the neuralnet library for the training of neural networks.
+library(neuralnet)
+
+#Training the simplest multilayer feedforward neural network that includes only
+#one hidden node.
+
+concrete_variables = paste(c(paste0(names(concrete_train)[2:130], " + "), "cont14"), collapse = "" )
+concrete_variables = paste("loss ~ ", concrete_variables, collapse = "")
+
+set.seed(0)
+concrete_model = neuralnet(as.formula(concrete_variables), #Cannot use the shorthand #dot (.) notation
+                           hidden = 1, #Default number of hidden neurons.
+                           data = concrete_train_norm)
+
+#Visualizing the network topology using the plot() function.
+#pdf("~/Documents/DataScience/bootcamp7/project4/nnDiagram.pdf")
+#plot(concrete_model)
+#dev.off()
+
+plot(concrete_model) # 1 represents an intercept in R
+pdf(plot(concrete_model), "~/Documents/DataScience/bootcamp7/project4/nnDiagram.pdf")
+
+#Generating model predictions on the testing dataset using the compute()
+#function.
+model_results = compute(concrete_model, concrete_test[, 2:ncol(concrete_test)])
+#model_results = compute(concrete_model, concrete_test_norm)
+
+#The model_results object stores the neurons for each layer in the network and
+#also the net.results which stores the predicted values; obtaining the
+#predicted values.
+predicted_strength = model_results$net.result
+
+# y1=z1⋅sd(data)+mean(data)
+pd.df = as.data.frame(predicted_strength)
+
+#un.normalized.predictor = data.frame(prediction = sd(as.data.frame(predicted_strength)) + mean(as.data.frame(predicted_strength)))
+
+#Examining the correlation between predicted and actual values.
+cor(predicted_strength, concrete_test$l)
+plot(predicted_strength, concrete_test_norm$strength)
+
+```
+
+#### Neural net vs LM
+
+```{r}
+# Set a seed
+set.seed(0)
+
+data <- read.csv("~/Documents/DataScience/bootcamp7/project4/train.csv")
+#subset 10k rows
+data <- data[1:10000,-1]
+dim(data)
+# Check that no data is missing
+apply(data,2,function(x) sum(is.na(x)))
+
+# convert categorical values to numeric
+data[, 1:116] <- lapply(data[, 1:116], as.numeric)
+# Train-test random splitting for linear model
+index <- sample(1:nrow(data),round(0.75*nrow(data)))
+train <- data[index,]
+test <- data[-index,]
+
+# Fitting linear model
+lm.fit <- glm(loss~., data=train)
+summary(lm.fit)
+
+# Predicted data from lm
+pr.lm <- predict(lm.fit,test)
+
+# Test MSE
+MSE.lm <- sum((pr.lm - test$loss)^2)/nrow(test)
+
+#-------------------------------------------------------------------------------
+# Neural net fitting
+
+# Scaling data for the NN
+maxs <- apply(data, 2, max) 
+mins <- apply(data, 2, min)
+scaled <- as.data.frame(scale(data, center = mins, scale = maxs - mins))
+
+# Train-test split
+train_ <- scaled[index,]
+test_ <- scaled[-index,]
+
+# NN training
+library(neuralnet)
+n <- names(train_)
+f <- as.formula(paste("loss ~", paste(n[!n %in% "loss"], collapse = " + ")))
+nn <- neuralnet(f,data=train_,hidden=c(5,3),linear.output=T)
+
+# Visual plot of the model
+plot(nn)
+
+# Predict
+pr.nn <- compute(nn,test_[,1:130])
+
+# Results from NN are normalized (scaled)
+# Descaling for comparison
+pr.nn_ <- pr.nn$net.result*(max(data$loss)-min(data$loss))+min(data$loss)
+test.r <- (test_$loss)*(max(data$loss)-min(data$loss))+min(data$loss)
+
+# Calculating MSE
+MSE.nn <- sum((test.r - pr.nn_)^2)/nrow(test_)
+
+# Compare the two MSEs
+print(paste(MSE.lm,MSE.nn))
+
+# Plot predictions
+par(mfrow=c(1,2))
+
+plot(test$loss,pr.nn_,col='red',main='Real vs predicted NN',pch=18,cex=0.7)
+abline(0,1,lwd=2)
+legend('bottomright',legend='NN',pch=18,col='red', bty='n')
+
+plot(test$loss,pr.lm,col='blue',main='Real vs predicted lm',pch=18, cex=0.7)
+abline(0,1,lwd=2)
+legend('bottomright',legend='LM',pch=18,col='blue', bty='n', cex=.95)
+
+# Compare predictions on the same plot
+plot(test$loss,pr.nn_,col='red',main='Real vs predicted NN',pch=18,cex=0.7)
+points(test$loss,pr.lm,col='blue',pch=18,cex=0.7)
+abline(0,1,lwd=2)
+legend('bottomright',legend=c('NN','LM'),pch=18,col=c('red','blue'))
+
+#-------------------------------------------------------------------------------
+# Cross validating
+
+library(boot)
+set.seed(200)
+
+# Linear model cross validation
+lm.fit <- glm(loss~.,data=data)
+cv.glm(data,lm.fit,K=10)$delta[1]
+
+
+# Neural net cross validation
+set.seed(450)
+cv.error <- NULL
+k <- 10
+
+# Initialize progress bar
+library(plyr) 
+pbar <- create_progress_bar('text')
+pbar$init(k)
+
+for(i in 1:k){
+    index <- sample(1:nrow(data),round(0.9*nrow(data)))
+    train.cv <- scaled[index,-1]
+    test.cv <- scaled[-index,-1]
+    
+    nn <- neuralnet(f,data=train.cv,hidden=c(5,2),linear.output=T)
+    
+    pr.nn <- compute(nn,test.cv[,-131])
+    pr.nn <- pr.nn$net.result*(max(data$loss)-min(data$loss))+min(data$loss)
+    
+    test.cv.r <- (test.cv$loss)*(max(data$loss)-min(data$loss))+min(data$loss)
+    
+    cv.error[i] <- sum((test.cv.r - pr.nn)^2)/nrow(test.cv)
+    
+    pbar$step()
+}
+
+# Average MSE
+mean(cv.error)
+
+# MSE vector from CV
+cv.error
+
+# Visual plot of CV results
+boxplot(cv.error,xlab='MSE CV',col='cyan',
+        border='blue',names='CV error (MSE)',
+        main='CV error (MSE) for NN',horizontal=TRUE)
+```
+
+
+#### XGBOOST using parameters
+
+```{r}
+library(data.table)
+library(Matrix)
+library(xgboost)
+library(Metrics)
+
+ID = 'id'
+TARGET = 'loss'
+SEED = 0
+
+LETTERS_AY <- LETTERS[-length(LETTERS)]
+LETTERS702 <- c(LETTERS_AY, sapply(LETTERS_AY, function(x) paste0(x, LETTERS_AY)), "ZZ")
+
+TRAIN_FILE = "~/Documents/DataScience/bootcamp7/project4/train.csv"
+TEST_FILE = "~/Documents/DataScience/bootcamp7/project4/test.csv"
+
+train = fread(TRAIN_FILE, showProgress = TRUE)
+test = fread(TEST_FILE, showProgress = TRUE)
+train_ids <- train[,ID, with = FALSE][[ID]] # gotta love this style. 
+test_ids <- test[,ID, with = FALSE][[ID]]
+y_train = log(train[,TARGET, with = FALSE])[[TARGET]]
+
+train[, c(ID, TARGET) := NULL]
+test[, c(ID) := NULL]
+
+ntrain = nrow(train)
+train_test = rbind(train, test)
+
+features = setdiff(names(train), c("id", "loss")) # just in case
+
+for (f in features) {
+  if (class(train_test[[f]])=="character") {
+    levels <- intersect(LETTERS702, unique(train_test[[f]])) # get'em ordered!
+    labels <- match(levels, LETTERS702)
+    #train_test[[f]] <- factor(train_test[[f]], levels=levels) # uncomment this for one-hot
+    train_test[[f]] <- as.integer(as.character(factor(train_test[[f]], levels=levels, labels = labels))) # comment this one away for one-hot
+  }
+}
+
+
+x_train = train_test[1:ntrain,]
+x_test = train_test[(ntrain+1):nrow(train_test),]
+
+rm(train, test, train_test); gc()
+
+dtrain.sparse <- sparse.model.matrix( ~ .-1, data = x_train)
+dtest.sparse <- sparse.model.matrix( ~ .-1, data = x_test)
+dtrain <- xgb.DMatrix(dtrain.sparse, label=y_train)
+dtest <-  xgb.DMatrix(dtest.sparse)
+
+
+xg_eval_mae <- function (yhat, dtrain) {
+   y = getinfo(dtrain, "label")
+   err= mae(exp(y),exp(yhat) )
+   return (list(metric = "error", value = err))
+}
+
+logcoshobj <- function(preds, dtrain) {
+  labels <- getinfo(dtrain, "label")
+  grad <- tanh(preds-labels)
+  hess <- 1-grad*grad
+  return(list(grad = grad, hess = hess))
+}
+
+cauchyobj <- function(preds, dtrain) {
+  labels <- getinfo(dtrain, "label")
+  c <- 3  #the lower the "slower/smoother" the loss is. Cross-Validate.
+  x <-  preds-labels
+  grad <- x / (x^2/c^2+1)
+  hess <- -c^2*(x^2-c^2)/(x^2+c^2)^2
+  return(list(grad = grad, hess = hess))
+}
+
+
+fairobj <- function(preds, dtrain) {
+  labels <- getinfo(dtrain, "label")
+  con <- 2
+  x <-  preds-labels
+  grad <- con*x / (abs(x)+con)
+  hess <- con^2 / (abs(x)+con)^2
+  cat("\nMean: ", mean(preds), " - Gradient: ", mean(grad), " - Hessian: ", mean(hess), "\n", sep = "")
+  return(list(grad = grad, hess = hess))
+}
+
+xgb_params = list(
+  seed = 0,
+  colsample_bytree = 0.6,#0.7
+  #subsample = 0.7,
+  eta = 0.075,
+  objective = fairobj,
+  eval_metric = xg_eval_mae, # "mae"
+  max_depth = 6, #6
+  num_parallel_tree = 1,
+  min_child_weight = 1,
+  alpha=10, #8,9,10
+  base_score = 7.65
+)
+
+set.seed(0)
+res = xgb.cv(xgb_params,
+             dtrain,
+             prediction =T,
+             nrounds=10, #2000 for local run
+             nfold=5,
+             early_stopping_rounds=15,
+             print_every_n = 1,
+             verbose= 1,
+             #obj = fairobj, #logcoshobj, #cauchyobj #
+             #feval = xg_eval_mae, #"mae" 
+             maximize=FALSE)
+```
+
+
+#### Perform Assumptions / Diagnostics on model for validity
+
+#### Use AIC / BIC to determine best model
+
+#### Determine how to 
+
+#### Conclusion
+
+
+
+
+
+
