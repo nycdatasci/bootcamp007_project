@@ -1,0 +1,1374 @@
+Read 26.6% of 188318 rowsRead 79.7% of 188318 rowsRead 188318 rows and 132 (of 132) columns from 0.065 GB file in 00:00:04
+[1] 188318    132
+
+    A    AA    AB    AC    AD    AE    AF    AG    AH    AI    AJ    AK    AL 
+ 2411  1241   246   454  1531   834  9368  1331 18639  4749   144  6726  1130 
+   AM    AN    AO    AP    AQ    AR    AS    AT    AU    AV    AW    AX    AY 
+ 1170  9138   534  4000    30  2365 17669  1272   434  7122  3145  1074  1414 
+    B    BA     C     D     E     F     G     H     I     J     K     L     M 
+  423   190  2257  1645 25148  3149  3168   548   940 16222  6059   493   439 
+    N     O     P     Q     R     S     T     U     V     W     X     Y 
+ 8453  2183   406   793  1123  4201   521  8356   693   461   925  1351 
+  (Intercept) cat1B cat2B cat3B cat4B cat5B cat6B cat7B cat8B cat9B cat10B
+1           1     0     1     0     0     1     0     0     0     1      1
+2           1     1     0     0     0     1     0     0     0     0      0
+3           1     1     0     0     1     0     0     0     0     0      0
+4           1     1     0     0     0     1     0     0     0     0      0
+  cat11B cat12B cat13B cat14B cat15B cat16B cat17B cat18B cat19B cat20B cat21B
+1      0      1      1      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat22B cat23B cat24B cat25B cat26B cat27B cat28B cat29B cat30B cat31B cat32B
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      1      0      0      0      0      0      1      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat33B cat34B cat35B cat36B cat37B cat38B cat39B cat40B cat41B cat42B cat43B
+1      0      0      0      1      0      0      0      0      0      0      0
+2      0      0      0      0      0      1      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      1      0      1      0      1      1      0      0
+  cat44B cat45B cat46B cat47B cat48B cat49B cat50B cat51B cat52B cat53B cat54B
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat55B cat56B cat57B cat58B cat59B cat60B cat61B cat62B cat63B cat64B cat65B
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat66B cat67B cat68B cat69B cat70B cat71B cat72B cat73B cat73C cat74B cat74C
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      1      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat75B cat75C cat76B cat76C cat77B cat77C cat77D cat78B cat78C cat78D cat79B
+1      1      0      0      0      0      0      1      1      0      0      0
+2      0      0      0      0      0      0      1      1      0      0      1
+3      0      0      0      0      0      0      1      1      0      0      1
+4      1      0      0      0      0      0      1      1      0      0      1
+  cat79C cat79D cat80B cat80C cat80D cat81B cat81C cat81D cat82B cat82C cat82D
+1      0      1      1      0      0      0      0      1      0      0      0
+2      0      0      0      0      1      0      0      1      1      0      0
+3      0      0      0      0      1      0      0      1      1      0      0
+4      0      0      0      0      1      0      0      1      1      0      0
+  cat83B cat83C cat83D cat84B cat84C cat84D cat85B cat85C cat85D cat86B cat86C
+1      0      0      1      0      1      0      1      0      0      1      0
+2      1      0      0      0      1      0      1      0      0      0      0
+3      1      0      0      0      1      0      1      0      0      1      0
+4      1      0      0      0      1      0      1      0      0      1      0
+  cat86D cat87B cat87C cat87D cat88B cat88D cat88E cat89B cat89C cat89D cat89E
+1      0      0      0      1      0      0      0      0      0      0      0
+2      1      1      0      0      0      0      0      0      0      0      0
+3      0      1      0      0      0      0      0      0      0      0      0
+4      0      1      0      0      0      0      0      0      0      0      0
+  cat89G cat89H cat89I cat90B cat90C cat90D cat90E cat90F cat90G cat91B cat91C
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      1      0
+3      0      0      0      0      0      0      0      0      0      1      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat91D cat91E cat91F cat91G cat91H cat92B cat92C cat92D cat92F cat92H cat92I
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      1      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      1      0      0      0      0      0      1      0
+  cat93B cat93C cat93D cat93E cat94B cat94C cat94D cat94E cat94F cat94G cat95B
+1      0      1      0      0      1      0      0      0      0      0      0
+2      0      0      1      0      0      0      1      0      0      0      0
+3      0      0      1      0      0      0      1      0      0      0      0
+4      0      0      1      0      0      0      1      0      0      0      0
+  cat95C cat95D cat95E cat96B cat96C cat96D cat96E cat96F cat96G cat96I cat97B
+1      0      1      0      0      0      0      1      0      0      0      0
+2      1      0      0      0      0      0      1      0      0      0      0
+3      0      1      0      0      0      0      1      0      0      0      0
+4      0      1      0      0      0      0      1      0      0      0      0
+  cat97C cat97D cat97E cat97F cat97G cat98B cat98C cat98D cat98E cat99D cat99E
+1      1      0      0      0      0      0      0      0      0      0      0
+2      0      0      1      0      0      0      0      1      0      0      0
+3      1      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat99F cat99G cat99H cat99I cat99J cat99K cat99M cat99N cat99O cat99P cat99R
+1      0      0      0      0      0      0      0      0      0      1      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      1      0
+4      0      0      0      0      0      0      0      0      0      1      0
+  cat99S cat99T cat100B cat100C cat100D cat100E cat100F cat100G cat100H cat100I
+1      0      0       0       0       0       0       0       0       1       0
+2      0      1       0       0       0       0       1       0       0       0
+3      0      0       0       0       0       0       0       0       0       1
+4      0      0       0       0       0       0       0       0       0       0
+  cat100J cat100K cat100L cat100M cat100N cat100O cat101B cat101C cat101D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat101E cat101F cat101G cat101H cat101I cat101J cat101K cat101L cat101M
+1       0       0       0       0       0       0       0       0       1
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat101N cat101O cat101Q cat101R cat101S cat101U cat102B cat102C cat102D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat102E cat102F cat102G cat102H cat102J cat103B cat103C cat103D cat103E
+1       0       0       0       0       0       1       0       0       0
+2       0       0       0       0       0       1       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       1
+  cat103F cat103G cat103H cat103I cat103J cat103K cat103L cat103N cat104B
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat104C cat104D cat104E cat104F cat104G cat104H cat104I cat104J cat104K
+1       0       0       0       0       1       0       0       0       0
+2       0       0       1       0       0       0       0       0       0
+3       0       0       1       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       1
+  cat104L cat104M cat104N cat104O cat104P cat104Q cat105B cat105C cat105D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat105E cat105F cat105G cat105H cat105I cat105J cat105K cat105L cat105M
+1       0       0       0       0       1       0       0       0       0
+2       1       0       0       0       0       0       0       0       0
+3       1       0       0       0       0       0       0       0       0
+4       0       0       0       1       0       0       0       0       0
+  cat105N cat105O cat105P cat105Q cat105R cat105S cat105T cat106B cat106C
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat106D cat106E cat106F cat106G cat106H cat106I cat106J cat106K cat106L
+1       0       0       0       0       0       1       0       0       0
+2       0       0       0       0       0       1       0       0       0
+3       0       0       0       0       1       0       0       0       0
+4       0       0       1       0       0       0       0       0       0
+  cat106M cat106N cat106O cat106P cat106R cat107B cat107C cat107D cat107E
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat107F cat107G cat107H cat107I cat107J cat107K cat107L cat107M cat107N
+1       1       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       1       0       0       0
+3       1       0       0       0       0       0       0       0       0
+4       1       0       0       0       0       0       0       0       0
+  cat107O cat107P cat107Q cat107R cat107S cat107U cat108B cat108C cat108D
+1       0       0       0       0       0       0       1       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       1       0       0
+4       0       0       0       0       0       0       1       0       0
+  cat108E cat108F cat108G cat108H cat108I cat108J cat108K cat109AA cat109AB
+1       0       0       0       0       0       0       0        0        0
+2       0       0       0       0       0       0       1        0        0
+3       0       0       0       0       0       0       0        0        0
+4       0       0       0       0       0       0       0        0        0
+  cat109AE cat109AF cat109AG cat109AH cat109AI cat109AJ cat109AK cat109AL
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109AM cat109AN cat109AO cat109AP cat109AQ cat109AR cat109AS cat109AT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109AU cat109AV cat109AW cat109AX cat109AY cat109B cat109BA cat109BB
+1        0        0        0        0        0       0        0        0
+2        0        0        0        0        0       0        0        0
+3        0        0        0        0        0       0        0        0
+4        0        0        0        0        0       0        0        0
+  cat109BC cat109BD cat109BE cat109BF cat109BG cat109BH cat109BI cat109BJ
+1        0        0        0        0        0        0        1        0
+2        0        0        0        0        0        0        1        0
+3        0        0        0        0        0        0        1        0
+4        0        0        0        0        0        0        1        0
+  cat109BK cat109BL cat109BM cat109BN cat109BO cat109BP cat109BQ cat109BR
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109BS cat109BT cat109BU cat109BV cat109BX cat109BY cat109C cat109CA
+1        0        0        0        0        0        0       0        0
+2        0        0        0        0        0        0       0        0
+3        0        0        0        0        0        0       0        0
+4        0        0        0        0        0        0       0        0
+  cat109CB cat109CC cat109CD cat109CE cat109CF cat109CG cat109CH cat109CI
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109CJ cat109CK cat109CL cat109D cat109E cat109F cat109G cat109H cat109I
+1        0        0        0       0       0       0       0       0       0
+2        0        0        0       0       0       0       0       0       0
+3        0        0        0       0       0       0       0       0       0
+4        0        0        0       0       0       0       0       0       0
+  cat109J cat109K cat109L cat109M cat109N cat109O cat109P cat109Q cat109R
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat109S cat109T cat109U cat109V cat109X cat109Y cat109ZZ cat110AA cat110AB
+1       0       0       0       0       0       0        0        0        0
+2       0       0       0       0       0       0        0        0        0
+3       0       0       0       0       0       0        0        0        0
+4       0       0       0       0       0       0        0        0        0
+  cat110AC cat110AD cat110AE cat110AF cat110AG cat110AH cat110AI cat110AJ
+1        0        0        0        0        0        0        1        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110AK cat110AL cat110AM cat110AN cat110AO cat110AP cat110AR cat110AS
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110AT cat110AU cat110AV cat110AW cat110AX cat110AY cat110B cat110BA
+1        0        0        0        0        0        0       0        0
+2        0        0        0        0        0        0       0        0
+3        0        0        0        0        0        0       0        0
+4        0        0        0        0        0        0       0        0
+  cat110BB cat110BC cat110BD cat110BE cat110BF cat110BG cat110BI cat110BJ
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110BK cat110BL cat110BM cat110BN cat110BO cat110BP cat110BQ cat110BR
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110BS cat110BT cat110BU cat110BV cat110BW cat110BX cat110BY cat110C
+1        0        0        0        0        0        0        0       0
+2        0        0        0        0        0        0        0       0
+3        0        0        0        0        0        0        0       0
+4        0        1        0        0        0        0        0       0
+  cat110CB cat110CC cat110CD cat110CF cat110CG cat110CH cat110CI cat110CJ
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110CK cat110CL cat110CM cat110CN cat110CO cat110CP cat110CQ cat110CR
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110CS cat110CT cat110CU cat110CV cat110CW cat110CX cat110CY cat110D
+1        0        0        0        0        0        0        0       0
+2        1        0        0        0        0        0        0       0
+3        1        0        0        0        0        0        0       0
+4        0        0        0        0        0        0        0       0
+  cat110DA cat110DB cat110DC cat110DD cat110DE cat110DF cat110DG cat110DH
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110DI cat110DJ cat110DK cat110DL cat110DM cat110DN cat110DO cat110DP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110DQ cat110DR cat110DS cat110DT cat110DU cat110DV cat110DW cat110DX
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110DY cat110E cat110EA cat110EB cat110ED cat110EE cat110EF cat110EG
+1        0       0        0        0        0        0        0        0
+2        0       0        0        0        0        0        0        0
+3        0       0        0        0        0        0        0        0
+4        0       0        0        0        0        0        0        0
+  cat110EH cat110EI cat110EJ cat110EK cat110EL cat110EM cat110G cat110H cat110I
+1        0        0        0        0        0        0       0       0       0
+2        0        0        0        0        0        0       0       0       0
+3        0        0        0        0        0        0       0       0       0
+4        0        0        0        0        0        0       0       0       0
+  cat110J cat110K cat110L cat110N cat110O cat110P cat110Q cat110R cat110S
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat110T cat110U cat110V cat110W cat110X cat110Y cat111B cat111C cat111D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat111E cat111F cat111G cat111I cat111K cat111M cat111O cat111Q cat111S
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       1       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat111U cat111W cat111Y cat113AB cat113AC cat113AD cat113AE cat113AF cat113AG
+1       0       0       0        0        0        0        0        0        0
+2       0       0       0        0        0        0        1        0        0
+3       0       0       0        0        0        0        0        0        0
+4       0       0       0        0        0        0        0        0        0
+  cat113AH cat113AI cat113AJ cat113AK cat113AL cat113AM cat113AN cat113AO
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat113AP cat113AQ cat113AR cat113AS cat113AT cat113AU cat113AV cat113AW
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat113AX cat113AY cat113B cat113BA cat113BB cat113BC cat113BD cat113BE
+1        1        0       0        0        0        0        0        0
+2        0        0       0        0        0        0        0        0
+3        0        0       0        0        0        0        0        0
+4        0        0       0        0        0        0        0        0
+  cat113BF cat113BG cat113BH cat113BI cat113BJ cat113BK cat113BL cat113BM
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        1
+4        0        0        0        0        0        0        0        0
+  cat113BN cat113BO cat113C cat113E cat113F cat113G cat113H cat113I cat113J
+1        0        0       0       0       0       0       0       0       0
+2        0        0       0       0       0       0       0       0       0
+3        0        0       0       0       0       0       0       0       0
+4        0        0       0       0       0       0       0       0       0
+  cat113K cat113L cat113M cat113N cat113O cat113P cat113Q cat113S cat113T
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       1       0       0       0       0       0       0
+  cat113U cat113V cat113X cat113Y cat114B cat114C cat114D cat114E cat114F
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat114G cat114I cat114J cat114L cat114N cat114O cat114Q cat114R cat114S
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat114U cat114V cat114W cat114X cat115B cat115C cat115D cat115E cat115F
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat115G cat115H cat115I cat115J cat115K cat115L cat115M cat115N cat115O
+1       0       0       0       0       1       0       0       0       0
+2       0       0       0       0       0       0       0       0       1
+3       0       0       0       0       1       0       0       0       0
+4       0       0       0       1       0       0       0       0       0
+  cat115P cat115Q cat115R cat115S cat115T cat115U cat115W cat115X cat116AB
+1       0       0       0       0       0       0       0       0        0
+2       0       0       0       0       0       0       0       0        0
+3       0       0       0       0       0       0       0       0        0
+4       0       0       0       0       0       0       0       0        0
+  cat116AC cat116AD cat116AE cat116AF cat116AG cat116AH cat116AJ cat116AK
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116AL cat116AM cat116AN cat116AO cat116AP cat116AR cat116AS cat116AT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116AU cat116AV cat116AW cat116AX cat116AY cat116B cat116BA cat116BB
+1        0        0        0        0        0       0        0        0
+2        0        0        0        0        0       0        0        0
+3        0        0        0        0        0       0        0        0
+4        0        0        0        0        0       0        0        0
+  cat116BC cat116BD cat116BF cat116BG cat116BI cat116BK cat116BL cat116BM
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116BO cat116BP cat116BQ cat116BS cat116BT cat116BU cat116BV cat116BW
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116BX cat116BY cat116C cat116CA cat116CB cat116CC cat116CD cat116CE
+1        0        0       0        0        0        0        0        0
+2        0        0       0        0        0        0        0        0
+3        0        0       0        0        0        0        0        0
+4        0        0       0        0        0        0        0        0
+  cat116CF cat116CG cat116CH cat116CI cat116CJ cat116CK cat116CL cat116CM
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116CN cat116CO cat116CP cat116CQ cat116CR cat116CS cat116CT cat116CU
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116CV cat116CW cat116CX cat116CY cat116D cat116DA cat116DC cat116DD
+1        0        0        0        0       0        0        0        0
+2        0        0        0        0       0        0        0        0
+3        0        0        0        0       0        0        0        0
+4        0        0        0        0       0        0        0        0
+  cat116DE cat116DF cat116DG cat116DH cat116DI cat116DJ cat116DK cat116DL
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        1        0        0
+3        0        0        0        0        0        1        0        0
+4        0        0        0        0        0        0        0        0
+  cat116DM cat116DN cat116DO cat116DP cat116DQ cat116DR cat116DS cat116DT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116DU cat116DV cat116DW cat116DX cat116DY cat116E cat116EA cat116EB
+1        0        0        0        0        0       0        0        0
+2        0        0        0        0        0       0        0        0
+3        0        0        0        0        0       0        0        0
+4        0        0        0        0        0       0        0        0
+  cat116EC cat116ED cat116EE cat116EF cat116EG cat116EH cat116EI cat116EJ
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116EK cat116EL cat116EN cat116EO cat116EP cat116EQ cat116ES cat116EU
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116EV cat116EW cat116EY cat116F cat116FA cat116FB cat116FC cat116FD
+1        0        0        0       0        0        0        0        0
+2        0        0        0       0        0        0        0        0
+3        0        0        0       0        0        0        0        0
+4        0        0        0       0        0        0        0        0
+  cat116FE cat116FF cat116FG cat116FH cat116FI cat116FJ cat116FK cat116FL
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116FM cat116FN cat116FO cat116FP cat116FQ cat116FR cat116FS cat116FT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116FU cat116FV cat116FW cat116FX cat116G cat116GA cat116GB cat116GC
+1        0        0        0        0       0        0        0        0
+2        0        0        0        0       0        0        0        0
+3        0        0        0        0       0        0        0        0
+4        0        0        0        0       0        0        0        0
+  cat116GD cat116GE cat116GF cat116GG cat116GH cat116GI cat116GJ cat116GK
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116GL cat116GM cat116GN cat116GO cat116GP cat116GQ cat116GR cat116GS
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116GT cat116GU cat116GV cat116GW cat116GX cat116GY cat116H cat116HA
+1        0        0        0        0        0        0       0        0
+2        0        0        0        0        0        0       0        0
+3        0        0        0        0        0        0       0        0
+4        0        0        0        0        0        0       0        0
+  cat116HB cat116HC cat116HD cat116HE cat116HF cat116HG cat116HH cat116HI
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116HJ cat116HK cat116HL cat116HM cat116HN cat116HO cat116HP cat116HQ
+1        0        1        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116HR cat116HT cat116HU cat116HV cat116HW cat116HX cat116HY cat116I
+1        0        0        0        0        0        0        0       0
+2        0        0        0        0        0        0        0       0
+3        0        0        0        0        0        0        0       0
+4        0        0        0        0        0        0        0       0
+  cat116IA cat116IB cat116IC cat116ID cat116IE cat116IF cat116IG cat116IH
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116II cat116IJ cat116IK cat116IL cat116IM cat116IN cat116IO cat116IP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116IQ cat116IR cat116IT cat116IU cat116IV cat116IX cat116IY cat116J
+1        0        0        0        0        0        0        0       0
+2        0        0        0        0        0        0        0       0
+3        0        0        0        0        0        0        0       0
+4        0        0        0        0        0        0        0       0
+  cat116JA cat116JB cat116JC cat116JD cat116JE cat116JF cat116JG cat116JH
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116JI cat116JJ cat116JK cat116JL cat116JM cat116JN cat116JO cat116JP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116JQ cat116JR cat116JT cat116JU cat116JV cat116JW cat116JX cat116JY
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116K cat116KA cat116KB cat116KC cat116KD cat116KE cat116KF cat116KG
+1       0        0        0        0        0        0        0        0
+2       0        0        0        0        0        0        0        0
+3       0        0        0        0        0        0        0        0
+4       0        0        0        0        0        0        0        0
+  cat116KH cat116KI cat116KJ cat116KK cat116KL cat116KM cat116KN cat116KP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116KQ cat116KR cat116KS cat116KT cat116KU cat116KV cat116KW cat116KX
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116KY cat116L cat116LA cat116LB cat116LC cat116LD cat116LE cat116LF
+1        0       0        0        0        0        0        0        0
+2        0       0        0        0        0        0        0        0
+3        0       0        0        0        0        0        0        0
+4        0       0        0        0        0        0        0        0
+  cat116LG cat116LH cat116LI cat116LJ cat116LK cat116LL cat116LM cat116LN
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116LO cat116LQ cat116LR cat116LT cat116LU cat116LV cat116LW cat116LX
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116LY cat116M cat116MA cat116MB cat116MC cat116MD cat116ME cat116MF
+1        0       0        0        0        0        0        0        0
+2        0       0        0        0        0        0        0        0
+3        0       0        0        0        0        0        0        0
+4        0       0        0        0        0        1        0        0
+  cat116MG cat116MH cat116MI cat116MJ cat116MK cat116ML cat116MM cat116MN
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116MO cat116MP cat116MQ cat116MR cat116MS cat116MT cat116MU cat116MV
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116MW cat116O cat116P cat116Q cat116R cat116S cat116T cat116U cat116V
+1        0       0       0       0       0       0       0       0       0
+2        0       0       0       0       0       0       0       0       0
+3        0       0       0       0       0       0       0       0       0
+4        0       0       0       0       0       0       0       0       0
+  cat116W cat116X cat116Y    cont1    cont2    cont3    cont4    cont5    cont6
+1       0       0       0 0.520698 0.422197 0.634224 0.432728 0.508483 0.314683
+2       0       0       0 0.321594 0.555782 0.527991 0.373816 0.302678 0.408772
+3       0       0       0 0.475784 0.620805 0.462347 0.534409 0.889301 0.373500
+4       0       0       0 0.585115 0.422197 0.336963 0.670373 0.585792 0.605191
+     cont7   cont8   cont9  cont10   cont11   cont12   cont13   cont14
+1 0.370419 0.58354 0.46226 0.38016 0.644013 0.665644 0.339244 0.799124
+2 0.363312 0.32843 0.32128 0.44467 0.327915 0.321570 0.605077 0.818358
+3 0.356037 0.36083 0.44352 0.45017 0.291268 0.295524 0.339244 0.804795
+4 0.675680 0.45883 0.66201 0.58257 0.880469 0.871011 0.354344 0.811987
+  (Intercept) cat1B cat2B cat3B cat4B cat5B cat6B cat7B cat8B cat9B cat10B
+1           1     0     1     0     0     1     0     0     0     1      1
+2           1     1     0     0     0     1     0     0     0     0      0
+3           1     1     0     0     1     0     0     0     0     0      0
+4           1     1     0     0     0     1     0     0     0     0      0
+  cat11B cat12B cat13B cat14B cat15B cat16B cat17B cat18B cat19B cat20B cat21B
+1      0      1      1      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat22B cat23B cat24B cat25B cat26B cat27B cat28B cat29B cat30B cat31B cat32B
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      1      0      0      0      0      0      1      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat33B cat34B cat35B cat36B cat37B cat38B cat39B cat40B cat41B cat42B cat43B
+1      0      0      0      1      0      0      0      0      0      0      0
+2      0      0      0      0      0      1      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      1      0      1      0      1      1      0      0
+  cat44B cat45B cat46B cat47B cat48B cat49B cat50B cat51B cat52B cat53B cat54B
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat55B cat56B cat57B cat58B cat59B cat60B cat61B cat62B cat63B cat64B cat65B
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat66B cat67B cat68B cat69B cat70B cat71B cat72B cat73B cat73C cat74B cat74C
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      1      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat75B cat75C cat76B cat76C cat77B cat77C cat77D cat78B cat78C cat78D cat79B
+1      1      0      0      0      0      0      1      1      0      0      0
+2      0      0      0      0      0      0      1      1      0      0      1
+3      0      0      0      0      0      0      1      1      0      0      1
+4      1      0      0      0      0      0      1      1      0      0      1
+  cat79C cat79D cat80B cat80C cat80D cat81B cat81C cat81D cat82B cat82C cat82D
+1      0      1      1      0      0      0      0      1      0      0      0
+2      0      0      0      0      1      0      0      1      1      0      0
+3      0      0      0      0      1      0      0      1      1      0      0
+4      0      0      0      0      1      0      0      1      1      0      0
+  cat83B cat83C cat83D cat84B cat84C cat84D cat85B cat85C cat85D cat86B cat86C
+1      0      0      1      0      1      0      1      0      0      1      0
+2      1      0      0      0      1      0      1      0      0      0      0
+3      1      0      0      0      1      0      1      0      0      1      0
+4      1      0      0      0      1      0      1      0      0      1      0
+  cat86D cat87B cat87C cat87D cat88B cat88D cat88E cat89B cat89C cat89D cat89E
+1      0      0      0      1      0      0      0      0      0      0      0
+2      1      1      0      0      0      0      0      0      0      0      0
+3      0      1      0      0      0      0      0      0      0      0      0
+4      0      1      0      0      0      0      0      0      0      0      0
+  cat89G cat89H cat89I cat90B cat90C cat90D cat90E cat90F cat90G cat91B cat91C
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      1      0
+3      0      0      0      0      0      0      0      0      0      1      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat91D cat91E cat91F cat91G cat91H cat92B cat92C cat92D cat92F cat92H cat92I
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      1      0
+3      0      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      1      0      0      0      0      0      1      0
+  cat93B cat93C cat93D cat93E cat94B cat94C cat94D cat94E cat94F cat94G cat95B
+1      0      1      0      0      1      0      0      0      0      0      0
+2      0      0      1      0      0      0      1      0      0      0      0
+3      0      0      1      0      0      0      1      0      0      0      0
+4      0      0      1      0      0      0      1      0      0      0      0
+  cat95C cat95D cat95E cat96B cat96C cat96D cat96E cat96F cat96G cat96I cat97B
+1      0      1      0      0      0      0      1      0      0      0      0
+2      1      0      0      0      0      0      1      0      0      0      0
+3      0      1      0      0      0      0      1      0      0      0      0
+4      0      1      0      0      0      0      1      0      0      0      0
+  cat97C cat97D cat97E cat97F cat97G cat98B cat98C cat98D cat98E cat99D cat99E
+1      1      0      0      0      0      0      0      0      0      0      0
+2      0      0      1      0      0      0      0      1      0      0      0
+3      1      0      0      0      0      0      0      0      0      0      0
+4      0      0      0      0      0      0      0      0      0      0      0
+  cat99F cat99G cat99H cat99I cat99J cat99K cat99M cat99N cat99O cat99P cat99R
+1      0      0      0      0      0      0      0      0      0      1      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      1      0
+4      0      0      0      0      0      0      0      0      0      1      0
+  cat99S cat99T cat100B cat100C cat100D cat100E cat100F cat100G cat100H cat100I
+1      0      0       0       0       0       0       0       0       1       0
+2      0      1       0       0       0       0       1       0       0       0
+3      0      0       0       0       0       0       0       0       0       1
+4      0      0       0       0       0       0       0       0       0       0
+  cat100J cat100K cat100L cat100M cat100N cat100O cat101B cat101C cat101D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat101E cat101F cat101G cat101H cat101I cat101J cat101K cat101L cat101M
+1       0       0       0       0       0       0       0       0       1
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat101N cat101O cat101Q cat101R cat101S cat101U cat102B cat102C cat102D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat102E cat102F cat102G cat102H cat102J cat103B cat103C cat103D cat103E
+1       0       0       0       0       0       1       0       0       0
+2       0       0       0       0       0       1       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       1
+  cat103F cat103G cat103H cat103I cat103J cat103K cat103L cat103N cat104B
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat104C cat104D cat104E cat104F cat104G cat104H cat104I cat104J cat104K
+1       0       0       0       0       1       0       0       0       0
+2       0       0       1       0       0       0       0       0       0
+3       0       0       1       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       1
+  cat104L cat104M cat104N cat104O cat104P cat104Q cat105B cat105C cat105D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat105E cat105F cat105G cat105H cat105I cat105J cat105K cat105L cat105M
+1       0       0       0       0       1       0       0       0       0
+2       1       0       0       0       0       0       0       0       0
+3       1       0       0       0       0       0       0       0       0
+4       0       0       0       1       0       0       0       0       0
+  cat105N cat105O cat105P cat105Q cat105R cat105S cat105T cat106B cat106C
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat106D cat106E cat106F cat106G cat106H cat106I cat106J cat106K cat106L
+1       0       0       0       0       0       1       0       0       0
+2       0       0       0       0       0       1       0       0       0
+3       0       0       0       0       1       0       0       0       0
+4       0       0       1       0       0       0       0       0       0
+  cat106M cat106N cat106O cat106P cat106R cat107B cat107C cat107D cat107E
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat107F cat107G cat107H cat107I cat107J cat107K cat107L cat107M cat107N
+1       1       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       1       0       0       0
+3       1       0       0       0       0       0       0       0       0
+4       1       0       0       0       0       0       0       0       0
+  cat107O cat107P cat107Q cat107R cat107S cat107U cat108B cat108C cat108D
+1       0       0       0       0       0       0       1       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       1       0       0
+4       0       0       0       0       0       0       1       0       0
+  cat108E cat108F cat108G cat108H cat108I cat108J cat108K cat109AA cat109AB
+1       0       0       0       0       0       0       0        0        0
+2       0       0       0       0       0       0       1        0        0
+3       0       0       0       0       0       0       0        0        0
+4       0       0       0       0       0       0       0        0        0
+  cat109AE cat109AF cat109AG cat109AH cat109AI cat109AJ cat109AK cat109AL
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109AM cat109AN cat109AO cat109AP cat109AQ cat109AR cat109AS cat109AT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109AU cat109AV cat109AW cat109AX cat109AY cat109B cat109BA cat109BB
+1        0        0        0        0        0       0        0        0
+2        0        0        0        0        0       0        0        0
+3        0        0        0        0        0       0        0        0
+4        0        0        0        0        0       0        0        0
+  cat109BC cat109BD cat109BE cat109BF cat109BG cat109BH cat109BI cat109BJ
+1        0        0        0        0        0        0        1        0
+2        0        0        0        0        0        0        1        0
+3        0        0        0        0        0        0        1        0
+4        0        0        0        0        0        0        1        0
+  cat109BK cat109BL cat109BM cat109BN cat109BO cat109BP cat109BQ cat109BR
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109BS cat109BT cat109BU cat109BV cat109BX cat109BY cat109C cat109CA
+1        0        0        0        0        0        0       0        0
+2        0        0        0        0        0        0       0        0
+3        0        0        0        0        0        0       0        0
+4        0        0        0        0        0        0       0        0
+  cat109CB cat109CC cat109CD cat109CE cat109CF cat109CG cat109CH cat109CI
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat109CJ cat109CK cat109CL cat109D cat109E cat109F cat109G cat109H cat109I
+1        0        0        0       0       0       0       0       0       0
+2        0        0        0       0       0       0       0       0       0
+3        0        0        0       0       0       0       0       0       0
+4        0        0        0       0       0       0       0       0       0
+  cat109J cat109K cat109L cat109M cat109N cat109O cat109P cat109Q cat109R
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat109S cat109T cat109U cat109V cat109X cat109Y cat109ZZ cat110AA cat110AB
+1       0       0       0       0       0       0        0        0        0
+2       0       0       0       0       0       0        0        0        0
+3       0       0       0       0       0       0        0        0        0
+4       0       0       0       0       0       0        0        0        0
+  cat110AC cat110AD cat110AE cat110AF cat110AG cat110AH cat110AI cat110AJ
+1        0        0        0        0        0        0        1        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110AK cat110AL cat110AM cat110AN cat110AO cat110AP cat110AR cat110AS
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110AT cat110AU cat110AV cat110AW cat110AX cat110AY cat110B cat110BA
+1        0        0        0        0        0        0       0        0
+2        0        0        0        0        0        0       0        0
+3        0        0        0        0        0        0       0        0
+4        0        0        0        0        0        0       0        0
+  cat110BB cat110BC cat110BD cat110BE cat110BF cat110BG cat110BI cat110BJ
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110BK cat110BL cat110BM cat110BN cat110BO cat110BP cat110BQ cat110BR
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110BS cat110BT cat110BU cat110BV cat110BW cat110BX cat110BY cat110C
+1        0        0        0        0        0        0        0       0
+2        0        0        0        0        0        0        0       0
+3        0        0        0        0        0        0        0       0
+4        0        1        0        0        0        0        0       0
+  cat110CB cat110CC cat110CD cat110CF cat110CG cat110CH cat110CI cat110CJ
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110CK cat110CL cat110CM cat110CN cat110CO cat110CP cat110CQ cat110CR
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110CS cat110CT cat110CU cat110CV cat110CW cat110CX cat110CY cat110D
+1        0        0        0        0        0        0        0       0
+2        1        0        0        0        0        0        0       0
+3        1        0        0        0        0        0        0       0
+4        0        0        0        0        0        0        0       0
+  cat110DA cat110DB cat110DC cat110DD cat110DE cat110DF cat110DG cat110DH
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110DI cat110DJ cat110DK cat110DL cat110DM cat110DN cat110DO cat110DP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110DQ cat110DR cat110DS cat110DT cat110DU cat110DV cat110DW cat110DX
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat110DY cat110E cat110EA cat110EB cat110ED cat110EE cat110EF cat110EG
+1        0       0        0        0        0        0        0        0
+2        0       0        0        0        0        0        0        0
+3        0       0        0        0        0        0        0        0
+4        0       0        0        0        0        0        0        0
+  cat110EH cat110EI cat110EJ cat110EK cat110EL cat110EM cat110G cat110H cat110I
+1        0        0        0        0        0        0       0       0       0
+2        0        0        0        0        0        0       0       0       0
+3        0        0        0        0        0        0       0       0       0
+4        0        0        0        0        0        0       0       0       0
+  cat110J cat110K cat110L cat110N cat110O cat110P cat110Q cat110R cat110S
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat110T cat110U cat110V cat110W cat110X cat110Y cat111B cat111C cat111D
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat111E cat111F cat111G cat111I cat111K cat111M cat111O cat111Q cat111S
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       1       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat111U cat111W cat111Y cat113AB cat113AC cat113AD cat113AE cat113AF cat113AG
+1       0       0       0        0        0        0        0        0        0
+2       0       0       0        0        0        0        1        0        0
+3       0       0       0        0        0        0        0        0        0
+4       0       0       0        0        0        0        0        0        0
+  cat113AH cat113AI cat113AJ cat113AK cat113AL cat113AM cat113AN cat113AO
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat113AP cat113AQ cat113AR cat113AS cat113AT cat113AU cat113AV cat113AW
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat113AX cat113AY cat113B cat113BA cat113BB cat113BC cat113BD cat113BE
+1        1        0       0        0        0        0        0        0
+2        0        0       0        0        0        0        0        0
+3        0        0       0        0        0        0        0        0
+4        0        0       0        0        0        0        0        0
+  cat113BF cat113BG cat113BH cat113BI cat113BJ cat113BK cat113BL cat113BM
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        1
+4        0        0        0        0        0        0        0        0
+  cat113BN cat113BO cat113C cat113E cat113F cat113G cat113H cat113I cat113J
+1        0        0       0       0       0       0       0       0       0
+2        0        0       0       0       0       0       0       0       0
+3        0        0       0       0       0       0       0       0       0
+4        0        0       0       0       0       0       0       0       0
+  cat113K cat113L cat113M cat113N cat113O cat113P cat113Q cat113S cat113T
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       1       0       0       0       0       0       0
+  cat113U cat113V cat113X cat113Y cat114B cat114C cat114D cat114E cat114F
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat114G cat114I cat114J cat114L cat114N cat114O cat114Q cat114R cat114S
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat114U cat114V cat114W cat114X cat115B cat115C cat115D cat115E cat115F
+1       0       0       0       0       0       0       0       0       0
+2       0       0       0       0       0       0       0       0       0
+3       0       0       0       0       0       0       0       0       0
+4       0       0       0       0       0       0       0       0       0
+  cat115G cat115H cat115I cat115J cat115K cat115L cat115M cat115N cat115O
+1       0       0       0       0       1       0       0       0       0
+2       0       0       0       0       0       0       0       0       1
+3       0       0       0       0       1       0       0       0       0
+4       0       0       0       1       0       0       0       0       0
+  cat115P cat115Q cat115R cat115S cat115T cat115U cat115W cat115X cat116AB
+1       0       0       0       0       0       0       0       0        0
+2       0       0       0       0       0       0       0       0        0
+3       0       0       0       0       0       0       0       0        0
+4       0       0       0       0       0       0       0       0        0
+  cat116AC cat116AD cat116AE cat116AF cat116AG cat116AH cat116AJ cat116AK
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116AL cat116AM cat116AN cat116AO cat116AP cat116AR cat116AS cat116AT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116AU cat116AV cat116AW cat116AX cat116AY cat116B cat116BA cat116BB
+1        0        0        0        0        0       0        0        0
+2        0        0        0        0        0       0        0        0
+3        0        0        0        0        0       0        0        0
+4        0        0        0        0        0       0        0        0
+  cat116BC cat116BD cat116BF cat116BG cat116BI cat116BK cat116BL cat116BM
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116BO cat116BP cat116BQ cat116BS cat116BT cat116BU cat116BV cat116BW
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116BX cat116BY cat116C cat116CA cat116CB cat116CC cat116CD cat116CE
+1        0        0       0        0        0        0        0        0
+2        0        0       0        0        0        0        0        0
+3        0        0       0        0        0        0        0        0
+4        0        0       0        0        0        0        0        0
+  cat116CF cat116CG cat116CH cat116CI cat116CJ cat116CK cat116CL cat116CM
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116CN cat116CO cat116CP cat116CQ cat116CR cat116CS cat116CT cat116CU
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116CV cat116CW cat116CX cat116CY cat116D cat116DA cat116DC cat116DD
+1        0        0        0        0       0        0        0        0
+2        0        0        0        0       0        0        0        0
+3        0        0        0        0       0        0        0        0
+4        0        0        0        0       0        0        0        0
+  cat116DE cat116DF cat116DG cat116DH cat116DI cat116DJ cat116DK cat116DL
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        1        0        0
+3        0        0        0        0        0        1        0        0
+4        0        0        0        0        0        0        0        0
+  cat116DM cat116DN cat116DO cat116DP cat116DQ cat116DR cat116DS cat116DT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116DU cat116DV cat116DW cat116DX cat116DY cat116E cat116EA cat116EB
+1        0        0        0        0        0       0        0        0
+2        0        0        0        0        0       0        0        0
+3        0        0        0        0        0       0        0        0
+4        0        0        0        0        0       0        0        0
+  cat116EC cat116ED cat116EE cat116EF cat116EG cat116EH cat116EI cat116EJ
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116EK cat116EL cat116EN cat116EO cat116EP cat116EQ cat116ES cat116EU
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116EV cat116EW cat116EY cat116F cat116FA cat116FB cat116FC cat116FD
+1        0        0        0       0        0        0        0        0
+2        0        0        0       0        0        0        0        0
+3        0        0        0       0        0        0        0        0
+4        0        0        0       0        0        0        0        0
+  cat116FE cat116FF cat116FG cat116FH cat116FI cat116FJ cat116FK cat116FL
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116FM cat116FN cat116FO cat116FP cat116FQ cat116FR cat116FS cat116FT
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116FU cat116FV cat116FW cat116FX cat116G cat116GA cat116GB cat116GC
+1        0        0        0        0       0        0        0        0
+2        0        0        0        0       0        0        0        0
+3        0        0        0        0       0        0        0        0
+4        0        0        0        0       0        0        0        0
+  cat116GD cat116GE cat116GF cat116GG cat116GH cat116GI cat116GJ cat116GK
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116GL cat116GM cat116GN cat116GO cat116GP cat116GQ cat116GR cat116GS
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116GT cat116GU cat116GV cat116GW cat116GX cat116GY cat116H cat116HA
+1        0        0        0        0        0        0       0        0
+2        0        0        0        0        0        0       0        0
+3        0        0        0        0        0        0       0        0
+4        0        0        0        0        0        0       0        0
+  cat116HB cat116HC cat116HD cat116HE cat116HF cat116HG cat116HH cat116HI
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116HJ cat116HK cat116HL cat116HM cat116HN cat116HO cat116HP cat116HQ
+1        0        1        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116HR cat116HT cat116HU cat116HV cat116HW cat116HX cat116HY cat116I
+1        0        0        0        0        0        0        0       0
+2        0        0        0        0        0        0        0       0
+3        0        0        0        0        0        0        0       0
+4        0        0        0        0        0        0        0       0
+  cat116IA cat116IB cat116IC cat116ID cat116IE cat116IF cat116IG cat116IH
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116II cat116IJ cat116IK cat116IL cat116IM cat116IN cat116IO cat116IP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116IQ cat116IR cat116IT cat116IU cat116IV cat116IX cat116IY cat116J
+1        0        0        0        0        0        0        0       0
+2        0        0        0        0        0        0        0       0
+3        0        0        0        0        0        0        0       0
+4        0        0        0        0        0        0        0       0
+  cat116JA cat116JB cat116JC cat116JD cat116JE cat116JF cat116JG cat116JH
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116JI cat116JJ cat116JK cat116JL cat116JM cat116JN cat116JO cat116JP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116JQ cat116JR cat116JT cat116JU cat116JV cat116JW cat116JX cat116JY
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116K cat116KA cat116KB cat116KC cat116KD cat116KE cat116KF cat116KG
+1       0        0        0        0        0        0        0        0
+2       0        0        0        0        0        0        0        0
+3       0        0        0        0        0        0        0        0
+4       0        0        0        0        0        0        0        0
+  cat116KH cat116KI cat116KJ cat116KK cat116KL cat116KM cat116KN cat116KP
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116KQ cat116KR cat116KS cat116KT cat116KU cat116KV cat116KW cat116KX
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116KY cat116L cat116LA cat116LB cat116LC cat116LD cat116LE cat116LF
+1        0       0        0        0        0        0        0        0
+2        0       0        0        0        0        0        0        0
+3        0       0        0        0        0        0        0        0
+4        0       0        0        0        0        0        0        0
+  cat116LG cat116LH cat116LI cat116LJ cat116LK cat116LL cat116LM cat116LN
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116LO cat116LQ cat116LR cat116LT cat116LU cat116LV cat116LW cat116LX
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116LY cat116M cat116MA cat116MB cat116MC cat116MD cat116ME cat116MF
+1        0       0        0        0        0        0        0        0
+2        0       0        0        0        0        0        0        0
+3        0       0        0        0        0        0        0        0
+4        0       0        0        0        0        1        0        0
+  cat116MG cat116MH cat116MI cat116MJ cat116MK cat116ML cat116MM cat116MN
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116MO cat116MP cat116MQ cat116MR cat116MS cat116MT cat116MU cat116MV
+1        0        0        0        0        0        0        0        0
+2        0        0        0        0        0        0        0        0
+3        0        0        0        0        0        0        0        0
+4        0        0        0        0        0        0        0        0
+  cat116MW cat116O cat116P cat116Q cat116R cat116S cat116T cat116U cat116V
+1        0       0       0       0       0       0       0       0       0
+2        0       0       0       0       0       0       0       0       0
+3        0       0       0       0       0       0       0       0       0
+4        0       0       0       0       0       0       0       0       0
+  cat116W cat116X cat116Y    cont1    cont2    cont3    cont4    cont5    cont6
+1       0       0       0 0.520698 0.422197 0.634224 0.432728 0.508483 0.314683
+2       0       0       0 0.321594 0.555782 0.527991 0.373816 0.302678 0.408772
+3       0       0       0 0.475784 0.620805 0.462347 0.534409 0.889301 0.373500
+4       0       0       0 0.585115 0.422197 0.336963 0.670373 0.585792 0.605191
+     cont7   cont8   cont9  cont10   cont11   cont12   cont13   cont14
+1 0.370419 0.58354 0.46226 0.38016 0.644013 0.665644 0.339244 0.799124
+2 0.363312 0.32843 0.32128 0.44467 0.327915 0.321570 0.605077 0.818358
+3 0.356037 0.36083 0.44352 0.45017 0.291268 0.295524 0.339244 0.804795
+4 0.675680 0.45883 0.66201 0.58257 0.880469 0.871011 0.354344 0.811987
+Created from 25148 samples and 843 variables
+
+Pre-processing:
+  - ignored (0)
+  - removed (843)
+
+[1] 25148   145
+
+Call:
+lm(formula = .outcome ~ ., data = dat)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.2951 -0.3927  0.0068  0.3880  2.4204 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.201e+00  1.459e-01  49.355  < 2e-16 ***
+cat1B       -1.515e-01  1.100e-02 -13.773  < 2e-16 ***
+cat2B        3.327e-01  4.188e-02   7.945 2.05e-15 ***
+cat4B        1.704e-01  3.591e-02   4.744 2.11e-06 ***
+cat5B        2.343e-01  3.574e-02   6.556 5.66e-11 ***
+cat6B        2.546e-01  4.155e-02   6.128 9.04e-10 ***
+cat9B        3.249e-02  2.785e-02   1.166 0.243473    
+cat10B       5.637e-02  1.938e-02   2.909 0.003635 ** 
+cat11B       4.784e-02  1.937e-02   2.470 0.013529 *  
+cat12B       2.572e-01  1.900e-02  13.534  < 2e-16 ***
+cat13B       2.109e-02  1.946e-02   1.084 0.278518    
+cat23B       4.651e-02  2.048e-02   2.271 0.023146 *  
+cat25B       1.419e-01  2.115e-02   6.710 2.00e-11 ***
+cat26B       2.041e-01  2.252e-02   9.061  < 2e-16 ***
+cat27B       1.541e-01  2.062e-02   7.470 8.38e-14 ***
+cat36B       6.364e-03  2.006e-02   0.317 0.751121    
+cat37B       1.220e-01  1.990e-02   6.131 8.88e-10 ***
+cat38B       1.686e-01  2.094e-02   8.053 8.52e-16 ***
+cat44B       2.725e-01  2.107e-02  12.932  < 2e-16 ***
+cat49B       1.228e-01  2.374e-02   5.172 2.33e-07 ***
+cat50B      -3.107e-02  3.064e-02  -1.014 0.310575    
+cat53B       2.945e-01  2.261e-02  13.024  < 2e-16 ***
+cat71B       7.045e-02  2.430e-02   2.899 0.003746 ** 
+cat72B       1.670e-01  1.100e-02  15.184  < 2e-16 ***
+cat73B      -2.450e-02  1.349e-02  -1.817 0.069308 .  
+cat75B      -3.511e-02  1.187e-02  -2.958 0.003099 ** 
+cat79B      -3.045e-03  2.060e-02  -0.148 0.882511    
+cat79D       2.830e-01  2.518e-02  11.242  < 2e-16 ***
+cat80B       2.211e-01  3.284e-02   6.734 1.70e-11 ***
+cat80D      -1.787e-01  3.204e-02  -5.579 2.45e-08 ***
+cat81B      -2.399e-02  2.469e-02  -0.972 0.331206    
+cat81D      -2.019e-01  2.182e-02  -9.255  < 2e-16 ***
+cat82B       1.097e-05  1.762e-02   0.001 0.999503    
+cat82D      -5.605e-02  2.370e-02  -2.365 0.018039 *  
+cat83B      -1.372e-02  1.216e-02  -1.127 0.259577    
+cat83D      -5.876e-02  1.792e-02  -3.279 0.001045 ** 
+cat84C      -9.422e-02  1.659e-02  -5.680 1.37e-08 ***
+cat86B       1.755e-02  3.536e-02   0.496 0.619725    
+cat86D      -3.540e-01  3.722e-01  -0.951 0.341532    
+cat87B      -9.268e-02  2.448e-02  -3.786 0.000154 ***
+cat87D       1.238e-02  2.958e-02   0.419 0.675474    
+cat88D      -1.288e-01  9.651e-02  -1.334 0.182084    
+cat91B      -7.682e-02  2.384e-02  -3.222 0.001273 ** 
+cat91G      -1.457e-01  4.457e-02  -3.269 0.001082 ** 
+cat92H       8.742e-02  4.368e-02   2.002 0.045344 *  
+cat93C      -2.251e-02  4.134e-02  -0.545 0.586078    
+cat93D      -3.035e-02  4.080e-02  -0.744 0.457013    
+cat94B       1.848e-01  4.350e-02   4.249 2.16e-05 ***
+cat94C       2.050e-01  4.799e-02   4.271 1.96e-05 ***
+cat94D       1.959e-01  4.612e-02   4.247 2.18e-05 ***
+cat95C      -1.025e-02  3.790e-02  -0.270 0.786866    
+cat95D      -7.639e-03  1.366e-01  -0.056 0.955390    
+cat95E      -2.646e-02  4.190e-02  -0.631 0.527783    
+cat96E       2.109e-02  2.149e-02   0.981 0.326465    
+cat97C       3.850e-02  1.809e-02   2.128 0.033340 *  
+cat97E       3.862e-02  2.371e-02   1.629 0.103372    
+cat97G       5.014e-02  2.837e-02   1.767 0.077180 .  
+cat98C       2.605e-01  2.648e-01   0.984 0.325266    
+cat98D       5.397e-01  1.930e-01   2.797 0.005164 ** 
+cat99D       3.351e-02  3.251e-02   1.031 0.302616    
+cat99P       1.777e-02  1.323e-01   0.134 0.893188    
+cat99T       3.331e-01  3.840e-01   0.868 0.385667    
+cat100F      1.585e-01  3.577e-02   4.431 9.42e-06 ***
+cat100G      2.064e-01  1.904e-02  10.839  < 2e-16 ***
+cat100H      1.256e-01  1.968e-02   6.383 1.77e-10 ***
+cat100I     -7.300e-02  1.435e-02  -5.088 3.64e-07 ***
+cat100K      3.624e-02  1.619e-02   2.238 0.025247 *  
+cat100L      2.003e-01  1.807e-02  11.086  < 2e-16 ***
+cat101C     -2.087e-01  2.806e-02  -7.438 1.07e-13 ***
+cat101D     -1.868e-01  2.829e-02  -6.604 4.10e-11 ***
+cat101G     -5.622e-02  2.428e-02  -2.316 0.020579 *  
+cat103B     -1.189e-01  2.734e-02  -4.350 1.37e-05 ***
+cat103C     -4.715e-02  2.461e-02  -1.916 0.055418 .  
+cat104C     -3.348e-01  8.209e-02  -4.078 4.56e-05 ***
+cat104D     -2.804e-01  6.998e-02  -4.006 6.19e-05 ***
+cat104E     -2.321e-01  5.995e-02  -3.872 0.000108 ***
+cat104F     -1.811e-01  4.912e-02  -3.687 0.000228 ***
+cat104G     -1.355e-01  4.173e-02  -3.247 0.001166 ** 
+cat104H     -1.583e-01  3.698e-02  -4.282 1.86e-05 ***
+cat104I     -1.182e-01  3.192e-02  -3.702 0.000215 ***
+cat104K     -3.004e-02  2.735e-02  -1.098 0.272069    
+cat105D     -1.092e-01  5.360e-02  -2.038 0.041582 *  
+cat105E     -9.789e-02  4.528e-02  -2.162 0.030636 *  
+cat105F     -1.066e-01  3.762e-02  -2.834 0.004605 ** 
+cat105G     -1.367e-01  3.236e-02  -4.224 2.41e-05 ***
+cat105H     -9.961e-02  3.013e-02  -3.307 0.000946 ***
+cat106E     -1.109e-01  4.288e-02  -2.587 0.009696 ** 
+cat106F     -9.222e-02  3.780e-02  -2.439 0.014717 *  
+cat106G     -7.525e-02  3.501e-02  -2.149 0.031631 *  
+cat106H     -3.789e-02  3.356e-02  -1.129 0.258868    
+cat106I     -2.505e-02  3.265e-02  -0.767 0.442985    
+cat106J     -2.079e-03  3.352e-02  -0.062 0.950551    
+cat106K      4.402e-02  3.414e-02   1.289 0.197302    
+cat107E      1.802e-02  3.989e-02   0.452 0.651497    
+cat107F     -9.426e-03  3.659e-02  -0.258 0.796726    
+cat107G     -2.351e-02  3.375e-02  -0.697 0.486092    
+cat107H      2.095e-02  3.214e-02   0.652 0.514479    
+cat107I      4.862e-03  3.003e-02   0.162 0.871378    
+cat107J     -1.824e-02  2.628e-02  -0.694 0.487566    
+cat107K     -7.612e-04  2.493e-02  -0.031 0.975638    
+cat108B     -2.695e-02  2.903e-02  -0.928 0.353370    
+cat108D     -6.100e-03  3.385e-02  -0.180 0.856989    
+cat108E     -5.148e-01  1.673e-01  -3.077 0.002094 ** 
+cat108G     -2.605e-02  2.278e-01  -0.114 0.908959    
+cat108K     -5.982e-01  1.637e-01  -3.654 0.000259 ***
+cat109AB     2.954e-02  2.265e-02   1.304 0.192084    
+cat109BI     7.560e-02  1.962e-02   3.853 0.000117 ***
+cat110BT     2.756e-04  1.814e-02   0.015 0.987878    
+cat110CL    -2.641e-02  1.745e-02  -1.514 0.130111    
+cat110CO    -5.227e-03  1.941e-02  -0.269 0.787710    
+cat110CS    -2.742e-02  1.820e-02  -1.507 0.131933    
+cat110EB    -5.547e-03  1.737e-02  -0.319 0.749516    
+cat110EG    -2.529e-02  1.650e-02  -1.533 0.125315    
+cat111C     -1.189e-01  2.708e-02  -4.391 1.13e-05 ***
+cat111E     -2.274e-02  2.530e-02  -0.899 0.368701    
+cat113AE     1.809e-02  2.012e-02   0.899 0.368518    
+cat113AX    -4.070e-02  2.227e-02  -1.828 0.067639 .  
+cat113BM     5.694e-02  1.708e-02   3.334 0.000857 ***
+cat113L     -5.088e-02  2.575e-02  -1.976 0.048167 *  
+cat114C     -2.757e-01  2.400e-02 -11.487  < 2e-16 ***
+cat114E     -2.544e-01  2.414e-02 -10.538  < 2e-16 ***
+cat115J     -5.062e-03  2.626e-02  -0.193 0.847141    
+cat115K     -5.114e-03  2.766e-02  -0.185 0.853330    
+cat115L      1.817e-02  2.951e-02   0.616 0.537960    
+cat115M     -4.303e-03  2.979e-02  -0.144 0.885149    
+cat115N      3.457e-02  2.742e-02   1.260 0.207515    
+cat115O     -2.950e-03  2.537e-02  -0.116 0.907405    
+cat115P      1.916e-02  2.497e-02   0.768 0.442776    
+cat116CK    -3.261e-02  3.080e-02  -1.059 0.289707    
+cat116DJ    -9.049e-03  1.956e-02  -0.463 0.643633    
+cat116GS    -1.017e-02  2.563e-02  -0.397 0.691580    
+cat116HK    -5.398e-02  2.157e-02  -2.503 0.012329 *  
+cont1       -2.774e-01  1.047e-01  -2.648 0.008103 ** 
+cont2        2.606e-01  3.468e-02   7.517 5.85e-14 ***
+cont3        1.760e-01  6.667e-02   2.639 0.008310 ** 
+cont4       -1.021e-01  3.789e-02  -2.695 0.007048 ** 
+cont5        4.888e-03  2.806e-02   0.174 0.861725    
+cont6        2.853e-01  1.401e-01   2.036 0.041728 *  
+cont7        4.917e-01  6.928e-02   7.097 1.32e-12 ***
+cont8        1.040e-01  4.054e-02   2.565 0.010333 *  
+cont9        1.448e-01  1.046e-01   1.385 0.166084    
+cont10      -2.236e-02  7.635e-02  -0.293 0.769588    
+cont11       1.757e-01  2.042e-01   0.861 0.389447    
+cont12      -3.462e-01  2.322e-01  -1.491 0.136027    
+cont13      -2.083e-01  1.172e-01  -1.778 0.075426 .  
+cont14       3.252e-01  1.107e-01   2.939 0.003298 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.5922 on 19974 degrees of freedom
+Multiple R-squared:  0.4815,	Adjusted R-squared:  0.4777 
+F-statistic: 127.9 on 145 and 19974 DF,  p-value: < 2.2e-16
+
+lm variable importance
+
+  only 20 most important variables shown (out of 145)
+
+        Overall
+cat72B   15.184
+cat1B    13.773
+cat12B   13.534
+cat53B   13.024
+cat44B   12.932
+cat114C  11.487
+cat79D   11.242
+cat100L  11.086
+cat100G  10.839
+cat114E  10.538
+cat81D    9.255
+cat26B    9.061
+cat38B    8.053
+cat2B     7.945
+cont2     7.517
+cat27B    7.470
+cat101C   7.438
+cont7     7.097
+cat80B    6.734
+cat25B    6.710
+[1] 0.5972342
+[1] "DTM 1"
+Aggregating results
+Selecting tuning parameters
+Fitting n.trees = 350, interaction.depth = 5, shrinkage = 0.1, n.minobsinnode = 20 on full training set
+Iter   TrainDeviance   ValidDeviance   StepSize   Improve
+     1        0.6321            -nan     0.1000    0.0399
+     2        0.6002            -nan     0.1000    0.0325
+     3        0.5730            -nan     0.1000    0.0272
+     4        0.5508            -nan     0.1000    0.0220
+     5        0.5318            -nan     0.1000    0.0186
+     6        0.5158            -nan     0.1000    0.0155
+     7        0.5021            -nan     0.1000    0.0135
+     8        0.4910            -nan     0.1000    0.0109
+     9        0.4816            -nan     0.1000    0.0094
+    10        0.4715            -nan     0.1000    0.0093
+    20        0.4157            -nan     0.1000    0.0036
+    40        0.3676            -nan     0.1000    0.0013
+    60        0.3481            -nan     0.1000    0.0005
+    80        0.3389            -nan     0.1000    0.0002
+   100        0.3332            -nan     0.1000    0.0001
+   120        0.3287            -nan     0.1000    0.0000
+   140        0.3252            -nan     0.1000    0.0001
+   160        0.3220            -nan     0.1000   -0.0001
+   180        0.3191            -nan     0.1000    0.0000
+   200        0.3167            -nan     0.1000   -0.0001
+   220        0.3144            -nan     0.1000    0.0000
+   240        0.3128            -nan     0.1000   -0.0001
+   260        0.3107            -nan     0.1000   -0.0000
+   280        0.3090            -nan     0.1000   -0.0001
+   300        0.3073            -nan     0.1000   -0.0001
+   320        0.3056            -nan     0.1000   -0.0001
+   340        0.3041            -nan     0.1000   -0.0000
+   350        0.3033            -nan     0.1000   -0.0001
+
+[1] "DTM 2"
+   user  system elapsed 
+106.783   1.514 758.766 

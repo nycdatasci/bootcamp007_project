@@ -1,0 +1,98 @@
+---
+title: "Exploratory Data Analysis for AllState Kaggle Challenge"
+output: html_document
+---
+
+# Team: Datasaurus Rex (Josh, Dina, Nick)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Let's do some basic EDA to understand our data!
+```{r}
+# Load in the data and summarize
+library(data.table)
+train = fread('../Data/train.csv')
+test = fread('../Data/test.csv')
+summary(train)
+dim(train)
+```
+It looks like most categorical variables have only two levels: A and B.
+
+All continuous variables are normalized between 0 and 1.
+
+188318 observations
+132 columns
+
+## What does the loss function distribution look like?
+```{r}
+library(ggplot2)
+library(gridExtra)
+grid.arrange(
+  ggplot(train) + geom_histogram(aes(loss), bins = 50),
+  ggplot(train) + geom_histogram(aes(log(loss + 1)), bins = 50),
+  ncol = 2)
+```
+The loss looks expontentially decreasing. 
+
+The log(loss) looks normal.
+
+## What do the continuous variable distributions look like?
+```{r}
+library(reshape2)
+library(ggplot2)
+library(dplyr)
+cts_vars = train %>% select(contains("cont"))
+cat("Number of continuous variables:", ncol(cts_vars))
+
+melted_cts_vars <- melt(cts_vars)
+ggplot(melted_cts_vars,aes(x = value)) + 
+    facet_wrap(~variable,scales = "free_x") + 
+    geom_histogram()
+```
+variable cont2 looks like discrete values. Something fishy going on!
+
+## What are the levels in each categorical variable?
+```{r}
+# Output levels of categorical variables
+library(dplyr)
+cat_vars = train %>% select(contains("cat"))
+levels_by_cat = sapply(cat_vars, levels)
+levels_by_cat
+
+# Number of categories
+cat("Number of categorical variables:", ncol(cat_vars))
+
+# Count the number of levels
+cat("Number of levels Frequency Table")
+plyr::count(sapply(levels_by_cat, length))
+```
+Most have only two levels!
+
+## What is the correlation between the continuous variables and the loss?
+```{r}
+# Create correlation plot
+library(corrplot)
+corrs = cor(train %>% select(contains("cont"), loss), method = "pearson")
+corrplot.mixed(corrs, upper = "square", order = "hclust")
+```
+cont9, cont6, cont10 look correlated. Nothing very correlated to loss.
+
+## What are the t-test results for vars with two categories?
+```{r}
+for(var in names(levels_by_cat)){
+  loss.formula = as.formula(paste("loss ~ ", var))
+  if(length(levels_by_cat[[var]]) == 2){
+    print(t.test(loss.formula, train))
+  }else{
+    print(summary(aov(loss.formula, train)))
+  }
+}
+```
+cat15, cat70 have insignificant t-tests.
+
+cat88 has insignificant anova.
+
+
+
