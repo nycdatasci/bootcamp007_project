@@ -1,0 +1,33 @@
+---
+title: "shopaholicsEDA"
+author: "Jhonasttan Regalado"
+date: "12/3/2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project5-Capstone/shopaholics/BX-CSV-Dump/")
+```
+
+Load libraries
+```{r, echo=FALSE}
+library(tidyverse)
+library(ggmap)
+library(ggplot2)
+
+```
+
+Load data into dataframe
+```{r}
+books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE)
+users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
+ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
+```
+
+EDA
+```{r}
+summary(books)
+str(books)
+```
+
