@@ -15,19 +15,97 @@ Load libraries
 library(tidyverse)
 library(ggmap)
 library(ggplot2)
+library(anytime)
+library(lubridate)
+library(leaflet)
 
 ```
 
-Load data into dataframe
+Load data into dataframe and capture geospatial locations
 ```{r}
-books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE)
-users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
+books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
+#books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE)
+books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
+
+users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "Latin-1") #encoding="UTF-8")
+str(users)
+
+locations <- users %>% group_by(Location) %>% count()
+
+#find rows where values equal integers << breaks - may need to remove some rows
+for (i in seq_along(users$Age)) {
+  if (is.integer(as.integer(users$Age[i]))) {
+    users$AgeInt[i] <- tryCatch(as.integer(users$Age[i]),
+                                error=function(e) NULL
+                                )
+  }
+}
+
+userLocationGeoSpatial <- function(x) {
+  address <- geocode(location = x)
+}
+
+#get address geolocations
+for (i in seq_along(users$Location)) {
+  locationGeocode <- tryCatch(
+    userLocationGeoSpatial(users$Location[i]), 
+    error=function(e) NULL
+    )
+  if (length(locationGeocode) > 1) {
+    users$lon[i] <- locationGeocode[[1]]
+    users$lat[i] <- locationGeocode[[2]]
+  }
+  
+  Sys.sleep(1)
+}
+
+users$User.ID <- as.integer(users$User.ID)
 ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
 ```
 
 EDA
+
+Summary:
 ```{r}
 summary(books)
 str(books)
+books$Year.Of.Publication <- as.Date(books$Year.Of.Publication, "%Y")
+head(books)
+summary(users)
+head(users)
+summary(ratings)
+str(books)
+```
+Books 
+```{r}
+summary(books$Year.Of.Publication)
+ggplot(books,aes(Year.Of.Publication)) + geom_histogram()
+filter(books,Year.Of.Publication == 2050)
+filter(books,Year.Of.Publication != 2050) %>% ggplot(.,aes(Year.Of.Publication)) + geom_histogram()
+books %>% group_by(Year.Of.Publication) %>% count() %>% top_n(.,10) %>% arrange(desc(n))
+```
+
+Map locations
+```{r}
+#set leaflet map tile
+tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
+
+# leaflet(data = users) %>% 
+#   addTiles(urlTemplate = tile_layer) %>% 
+#   addMarkers(popup = paste0("Station: ", leaflet_info$stationName,
+#                             "<br>Bikes: ", leaflet_info$availableBikes, " / Docks: ",
+#                             leaflet_info$availableDocks, " / Total Docks: ", leaflet_info$totalDocks)) %>%
+#   addCircles(lat = leaflet_info[1:length(input$selected),'latitude'], 
+#              lng = leaflet_info[1:length(input$selected),'longitude'],
+#              weight = leaflet_info$availableBikes, radius = leaflet_info$availableDocks / input$docksAvailable, 
+#              color =  ifelse(leaflet_info$availableBikes >= input$bikesAvailable,"green","red"),
+#              #weight = 1, radius = ((leaflet_info$availableBikes + leaflet_info$availableDocks) * 5 ), color =  "black",
+#              fillColor = "orange", fillOpacity=0.5, opacity=1) %>%
+# setView(lng = -73.976522, lat = 40.7528, zoom = input$zoom)
+
+leaflet(data = users[1:30,c("Location","lon","lat")]) %>% 
+  addTiles(urlTemplate = tile_layer) %>% 
+  addMarkers(popup = users$Location) # %>%
+  #setView(lng = -73.976522, lat = 40.7528, zoom = 12)
 ```
 
