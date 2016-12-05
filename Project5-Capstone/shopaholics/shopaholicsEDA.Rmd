@@ -21,16 +21,38 @@ library(leaflet)
 
 ```
 
-Load data into dataframe and capture geospatial locations
+Load user data into dataframe and capture geospatial locations
 ```{r}
-books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
-#books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE)
-books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
+
 
 users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "Latin-1") #encoding="UTF-8")
 str(users)
 
-locations <- users %>% group_by(Location) %>% count()
+locations <- users %>% group_by(Location) %>% count() %>% arrange(desc(n))
+
+userLocationGeoSpatial <- function(x) {
+  address <- geocode(location = x)
+}
+
+#get address geolocations
+#for (i in seq_along(locations$Location)) {
+for (i in seq(77,600)) {
+  locationGeocode <- c(0.0,0.0)
+  
+  locationGeocode <- tryCatch(
+    userLocationGeoSpatial(locations$Location[i]), 
+    error=function(e) NULL
+    )
+  
+  if (locationGeocode[1] != 0.0) {
+    locations$lon[i] <- locationGeocode[[1]]
+    locations$lat[i] <- locationGeocode[[2]]
+  }
+  
+  Sys.sleep(1)
+}
+
+write.csv(locations[1:75,], file = './locations.csv')
 
 #find rows where values equal integers << breaks - may need to remove some rows
 for (i in seq_along(users$Age)) {
@@ -41,26 +63,22 @@ for (i in seq_along(users$Age)) {
   }
 }
 
-userLocationGeoSpatial <- function(x) {
-  address <- geocode(location = x)
-}
-
-#get address geolocations
-for (i in seq_along(users$Location)) {
-  locationGeocode <- tryCatch(
-    userLocationGeoSpatial(users$Location[i]), 
-    error=function(e) NULL
-    )
-  if (length(locationGeocode) > 1) {
-    users$lon[i] <- locationGeocode[[1]]
-    users$lat[i] <- locationGeocode[[2]]
-  }
-  
-  Sys.sleep(1)
-}
-
 users$User.ID <- as.integer(users$User.ID)
+```
+
+Load books
+```{r}
+books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
+#books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE)
+books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
+
+
+```
+
+Load ratings
+```{r}
 ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
+
 ```
 
 EDA
@@ -69,7 +87,7 @@ Summary:
 ```{r}
 summary(books)
 str(books)
-books$Year.Of.Publication <- as.Date(books$Year.Of.Publication, "%Y")
+#books$Year.Of.Publication <- as.Date(books$Year.Of.Publication, "%Y")
 head(books)
 summary(users)
 head(users)
@@ -103,9 +121,15 @@ tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}
 #              fillColor = "orange", fillOpacity=0.5, opacity=1) %>%
 # setView(lng = -73.976522, lat = 40.7528, zoom = input$zoom)
 
-leaflet(data = users[1:30,c("Location","lon","lat")]) %>% 
+leaflet(data = locations[1:75,c("Location","lon","lat")]) %>% 
   addTiles(urlTemplate = tile_layer) %>% 
-  addMarkers(popup = users$Location) # %>%
+  addMarkers(popup = locations$Location) # %>%
   #setView(lng = -73.976522, lat = 40.7528, zoom = 12)
+```
+
+Ratings
+
+```{r}
+ggplot(ratings, aes(Book.Rating)) + geom_histogram()
 ```
 
