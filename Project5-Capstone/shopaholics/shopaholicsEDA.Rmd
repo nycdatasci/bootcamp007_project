@@ -18,6 +18,7 @@ library(ggplot2)
 library(anytime)
 library(lubridate)
 library(leaflet)
+library(jsonlite)
 
 ```
 
@@ -36,7 +37,7 @@ userLocationGeoSpatial <- function(x) {
 
 #get address geolocations
 #for (i in seq_along(locations$Location)) {
-for (i in seq(77,600)) {
+for (i in seq(1501,1700)) {
   locationGeocode <- c(0.0,0.0)
   
   locationGeocode <- tryCatch(
@@ -44,26 +45,34 @@ for (i in seq(77,600)) {
     error=function(e) NULL
     )
   
-  if (locationGeocode[1] != 0.0) {
+  if (length(locationGeocode[1]) != 0) {
+  
     locations$lon[i] <- locationGeocode[[1]]
     locations$lat[i] <- locationGeocode[[2]]
+
   }
   
   Sys.sleep(1)
 }
 
-write.csv(locations[1:75,], file = './locations.csv')
+write.csv(locations[1:1700,], file = './locations.csv')
+```
 
+View users by age groups -- User data needs cleaning (python??) prior to grouping
+```{r}
 #find rows where values equal integers << breaks - may need to remove some rows
-for (i in seq_along(users$Age)) {
-  if (is.integer(as.integer(users$Age[i]))) {
+#for (i in seq_along(users$Age)) {
+for (i in seq(18084:length(users$Age))) {
+  if (is.integer(as.integer(users$User.ID))  & is.integer(as.integer(users$Age[i]))) {
     users$AgeInt[i] <- tryCatch(as.integer(users$Age[i]),
-                                error=function(e) NULL
+                                error=function(e) NA
                                 )
   }
 }
 
 users$User.ID <- as.integer(users$User.ID)
+
+users %>% filter(AgeInt > 0) %>% ggplot(aes(AgeInt)) + geom_bar()
 ```
 
 Load books
@@ -103,6 +112,9 @@ filter(books,Year.Of.Publication != 2050) %>% ggplot(.,aes(Year.Of.Publication))
 books %>% group_by(Year.Of.Publication) %>% count() %>% top_n(.,10) %>% arrange(desc(n))
 ```
 
+Users
+
+
 Map locations
 ```{r}
 #set leaflet map tile
@@ -132,4 +144,54 @@ Ratings
 ```{r}
 ggplot(ratings, aes(Book.Rating)) + geom_histogram()
 ```
+
+Capture Book's current rating and other features from Google API (key not required)
+Example: https://www.googleapis.com/books/v1/volumes?q=isbn:0195153448
+
+```{r}
+
+#testing
+bookUrlStart <- "https://www.googleapis.com/books/v1/volumes?q=isbn:"
+
+isbn <- books$ISBN[1]
+bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
+bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
+
+booksCatalogue <- data.frame()
+googleBooksCat <- list()
+
+#Build book catalogue
+isbn
+title <- bookJson$items$volumeInfo$title
+author <- bookJson$items$volumeInfo$authors #can be more than one 
+publishedDate <- bookJson$items$volumeInfo$publishedDate
+publisher <- bookJson$items$volumeInfo$publisher
+pageCount <- bookJson$items$volumeInfo$pageCount
+averageRating <- bookJson$items$volumeInfo$averageRating
+ratingsCount <- bookJson$items$volumeInfo$ratingsCount
+maturityRating <- bookJson$items$volumeInfo$maturityRating
+imageThumbnail <- bookJson$items$volumeInfo$imageLinks$smallThumbnail
+infoLink <- bookJson$items$volumeInfo$infoLink
+textSnippet <- bookJson$items$searchInfo$textSnippet
+
+#create list for adding to dataframe
+googleBooksCat <- list(isbn = isbn, title = title, author = paste(unlist(author), collapse = ", "), 
+                       publishedDate = publishedDate, publisher = publisher, pageCount = pageCount, 
+                       averageRating = averageRating, ratingsCount = ratingsCount,
+                    maturityRating = maturityRating, imageThumbnail = imageThumbnail, 
+                    infoLink = infoLink, textSnippet = textSnippet)
+
+#add row to dataframe
+#as.data.frame(googleBooksCat)
+booksCatalogue <- rbind(booksCatalogue, as.data.frame(googleBooksCat))
+
+for (b in seq_along(books$ISBN)) {
+  
+  isbn <- books$ISBN[b]
+  bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
+  
+  bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
+}
+```
+
 
