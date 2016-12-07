@@ -20,6 +20,7 @@ library(lubridate)
 library(leaflet)
 library(jsonlite)
 library(caret)
+library(stringr)
 
 ```
 
@@ -74,14 +75,30 @@ locationsGeoCoded <- read.csv("./locations.csv")
 View users by age groups -- User data needs cleaning (python??) prior to grouping
 ```{r}
 #find rows where values equal integers << breaks - may need to remove some rows
-#for (i in seq_along(users$Age)) {
-for (i in seq(18084:length(users$Age))) {
-  if (is.integer(as.integer(users$User.ID))  & is.integer(as.integer(users$Age[i]))) {
+
+#Nulls required for DataBricks SQL (table) environment
+for (i in seq_along(users$Age)) {
     users$AgeInt[i] <- tryCatch(as.integer(users$Age[i]),
                                 error=function(e) NA
                                 )
-  }
+
 }
+
+for (i in seq_along(users$AgeInt)) {
+    if (is.na(users$AgeInt[i])) {
+      users$AgeInt[i] <- 0
+    } 
+}
+#convert column to integer
+users$AgeInt <- as.integer(users$AgeInt)
+
+#create cleaned dataset
+usersCleaned <- select(users, User.ID, Location, AgeInt)
+colnames(usersCleaned) <- c("UserID", "Location", "Age")
+write.csv(usersCleaned, "./usersCleaned.csv",row.names = FALSE)
+
+#scrubber >> users$Age <- str_replace_all(users$Age, "&#", "")
+#wasn't required  >> users$Age <- str_replace_all(users$Age, "<f3>dzk<69>e", "")
 
 users$User.ID <- as.integer(users$User.ID)
 
