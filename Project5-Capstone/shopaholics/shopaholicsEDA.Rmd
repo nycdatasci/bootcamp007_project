@@ -19,6 +19,7 @@ library(anytime)
 library(lubridate)
 library(leaflet)
 library(jsonlite)
+library(caret)
 
 ```
 
@@ -30,6 +31,12 @@ users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FA
 str(users)
 
 locations <- users %>% group_by(Location) %>% count() %>% arrange(desc(n))
+
+```
+
+Code to get geoCodes
+
+```{r}
 
 userLocationGeoSpatial <- function(x) {
   address <- geocode(location = x)
@@ -56,6 +63,12 @@ for (i in seq(1501,1700)) {
 }
 
 write.csv(locations[1:1700,], file = './locations.csv')
+```
+
+Load locations with Geocodes
+```{r}
+locationsGeoCoded <- read.csv("./locations.csv")
+
 ```
 
 View users by age groups -- User data needs cleaning (python??) prior to grouping
@@ -103,7 +116,7 @@ head(users)
 summary(ratings)
 str(books)
 ```
-Books 
+Books - 113,679 unique ISBNs without category / subject or country of origin
 ```{r}
 summary(books$Year.Of.Publication)
 ggplot(books,aes(Year.Of.Publication)) + geom_histogram()
@@ -115,7 +128,7 @@ books %>% group_by(Year.Of.Publication) %>% count() %>% top_n(.,10) %>% arrange(
 Users
 
 
-Map locations
+Leafmap for visualizing locations - data was also ported to Carto >> https://jhonasttan.carto.com/builder/d2dc0256-ba5f-11e6-bfdd-0e8c56e2ffdb/embed?state=%7B%22map%22%3A%7B%22ne%22%3A%5B-75.14077784070427%2C-211.28906249999997%5D%2C%22sw%22%3A%5B82.35580019800932%2C203.203125%5D%7D%2C%22widgets%22%3A%7B%2225e9dd14-0976-4ce4-b198-6b22eca59f52%22%3A%7B%22normalized%22%3Atrue%7D%7D%7D 
 ```{r}
 #set leaflet map tile
 tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
@@ -139,13 +152,13 @@ leaflet(data = locations[1:75,c("Location","lon","lat")]) %>%
   #setView(lng = -73.976522, lat = 40.7528, zoom = 12)
 ```
 
-Ratings
+Ratings - how do we handle zero ratings?
 
 ```{r}
 ggplot(ratings, aes(Book.Rating)) + geom_histogram()
 ```
 
-Capture Book's current rating and other features from Google API (key not required)
+Capture Book's current rating and other features from Google API (key not required) - work in progress
 Example: https://www.googleapis.com/books/v1/volumes?q=isbn:0195153448
 
 ```{r}
@@ -194,4 +207,19 @@ for (b in seq_along(books$ISBN)) {
 }
 ```
 
+Predict Ratings Model
+```{r}
+set.seed(0)
+#divide data into half via sampling to test prediction models
+subsetRatingsIndex <- createDataPartition(ratings$User.ID, list=FALSE)
+subsetRatings <- ratings[subsetRatingsIndex, ]
+
+tIndex <- createDataPartition(subsetRatings$User.ID, list = FALSE, p=0.7)
+
+train_ratings <- subsetRatings[tIndex,]
+test_ratings <- subsetRatings[-tIndex,]
+lmRatings <- lm(Book.Rating ~ ., data = train_ratings)
+
+
+```
 
