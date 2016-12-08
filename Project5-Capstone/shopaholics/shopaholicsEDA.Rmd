@@ -73,7 +73,7 @@ locationsGeoCoded <- read.csv("./locations.csv")
 ```
 
 Cleanup users data
-```{r}
+```{r cleanup users}
 #find rows where values equal integers << breaks - may need to remove some rows
 
 #Nulls required for DataBricks SQL (table) environment
@@ -132,7 +132,7 @@ users %>% filter(AgeInt > 0) %>% ggplot(aes(AgeInt)) + geom_bar()
 ```
 
 Load books
-```{r}
+```{r books}
 books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
 #books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE)
 books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
@@ -170,7 +170,7 @@ ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAs
 EDA
 
 Summary:
-```{r}
+```{r books summary}
 summary(books)
 str(books)
 #books$Year.Of.Publication <- as.Date(books$Year.Of.Publication, "%Y")
@@ -193,7 +193,7 @@ Users
 
 
 Leafmap for visualizing locations - data was also ported to Carto >> https://jhonasttan.carto.com/builder/d2dc0256-ba5f-11e6-bfdd-0e8c56e2ffdb/embed?state=%7B%22map%22%3A%7B%22ne%22%3A%5B-75.14077784070427%2C-211.28906249999997%5D%2C%22sw%22%3A%5B82.35580019800932%2C203.203125%5D%7D%2C%22widgets%22%3A%7B%2225e9dd14-0976-4ce4-b198-6b22eca59f52%22%3A%7B%22normalized%22%3Atrue%7D%7D%7D 
-```{r}
+```{r leaflet}
 #set leaflet map tile
 tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
 
@@ -218,14 +218,14 @@ leaflet(data = locations[1:75,c("Location","lon","lat")]) %>%
 
 Ratings - how do we handle zero ratings?
 
-```{r}
+```{r ggplot}
 ggplot(ratings, aes(Book.Rating)) + geom_histogram()
 ```
 
 Capture Book's current rating and other features from Google API (key not required) - work in progress
 Example: https://www.googleapis.com/books/v1/volumes?q=isbn:0195153448
 
-```{r}
+```{r GoogleAPI}
 
 #testing
 bookUrlStart <- "https://www.googleapis.com/books/v1/volumes?q=isbn:"
@@ -272,7 +272,7 @@ for (b in seq_along(books$ISBN)) {
 ```
 
 Predict Ratings Model
-```{r}
+```{r Modeling}
 set.seed(0)
 #divide data into half via sampling to test prediction models
 subsetRatingsIndex <- createDataPartition(ratings$User.ID, list=FALSE)
