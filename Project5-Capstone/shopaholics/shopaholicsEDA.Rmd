@@ -228,46 +228,85 @@ Example: https://www.googleapis.com/books/v1/volumes?q=isbn:0195153448
 ```{r GoogleAPI}
 
 #testing
-bookUrlStart <- "https://www.googleapis.com/books/v1/volumes?q=isbn:"
+#bookUrlStart <- "https://www.googleapis.com/books/v1/volumes?q=isbn:"
+#isbn <- books$ISBN[1]
+#bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
+#bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
 
-isbn <- books$ISBN[1]
-bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
-bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
+#booksCatalogue <- data.frame()
+#googleBooksCat <- list()
+
+#Build book catalogue
+#isbn
+jasonIsbnParse <- function(bookJson){
+  title <- bookJson$items$volumeInfo$title
+  authors <- paste(unlist(bookJson$items$volumeInfo$authors), collapse = ", ") #can be more than one 
+  publishedDate <- bookJson$items$volumeInfo$publishedDate
+  publisher <- bookJson$items$volumeInfo$publisher
+  categories <- paste(unlist(bookJson$items$volumeInfo$categories), collapse = ", ")
+  pageCount <- bookJson$items$volumeInfo$pageCount
+  averageRating <- bookJson$items$volumeInfo$averageRating
+  ratingsCount <- bookJson$items$volumeInfo$ratingsCount
+  maturityRating <- bookJson$items$volumeInfo$maturityRating
+  imageThumbnail <- bookJson$items$volumeInfo$imageLinks$smallThumbnail
+  infoLink <- bookJson$items$volumeInfo$infoLink
+  textSnippet <- bookJson$items$searchInfo$textSnippet
+  
+  #create list for adding to dataframe
+  googleBooksCat <- list(isbn = isbn, title = title, authors = authors, 
+                         publishedDate = publishedDate, publisher = publisher, 
+                         categories = categories, pageCount = pageCount, 
+                         averageRating = averageRating, ratingsCount = ratingsCount,
+                         maturityRating = maturityRating, imageThumbnail = imageThumbnail, 
+                         infoLink = infoLink, textSnippet = textSnippet)
+  as.data.frame(googleBooksCat)
+}
+#add row to dataframe
+#as.data.frame(googleBooksCat)
+#booksCatalogue <- rbind(booksCatalogue, as.data.frame(googleBooksCat))
+
+isbn1k <- read.csv("./books1000.csv",header = TRUE, stringsAsFactors = FALSE)
+
+tryCatch.W.E <- function(expr) {
+    W <- NULL
+    w.handler <- function(w){ # warning handler
+	W <<- w
+	invokeRestart("muffleWarning")
+    }
+     list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+ 				     warning = w.handler),
+ 	 warning = W)
+}
 
 booksCatalogue <- data.frame()
 googleBooksCat <- list()
+bookJsonWE <- list()
 
-#Build book catalogue
-isbn
-title <- bookJson$items$volumeInfo$title
-author <- bookJson$items$volumeInfo$authors #can be more than one 
-publishedDate <- bookJson$items$volumeInfo$publishedDate
-publisher <- bookJson$items$volumeInfo$publisher
-pageCount <- bookJson$items$volumeInfo$pageCount
-averageRating <- bookJson$items$volumeInfo$averageRating
-ratingsCount <- bookJson$items$volumeInfo$ratingsCount
-maturityRating <- bookJson$items$volumeInfo$maturityRating
-imageThumbnail <- bookJson$items$volumeInfo$imageLinks$smallThumbnail
-infoLink <- bookJson$items$volumeInfo$infoLink
-textSnippet <- bookJson$items$searchInfo$textSnippet
+# for (i in seq_along(unlist(isbn1k))) {
+#     isbn <- isbn1k[[1]][i]
+#   bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
+#   
+#   bookJson <- list()
+#   bookJsonWE[i] <- tryCatch.W.E(bookJson <- fromJSON(paste(readLines(bookUrl), collapse="")))
+#   
+#   if (length(bookJson) > 0) {
+#     booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson))
+#   }
+#   Sys.sleep(1/2)
+# }
 
-#create list for adding to dataframe
-googleBooksCat <- list(isbn = isbn, title = title, author = paste(unlist(author), collapse = ", "), 
-                       publishedDate = publishedDate, publisher = publisher, pageCount = pageCount, 
-                       averageRating = averageRating, ratingsCount = ratingsCount,
-                    maturityRating = maturityRating, imageThumbnail = imageThumbnail, 
-                    infoLink = infoLink, textSnippet = textSnippet)
-
-#add row to dataframe
-#as.data.frame(googleBooksCat)
-booksCatalogue <- rbind(booksCatalogue, as.data.frame(googleBooksCat))
-
-for (b in seq_along(books$ISBN)) {
+#for (i in seq_along(unlist(isbn1k))) {
+for (i in c(67:1000)) {
+    isbn <- isbn1k[[1]][i]
+  bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn, "&key=AIzaSyA4QM4037gM47V23b7vb-6WHAceBzkOgv4")
   
-  isbn <- books$ISBN[b]
-  bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
-  
+  bookJson <- list()
   bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
+  
+  if (length(bookJson) > 2) {
+    bookJsonWE[i] <- tryCatch.W.E( booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson)) )
+  }
+  Sys.sleep(1/2)
 }
 ```
 
