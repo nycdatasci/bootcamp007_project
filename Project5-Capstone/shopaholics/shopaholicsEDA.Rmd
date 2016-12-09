@@ -21,6 +21,7 @@ library(leaflet)
 library(jsonlite)
 library(caret)
 library(stringr)
+library(plotly)
 
 ```
 
@@ -295,8 +296,8 @@ bookJsonWE <- list()
 #   Sys.sleep(1/2)
 # }
 
-#for (i in seq_along(unlist(isbn1k))) {
-for (i in c(67:1000)) {
+for (i in seq_along(unlist(isbn1k))) {
+#for (i in c(67:1000)) {
     isbn <- isbn1k[[1]][i]
   bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn, "&key=AIzaSyA4QM4037gM47V23b7vb-6WHAceBzkOgv4")
   
@@ -308,7 +309,63 @@ for (i in c(67:1000)) {
   }
   Sys.sleep(1/2)
 }
+#convert the column publishedDates to dates
+booksCatalogue$publishedDate <- anydate(booksCatalogue$publishedDate)
 ```
+
+EDA on google books review
+```{r google EDA}
+
+#Dates histogram
+ggplot(booksCatalogue, aes(publishedDate)) + geom_histogram()
+summary(booksCatalogue$publishedDate)
+
+#Avg rating histogram
+ggplot(booksCatalogue, aes(averageRating)) %>% + geom_histogram()
+ggplot(booksCatalogue, aes(ratingsCount, averageRating)) %>% + geom_point()
+
+#Avg rating vs Rating count
+ggplot(booksCatalogue, aes(ratingsCount, averageRating)) + geom_smooth(se = FALSE)
+
+summary(booksCatalogue$averageRating)
+summary(booksCatalogue$ratingsCount)
+
+#Avg rating vs page count
+ggplot(booksCatalogue, aes(ratingsCount, pageCount)) + geom_smooth(se = FALSE)
+ggplot(booksCatalogue, aes(ratingsCount, pageCount)) + geom_point()
+p1 <- ggplot(booksCatalogue, aes(pageCount, ratingsCount)) + geom_point(aes(color = categories)) + theme(legend.position = "top")
+ggplotly(p1)
+
+# p1 + guides(fill=guide_legend(nrow=1,byrow=TRUE))
+# 
+# library(stringr)
+# labels = function(x) str_wrap(x, width = 10)
+# #scale_color_manual(labels = c("T999", "T888"), values = c("blue", "red"))
+# p1 + scale_color_manual(labels = function(categories) str_wrap(categories, width = 10), values = colors()[1:length(x)])
+# 
+# booksCatalogue$labels = substr(booksCatalogue$categories, 1, 10)
+# 
+# booksCatalogue$labels = str_wrap(booksCatalogue$categories, width = 10)
+# Categories = factor(booksCatalogue$labels)
+# l = levels(Categories)
+# 
+# 
+# plot(mydf$Date, mydf$Avg, xlab="Date", ylab="Avg", col=f)
+# legend("topright", legend = l, fill = 1:length(l), title = "Prods")
+
+booksCatalogue$labels = str_wrap(booksCatalogue$categories, width = 10)
+Categories = factor(booksCatalogue$labels)
+l = levels(Categories)
+
+ggplot(booksCatalogue, aes(pageCount, ratingsCount)) + geom_point(aes(color = Categories)) #+ theme(legend.position = "top")
+
+ggplot(booksCatalogue, aes(pageCount, averageRating)) + geom_point(aes(color = Categories)) #+ guides(fill=guide_legend(nrow=1,byrow=TRUE,legend.position="top"))
+
+
+
+#what are genres and page counts for highly rated books?
+```
+
 
 Predict Ratings Model
 ```{r Modeling}
