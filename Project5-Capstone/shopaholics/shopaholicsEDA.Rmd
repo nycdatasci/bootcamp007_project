@@ -11,7 +11,7 @@ setwd("~/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project
 ```
 
 Load libraries
-```{r, echo=FALSE}
+```{r Load Libraries, echo=FALSE}
 library(tidyverse)
 library(ggmap)
 library(ggplot2)
@@ -22,23 +22,57 @@ library(jsonlite)
 library(caret)
 library(stringr)
 library(plotly)
+library(VIM)
+library(mice)
 
 ```
 
 Load user data into dataframe and capture geospatial locations
-```{r}
-
-
-users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "Latin-1") #encoding="UTF-8")
+```{r Load users}
+users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "UTF-8") 
 str(users)
 
-locations <- users %>% group_by(Location) %>% count() %>% arrange(desc(n))
+```
+
+Cleanup users data
+```{r users data cleanup}
+#remove bad values for integer(Age), integer(UserID) and character(Location)
+
+for (i in seq_along(users$Age)) {
+    users$Age[i] <- tryCatch(as.integer(users$Age[i]),
+                                error=function(e) NA)
+    
+    users$User.ID[i] <- tryCatch(as.integer(users$User.ID[i]),
+                                error=function(e) NA)
+    
+     users$Location[i] <- tryCatch(as.character(users$Location[i]),
+                                error=function(e) NA)
+
+}
+
+#remove '.' in column names and filter out NAs on UserID
+colnames(users) <- c("UserID", "Location", "Age")
+
+for (i in seq_along(users$Location)) {
+  loc <- str_split(users$Location[i], ",")[[1]]
+  users$city[i] <- gsub(" ", "", loc[1])
+  users$state[i] <- gsub(" ", "", loc[2])
+  users$country[i] <- gsub(" ", "", loc[3])
+}
+
+#write.csv(filter(users, !is.na(UserID)), "./usersCleaned.csv",row.names = FALSE)
+write.csv(users, "./usersCleanedWithNAs.csv",row.names = FALSE)
+
+#scrubber >> users$Age <- str_replace_all(users$Age, "&#", "")
+#wasn't required  >> users$Age <- str_replace_all(users$Age, "<f3>dzk<69>e", "")
 
 ```
 
 Code to get geoCodes
 
-```{r}
+```{r loc get geocodes}
+
+locations <- users %>% group_by(Location) %>% count() %>% arrange(desc(n))
 
 userLocationGeoSpatial <- function(x) {
   address <- geocode(location = x)
@@ -68,97 +102,42 @@ write.csv(locations[1:1700,], file = './locations.csv')
 ```
 
 Load locations with Geocodes
-```{r}
+```{r loc - load w geocodes}
 locationsGeoCoded <- read.csv("./locations.csv")
 
 ```
 
-Cleanup users data
-```{r cleanup users}
-#find rows where values equal integers << breaks - may need to remove some rows
-
-#Nulls required for DataBricks SQL (table) environment
-#Age
-for (i in seq_along(users$Age)) {
-    users$Age[i] <- tryCatch(as.integer(users$Age[i]),
-                                error=function(e) NA
-                                )
-
-}
-
-for (i in seq_along(users$User.ID)) {
-    users$User.ID[i] <- tryCatch(as.integer(users$User.ID[i]),
-                                error=function(e) NA
-                                )
-
-}
-
-for (i in seq_along(users$Location)) {
-    users$Location[i] <- tryCatch(as.character(users$Location[i]),
-                                error=function(e) NA
-                                )
-
-}
-
-#for (i in seq_along(users$AgeInt)) {
-#    if (is.na(users$AgeInt[i])) {
-#      users$AgeInt[i] <- 0
-#    } 
-#}
-
-#remove '.' in column names and filter out NAs on UserID
-colnames(users) <- c("UserID", "Location", "Age")
-write.csv(filter(users, !is.na(UserID)), "./usersCleaned.csv",row.names = FALSE)
-
-
-#convert column to integer
-users$AgeInt <- as.integer(users$AgeInt)
-#create cleaned dataset
-#usersCleaned <- select(users, User.ID, Location, AgeInt)
-#colnames(usersCleaned) <- c("UserID", "Location", "Age")
-#write.csv(usersCleaned, "./usersCleaned.csv",row.names = FALSE)
-
-#scrubber >> users$Age <- str_replace_all(users$Age, "&#", "")
-#wasn't required  >> users$Age <- str_replace_all(users$Age, "<f3>dzk<69>e", "")
-
-users$User.ID <- as.integer(users$User.ID)
-
-```
 
 View users by age groups -- User data needs cleaning (python??) prior to grouping
 
 ```{r}
 
-users %>% filter(AgeInt > 0) %>% ggplot(aes(AgeInt)) + geom_bar()
+users %>% filter(Age > 0) %>% ggplot(aes(Age)) + geom_bar()
 ```
 
 Load books
-```{r books}
-books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
+```{r load books - clean}
+books <- read.csv("./BX-Books.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
 #books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE)
-books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
 
 #clean books data set
-for (i in seq_along(books)) {
-    books[i] <- tryCatch(as.integer(books[i]),
-                                error=function(e) NA
-                                )
-
+for (i in seq_along(books$ISBN)) {
+    books$ISBN[i] <- tryCatch(as.integer(books$ISBN[i]),
+                                error=function(e) NA)
+    books$Book.Title[i] <- tryCatch(as.character(books$Book.Title[i]),
+                                error=function(e) NA)
+    books$Book.Author[i] <- tryCatch(as.character(books$Book.Author[i]),
+                                error=function(e) NA)
+    books$Publisher[i] <- tryCatch(as.character(books$Publisher[i]),
+                                error=function(e) NA)
 }
 
-for (i in seq_along(books)) {
-    books[i] <- tryCatch(as.integer(books[i]),
-                                error=function(e) NA
-                                )
+books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
 
-}
+colnames(books) <- c("ISBN", "BookTitle", "BookAuthor", "YearOfPublication", "Publisher",
+                     "ImageUrlSmall", "ImageUrlMedium", "ImageUrlLarge")
+write.csv(books, "./booksCleanedWithNAs.csv",row.names = FALSE)
 
-for (i in seq_along(books)) {
-    books[i] <- tryCatch(as.character(books[i]),
-                                error=function(e) NA
-                                )
-
-}
 
 ```
 
@@ -166,9 +145,57 @@ Load ratings
 ```{r}
 ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
 
+for (i in seq_along(ratings$User.ID)) {
+    ratings$User.ID[i] <- tryCatch(as.integer(ratings$User.ID[i]),
+                                error=function(e) NA)
+    ratings$Book.Rating[i] <- tryCatch(as.integer(ratings$Book.Rating[i]),
+                                error=function(e) NA)
+}
+
+colnames(ratings) <- c("UserID", "ISBN", "BookRating")
+write.csv(ratings, "./ratingsCleanedWithNAs.csv",row.names = FALSE)
+
+# 35% NA >> 176019 / 493813 = 0.3564487
+# length(is.na(ratings$BookRating))
+# [1] 493813
+# > length(ratings$BookRating[ratings$BookRating > 0])
+# [1] 176019
+# > dim(ratings[ratings$BookRating > 0,])
+# [1] 176019      3
+
+ratingsWoutZeroes  <- ratings[ratings$BookRating > 0, ]
+write.csv(ratingsWoutZeroes, "./ratingsCleanedWithoutZeroes.csv",row.names = FALSE)
 ```
 
 EDA
+
+Missingness analysis
+```{r Missingness}
+aggr(users)
+
+aggr(users, plot=FALSE)
+
+ # Missings in variables:
+ # Variable Count
+ #   UserID    79
+ #      Age 55697
+ #    state    48
+ #  country    55
+
+aggr(ratings)
+
+aggr(books)
+aggr(books, plot = FALSE)
+
+# Missings in variables:
+#           Variable Count
+#               ISBN 19680
+#  YearOfPublication  3549
+
+#md.pattern()
+
+```
+
 
 Summary:
 ```{r books summary}
