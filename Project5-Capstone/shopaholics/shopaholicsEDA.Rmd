@@ -361,7 +361,7 @@ ggplot(booksCatalogue, aes(pageCount, ratingsCount)) + geom_point(aes(color = Ca
 
 ggplot(booksCatalogue, aes(pageCount, averageRating)) + geom_point(aes(color = Categories)) #+ guides(fill=guide_legend(nrow=1,byrow=TRUE,legend.position="top"))
 
-
+ggplot(booksCatalogue, aes(averageRating, ratingsCount)) + geom_point(aes(color = Categories))
 
 #what are genres and page counts for highly rated books?
 ```
