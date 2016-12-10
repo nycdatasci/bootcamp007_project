@@ -60,11 +60,30 @@ for (i in seq_along(users$Location)) {
   users$country[i] <- gsub(" ", "", loc[3])
 }
 
+users$UserID <- as.integer(users$UserID)
+users$Age <- as.integer(users$Age)
+
 #write.csv(filter(users, !is.na(UserID)), "./usersCleaned.csv",row.names = FALSE)
 write.csv(users, "./usersCleanedWithNAs.csv",row.names = FALSE)
 
 #scrubber >> users$Age <- str_replace_all(users$Age, "&#", "")
 #wasn't required  >> users$Age <- str_replace_all(users$Age, "<f3>dzk<69>e", "")
+
+```
+
+Grouping of countries and user average age
+```{R country By avg Age}
+userAvgAgeByCityStateCtry <- filter(users, !grepl("\\W", city)) %>% group_by(city, state, country) %>% 
+  summarise(ageCount = sum(Age, rm.na = TRUE), avgAge = mean(Age, rm.na = TRUE), 
+            median = median(Age), sd = sd(Age)) 
+
+filter(userAvgAgeByCtry, !is.na(avgAge)) %>% View()
+
+userAvgAgeByCtry <- filter(users, !grepl("\\W", city)) %>% group_by(country) %>% 
+  summarise(ageCount = sum(Age, rm.na = TRUE), avgAge = mean(Age, rm.na = TRUE), 
+            median = median(Age), sd = sd(Age))
+
+filter(userAvgAgeByCtry, !is.na(avgAge)) %>% View()
 
 ```
 
@@ -110,7 +129,7 @@ locationsGeoCoded <- read.csv("./locations.csv")
 
 View users by age groups -- User data needs cleaning (python??) prior to grouping
 
-```{r}
+```{r users by age groups}
 
 users %>% filter(Age > 0) %>% ggplot(aes(Age)) + geom_bar()
 ```
@@ -142,7 +161,7 @@ write.csv(books, "./booksCleanedWithNAs.csv",row.names = FALSE)
 ```
 
 Load ratings
-```{r}
+```{r load ratings}
 ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
 
 for (i in seq_along(ratings$User.ID)) {
@@ -165,7 +184,29 @@ write.csv(ratings, "./ratingsCleanedWithNAs.csv",row.names = FALSE)
 
 ratingsWoutZeroes  <- ratings[ratings$BookRating > 0, ]
 write.csv(ratingsWoutZeroes, "./ratingsCleanedWithoutZeroes.csv",row.names = FALSE)
+
 ```
+
+Create ratings w/out alphanumeric ISBNs for ML
+```{r}
+ratingsISBNsAsInts <- ratings
+
+for (i in seq_along(ratingsISBNsAsInts$ISBN)) {
+    ratingsISBNsAsInts$ISBN[i] <- tryCatch(as.integer(ratingsISBNsAsInts$ISBN[i]),
+                                error=function(e) NA)
+}
+
+#remove NAs
+# > dim(filter(ratingsISBNsAsInts, is.na(ISBN)))
+# [1] 75498     3
+# > dim(filter(ratingsISBNsAsInts, !is.na(ISBN)))
+# [1] 418315      3
+ratingsISBNsAsInts <- filter(ratingsISBNsAsInts, !is.na(ISBN))
+ratingsISBNsAsInts$ISBN <- as.integer(ratingsISBNsAsInts$ISBN)
+#save to file
+write.csv(ratingsISBNsAsInts, "./ratingsCleanedWithISBNsAsInts.csv",row.names = FALSE)
+```
+
 
 EDA
 
@@ -363,22 +404,6 @@ ggplot(booksCatalogue, aes(ratingsCount, pageCount)) + geom_point()
 p1 <- ggplot(booksCatalogue, aes(pageCount, ratingsCount)) + geom_point(aes(color = categories)) + theme(legend.position = "top")
 ggplotly(p1)
 
-# p1 + guides(fill=guide_legend(nrow=1,byrow=TRUE))
-# 
-# library(stringr)
-# labels = function(x) str_wrap(x, width = 10)
-# #scale_color_manual(labels = c("T999", "T888"), values = c("blue", "red"))
-# p1 + scale_color_manual(labels = function(categories) str_wrap(categories, width = 10), values = colors()[1:length(x)])
-# 
-# booksCatalogue$labels = substr(booksCatalogue$categories, 1, 10)
-# 
-# booksCatalogue$labels = str_wrap(booksCatalogue$categories, width = 10)
-# Categories = factor(booksCatalogue$labels)
-# l = levels(Categories)
-# 
-# 
-# plot(mydf$Date, mydf$Avg, xlab="Date", ylab="Avg", col=f)
-# legend("topright", legend = l, fill = 1:length(l), title = "Prods")
 
 booksCatalogue$labels = str_wrap(booksCatalogue$categories, width = 10)
 Categories = factor(booksCatalogue$labels)
@@ -408,5 +433,62 @@ test_ratings <- subsetRatings[-tIndex,]
 lmRatings <- lm(Book.Rating ~ ., data = train_ratings)
 
 
+```
+
+R Item-Item Collaborative Filtering Engine
+Source: https://www.analyticsvidhya.com/blog/2016/03/exploring-building-banks-recommendation-system/
+```{r}
+#load libraries
+library(plyr)
+library(arules)
+#library(readr)
+
+#load data
+#This file has two columns inidividual_merchant and inidividual_customer
+input <- read.csv("../Ritem-itemCollabFilterEngine/data.csv")
+
+#Get the list of merchants/items
+merchant <- unique(input$individual_merchant)
+merchant <- merchant[order(merchant)]
+target_merchants <- merchant
+sno <- 1:length(target_merchants)
+merchant_ident <- cbind(target_merchants,sno)
+
+#Create a reference mapper for all merchant
+colnames(merchant_ident) <- c("individual_merchant","sno")
+
+# Create a correlation matrix for these merchants
+correlation_mat = matrix(0,length(merchant),length(target_merchants))
+correlation_mat = as.data.frame(correlation_mat)
+trans = read.transactions("../Ritem-itemCollabFilterEngine/data.csv", format = "single", sep = ",", cols =
+c("inidividual_customer", "individual_merchant"))
+c <- crossTable(trans)
+rowitem <- rownames(c)
+columnitem <- colnames(c)
+correlation_mat <- c[order(as.numeric(rowitem)),order(as.numeric(columnitem))]
+for(i in 1:9822) {
+        correlation_mat[i,] <- correlation_mat[i,]/correlation_mat[i,i]
+}
+colnames(correlation_mat) <- target_merchants
+rownames(correlation_mat) <- merchant
+
+# Now let's start recommending for individual customer
+possible_slots <- 20
+avail <- 21
+merch_rec <- matrix(0, nrow = length(target_customers), ncol = avail)
+merch_rec[,1] <- unique(input3$Cust_map)
+ correlation_mat <- as.matrix(correlation_mat)
+ position <- 1
+for (i in 1:length(target_customers)) {
+   been_thr <- input[position : (position + customer_merch_ct[i] - 1),'individual_merchant']
+   merging <- as.data.frame(merchant_ident[merchant_ident[,'individual_merchant'] %in%          been_thr,])
+   corel_subset <- correlation_mat[merging$sno,] 
+   will_go <- colSums(corel_subset) 
+   will_go_merch <- target_merchants[order(-will_go)]
+   not_been_there <- will_go_merch[!will_go_merch %in% been_thr]
+   will_go_propensity <- will_go[order(-will_go)][!will_go_merch %in% been_thr]
+   merch_rec[i,2:avail] <- not_been_there[1:possible_slots] 
+   position <- position + customer_merch_ct[i] 
+}
 ```
 
