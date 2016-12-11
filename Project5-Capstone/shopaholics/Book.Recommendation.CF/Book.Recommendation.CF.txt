@@ -1,0 +1,33 @@
+Project5-Capstone/shopaholics/Book.Recommendation.CF/Book.Recommendation.CF.txt
+
+* We experimented Marcel Caraciolo's Collaborative Filtering (CF) [http://aimotion.blogspot.com/2009/11/collaborative-filtering-implementation.html]
+on the Book-Crossing Dataset [http://www2.informatik.uni-freiburg.de/~cziegler/BX/].
+* Marcel Caraciolo implemented the CF in Python [https://dl.dropboxusercontent.com/u/1977573/recommendations.py]
+which can be found here as [Caraciolo.recommendations.py].
+
+Step-1-Baseline
+* BRCF.1.Baseline.ipynb is used to check Caraciolo's implementation against the Book-Crossing Dataset.
+* Our baseline model produced same results as shown in Caraciolo's article.  
+* However, we observed many exceptions occurred during data loading and Caraaciolo only utilized non-zero ratings:
+** There are 1,149,781 ratings in BX-Book-Ratings.csv. 
+** When loading it to Caraciolo's implementation, there is 1 Value exception and are 49,818 Key exceptions.
+** There are only 383,853 non-zero ratings used to build dictionary prefs (for user-based filter) which has 77,805 entries.
+
+We believe we can treat zero ratings as missing values and impute them with average rating.
+Let say 100 users bought the Book-A, but only 10 user provided ratings.
+We can compute average rating for Book-A based on 10 user ratings and then feed thme back to 90 zero-ratings.
+Like a lot of Amazon customers, they buy book without feedback.  But they see the average rating from customers who provided ratings.
+Following steps are our approach for such imputation.
+
+Step-2-CleanerData
+* BRCF.2.CleanerData.ipynb is used to capture what Caraciolo's implementation used from BX-Books and BX-Book-Ratings and save them in true comma-seaparate files: MC.Books.csv and MC.ratings.csv.
+* We also need to eliminate with editor:
+* Line "130499,,.0330486187,6" as there are more than 3 fields
+* Line "" as 
+
+Step-3-VerifyData
+* BRCF.3.VerifyData.ipynb is used to verify MC.Books.csv and MC.ratings.csv.
+* 
+
+
+(end)
