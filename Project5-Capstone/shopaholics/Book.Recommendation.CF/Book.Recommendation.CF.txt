@@ -20,14 +20,25 @@ Like a lot of Amazon customers, they buy book without feedback.  But they see th
 Following steps are our approach for such imputation.
 
 Step-2-CleanerData
-* BRCF.2.CleanerData.ipynb is used to capture what Caraciolo's implementation used from BX-Books and BX-Book-Ratings and save them in true comma-seaparate files: MC.Books.csv and MC.ratings.csv.
-* We also need to eliminate with editor:
+* BRCF.2.CleanerData.ipynb is used to capture what Caraciolo's implementation used from BX-Books and BX-Book-Ratings and save them in true comma-seaparate files: MC.Books.csv and MC.Ratings.csv.
+* We also need to eliminate one line from MC.Ratings.csv with editor:
 * Line "130499,,.0330486187,6" as there are more than 3 fields
-* Line "" as 
 
 Step-3-VerifyData
-* BRCF.3.VerifyData.ipynb is used to verify MC.Books.csv and MC.ratings.csv.
-* 
+* BRCF.3.VerifyData.ipynb is used to verify MC.Books.csv and MC.Ratings.csv.
+* MC.Books.csv and MC.Ratings.csv produced same results as shown in Caraciolo's article. 
 
+Step-4-ImputeImplicit
+* BRCF.4.ImputeImplicit.ipynb is used to create Good.Ratings.csv which replace zero ratings with average ratings if available.
+** We read 1,149,781 from BX-Book-Ratings.csv.
+** 433,671 have non-zero ratings; thus, no impute needed.
+** We use average ratings for 494,024 records.
+** We can only use zero rating for 222,085 records as buyers of those books not provide rating.
+** We wrote 1,149,780 records to Good.ratings.csv
+* Thus, we double ratings available for building CF.
+
+Step-5-DataImpact
+* BRCF.5.DataImpact.ipynb is to re-examine our baseline model using two times more ratings from Good.Ratings.csv.
+* As expected, more ratings changed the recommendations.
 
 (end)
