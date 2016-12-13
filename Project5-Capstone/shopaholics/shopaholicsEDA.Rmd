@@ -621,17 +621,22 @@ http://www.dataperspective.info/2015/11/item-based-collaborative-filtering-in-r.
 
 path = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project5-Capstone/shopaholics/BX-CSV-Dump/ratingsCleanedWithNAs.csv"
 
+path = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/week11/pyspark_lec_2/ml-100k/u.data"
+
+
 library(lsa)
 library(reshape2)
 library(data.table)
 library(dplyr)
 
 #data loading
-ratings_file = read.csv(path)
+ratings_file = read.table(path)
+ratings_file = ratings_file[,c(1:3)]
+colnames(ratings_file) <- c("userID", "itemID", "rating")
 
 train = sample(1:nrow(ratings_file), 0.2*nrow(ratings_file)/10)
 
-ratings = as.data.frame(acast(ratings_file[train, ], UserID~ISBN, value.var="BookRating"))
+ratings = as.data.frame(acast(ratings_file[train, ], userID~itemID, value.var="rating"))
 
 
 
@@ -684,8 +689,8 @@ item_sim = cosine(as.matrix(x))
    return(ratings[userno,])
  }
  
- itemRatings <- rec_itm_for_user(6)
+ itemRatings <- rec_itm_for_user(200)
  
- sort(itemRatings[,], decreasing = TRUE)
+ ans <- sort(itemRatings[,], decreasing = TRUE)
 
 ```
