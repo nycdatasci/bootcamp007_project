@@ -7,7 +7,7 @@
 ### by Chris Valle, Jhonasttan Regalado, Conred Wang
 
 
-*Marcel Caraciolo suggested a [collaborative filtering algorithm](http://aimotion.blogspot.com/2009/11/collaborative-filtering-implementation.html) simply using distance-base similarity score.  We tried his approach to build few basic functions of a book recommendation engine on [Book-Crossing Dataset](http://www2.informatik.uni-freiburg.de/~cziegler/BX/).  Since this dataset has many zero implicit ratings, we replaced these ratings with average ratings when possible. Then we also tried his approach with our enhanced dataset to examine how more ratings impact recommendations.*
+*Marcel Caraciolo suggested a [collaborative filtering (CF) algorithm](http://aimotion.blogspot.com/2009/11/collaborative-filtering-implementation.html) based on distance-base similarity score.  We adopted his approach and built a simple book recommendation engine, and we tested it using the [Book-Crossing Dataset](http://www2.informatik.uni-freiburg.de/~cziegler/BX/).  Since this dataset has many zero implicit ratings, we replaced these ratings with average ratings when possible. Then we re-tested our engine with the enhanced dataset.  And we observed that the number of ratings available to CF do impact the recommendations made by the engine.
 
 
 ```python
@@ -23,17 +23,16 @@ from math import sqrt
 We use two types of 2D matrices, implemented using Python dictionary, to capture the user-item-rating information.
 
 1. _prefs_
-  * In order to provide recommendation for a user, 2D prefs marix will have users as rows and items as columns; i.e., rating stores as __prefs[user][item]__ 
+  * In order to provide recommendation for a user, 2D prefs matrix will have users as rows and items as columns; i.e., rating stores as __prefs[user][item]__ 
   * We provide two __prefs__ matrices:
     * **prefsLess** which is based on non-zero ratings from original dataset.
     * **prefsMore** which includes prefsLess plus additional non-zero ratings by imputing average ratings. 
 
 2. _critics_
-  * In order to provide recommendation for an item, 2D critics marix will have items as rows and users as columns; i.e., rating stores as __critics[item][user]__ 
+  * In order to provide recommendation for an item, 2D critics matrix will have items as rows and users as columns; i.e., rating stores as __critics[item][user]__ 
   * We provide two __critics__ matrices:
     * **criticsLess** which is just a re-arrangement of **prefsLess**.  
-    * **criticsMore** which is justa re-arrangement of **prefsMore**.  
-    
+    * **criticsMore** which is just a re-arrangement of **prefsMore**.  
 
 
 ```python
@@ -158,10 +157,11 @@ print "prefsMore['98556'] : ", prefsMore['98556']
 Spot check. Same.
 """
 print "prefsLess['180727'] : ", prefsLess['180727']
-print "prefsMore['180727'] : ", prefsMore['180727']
+print "\nprefsMore['180727'] : ", prefsMore['180727']
 ```
 
     prefsLess['180727'] :  {'Foundation (Foundation Novels (Paperback))': 3.0, 'Brave New World': 6.0, 'Jeeves in the morning (Perennial library)': 7.0, 'Foundation and Empire (Foundation Novels (Paperback))': 4.0, "Foundation's Edge : The Foundation Novels (Foundation Novels (Paperback))": 3.0, 'Second Foundation (Foundation Novels (Paperback))': 4.0}
+    
     prefsMore['180727'] :  {'Foundation (Foundation Novels (Paperback))': 3.0, 'Brave New World': 6.0, 'Jeeves in the morning (Perennial library)': 7.0, 'Foundation and Empire (Foundation Novels (Paperback))': 4.0, "Foundation's Edge : The Foundation Novels (Foundation Novels (Paperback))": 3.0, 'Second Foundation (Foundation Novels (Paperback))': 4.0}
 
 
@@ -334,14 +334,10 @@ def getRecommendations(prefs, user, similarity=sim_pearson):
 	return rankings
 ```
 
-***
-
 * Now we can try our book recommendation functions.
 * We will try each function with:
   * Euclidean distance and Pearson correlation.
   * Original dataset (less ratings) and our enhanced dataset (more ratings).
-  
----
 
 Let's first try to find top 10 users like user 177432 and 180727.
 
@@ -471,18 +467,9 @@ print getRecommendations(prefsMore, '180727', sim_pearson)[0:5]
     [(10.000000000000002, 'The War of the Worlds (Bantam Classics)'), (10.0, '\xc2\xa1Corre'), (10.0, 'Zen Gardening'), (10.0, 'Yvgenie'), (10.0, 'Youth in Revolt')]
 
 
-***
-
-We just saw what functions topMatches and getRecommendations can do for an user based on the data structure prefs.
-
-Now we will see what these two functions can do for a book based on the data structure critics.
-
----
-
-If you give function topMatches a prefs matrix and an user as input, it returns top matched users.
-
-If you give function topMatches a critics matrix and a book title as input, it returns similar books.
-
+We just saw what functions topMatches and getRecommendations can do for an user based on the data structure prefs.  Now we will see what these two functions can do for a book based on the data structure critics.
+* If you give function topMatches a prefs matrix and an user as input, it returns top matched users.
+* If you give function topMatches a critics matrix and a book title as input, it returns similar books.
 
 
 ```python
@@ -513,11 +500,8 @@ print topMatches(criticsMore, 'Drums of Autumn', 5, sim_pearson)
     [(1.0000000000000255, 'Heart of a Warrior'), (1.000000000000016, 'The Unlikely Spy'), (1.000000000000016, "Everything's Eventual : 14 Dark Tales"), (1.0000000000000155, 'The Simple Truth'), (1.0000000000000133, 'Lady of Hay')]
 
 
-If you give function getRecommendations a prefs matrix and an user as input, it returns few book recommendations.
-
-If you give function getRecommendations a critics matrix and a book title as input, it returns few users who may 
-want to read the book.
-
+* If you give function getRecommendations a prefs matrix and an user as input, it returns few book recommendations.
+* If you give function getRecommendations a critics matrix and a book title as input, it returns few users who may want to read the book.
 
 
 ```python
@@ -548,20 +532,15 @@ print getRecommendations(criticsMore, 'The Weight of Water', sim_pearson)[0:5]
     [(10.000000000000002, '99298'), (10.000000000000002, '98344'), (10.000000000000002, '78631'), (10.000000000000002, '43937'), (10.000000000000002, '41343')]
 
 
-***
+We have tested the function topMatches and getRecommendations with:
+* Euclidean distance and Pearson correlation.
+* Original dataset (less ratings) and our enhanced dataset (more ratings).
 
-Although Marcel Caraciolo's collaborative filtering algorithm is simple, it provides us many functionalities:
-* If you give function topMatches a prefs matrix and an user as input, it returns top matched users.
-* If you give function topMatches a critics matrix and a book title as input, it returns similar books.
-* If you give function getRecommendations a prefs matrix and an user as input, it returns few book recommendations.
-* If you give function getRecommendations a critics matrix and a book title as input, it returns few users who may 
-want to read the book.
+We cannot confirm if any recommendations made are valid since: 
+* The dataset is not ideally clean. 
+* The dataset does not have enough information about users or books. 
+* Marcel Caraciolo’s approach does not make use of users’ profile.
 
-It is difficult to jsutify if any recommendations are valid since:
-* The dataset is not ideally clean.
-* The dataset does not have enough information about users or books.
-* Marcel Caraciolo's approach does not make use of users' profile.
-
-We believe we can make the book recommendation engine more sophisticated by incorpoarting more user profile data (gender, age, domicile, ..) and his/her tastes (book types, book size in pages, ..).
+But we do observe that the number of ratings available to CF do impact the recommendations made by the engine.
 
 (end)
