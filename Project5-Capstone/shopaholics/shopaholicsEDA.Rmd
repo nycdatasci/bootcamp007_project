@@ -33,6 +33,8 @@ library(mice)
 Load user data into dataframe and capture geospatial locations
 ```{r Load users}
 users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "UTF-8") 
+
+
 str(users)
 
 ```
@@ -73,6 +75,14 @@ write.csv(users, "./usersCleanedWithNAs.csv",row.names = FALSE)
 #wasn't required  >> users$Age <- str_replace_all(users$Age, "<f3>dzk<69>e", "")
 
 ```
+
+cleaned data
+```{r}
+#cleaned data
+users <- read.csv("./usersCleanedWithNAs.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "UTF-8") 
+
+```
+
 
 Grouping of countries and user average age
 ```{R country By avg Age}
@@ -126,6 +136,16 @@ write.csv(locations[1:1700,], file = './locations.csv')
 Load locations with Geocodes
 ```{r loc - load w geocodes}
 locationsGeoCoded <- read.csv("./locations.csv")
+
+for (i in seq_along(locationsGeoCoded$Location)) {
+  loc <- str_split(string = locationsGeoCoded$Location[i], pattern = ",")
+  locationsGeoCoded$city[i] <- loc[[1]][1]
+  locationsGeoCoded$state[i] <- loc[[1]][2]
+  locationsGeoCoded$country[i] <- loc[[1]][3]
+  
+}
+
+write.csv(locationsGeoCoded,file = "./locationsExpanded.csv")
 
 ```
 
@@ -337,7 +357,7 @@ jasonIsbnParse <- function(bookJson){
 #as.data.frame(googleBooksCat)
 #booksCatalogue <- rbind(booksCatalogue, as.data.frame(googleBooksCat))
 
-isbn1k <- read.csv("./books1000.csv",header = TRUE, stringsAsFactors = FALSE)
+isbn1k <- read.csv("./ratedISBNunique.csv",header = TRUE, stringsAsFactors = FALSE)
 
 tryCatch.W.E <- function(expr) {
     W <- NULL
@@ -367,8 +387,8 @@ bookJsonWE <- list()
 #   Sys.sleep(1/2)
 # }
 
-for (i in seq_along(unlist(isbn1k))) {
-#for (i in c(67:1000)) {
+#for (i in seq_along(unlist(isbn1k))) {
+for (i in c(75183:85000)) {
     isbn <- isbn1k[[1]][i]
   bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn, "&key=AIzaSyA4QM4037gM47V23b7vb-6WHAceBzkOgv4")
   
@@ -376,9 +396,15 @@ for (i in seq_along(unlist(isbn1k))) {
   bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
   
   if (length(bookJson) > 2) {
-    bookJsonWE[i] <- tryCatch.W.E( booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson)) )
+    #bookJsonWE[i] <- tryCatch.W.E( booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson)) )
+    tryCatch.W.E( booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson)) )
   }
   Sys.sleep(1/2)
+  if (i %in% c(95000, 115000, 135,000, 149842)) {
+    write.csv(booksCatalogue, file = "./googleBooksLookup2.csv", append = TRUE)
+    booksCatalogue <- data.frame()
+    
+  }
 }
 #convert the column publishedDates to dates
 booksCatalogue$publishedDate <- anydate(booksCatalogue$publishedDate)
