@@ -1,0 +1,60 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
+library(dplyr)
+library(DT)
+library(png)
+library(grid)
+setwd("~/Documents/bootcamp007_project/Project3-WebScraping/ReganYee/Wayback")
+reddit = readRDS("reddit.RDS")
+
+df = reddit %>% 
+  mutate(datehour = sapply(reddit$snapshot_datetime, function(x) substring(x,1,10))) %>% 
+  mutate(rank_hour = paste0(datehour,rank)) %>% 
+  select(1:10, rank_hour, submit_date, submit_hour)
+
+## Return a list of top 10 items that are unique per day and hour
+df_unique_hour = df[!duplicated(df$rank_hour),]
+df_unique_hour = df_unique_hour %>% select(snapshot_date, rank, titles, subreddit, upvotes, comments, submitter, snapshot_time, url, submit_datetime, submit_date, submit_hour)
+
+## Reindex row indices
+rownames(df_unique_hour) = NULL
+
+df_unique_hour = df_unique_hour %>%
+  mutate(snapshot_hour = substring(snapshot_time,1,2))
+```
+
+## Hottest Subreddits by Posts
+```{r subreddit_analysis, cache = FALSE, echo = FALSE, message=FALSE}
+subreddit_grouped = reddit %>% group_by(subreddit,titles) %>%
+  summarize(count=n()) %>% arrange(desc(count))
+
+## Filter on subreddits with more than 10 posts in top10
+subreddit_analysis = subreddit_grouped %>% 
+  select(subreddit) %>% 
+  summarize(count=n()) %>% 
+  filter(count >=10) %>% 
+  arrange(desc(count))
+
+## Reorder to be descending
+subreddit_analysis$subreddit = 
+  factor(subreddit_analysis$subreddit, levels = unique(subreddit_analysis$subreddit)[order(subreddit_analysis$count, decreasing = TRUE)])
+
+y <- list(
+  title = "Number of Posts")
+
+plot_ly (
+  x = subreddit_analysis$subreddit,
+  y = subreddit_analysis$count,
+  type = 'bar') %>% 
+  layout(
+    yaxis = y
+  )
+```
+<div>
+<font size="-1">Only including subreddits with >= 10 posts in the top 10</font>
+</div>

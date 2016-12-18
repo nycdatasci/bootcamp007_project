@@ -105,7 +105,10 @@ mdata <- melt(df_sb_subset, id=c("Name"))
 amenSums$amenities <- rownames(amenSums)
 #ggplot(amenSums,aes(amenSums)) + geom_bar(aes(fill=amenities)) + coord_flip()
 #ggplot(amenSums,aes(amenSums)) + geom_histogram(aes(fill=amenities))
+
 p1 <- ggplot(amenSums,aes(reorder(amenities,amenSums),amenSums)) + #, label = amenSums$amenSums
+#amenSum.reordered <- amenSums[reorder(amenSums$amenities,amenSums$amenSums),]
+#p1 <- ggplot(amenSum.reordered,aes(amenities,amenSums)) + #, label = amenSums$amenSums
   geom_bar(stat = "identity", aes(fill=amenities)) + 
   ylab("Count") + 
   xlab("Amenities by Code") +

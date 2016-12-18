@@ -1,0 +1,97 @@
+---
+title: "classifierResults"
+author: "Jhonasttan Regalado"
+date: "11/23/2016"
+output: html_document
+---
+
+ Confusion Matrix and Statistics
+ 
+           Reference
+ Prediction  High   Low
+       High  1684   537
+       Low   1641 13097
+                                           
+                Accuracy : 0.8716          
+                  95% CI : (0.8664, 0.8766)
+     No Information Rate : 0.8039          
+     P-Value [Acc > NIR] : < 2.2e-16       
+                                           
+                   Kappa : 0.5341          
+  Mcnemar's Test P-Value : < 2.2e-16       
+                                           
+             Sensitivity : 0.5065          
+             Specificity : 0.9606          
+          Pos Pred Value : 0.7582          
+          Neg Pred Value : 0.8887          
+              Prevalence : 0.1961          
+          Detection Rate : 0.0993          
+    Detection Prevalence : 0.1310          
+       Balanced Accuracy : 0.7335          
+                                           
+        'Positive' Class : High 
+
+
+## Investigation
+ The classification model (gbm) below (loss <= 4500: Low, else High) provides an 87% accuracy with low sensitiviy 50% (false positive leads to high valued accounts being misclassified as low) and 96% high Specificity (false negatives); hence an error rate of 4% for classifying low profiles with high valued accounts.
+
+However, the model breaks with the test set built from the training data (30%) as it introduces same categorical values with new values.
+
+The model also fails with the inHouse test set as it introduces a new value in cat89. Filtering the value out results in removing all observations for cat89.
+
+# "Error in model.frame.default(Terms, newdata, na.action = na.action, xlev = object$xlevels) : 
+#   factor cat89 has new levels I"
+
+```{r}
+inHouse.Train <- read.csv('~/Documents/DataScience/bootcamp7/project4/data/inHouseTrain.csv')
+inHouse.test<- read.csv('~/Documents/DataScience/bootcamp7/project4/data/inHouseTest.csv')
+
+inHouse.train.m <- inHouse.Train %>% mutate(profile = as.factor(ifelse(loss <= 4500, "Low", "High")))
+inHouse.test.m <- inHouse.test %>% mutate(profile = as.factor(ifelse(loss <= 4500, "Low", "High")))
+
+inHouse.train.m <- inHouse.train.m[,-c(1,2,133)]
+inHouse.test.m <- inHouse.test.m[,-c(1,2,133)]
+
+set.seed(0)
+i.train <- createDataPartition(inHouse.train.m$profile, p=0.7, list = FALSE)
+
+sub.train <- inHouse.train.m[i.train,] 
+sub.test <- inHouse.test.m[-i.train,]
+
+sub.train.model <- train(profile ~. , data = sub.train, method = "gbm")
+
+print(sub.train.model$finalModel)
+
+# > print(sub.train.model$finalModel)
+# A gradient boosted model with bernoulli loss function.
+# 150 iterations were performed.
+# There were 1005 predictors of which 85 had non-zero influence.
+
+sub.train.model$bestTune
+# > sub.train.model$bestTune
+#   n.trees interaction.depth shrinkage n.minobsinnode
+#      150                 3       0.1             10
+
+plot(sub.train.model)
+
+sub.train.pred <- predict(sub.train.model, sub.test[,-131] %>% filter(cat103 != 'N', 
+                                                                      !(cat109 %in% c("AK","BT")),
+                                                                      cat110 != "DV",
+                                                                      cat114 != "W",
+                                                                      !(cat116 %in% c("AT", "BI", "CJ", "HU", "IB"))))
+
+sub.test.filtered <- sub.test %>% filter(cat103 != 'N', 
+                                         !(cat109 %in% c("AK","BT")),
+                                         cat110 != "DV",
+                                         cat114 != "W",
+                                         !(cat116 %in% c("AT", "BI", "CJ", "HU", "IB")))
+
+confusionMatrix(sub.train.pred,  sub.test.filtered$profile)
+
+#predict with inHouse test data
+sub.test.pred <- predict(sub.train.model, inHouse.test.m[-131] %>% 
+                           filter(cat75 != "C"),
+                         filter(cat89 != "I"))
+# Error in filter_(.data, .dots = lazyeval::lazy_dots(...)) : 
+#   object 'cat89' not found
+```

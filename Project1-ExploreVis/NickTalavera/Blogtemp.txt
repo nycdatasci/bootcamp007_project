@@ -1,0 +1,20 @@
+Contributed by Nick Talavera. He took NYC Data Science Academy 12 week full time Data Science Bootcamp program between Sept 26 to Dec 23 2016. The post was based on his first class project (due at the 2nd week of the program).
+
+Steam is the largest digital distribution platform for PC games.
+
+The purpose of my data visualization project was to visualize data about how review scores, discounts and campaign length affect a customers' buying decisions. Specifically, I wanted to use data sets from Steam, Metacritic, IGN, and HowLongToBeat and use R to combine them into one data frame, and then use the GGPlot2 R package to visualize these data sets.
+
+The finished product can be viewed at this page and a screen capture demonstrating the features of the interactive data visualization is at:
+
+
+
+Steam
+
+2) Data sets used for Data Visualization
+
+The following datasets were accessed for data visualization:
+
+Steam sales data - Game sold and prices from before and after major sales event on Steam. The data has been collected and hosted by the third party site, SteamSpy. The data excludes games from the data that sold less than 5000 copies.Metacritic review scores - Average professional reviews across blogs, gaming websites and magazines. 1 is the lowest value, 100 the highest.
+Steam review scores - Reviews of games posted to Steam gathered using Steam's API. 1 is the lowest value, 100 the highest.
+IGN review scores - Reviews from the popular video game news site, IGN. The data was available from Kaggle. 1 is the lowest value, 10 the highest.
+Game campaign lengths - Length of single player portions of games in hours gathered from HowLongToBeat.

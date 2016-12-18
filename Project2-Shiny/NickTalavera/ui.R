@@ -1,24 +1,20 @@
 # Darknet Market Analyzer
 # Darknet Market Analysis
 # Nick Talavera
-# Date: Octber 25, 2016
+# Date: October 25, 2016
 
 
 programName = "Darknet Market Analyzer"
 sidebarWidth = 250
 dashboardPage(dashboardHeader(title = programName,
                               titleWidth = sidebarWidth),
-              # skin = "red",
-              
               dashboardSidebar(
                 width = sidebarWidth,
-                sidebarMenu(id = "sbm",
-                            
+                sidebarMenu(id = "sideBarMenu",
                             # menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
                             # menuItem("Maps", tabName = "maps", icon = icon("search")), 
                             menuItem("Market Explorer", tabName = "explorer", icon = icon("search")), 
-                            
-                            conditionalPanel("input.sbm == 'explorer'",
+                            conditionalPanel("input.sideBarMenu == 'explorer'",
                                         tabName = "explorer",
                                         icon = NULL,
                                      title = "Query Builder",
@@ -26,23 +22,26 @@ dashboardPage(dashboardHeader(title = programName,
                                      solidHeader = TRUE,
                                      selectInput("marketName",
                                                  "Choose your markets:",
-                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Market_Name))))),
-                                                 multiple = TRUE),
+                                                 choices = AvailableMarkets,
+                                                 multiple = TRUE,
+                                                 selected = c("Agora","Silk Road 2", "Evolution")),
 
                                      selectInput("drugName",
                                                  "Choose your drugs:",
-                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Drug_Type))))),
-                                                 multiple = TRUE),
+                                                 choices = AvailableDrugs,
+                                                 multiple = TRUE,
+                                                 selected = c("Ecstasy (Mdma)","Marijuana","Cocaine","Speed (Amphetamine)","Lsd (Lysergic Acid)","Heroin","Ghb")),
                                      selectInput("shippedFrom",
                                                  "Choose where the drugs are shipped from:",
-                                                 choices = str_title_case(sort(c(as.character(unique(dnmData$Shipped_From))))),
-                                                 multiple = TRUE),
+                                                 choices = AvailableCountries,
+                                                 multiple = TRUE,
+                                                 selected = c("United States","China","Mexico","United Kingdom","South Africa","France","Chile","Venezuela")),
 
-                                     selectInput("weightUnits",
-                                                 "Choose your units of weight:",
-                                                 choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
-                                                 selected = "grams"
-                                     ),
+                                     # selectInput("weightUnits",
+                                     #             "Choose your units of weight:",
+                                     #             choices = c("milligrams","grams", "kilograms", "ounces", "pounds","tons"),
+                                     #             selected = "grams"
+                                     # ),
 
                                      # sliderInput("weightValue",
                                      #             paste("Choose the the total weight of the drug in ", "grams", ":"),
@@ -80,8 +79,8 @@ dashboardPage(dashboardHeader(title = programName,
                 )# end of sidebarMenu
               ),#end of dashboardSidebar
               dashboardBody(
-                includeCSS("www/custom.css"),
                 theme = shinythemes::shinytheme("superhero"),
+                includeCSS("www/custom.css"),
                 tabItems(
                   tabItem(tabName = "dashboard",
                           fluidPage(
@@ -89,9 +88,9 @@ dashboardPage(dashboardHeader(title = programName,
                             fluidRow(
                               column(width = 12,
                                      valueBoxOutput("usViBox", width = 3),
-                                     valueBoxOutput("highestViBox", width = 3),
-                                     valueBoxOutput("usAnnualBox", width = 3),
-                                     valueBoxOutput("highestAnnualBox", width = 3)
+                                     valueBoxOutput("XThanAveragePricesForXAtXBox", width = 3),
+                                     valueBoxOutput("averagePricePerOunceForXInXonXBox", width = 3),
+                                     valueBoxOutput("DayOfTheMostXPostsOnXBox", width = 3)
                               )#end of column
                             ),# end of row
                             fluidRow(
@@ -123,7 +122,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        width = 12,
                                        height = 530,
                                        solidHeader = FALSE,
-                                       collapsible = TRUE,
+                                       collapsible = FALSE,
                                        plotOutput("top10CitiesBar")
                                      ) #End of Box
                               ) # End of column
@@ -135,7 +134,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        status = "primary",
                                        width = 12,
                                        solidHeader = FALSE,
-                                       collapsible = TRUE,
+                                       collapsible = FALSE,
                                        plotOutput("topTenDrugPriceChangeTimeSeries")
                                      ) #End of Box
                               ),# end of column
@@ -145,17 +144,17 @@ dashboardPage(dashboardHeader(title = programName,
                                        status = "primary",
                                        width = 12,
                                        solidHeader = FALSE,
-                                       collapsible = TRUE,
+                                       collapsible = FALSE,
                                        plotOutput("drugPricesVSBitcoinVSPharma")
                                      ) #End of Box
                               )# end of column
                             ),#end of fluidrow
                             fluidRow(
                               column(width = 12,
-                                     valueBoxOutput("numStatesBox", width = 3),
-                                     valueBoxOutput("mostPostedDruginXCountry", width = 3),
-                                     valueBoxOutput("bitcoinHighLow", width = 3),
-                                     valueBoxOutput("mostPopularMarketForDrugX", width = 3)
+                                     valueBoxOutput("MostActiveCountryBox", width = 3),
+                                     valueBoxOutput("mostPostedDruginXCountryBox", width = 3),
+                                     valueBoxOutput("bitcoinHighLowBox", width = 3),
+                                     valueBoxOutput("mostPopularMarketForDrugXBox", width = 3)
                               )# end of column
                             )# end of fluidrow
                           ) # End of fluidPage
@@ -165,7 +164,7 @@ dashboardPage(dashboardHeader(title = programName,
                             title = "Market Explorer",
 
                             conditionalPanel(
-                              condition = "input.query | input.sbm == 'explorer'",
+                              condition = "input.query | input.sideBarMenu == 'explorer'",
                               # column(width = 10,
                                        fluidRow(
                                          box(
@@ -173,7 +172,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("postsPerDayWithDrugColor")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -183,7 +182,7 @@ dashboardPage(dashboardHeader(title = programName,
                                                   status = "primary",
                                                   width = 12,
                                                   solidHeader = FALSE,
-                                                  collapsible = TRUE,
+                                                  collapsible = FALSE,
                                                   plotOutput("mostCommonDrugsHist")
                                                 )# end of box
                                        ),# end of fluidRow
@@ -193,7 +192,7 @@ dashboardPage(dashboardHeader(title = programName,
                                                   status = "primary",
                                                   width = 12,
                                                   solidHeader = FALSE,
-                                                  collapsible = TRUE,
+                                                  collapsible = FALSE,
                                                   plotOutput("mostPopularMarkets"),
                                                   radioButtons("radialMostActive", 
                                                                label = h3("Options:"),
@@ -209,7 +208,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            dataTableOutput("mostCommonCountryAndMarketForEachDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -219,12 +218,12 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("numberOfDrugsAvailablePerMarket"),
                                            radioButtons("numberOfDrugsRadial", 
                                                         label = h3("Options:"),
                                                         choices = list("Per Market" = "Per Market", "Per Country" = "Per Country"), 
-                                                        selected = "Per Market",
+                                                        selected = "Per Country",
                                                         inline = TRUE)
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -234,7 +233,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("pricePerDrug")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -244,7 +243,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("drugPrices")
                                          ) #End of Box
                                        ),# end of fluidRow
@@ -254,7 +253,7 @@ dashboardPage(dashboardHeader(title = programName,
                                            status = "primary",
                                            width = 12,
                                            solidHeader = FALSE,
-                                           collapsible = TRUE,
+                                           collapsible = FALSE,
                                            plotOutput("pricesComparedToBicoinPrice")
                                          ) #End of Box
                                        # ),# end of fluidRow
@@ -264,7 +263,7 @@ dashboardPage(dashboardHeader(title = programName,
                                        #     status = "primary",
                                        #     width = 12,
                                        #     solidHeader = FALSE,
-                                       #     collapsible = TRUE,
+                                       #     collapsible = FALSE,
                                        #     DT::dataTableOutput('dataTableViewOfDrugs')
                                        #   )# end of box
                                        )# end of fluidrow

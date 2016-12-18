@@ -1,0 +1,10 @@
+write train_rmse to file on bigmem
+elapsed: 84.482
+
+Don't write train_rmse to file on bigmem
+elapsed: 84.526
+
+on desktop using Rstudio
+elapsed: 1410.921
+
+

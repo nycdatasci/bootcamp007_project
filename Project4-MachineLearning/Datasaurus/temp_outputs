@@ -1,0 +1,7 @@
+load("results.RData")
+
+model_results 
+
+
+ptm <- proc.time()
+proc.time() - ptm
