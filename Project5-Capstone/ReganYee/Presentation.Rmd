@@ -21,18 +21,34 @@ x=readRDS('final_df.RDS')
 ## Agenda
 1. Introduction
 2. Methodology
-3. EDA
+3. EDA and Preprocessing
 4. Models
 5. Results
 6. Conclusion and Retrospective
 
-## Intro
+## Introduction
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+- Use Case: You're on the subway and you see a person with a cool looking pair of shoes.
 
-## Methodology
+## Introduction
+
+- Use Case: You're on the subway and you see a person with a cool looking pair of shoes.
+
+<em><font size = "3">
+"Wow, those shoes look cool! I wonder where I can buy them?"
+</font></em>
+
+<center>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/sample_tests/jordan.b1.17.png?raw=true">
+</center>
+
+## Introduction
+You walk into a shoe store later on, but it's huge and you have no idea where to start...
+
+<center>
+<img src = "http://neooc.com/wp-content/uploads/2015/11/running-shoe-store.jpg" height="300px"" />
+</center>
+
 
 ## EDA - Brand Distribution
 
@@ -140,4 +156,10 @@ datagen = ImageDataGenerator(
 ```{r }
   htmlTable(c("CNN with 3 Convolution Layers", "80.05% Validation Accuracy", "59.09% Test Accuracy"))
 ```
+
+log loss: 0.53
+
+<img src ="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/results.png?raw=true">
+
+
 
