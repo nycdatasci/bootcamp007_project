@@ -199,7 +199,7 @@ def upfeatplay():
         attributes['valence'].append(str(featurelist[i]['valence']))
 
     df_att = pd.DataFrame.from_dict(attributes)
-    b = df_att.sort(GLOBAL['choice'][0])
+    b = df_att.sort_values(GLOBAL['choice'][0])
     data = json.dumps({'uris': list(b.uri)})
     playlist_api_endpoint = "https://api.spotify.com/v1/users/1217498016/playlists/3Fafmpj0dxo6SIF3w8wVNR/tracks"
     playlists_songs = requests.put(playlist_api_endpoint, data, headers=GLOBAL['authorization_header'])
@@ -230,7 +230,7 @@ def downfeatplay():
         attributes['valence'].append(str(featurelist[i]['valence']))
 
     df_att = pd.DataFrame.from_dict(attributes)
-    b = df_att.sort(GLOBAL['choice'][0], ascending = False)
+    b = df_att.sort_values(GLOBAL['choice'][0], ascending = False)
     data = json.dumps({'uris': list(b.uri)})
     playlist_api_endpoint = "https://api.spotify.com/v1/users/1217498016/playlists/3Fafmpj0dxo6SIF3w8wVNR/tracks"
     playlists_songs = requests.put(playlist_api_endpoint, data, headers=GLOBAL['authorization_header'])   
