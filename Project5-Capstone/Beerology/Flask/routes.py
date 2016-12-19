@@ -13,9 +13,9 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/viewbeers.html")
-def viewbeers():
-    return render_template("viewbeers.html")
+# @app.route("/viewbeers.html")
+# def viewbeers():
+#     return render_template("viewbeers.html")
 
 @app.route("/content.html", methods=['GET', 'POST'])
 def content():
@@ -51,7 +51,8 @@ def content():
 def collab():
     with open("./model/CF/beer_dict.pickle", "r") as bf:
         beer_dict = pickle.load(bf)
-
+    beer_list = sorted(beer_dict.values())
+    beer_list = [x.decode('ascii', 'ignore') for x in beer_list if '\x8a\x97\xc8' not in x] # we need to fix this later
     ratings_mat = np.load("./model/CF/ratings_svdpp.npy")
     ratings_mat, global_avg = CF_mat_preprocess(ratings_mat)
 
@@ -70,17 +71,17 @@ def collab():
 
         # print inp_tup
         if inp_tup == []:
-            return render_template("collab.html")
+            return render_template("collab.html", beer_list=beer_list)
         else:
             user_data = CF_user_preprocess(inp_tup, ratings_mat, beer_dict)
             # print user_data
             cf_rec = CF_rec(user_data, ratings_mat, global_avg, beer_dict)
             # print cf_rec
 
-            return render_template("collab.html", cf_rec=cf_rec)
+            return render_template("collab.html", cf_rec=cf_rec, beer_list=beer_list)
 
     else:
-        return render_template("collab.html")
+        return render_template("collab.html", beer_list=beer_list)
 
 
 @app.route('/autocomplete', methods=['GET'])

@@ -3,16 +3,16 @@
 {% block content %}
 
     <h1 class="page-header">Find beers recommendations from other people like you!</h1>
-    <div class="form-group">
-    <form method="POST" action="{{ url_for('collab') }}">
+    <div class="row">
+        <div class="col-lg-6">
+        <div class="form-group">
+        <form method="POST" action="{{ url_for('collab') }}">
         <h4>Please find your favorite beers and rate them! (out of 20)</h4>
         <input list="beers1" name="beer_inp1">
             <datalist id="beers1">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating1" name="rating_inp1">
             <datalist id="rating1">
@@ -23,11 +23,9 @@
         <br>
         <input list="beers2" name="beer_inp2">
             <datalist id="beers2">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating2" name="rating_inp2">
             <datalist id="rating2">
@@ -38,11 +36,9 @@
         <br>
         <input list="beers3" name="beer_inp3">
             <datalist id="beers3">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating3" name="rating_inp3">
             <datalist id="rating3">
@@ -53,11 +49,9 @@
         <br>
         <input list="beers4" name="beer_inp4">
             <datalist id="beers4">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating4" name="rating_inp4">
             <datalist id="rating4">
@@ -68,11 +62,9 @@
         <br>
         <input list="beers5" name="beer_inp5">
             <datalist id="beers5">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating5" name="rating_inp5">
             <datalist id="rating5">
@@ -83,11 +75,9 @@
         <br>
         <input list="beers6" name="beer_inp6">
             <datalist id="beers6">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating6" name="rating_inp6">
             <datalist id="rating6">
@@ -98,11 +88,9 @@
         <br>
         <input list="beers7" name="beer_inp7">
             <datalist id="beers7">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating7" name="rating_inp7">
             <datalist id="rating7">
@@ -113,11 +101,9 @@
         <br>
         <input list="beers8" name="beer_inp8">
             <datalist id="beers8">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating8" name="rating_inp8">
             <datalist id="rating8">
@@ -128,11 +114,9 @@
         <br>
         <input list="beers9" name="beer_inp9">
             <datalist id="beers9">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating9" name="rating_inp9">
             <datalist id="rating9">
@@ -143,11 +127,9 @@
         <br>
         <input list="beers10" name="beer_inp10">
             <datalist id="beers10">
-                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
-                <option>Yazoo Fortuitous</option>
-                <option>Iron Hill Bourbon Porter</option>
-                <option>Big Island Red Giant Ale</option>
-                <option>Big Sky Biere de Noel</option>
+                {% for beer in beer_list %}
+                    <option>{{ beer }}</option>
+                {% endfor %}
             </datalist>
         <input list="rating10" name="rating_inp10">
             <datalist id="rating10">
@@ -157,12 +139,59 @@
             </datalist>
         <br>
         <input type="submit">
+        </form>
+        </div>
+        </div>
 
-    {% if cf_rec %}
-        {% for rec in cf_rec %}
-            <h4>{{ rec }}</h4>
-        {% endfor %}
-    {% endif %}
-    </form>
-    </div>
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>Our Recommendations:</b>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    {% if cf_rec %}
+                    <div class="alert alert-success">
+                        1. {{ cf_rec[0] }}
+                    </div>
+                    {% endif %}
+                    {% if cf_rec %}
+                    <div class="alert alert-info">
+                        2. {{ cf_rec[1] }}
+                    </div>
+                    {% endif %}
+                    {% if cf_rec %}
+                    <div class="alert alert-warning">
+                        3. {{ cf_rec[2] }}
+                    </div>
+                    {% endif %}
+                    {% if cf_rec %}
+                    <div class="alert alert-danger">
+                        4. {{ cf_rec[3] }}
+                    </div>
+                    {% endif %}
+                    {% if cf_rec %}
+                    <div class="alert alert-success">
+                        5. {{ cf_rec[4] }}
+                    </div>
+                    {% endif %}
+                    <!--<div class="alert alert-warning">-->
+                        <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="#" class="alert-link">Link</a>.-->
+                    <!--</div>-->
+                    <!--<div class="alert alert-danger">-->
+                        <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit. <a href="#" class="alert-link">Link</a>.-->
+                    <!--</div>-->
+                </div>
+                <!-- .panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        </div>
+
+    <!--{% if cf_rec %}-->
+        <!--{% for rec in cf_rec %}-->
+            <!--<h4>{{ rec }}</h4>-->
+        <!--{% endfor %}-->
+    <!--{% endif %}-->
+
 {% endblock %}
