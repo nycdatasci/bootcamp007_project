@@ -1,0 +1,113 @@
+# install.packages("caret")
+# install.packages("mlbench")
+library(caret)
+library(mlbench)
+library(Hmisc)
+library(randomForest)
+library(Metrics)
+library(dplyr)
+all.train <- read.csv("train.csv", row.names = "id")
+all.test <- read.csv("test.csv", row.names = "id")
+#converting categories to numeric
+#first, split cat variables
+#colnames(all.train)
+bin.train <- all.train[,1:72]
+cat.train <- all.train[,73:116]
+cont.train <- all.train[,117:131]
+#combine levels
+#unique(bin.train$cat7)
+# table(cat.train$cat100)
+# unique(combine.levels(cat.train$cat100))
+test <- sapply(cat.train, combine.levels)
+test <- as.data.frame(test)
+# unique(test$cat100)
+# table(test$cat100)
+str(test)
+#cbind bin and cat
+comb.train <- cbind(bin.train, test)
+#dummify 
+dmy <- dummyVars(" ~ .", data = comb.train, fullRank=T)
+test <- as.data.frame(predict(dmy, newdata = comb.train))
+dim(test)
+#combine dummified with cont vars
+all.cd.train <- cbind(test, cont.train)
+dim(all.cd.train)
+#log transformation
+all.cd.train$loss <- log(all.cd.train$loss + 200)
+###writing to file
+#write.csv(all.cd.train, "allcdtrain.csv")
+###reading saved file
+#all.cd.train <- read.csv("allcdtrain.csv", row.names = "X")
+# #exploring correlation
+# # calculate correlation matrix
+# correlationMatrix <- cor(all.cd.train[,-219])
+# # summarize the correlation matrix
+# print(correlationMatrix)
+# # find attributes that are highly corrected (ideally >0.75)
+# highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.5)
+# # print indexes of highly correlated attributes
+# print(highlyCorrelated)
+# 
+# 
+# ###THE PART BELOW TAKES VERY LONG TO FINISH!!!
+# #exploring feature ranking
+# # prepare training scheme
+# control <- trainControl(method="repeatedcv", number=10, repeats=3)
+# # train the model
+# model <- train(loss~., data=all.cd.train, method="gbm", preProcess="scale", trControl=control)
+# # estimate variable importance
+# importance <- varImp(model, scale=FALSE)
+# # summarize importance
+# print(importance)
+# # plot importance
+# plot(importance)
+#### trying script from Lecture
+#split dataset
+set.seed(0)
+trainIdx <- createDataPartition(all.cd.train$loss, 
+                                p = .8,
+                                list = FALSE,
+                                times = 1)
+subTrain <- all.cd.train[trainIdx,] %>% select(-loss)
+subTest <- all.cd.train[-trainIdx,] %>% select(-loss)
+lossTrain <- all.cd.train$loss[trainIdx]
+lossTest <- all.cd.train$loss[-trainIdx]
+dim(subTrain)
+dim(lossTrain)
+lmFit <- train(x = subTrain, 
+               y = lossTrain,
+               method = "lm")
+#lmFit <- readRDS("lm_model")
+###Checking variableimportance
+lmImp <- varImp(lmFit, scale = FALSE)
+lmImp
+####
+##select variables from here. proceeding with gbm with all variables
+####
+#How to change the optimizer in caret. 
+#It defaults to trying to minimize RMSE. 
+#You can change that to MAE (which is what kaggle wants) with the below code.
+x_mae <-function (data, lev = NULL, model = NULL,...) 
+{ 
+  require(Metrics)
+  m <- try(Metrics::mae(exp(data$obs), exp(data$pred)),silent=TRUE)
+  out<-c(m)
+  names(out) <- c("MAE")
+  out 
+}
+#Model training
+fitCtrl <- trainControl(method = "cv",
+                        number = 3,
+                        verboseIter = TRUE,
+                        summaryFunction= x_mae)
+gbmGrid <- expand.grid( n.trees = seq(100,300,100), 
+                        interaction.depth = c(3,7), 
+                        shrinkage = 0.1,
+                        n.minobsinnode = 20)
+gbmFit <- train(x = subTrain, 
+                y = lossTrain,
+                method = "gbm", 
+                trControl = fitCtrl,
+                tuneGrid = gbmGrid,
+                metric = 'MAE',
+                maximize = FALSE)

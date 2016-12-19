@@ -1,0 +1,211 @@
+{% extends "layout.html" %}
+
+
+
+
+{% block content %}
+    <h1 class="page-header">About This App</h1>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Click to collapse</a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    The motivation of this app is to build a comprehensive recommendation engine for beer lovers. The recommendations are made based on analysing 30,0000 review and rating from ratebeer.com. The techniques involved ranges from natrual language processing to unsupervised deep learning.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-language fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">NLP</div>
+                                <div>Content-based model</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-share-alt-square fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">LSI</div>
+                                <div>Matrix approximation</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-share-alt fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">SVD++</div>
+                                <div>Matrix factorization</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-tasks fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge">RBM</div>
+                                <div>Deep Learning</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">View Details</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <style type="text/css">
+                .bgimg {background-image: url('../static/bg3.png');}
+            </style>
+            <div class="panel-heading">
+                <i class="fa fa-clock-o fa-fw"></i> Workflow
+            </div>
+            <!-- /.panel-heading -->
+            <div class="bgimg">
+                <ul class="timeline">
+                    <li>
+                        <div class="timeline-badge"><i class="fa fa-key"></i>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h3 class="timeline-title">1. Webscrapping</h3>
+                            </div>
+                            <div class="timeline-body">
+                                <strong>30,000 beer reviews, ratings and user information is scrapped from ratebeer.com</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-badge warning"><i class="fa fa-gears"></i>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h3 class="timeline-title">2. Data Cleaning</h3>
+                            </div>
+                            <div class="timeline-body">
+                                <strong>Text mining, tokenization, spell check and lemmatization was performed to process the review data</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h3 class="timeline-title">3. Content-based Model</h3>
+                            </div>
+                            <div class="timeline-body">
+                                <strong>Term Frequency–Inverse Document Frequency (TF-IDF) are calculated, Latent Semantic Indexing (LSI) was applied, and similarity matrix was generated according to cosine similarity</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-badge warning"><i class="fa fa-fire"></i>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h3 class="timeline-title">4. Collaborative Filtering (SVD++)</h3>
+                            </div>
+                            <div class="timeline-body">
+                                <strong>SVD++ is a derivative of low-rank matrix factorization technique. It further decomposes ratings to global average, user/item biases, implicit feedback, and latent features</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="timeline-badge info"><i class="fa fa-save"></i>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h3 class="timeline-title">5. Collaborative Filtering (RBM)</h3>
+                            </div>
+                            <div class="timeline-body">
+                                <strong>RBM is an unsupervised generative two-layer neural network consists of a visible and a hidden layer. Performs CF by reconstructing the user-item matrix.</strong>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="timeline-inverted">
+                        <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="timeline-heading">
+                                <h3 class="timeline-title">6. Build Recommendation Engine</h3>
+                            </div>
+                            <!--<div class="timeline-body">-->
+                                <!--<strong></strong>-->
+                            <!--</div>-->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+                    <!-- /.panel -->
+    <!--<div class="form-group">-->
+        <!--<label>Select a Beer From the Following:</label>-->
+        <!--<select class="form-control">-->
+            <!--<option>1</option>-->
+            <!--<option>2</option>-->
+            <!--<option>3</option>-->
+            <!--<option>4</option>-->
+            <!--<option>5</option>-->
+        <!--</select>-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<input name="autocomplete" type="text" id="autocomplete" class="form-control input-lg"/>-->
+    <!--</div>-->
+{% endblock %}
+

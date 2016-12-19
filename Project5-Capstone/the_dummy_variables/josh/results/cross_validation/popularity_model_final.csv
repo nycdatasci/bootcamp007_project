@@ -1,0 +1,2 @@
+Running 5 fold cv with params: {'num_songs': 500}
+Out[28]:{'mAP_mean': 0.017911323770145694, 'mAP_std': 0.0036915481820646917, 'num_songs': 500}

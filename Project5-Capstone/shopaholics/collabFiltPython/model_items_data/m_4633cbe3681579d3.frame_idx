@@ -1,0 +1,13 @@
+[sframe]
+version=0
+num_segments=0
+num_columns=3
+nrows=847
+[column_names]
+0000=ISBN
+0001=linear_terms
+0002=factors
+[column_files]
+0000=m_4633cbe3681579d3.sidx:0
+0001=m_4633cbe3681579d3.sidx:1
+0002=m_4633cbe3681579d3.sidx:2

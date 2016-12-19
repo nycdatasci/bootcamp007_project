@@ -1,0 +1,722 @@
+---
+title: "shopaholicsEDA"
+author: "Jhonasttan Regalado"
+date: "12/3/2016"
+output: html_document
+---
+
+Resources:
+https://dl.dropboxusercontent.com/u/1977573/recommendations.py
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+setwd("~/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project5-Capstone/shopaholics/BX-CSV-Dump/")
+```
+
+Load libraries
+```{r Load Libraries, echo=FALSE}
+library(tidyverse)
+library(ggmap)
+library(ggplot2)
+library(anytime)
+library(lubridate)
+library(leaflet)
+library(jsonlite)
+library(caret)
+library(stringr)
+library(plotly)
+library(VIM)
+library(mice)
+
+```
+
+Load user data into dataframe and capture geospatial locations
+```{r Load users}
+users <- read.csv("./BX-Users.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "UTF-8") 
+
+
+str(users)
+
+```
+
+Cleanup users data
+```{r users data cleanup}
+#remove bad values for integer(Age), integer(UserID) and character(Location)
+
+for (i in seq_along(users$Age)) {
+    users$Age[i] <- tryCatch(as.integer(users$Age[i]),
+                                error=function(e) NA)
+    
+    users$User.ID[i] <- tryCatch(as.integer(users$User.ID[i]),
+                                error=function(e) NA)
+    
+     users$Location[i] <- tryCatch(as.character(users$Location[i]),
+                                error=function(e) NA)
+
+}
+
+#remove '.' in column names and filter out NAs on UserID
+colnames(users) <- c("UserID", "Location", "Age")
+
+for (i in seq_along(users$Location)) {
+  loc <- str_split(users$Location[i], ",")[[1]]
+  users$city[i] <- gsub(" ", "", loc[1])
+  users$state[i] <- gsub(" ", "", loc[2])
+  users$country[i] <- gsub(" ", "", loc[3])
+}
+
+users$UserID <- as.integer(users$UserID)
+users$Age <- as.integer(users$Age)
+
+#write.csv(filter(users, !is.na(UserID)), "./usersCleaned.csv",row.names = FALSE)
+write.csv(users, "./usersCleanedWithNAs.csv",row.names = FALSE)
+
+#scrubber >> users$Age <- str_replace_all(users$Age, "&#", "")
+#wasn't required  >> users$Age <- str_replace_all(users$Age, "<f3>dzk<69>e", "")
+
+```
+
+cleaned data
+```{r}
+#cleaned data
+users <- read.csv("./usersCleanedWithNAs.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"", encoding = "UTF-8") 
+
+```
+
+
+Grouping of countries and user average age
+```{R country By avg Age}
+userAvgAgeByCityStateCtry <- filter(users, !grepl("\\W", city)) %>% group_by(city, state, country) %>% 
+  summarise(ageCount = sum(Age, rm.na = TRUE), avgAge = mean(Age, rm.na = TRUE), 
+            median = median(Age), sd = sd(Age)) 
+
+filter(userAvgAgeByCtry, !is.na(avgAge)) %>% View()
+
+userAvgAgeByCtry <- filter(users, !grepl("\\W", city)) %>% group_by(country) %>% 
+  summarise(ageCount = sum(Age, rm.na = TRUE), avgAge = mean(Age, rm.na = TRUE), 
+            median = median(Age), sd = sd(Age))
+
+filter(userAvgAgeByCtry, !is.na(avgAge)) %>% View()
+
+```
+
+Code to get geoCodes
+
+```{r loc get geocodes}
+
+locations <- users %>% group_by(Location) %>% count() %>% arrange(desc(n))
+
+userLocationGeoSpatial <- function(x) {
+  address <- geocode(location = x)
+}
+
+#get address geolocations
+#for (i in seq_along(locations$Location)) {
+for (i in seq(1501,1700)) {
+  locationGeocode <- c(0.0,0.0)
+  
+  locationGeocode <- tryCatch(
+    userLocationGeoSpatial(locations$Location[i]), 
+    error=function(e) NULL
+    )
+  
+  if (length(locationGeocode[1]) != 0) {
+  
+    locations$lon[i] <- locationGeocode[[1]]
+    locations$lat[i] <- locationGeocode[[2]]
+
+  }
+  
+  Sys.sleep(1)
+}
+
+write.csv(locations[1:1700,], file = './locations.csv')
+```
+
+Load locations with Geocodes
+```{r loc - load w geocodes}
+locationsGeoCoded <- read.csv("./locations.csv")
+
+for (i in seq_along(locationsGeoCoded$Location)) {
+  loc <- str_split(string = locationsGeoCoded$Location[i], pattern = ",")
+  locationsGeoCoded$city[i] <- loc[[1]][1]
+  locationsGeoCoded$state[i] <- loc[[1]][2]
+  locationsGeoCoded$country[i] <- loc[[1]][3]
+  
+}
+
+write.csv(locationsGeoCoded,file = "./locationsExpanded.csv")
+
+```
+
+
+View users by age groups -- User data needs cleaning (python??) prior to grouping
+
+```{r users by age groups}
+
+users %>% filter(Age > 0) %>% ggplot(aes(Age)) + geom_bar()
+```
+
+Load books
+```{r load books - clean}
+books <- read.csv("./BX-Books.csv",sep = ";", header = TRUE, stringsAsFactor=FALSE, quote="\"")
+#books <- read.csv("./BX-Books-munged.csv",sep = ";", header = TRUE)
+
+#clean books data set
+for (i in seq_along(books$ISBN)) {
+    books$ISBN[i] <- tryCatch(as.integer(books$ISBN[i]),
+                                error=function(e) NA)
+    books$Book.Title[i] <- tryCatch(as.character(books$Book.Title[i]),
+                                error=function(e) NA)
+    books$Book.Author[i] <- tryCatch(as.character(books$Book.Author[i]),
+                                error=function(e) NA)
+    books$Publisher[i] <- tryCatch(as.character(books$Publisher[i]),
+                                error=function(e) NA)
+}
+
+books$Year.Of.Publication <-  lubridate::year(anydate(books$Year.Of.Publication))
+
+colnames(books) <- c("ISBN", "BookTitle", "BookAuthor", "YearOfPublication", "Publisher",
+                     "ImageUrlSmall", "ImageUrlMedium", "ImageUrlLarge")
+write.csv(books, "./booksCleanedWithNAs.csv",row.names = FALSE)
+
+
+```
+
+Load ratings
+```{r load ratings}
+ratings <- read.csv("./BX-Book-Ratings.csv", sep = ";", header = TRUE, stringsAsFactor=FALSE)
+
+for (i in seq_along(ratings$User.ID)) {
+    ratings$User.ID[i] <- tryCatch(as.integer(ratings$User.ID[i]),
+                                error=function(e) NA)
+    ratings$Book.Rating[i] <- tryCatch(as.integer(ratings$Book.Rating[i]),
+                                error=function(e) NA)
+}
+
+colnames(ratings) <- c("UserID", "ISBN", "BookRating")
+write.csv(ratings, "./ratingsCleanedWithNAs.csv",row.names = FALSE)
+
+# 35% NA >> 176019 / 493813 = 0.3564487
+# length(is.na(ratings$BookRating))
+# [1] 493813
+# > length(ratings$BookRating[ratings$BookRating > 0])
+# [1] 176019
+# > dim(ratings[ratings$BookRating > 0,])
+# [1] 176019      3
+
+ratingsWoutZeroes  <- ratings[ratings$BookRating > 0, ]
+write.csv(ratingsWoutZeroes, "./ratingsCleanedWithoutZeroes.csv",row.names = FALSE)
+
+```
+
+Create ratings w/out alphanumeric ISBNs for ML
+```{r}
+ratingsISBNsAsInts <- ratings
+
+for (i in seq_along(ratingsISBNsAsInts$ISBN)) {
+    ratingsISBNsAsInts$ISBN[i] <- tryCatch(as.integer(ratingsISBNsAsInts$ISBN[i]),
+                                error=function(e) NA)
+}
+
+#remove NAs
+# > dim(filter(ratingsISBNsAsInts, is.na(ISBN)))
+# [1] 75498     3
+# > dim(filter(ratingsISBNsAsInts, !is.na(ISBN)))
+# [1] 418315      3
+ratingsISBNsAsInts <- filter(ratingsISBNsAsInts, !is.na(ISBN))
+ratingsISBNsAsInts$ISBN <- as.integer(ratingsISBNsAsInts$ISBN)
+#save to file
+write.csv(ratingsISBNsAsInts, "./ratingsCleanedWithISBNsAsInts.csv",row.names = FALSE)
+```
+
+
+EDA
+
+Missingness analysis
+```{r Missingness}
+aggr(users)
+
+aggr(users, plot=FALSE)
+
+ # Missings in variables:
+ # Variable Count
+ #   UserID    79
+ #      Age 55697
+ #    state    48
+ #  country    55
+
+aggr(ratings)
+
+aggr(books)
+aggr(books, plot = FALSE)
+
+# Missings in variables:
+#           Variable Count
+#               ISBN 19680
+#  YearOfPublication  3549
+
+#md.pattern()
+
+```
+
+
+Summary:
+```{r books summary}
+summary(books)
+str(books)
+#books$Year.Of.Publication <- as.Date(books$Year.Of.Publication, "%Y")
+head(books)
+summary(users)
+head(users)
+summary(ratings)
+str(books)
+```
+Books - 113,679 unique ISBNs without category / subject or country of origin
+```{r}
+summary(books$Year.Of.Publication)
+ggplot(books,aes(Year.Of.Publication)) + geom_histogram()
+filter(books,Year.Of.Publication == 2050)
+filter(books,Year.Of.Publication != 2050) %>% ggplot(.,aes(Year.Of.Publication)) + geom_histogram()
+books %>% group_by(Year.Of.Publication) %>% count() %>% top_n(.,10) %>% arrange(desc(n))
+```
+
+Users
+
+
+Leafmap for visualizing locations - data was also ported to Carto >> https://jhonasttan.carto.com/builder/d2dc0256-ba5f-11e6-bfdd-0e8c56e2ffdb/embed?state=%7B%22map%22%3A%7B%22ne%22%3A%5B-75.14077784070427%2C-211.28906249999997%5D%2C%22sw%22%3A%5B82.35580019800932%2C203.203125%5D%7D%2C%22widgets%22%3A%7B%2225e9dd14-0976-4ce4-b198-6b22eca59f52%22%3A%7B%22normalized%22%3Atrue%7D%7D%7D 
+```{r leaflet}
+#set leaflet map tile
+tile_layer <- "https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhvbmFzdHRhbiIsImEiOiJFLTAzeVVZIn0.mwAAfKtGwv3rs3L61jz87A"
+
+# leaflet(data = users) %>% 
+#   addTiles(urlTemplate = tile_layer) %>% 
+#   addMarkers(popup = paste0("Station: ", leaflet_info$stationName,
+#                             "<br>Bikes: ", leaflet_info$availableBikes, " / Docks: ",
+#                             leaflet_info$availableDocks, " / Total Docks: ", leaflet_info$totalDocks)) %>%
+#   addCircles(lat = leaflet_info[1:length(input$selected),'latitude'], 
+#              lng = leaflet_info[1:length(input$selected),'longitude'],
+#              weight = leaflet_info$availableBikes, radius = leaflet_info$availableDocks / input$docksAvailable, 
+#              color =  ifelse(leaflet_info$availableBikes >= input$bikesAvailable,"green","red"),
+#              #weight = 1, radius = ((leaflet_info$availableBikes + leaflet_info$availableDocks) * 5 ), color =  "black",
+#              fillColor = "orange", fillOpacity=0.5, opacity=1) %>%
+# setView(lng = -73.976522, lat = 40.7528, zoom = input$zoom)
+
+leaflet(data = locations[1:75,c("Location","lon","lat")]) %>% 
+  addTiles(urlTemplate = tile_layer) %>% 
+  addMarkers(popup = locations$Location) # %>%
+  #setView(lng = -73.976522, lat = 40.7528, zoom = 12)
+```
+
+Ratings - how do we handle zero ratings?
+
+```{r ggplot}
+ggplot(ratings, aes(Book.Rating)) + geom_histogram()
+```
+
+Capture Book's current rating and other features from Google API (key not required) - work in progress
+Example: https://www.googleapis.com/books/v1/volumes?q=isbn:0195153448
+
+```{r GoogleAPI}
+
+#testing
+#bookUrlStart <- "https://www.googleapis.com/books/v1/volumes?q=isbn:"
+#isbn <- books$ISBN[1]
+#bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
+#bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
+
+#booksCatalogue <- data.frame()
+#googleBooksCat <- list()
+
+#Build book catalogue
+#isbn
+jasonIsbnParse <- function(bookJson){
+  title <- bookJson$items$volumeInfo$title
+  authors <- paste(unlist(bookJson$items$volumeInfo$authors), collapse = ", ") #can be more than one 
+  publishedDate <- bookJson$items$volumeInfo$publishedDate
+  publisher <- bookJson$items$volumeInfo$publisher
+  categories <- paste(unlist(bookJson$items$volumeInfo$categories), collapse = ", ")
+  pageCount <- bookJson$items$volumeInfo$pageCount
+  averageRating <- bookJson$items$volumeInfo$averageRating
+  ratingsCount <- bookJson$items$volumeInfo$ratingsCount
+  maturityRating <- bookJson$items$volumeInfo$maturityRating
+  imageThumbnail <- bookJson$items$volumeInfo$imageLinks$smallThumbnail
+  infoLink <- bookJson$items$volumeInfo$infoLink
+  textSnippet <- bookJson$items$searchInfo$textSnippet
+  
+  #create list for adding to dataframe
+  googleBooksCat <- list(isbn = isbn, title = title, authors = authors, 
+                         publishedDate = publishedDate, publisher = publisher, 
+                         categories = categories, pageCount = pageCount, 
+                         averageRating = averageRating, ratingsCount = ratingsCount,
+                         maturityRating = maturityRating, imageThumbnail = imageThumbnail, 
+                         infoLink = infoLink, textSnippet = textSnippet)
+  as.data.frame(googleBooksCat)
+}
+#add row to dataframe
+#as.data.frame(googleBooksCat)
+#booksCatalogue <- rbind(booksCatalogue, as.data.frame(googleBooksCat))
+
+isbn1k <- read.csv("./ratedISBNunique.csv",header = TRUE, stringsAsFactors = FALSE)
+
+tryCatch.W.E <- function(expr) {
+    W <- NULL
+    w.handler <- function(w){ # warning handler
+	W <<- w
+	invokeRestart("muffleWarning")
+    }
+     list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+ 				     warning = w.handler),
+ 	 warning = W)
+}
+
+booksCatalogue <- data.frame()
+googleBooksCat <- list()
+bookJsonWE <- list()
+
+# for (i in seq_along(unlist(isbn1k))) {
+#     isbn <- isbn1k[[1]][i]
+#   bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn)
+#   
+#   bookJson <- list()
+#   bookJsonWE[i] <- tryCatch.W.E(bookJson <- fromJSON(paste(readLines(bookUrl), collapse="")))
+#   
+#   if (length(bookJson) > 0) {
+#     booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson))
+#   }
+#   Sys.sleep(1/2)
+# }
+
+#for (i in seq_along(unlist(isbn1k))) {
+for (i in c(75183:85000)) {
+    isbn <- isbn1k[[1]][i]
+  bookUrl <- paste0("https://www.googleapis.com/books/v1/volumes?q=isbn:", isbn, "&key=AIzaSyA4QM4037gM47V23b7vb-6WHAceBzkOgv4")
+  
+  bookJson <- list()
+  bookJson <- fromJSON(paste(readLines(bookUrl), collapse=""))
+  
+  if (length(bookJson) > 2) {
+    #bookJsonWE[i] <- tryCatch.W.E( booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson)) )
+    tryCatch.W.E( booksCatalogue <- rbind(booksCatalogue, jasonIsbnParse(bookJson)) )
+  }
+  Sys.sleep(1/2)
+  if (i %in% c(95000, 115000, 135,000, 149842)) {
+    write.csv(booksCatalogue, file = "./googleBooksLookup2.csv", append = TRUE)
+    booksCatalogue <- data.frame()
+    
+  }
+}
+#convert the column publishedDates to dates
+booksCatalogue$publishedDate <- anydate(booksCatalogue$publishedDate)
+```
+
+EDA on google books review
+```{r google EDA}
+#Load file
+GoogleBooksCatalogue <- read.csv("./googleBooksLookup.csv")
+
+#Dates histogram
+ggplot(booksCatalogue, aes(publishedDate)) + geom_histogram()
+summary(booksCatalogue$publishedDate)
+
+#Avg rating histogram
+ggplot(booksCatalogue, aes(averageRating)) %>% + geom_histogram()
+ggplot(booksCatalogue, aes(ratingsCount, averageRating)) %>% + geom_point()
+
+#Avg rating vs Rating count
+ggplot(booksCatalogue, aes(ratingsCount, averageRating)) + geom_smooth(se = FALSE)
+
+summary(booksCatalogue$averageRating)
+summary(booksCatalogue$ratingsCount)
+
+#Avg rating vs page count
+ggplot(booksCatalogue, aes(ratingsCount, pageCount)) + geom_smooth(se = FALSE)
+ggplot(booksCatalogue, aes(ratingsCount, pageCount)) + geom_point()
+p1 <- ggplot(booksCatalogue, aes(pageCount, ratingsCount)) + geom_point(aes(color = categories)) + theme(legend.position = "top")
+ggplotly(p1)
+
+
+booksCatalogue$labels = str_wrap(booksCatalogue$categories, width = 10)
+Categories = factor(booksCatalogue$labels)
+l = levels(Categories)
+
+ggplot(booksCatalogue, aes(pageCount, ratingsCount)) + geom_point(aes(color = Categories)) #+ theme(legend.position = "top")
+
+ggplot(booksCatalogue, aes(pageCount, averageRating)) + geom_point(aes(color = Categories)) #+ guides(fill=guide_legend(nrow=1,byrow=TRUE,legend.position="top"))
+
+ggplot(booksCatalogue, aes(averageRating, ratingsCount)) + geom_point(aes(color = Categories))
+
+#what are genres and page counts for highly rated books?
+```
+
+
+Predict Ratings Model
+```{r Modeling}
+set.seed(0)
+#divide data into half via sampling to test prediction models
+subsetRatingsIndex <- createDataPartition(ratings$User.ID, list=FALSE)
+subsetRatings <- ratings[subsetRatingsIndex, ]
+
+tIndex <- createDataPartition(subsetRatings$User.ID, list = FALSE, p=0.7)
+
+train_ratings <- subsetRatings[tIndex,]
+test_ratings <- subsetRatings[-tIndex,]
+lmRatings <- lm(Book.Rating ~ ., data = train_ratings)
+
+
+```
+
+R Item-Item Collaborative Filtering Engine
+Source: https://www.analyticsvidhya.com/blog/2016/03/exploring-building-banks-recommendation-system/
+```{r}
+#load libraries
+library(plyr)
+library(arules)
+#library(readr)
+
+#load data
+#This file has two columns inidividual_merchant and inidividual_customer
+input <- read.csv("../Ritem-itemCollabFilterEngine/data.csv")
+
+#Get the list of merchants/items
+merchant <- unique(input$individual_merchant)
+merchant <- merchant[order(merchant)]
+target_merchants <- merchant
+sno <- 1:length(target_merchants)
+merchant_ident <- cbind(target_merchants,sno)
+
+#Create a reference mapper for all merchant
+colnames(merchant_ident) <- c("individual_merchant","sno")
+
+# Create a correlation matrix for these merchants
+correlation_mat = matrix(0,length(merchant),length(target_merchants))
+correlation_mat = as.data.frame(correlation_mat)
+trans = read.transactions("../Ritem-itemCollabFilterEngine/data.csv", format = "single", sep = ",", cols =
+c("inidividual_customer", "individual_merchant"))
+c <- crossTable(trans)
+rowitem <- rownames(c)
+columnitem <- colnames(c)
+correlation_mat <- c[order(as.numeric(rowitem)),order(as.numeric(columnitem))]
+for(i in 1:9822) {
+        correlation_mat[i,] <- correlation_mat[i,]/correlation_mat[i,i]
+}
+colnames(correlation_mat) <- target_merchants
+rownames(correlation_mat) <- merchant
+
+# Now let's start recommending for individual customer
+possible_slots <- 20
+avail <- 21
+merch_rec <- matrix(0, nrow = length(target_customers), ncol = avail)
+merch_rec[,1] <- unique(input3$Cust_map)
+ correlation_mat <- as.matrix(correlation_mat)
+ position <- 1
+for (i in 1:length(target_customers)) {
+   been_thr <- input[position : (position + customer_merch_ct[i] - 1),'individual_merchant']
+   merging <- as.data.frame(merchant_ident[merchant_ident[,'individual_merchant'] %in%          been_thr,])
+   corel_subset <- correlation_mat[merging$sno,] 
+   will_go <- colSums(corel_subset) 
+   will_go_merch <- target_merchants[order(-will_go)]
+   not_been_there <- will_go_merch[!will_go_merch %in% been_thr]
+   will_go_propensity <- will_go[order(-will_go)][!will_go_merch %in% been_thr]
+   merch_rec[i,2:avail] <- not_been_there[1:possible_slots] 
+   position <- position + customer_merch_ct[i] 
+}
+```
+
+Collaborative: user-item
+
+https://en.wikipedia.org/wiki/Cosine_similarity
+
+```{r}
+path = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project5-Capstone/shopaholics/Ritem-itemCollabFilterEngine/movie_rating.csv"
+
+library(lsa)
+library(reshape2)
+library(data.table)
+library(dplyr)
+
+#data loading
+ratings = read.csv(path)
+
+#data processing and formatting
+movie_ratings = as.data.frame(acast(ratings, title~critic, value.var="rating"))
+
+#similarity calculation
+sim_users = cor(movie_ratings[,1:6],use="complete.obs")
+
+#sim_users[colnames(sim_users) == 'Toby']
+sim_users[,6]
+
+#predicting the unknown values
+
+#seperating the non rated movies of Toby
+rating_critic  = setDT(movie_ratings[colnames(movie_ratings)[6]],keep.rownames = TRUE)[]
+names(rating_critic) = c('title','rating')
+titles_na_critic = rating_critic$title[is.na(rating_critic$rating)]
+ratings_t =ratings[ratings$title %in% titles_na_critic,]
+#add similarity values for each user as new variable
+x = (setDT(data.frame(sim_users[,6]),keep.rownames = TRUE)[])
+names(x) = c('critic','similarity')
+ratings_t =  merge(x = ratings_t, y = x, by = "critic", all.x = TRUE)
+#mutiply rating with similarity values
+ratings_t$sim_rating = ratings_t$rating*ratings_t$similarity
+#predicting the non rated titles
+result = ratings_t %>% group_by(title) %>% summarise(sum(sim_rating)/sum(similarity))
+
+dist(movie_ratings[,1:6])
+
+```
+
+item-item redo
+
+```{r}
+#data input
+# ratings = read.csv("~Rating Matrix.csv")
+
+path = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project5-Capstone/shopaholics/Ritem-itemCollabFilterEngine/movie_rating.csv"
+
+library(lsa)
+library(reshape2)
+library(data.table)
+library(dplyr)
+
+#data loading
+ratings_file = read.csv(path)
+
+ratings = as.data.frame(acast(ratings_file, critic~title, value.var="rating"))
+
+#"step 1: item-similarity calculation\nco-rated items are considered and similarity between two items\nare calculated using cosine similarity"
+
+library(lsa) # needed for cosine function
+# x = ratings[,2:7]
+x = ratings
+x[is.na(x)] = 0
+item_sim = cosine(as.matrix(x))
+  
+#"Recommending items for Toby: since three movies are not rated\nas a first step we have to predict rating value for each movie\nin Toby case we have to first predict values for Just..., Lady..., The..."
+
+ rec_itm_for_user = function(userno)
+ {
+   #extract all the movies not rated by Toby
+    
+   userRatings = ratings[userno,]
+   #userRatings = ratings[6,]
+   non_rated_movies = list()
+   rated_movies = list()
+   for(i in 1:ncol(userRatings)){
+     if(is.na(userRatings[,i]))
+     {
+       non_rated_movies = c(non_rated_movies,colnames(userRatings)[i])
+     }
+     else
+     {
+       rated_movies = c(rated_movies,colnames(userRatings)[i])
+     }
+   }
+   non_rated_movies = unlist(non_rated_movies)
+   rated_movies = unlist(rated_movies)
+   #create weighted similarity for all the rated movies by CHAN
+   non_rated_pred_score = list()
+   for(j in 1:length(non_rated_movies)){
+     temp_sum = 0
+     df = item_sim[which(rownames(item_sim)==non_rated_movies[j]),]
+     for(i in 1:length(rated_movies)){
+       temp_sum = temp_sum+ df[which(names(df)==rated_movies[i])]
+        }
+     weight_mat = df*ratings[userno,]
+     non_rated_pred_score = c(non_rated_pred_score,rowSums(weight_mat,na.rm=T)/temp_sum)
+     }
+   pred_rat_mat = as.data.frame(non_rated_pred_score)
+   names(pred_rat_mat) = non_rated_movies
+   for(k in 1:ncol(pred_rat_mat)){
+     ratings[userno,][which(names(ratings[userno,]) == names(pred_rat_mat)[k])] = pred_rat_mat[1,k]
+   }
+   return(ratings[userno,])
+ }
+ 
+ itemRatings <- rec_itm_for_user(6)
+ 
+ sort(itemRatings[,], decreasing = TRUE)
+```
+
+item-item using ratings
+http://www.dataperspective.info/2015/11/item-based-collaborative-filtering-in-r.html
+```{r CF item-item using ratings}
+#data input
+# ratings = read.csv("~Rating Matrix.csv")
+
+path = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/githubcrush/bootcamp007_project/Project5-Capstone/shopaholics/BX-CSV-Dump/ratingsCleanedWithNAs.csv"
+
+path = "/Users/jhonasttanregalado/Documents/DataScience/bootcamp7/week11/pyspark_lec_2/ml-100k/u.data"
+
+
+library(lsa)
+library(reshape2)
+library(data.table)
+library(dplyr)
+
+#data loading
+ratings_file = read.table(path)
+ratings_file = ratings_file[,c(1:3)]
+colnames(ratings_file) <- c("userID", "itemID", "rating")
+
+train = sample(1:nrow(ratings_file), 0.2*nrow(ratings_file)/10)
+
+ratings = as.data.frame(acast(ratings_file[train, ], userID~itemID, value.var="rating"))
+
+
+
+#"step 1: item-similarity calculation\nco-rated items are considered and similarity between two items\nare calculated using cosine similarity"
+
+library(lsa) # needed for cosine function
+# x = ratings[,2:7]
+x = ratings
+x[is.na(x)] = 0
+item_sim = cosine(as.matrix(x))
+  
+#"Recommending items for Toby: since three movies are not rated\nas a first step we have to predict rating value for each movie\nin Toby case we have to first predict values for Just..., Lady..., The..."
+
+ rec_itm_for_user = function(userno)
+ {
+   #extract all the movies not rated by Toby
+    
+   userRatings = ratings[userno,]
+   #userRatings = ratings[6,]
+   non_rated_movies = list()
+   rated_movies = list()
+   for(i in 1:ncol(userRatings)){
+     if(is.na(userRatings[,i]))
+     {
+       non_rated_movies = c(non_rated_movies,colnames(userRatings)[i])
+     }
+     else
+     {
+       rated_movies = c(rated_movies,colnames(userRatings)[i])
+     }
+   }
+   non_rated_movies = unlist(non_rated_movies)
+   rated_movies = unlist(rated_movies)
+   #create weighted similarity for all the rated movies by CHAN
+   non_rated_pred_score = list()
+   for(j in 1:length(non_rated_movies)){
+     temp_sum = 0
+     df = item_sim[which(rownames(item_sim)==non_rated_movies[j]),]
+     for(i in 1:length(rated_movies)){
+       temp_sum = temp_sum+ df[which(names(df)==rated_movies[i])]
+        }
+     weight_mat = df*ratings[userno,]
+     non_rated_pred_score = c(non_rated_pred_score,rowSums(weight_mat,na.rm=T)/temp_sum)
+     }
+   pred_rat_mat = as.data.frame(non_rated_pred_score)
+   names(pred_rat_mat) = non_rated_movies
+   for(k in 1:ncol(pred_rat_mat)){
+     ratings[userno,][which(names(ratings[userno,]) == names(pred_rat_mat)[k])] = pred_rat_mat[1,k]
+   }
+   return(ratings[userno,])
+ }
+ 
+ itemRatings <- rec_itm_for_user(200)
+ 
+ ans <- sort(itemRatings[,], decreasing = TRUE)
+
+```

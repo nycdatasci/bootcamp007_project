@@ -26,7 +26,7 @@ dashboardPage(
     sidebarMenu(id = "sideBarMenu",
                 menuItem("Lists", tabName = "Lists", icon = icon("gamepad")),
                 menuItem("Game Search", tabName = "Search", icon = icon("search")),
-                menuItem("Processing", tabName = "Processing", icon = icon("list-ol")),
+                # menuItem("Processing", tabName = "Processing", icon = icon("list-ol")),
                 menuItem("About", tabName = "AboutMe", icon = icon("user"))
     )# end of sidebarMenu
   ),#end of dashboardSidebar

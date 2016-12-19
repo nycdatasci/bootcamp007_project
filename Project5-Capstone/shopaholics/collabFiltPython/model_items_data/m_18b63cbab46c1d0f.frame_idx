@@ -1,0 +1,15 @@
+[sframe]
+version=0
+num_segments=0
+num_columns=4
+nrows=2651
+[column_names]
+0000=feature
+0001=index
+0002=linear_terms
+0003=factors
+[column_files]
+0000=m_18b63cbab46c1d0f.sidx:0
+0001=m_18b63cbab46c1d0f.sidx:1
+0002=m_18b63cbab46c1d0f.sidx:2
+0003=m_18b63cbab46c1d0f.sidx:3
