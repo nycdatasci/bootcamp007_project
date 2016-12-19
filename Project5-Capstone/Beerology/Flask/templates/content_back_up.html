@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="page-header">What Beer to See?</h1>
+    <div class="form-group">
+
+    </div>
+
+    <form method="POST" action="">
+        <input list="beers" name="beer_inp">
+            <datalist id="beers">
+                <option>Yazoo Embrace the Funk Series: Deux Rouges</option>
+                <option>Yazoo Fortuitous</option>
+                <option>Iron Hill Bourbon Porter</option>
+                <option>Big Island Red Giant Ale</option>
+                <option>Big Sky Biere de Noel</option>
+            </datalist>
+        <input type="submit">
+    </form>
+    <!--<form method="POST" action="">-->
+
+        <!--<input type="submit">-->
+    <!--</form>-->
+
+    {% if cb_rec %}
+        {% for rec in cb_rec %}
+            <h4>{{ rec }}</h4>
+        {% endfor %}
+    {% endif %}
+    <!--<script>-->
+
+    <!--</script>-->
+{% endblock %}s
