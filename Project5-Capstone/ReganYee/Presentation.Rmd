@@ -1,0 +1,143 @@
+---
+title: "What Are Those?"
+subtitle: "Sneaker Classification using kNN and Neural Networks"
+author: "Regan Yee"
+output: ioslides_presentation
+fig_caption: yes
+css: styles.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(stringr)
+library(DT)
+library(knitr)
+library("htmlTable")
+
+x=readRDS('final_df.RDS')
+```
+
+## Agenda
+1. Introduction
+2. Methodology
+3. EDA
+4. Models
+5. Results
+6. Conclusion and Retrospective
+
+## Intro
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Methodology
+
+## EDA - Brand Distribution
+
+<iframe src="./DT.html">
+</iframe>
+
+## EDA - Average Shoe
+<center>
+<p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/greyscaleAverageShoe.png?raw=true"alt="mycaption" height="150px" /><p class="caption"><font size="2"><center>Average Shoes - Greyscale(Adidas, Jordans, New Balance, Nike)</center></font></p></p>
+</center>
+
+<center>
+<p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/averageShoeColor.png?raw=true"alt="mycaption" height="150px" /><p class="caption"><font size="2"><center>Average Shoes - RGB included (Adidas, Jordans, New Balance, Nike)</center></font></p></p>
+</center>
+
+
+## PCA - Scree Plots
+<center><table>
+<tr><td>
+<p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/pca/100PCAScree.png?raw=true" alt="mycaption" height="350px" width="350px" /><p class="caption"><font size="3"><center>Explained Variance: 86%</center></font></p></p>
+</td><td>
+<p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/pca/10PCAScree.png?raw=true" alt="mycaption" height="350px" width="350px" /><p class="caption"><font size="3"><center>Explained Variance: 63%</center></font></p></p>
+</td></tr>
+</table></center>
+
+
+
+## PCA - Components
+
+<center>
+<p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/pca/colorPCA.png?raw=true" alt="mycaption" height="300px" width="650px" /><p class="caption">First 10 Principal Components with Color</p></p>
+</center>
+
+<center>
+64*64*3 features x 6000 images => 10 PC x 6000 images
+</center>
+
+
+## PCA - Components (Greyscale)
+
+<center>
+<p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/pca/greyscalePCA.png?raw=true" alt="mycaption" height="300px" width="650px" /><p class="caption">PCA on Greyscale Shoes</p></p>
+</center>
+
+## Modeling: kNN - PCA (Pixels)
+
+```{r }
+htmlTable(c("kNN with 10 PC (pixels)", "56.3% Validation Accuracy", "51.1% Test Accuracy"))
+```
+
+<center><table>
+<tr><td>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/cm_KNN_PCA_val.png?raw=true" alt="mycaption" height="350px" width="350" />
+</td>
+<td>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/cm_KNN_PCA_test.png?raw=true" alt="mycaption" height="350px" width="350" />
+</td></tr>
+</center></table>
+
+<p><font size="2">KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+           metric_params=None, n_jobs=-1, n_neighbors=78.0, p=2,
+           weights='distance')</font></p>
+
+## Modeling: kNN - PCA (Colors)
+```{r }
+htmlTable(c("kNN with 10 PC (colors)", "49.5% Validation Accuracy", "30.2% Test Accuracy"))
+```
+
+<center><table>
+<tr><td>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/cm_KNN_colorHist_val.png?raw=true" alt="mycaption" height="350px" width="350" />
+</td>
+<td>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/cm_KNN_colorHist_test.png?raw=true" alt="mycaption" height="350px" width="350" />
+</td></tr>
+</center></table>
+
+<p><font size="2">KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+           metric_params=None, n_jobs=-1, n_neighbors=78.0, p=2,
+           weights='distance')</font></p>
+
+## The Right Tool For The Job: CNN
+<center>Convolution Neural Networks</center>
+<img src="http://deeplearning.net/tutorial/_images/mylenet.png">
+
+## Issue: Low Volume of Data
+<font size="3">
+datagen = ImageDataGenerator(
+        rotation_range=40,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True,
+        fill_mode='nearest')
+</font>
+<center>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/generator.png?raw=true">
+</center>
+
+
+
+## Results
+
+```{r }
+  htmlTable(c("CNN with 3 Convolution Layers", "80.05% Validation Accuracy", "59.09% Test Accuracy"))
+```
+
