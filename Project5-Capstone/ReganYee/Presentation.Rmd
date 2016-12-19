@@ -24,7 +24,6 @@ x=readRDS('final_df.RDS')
 3. EDA and Preprocessing
 4. Models
 5. Results
-6. Conclusion and Retrospective
 
 ## Introduction
 
@@ -49,6 +48,10 @@ You walk into a shoe store later on, but it's huge and you have no idea where to
 <img src = "http://neooc.com/wp-content/uploads/2015/11/running-shoe-store.jpg" height="300px"" />
 </center>
 
+## Methodology
+<center>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/Dataflow.png?raw=true">
+</center>
 
 ## EDA - Brand Distribution
 
@@ -63,7 +66,6 @@ You walk into a shoe store later on, but it's huge and you have no idea where to
 <center>
 <p><img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/averageShoeColor.png?raw=true"alt="mycaption" height="150px" /><p class="caption"><font size="2"><center>Average Shoes - RGB included (Adidas, Jordans, New Balance, Nike)</center></font></p></p>
 </center>
-
 
 ## PCA - Scree Plots
 <center><table>
