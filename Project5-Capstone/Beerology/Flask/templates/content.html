@@ -1,0 +1,160 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1 class="page-header">Wanna try some new beers that fit your taste?</h1>
+    <!--<div class="form-group">-->
+    <!--</div>-->
+    <div class="col-lg-12">
+        <form method="POST" action="">
+            <label>Type in your favorite beer:</label>
+            <input list="beers" name="beer_inp">
+                <datalist id="beers">
+                    {% for beer in beerlist %}
+                    <option>{{ beer }}</option>
+                    {% endfor %}
+                </datalist>
+            <input type="submit">
+        </form>
+    </div>
+    <!--<form method="POST" action="">-->
+
+        <!--<input type="submit">-->
+    <!--</form>-->
+    <div class="col-lg-12">
+        <!--<div class="panel panel-default">-->
+            <!--<div class="panel-heading">-->
+                <!--<h4 class="panel-title">-->
+                    <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Key words of this beer:</a>-->
+                <!--</h4>-->
+            <!--</div>-->
+            <!--<div id="collapseOne" class="panel-collapse collapse in">-->
+                <!--<div class="panel-body">-->
+                    <!--{{ key_words }}-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <b>Key words of this beer:</b>
+            </div>
+            <div class="panel-body">
+                <p>{{ key_words }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Our Recommendations:</b>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th><i>#</i></th>
+                            <th><i>Beer Name</i></th>
+                            <th><i>Average User Rating</i></th>
+                            <th><i>Average Overall Rating</i></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="success">
+                            <td>1</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[0]}}</td>
+                            <td>{{table_list[0][0]}}</td>
+                            <td>{{table_list[0][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="info">
+                            <td>2</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[1]}}</td>
+                            <td>{{table_list[1][0]}}</td>
+                            <td>{{table_list[1][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="warning">
+                            <td>3</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[2]}}</td>
+                            <td>{{table_list[2][0]}}</td>
+                            <td>{{table_list[2][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="danger">
+                            <td>4</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[3]}}</td>
+                            <td>{{table_list[3][0]}}</td>
+                            <td>{{table_list[3][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="success">
+                            <td>5</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[4]}}</td>
+                            <td>{{table_list[4][0]}}</td>
+                            <td>{{table_list[4][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="info">
+                            <td>6</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[5]}}</td>
+                            <td>{{table_list[5][0]}}</td>
+                            <td>{{table_list[5][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="warning">
+                            <td>7</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[6]}}</td>
+                            <td>{{table_list[6][0]}}</td>
+                            <td>{{table_list[6][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="danger">
+                            <td>8</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[7]}}</td>
+                            <td>{{table_list[7][0]}}</td>
+                            <td>{{table_list[7][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="success">
+                            <td>9</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[8]}}</td>
+                            <td>{{table_list[8][0]}}</td>
+                            <td>{{table_list[8][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        <tr class="info">
+                            <td>10</td>
+                            {% if cb_rec %}
+                            <td>{{cb_rec[9]}}</td>
+                            <td>{{table_list[9][0]}}</td>
+                            <td>{{table_list[9][1]}}</td>
+                            {% endif %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!--{% if cb_rec %}-->
+        <!--{% for rec in cb_rec %}-->
+            <!--<h4>{{ rec }}</h4>-->
+        <!--{% endfor %}-->
+    <!--{% endif %}-->
+    <!--<script>-->
+
+    <!--</script>-->
+{% endblock %}s
