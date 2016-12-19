@@ -1,5 +1,5 @@
 # Capstone
-for capstone project
+NYCDSA Bootcamp 7 Final Project  
 
 ### Web Scraping
 Folder Ratebeer contains code for web scraping using Scrapy. Folder Scraped_Review Data contains the data scraped.
