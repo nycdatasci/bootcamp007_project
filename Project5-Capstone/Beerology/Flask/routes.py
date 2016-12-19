@@ -57,21 +57,27 @@ def collab():
 
     if request.method == "POST":
         inp_tup = []
-        for i in range(1, 6):
+        for i in range(1, 11):
             beer_inp_key = "beer_inp" + str(i)
             rating_inp_key = "rating_inp" + str(i)
-            inp_tup.append((request.form[beer_inp_key], request.form[rating_inp_key]))
+            if request.form[beer_inp_key] and request.form[rating_inp_key]:
+                inp_tup.append((request.form[beer_inp_key], request.form[rating_inp_key]))
+        # for i in range(1, 6):
+        #     beer_inp_key = "beer_inp" + str(i)
+        #     rating_inp_key = "rating_inp" + str(i)
+        #     inp_tup.append((request.form[beer_inp_key], request.form[rating_inp_key]))
 
 
-        print inp_tup
+        # print inp_tup
+        if inp_tup == []:
+            return render_template("collab.html")
+        else:
+            user_data = CF_user_preprocess(inp_tup, ratings_mat, beer_dict)
+            # print user_data
+            cf_rec = CF_rec(user_data, ratings_mat, global_avg, beer_dict)
+            # print cf_rec
 
-        user_data = CF_user_preprocess(inp_tup, ratings_mat, beer_dict)
-        print user_data
-
-        cf_rec = CF_rec(user_data, ratings_mat, global_avg, beer_dict)
-        # print cf_rec
-
-        return render_template("collab.html", cf_rec=cf_rec)
+            return render_template("collab.html", cf_rec=cf_rec)
 
     else:
         return render_template("collab.html")
