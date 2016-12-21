@@ -98,7 +98,7 @@ You walk into a shoe store later on, but it's huge and you have no idea where to
 ## Modeling: kNN - PCA (Pixels)
 
 ```{r }
-htmlTable(c("kNN with 10 PC (pixels)", "56.3% Validation Accuracy", "51.1% Test Accuracy"))
+htmlTable(c("kNN with 10 PC (pixels)", "56.3% Validation Accuracy", "44.6% Test Accuracy"))
 ```
 
 <center><table>
