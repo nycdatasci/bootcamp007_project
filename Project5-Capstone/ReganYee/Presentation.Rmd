@@ -116,7 +116,7 @@ htmlTable(c("kNN with 10 PC (pixels)", "56.3% Validation Accuracy", "44.6% Test 
 
 ## Modeling: kNN - PCA (Colors)
 ```{r }
-htmlTable(c("kNN with 10 PC (colors)", "49.5% Validation Accuracy", "30.2% Test Accuracy"))
+htmlTable(c("kNN with 10 PC (colors)", "49.5% Validation Accuracy", "35.02% Test Accuracy"))
 ```
 
 <center><table>
@@ -163,5 +163,28 @@ log loss: 0.53
 
 <img src ="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/results.png?raw=true">
 
+## Results
+
+<center><table>
+<tr><td>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/cm_NN_val.png?raw=true" alt="mycaption" height="350px" width="350" />
+</td>
+<td>
+<img src="https://github.com/nycdatasci/bootcamp007_project/blob/master/Project5-Capstone/ReganYee/media/cm_NN_test.png?raw=true" alt="mycaption" height="350px" width="350" />
+</td></tr>
+</center></table>
+
+## Demo
+
+## Next Steps
+- Retry Transfer Training using AWS
+
+<img src= "http://i.imgur.com/i94gazj.png" width="750px"/>
+
+- Make a front end app with drag and drop file functionality to predict on images
+- Expand on the number of brands trained
+- Train on actual brand logos instead of shoe images
+
+## Thanks for listening!
 
 
