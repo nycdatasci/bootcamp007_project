@@ -241,10 +241,6 @@ forwardAIC = step(model.empty, scope, direction = "forward", k = 2)
 model.overall = eval(forwardAIC$call)
 library(car)
 influencePlot(model.overall)
-
 vif(model.overall)
 avPlots(model.overall)
-
-
-
 stopCluster(cl)
