@@ -8,7 +8,7 @@ import json
 from requests.exceptions import ConnectionError
 import time
 
-API_KEY = '4d06ec18e733fb14ab895aeb6b5631b7f5655ef3'
+API_KEY = ''
 URL_PATTERN = re.compile('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
 
 
