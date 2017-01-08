@@ -22,6 +22,22 @@ GLOBAL = {
         'spotify:track:2vUrdHYVlmAKnMySapQ33a','spotify:track:25SQI7rcz4fcSJpQg5Ut8J'],
     'choice': ['energy']
     }
+PLAYLIST = {
+    'list1': [],
+    'list2': [],
+    'list3': [],
+    'list4': [],
+    'list5': [],
+    'list6': []    
+}
+USER = {
+    'user_1': [],
+    'user_2': [],
+    'user_3': [],
+    'user_4': [],
+    'user_5': [],
+    'user_6': []
+}
 
 app = Flask(__name__)
 
@@ -103,56 +119,7 @@ def player():
     data = json.dumps({'uris': GLOBAL['tracklist']})
     playlists_songs = requests.put(playlist_api_endpoint, data, headers=GLOBAL['authorization_header'])
     return render_template("player.html")
-# @app.route("/orpheus/putplaylist")
-# def putplaylist():
 
-#     playlist_api_endpoint = "https://api.spotify.com/v1/users/1217498016/playlists/3Fafmpj0dxo6SIF3w8wVNR/tracks"
-#     playlists_songs = requests.get(playlist_api_endpoint, headers=GLOBAL['authorization_header'])
-#     songlist = json.loads(playlists_songs.text)['items']
-#     a= []
-#     for i in range(0,len(songlist)):
-#         a.append(str(songlist[i]['track']['uri']))
-#     data = json.dumps({'uris': ['spotify:track:4XEvl1bOlgslzaoAswDIhd', 'spotify:track:2VGDntFPvgvqSiUf9ITEfW',
-#         'spotify:track:7y9hUAgvdzIJ5N9EVWhv9K','spotify:track:4IUgpL0CgSiloUOHzgd6Qe','spotify:track:0hc4STPqTy1rKPBzqO4E1C',
-#         'spotify:track:6QLp8WLQlkqSd9l5fEt36R','spotify:track:1NnUbdEvJigY0ARnoOgDrv','spotify:track:7rHeXPJmrbLO0XVObG2sxQ',
-#         'spotify:track:3AwQuK6FuzeAntfNLJPJNL','spotify:track:11eSOZQj0od3y6DQHGloSW','spotify:track:4EBisBBehGON4ESJsNZBsP',
-#         'spotify:track:0wtGX0STSRlx0klE2XC6BZ','spotify:track:0IDwsKEghAlHaX6JUWzJr7','spotify:track:6YF8iK4PDoaRmRFYzWmo7Y',
-#         'spotify:track:2vUrdHYVlmAKnMySapQ33a','spotify:track:25SQI7rcz4fcSJpQg5Ut8J']})
-#     playlists_songs = requests.put(playlist_api_endpoint, data, headers=GLOBAL['authorization_header'])
-
-    # tracklist = ['spotify:track:4XEvl1bOlgslzaoAswDIhd', 'spotify:track:2VGDntFPvgvqSiUf9ITEfW',
-    #     'spotify:track:7y9hUAgvdzIJ5N9EVWhv9K','spotify:track:4IUgpL0CgSiloUOHzgd6Qe','spotify:track:0hc4STPqTy1rKPBzqO4E1C',
-    #     'spotify:track:6QLp8WLQlkqSd9l5fEt36R','spotify:track:1NnUbdEvJigY0ARnoOgDrv','spotify:track:7rHeXPJmrbLO0XVObG2sxQ',
-    #     'spotify:track:3AwQuK6FuzeAntfNLJPJNL','spotify:track:11eSOZQj0od3y6DQHGloSW','spotify:track:4EBisBBehGON4ESJsNZBsP',
-    #     'spotify:track:0wtGX0STSRlx0klE2XC6BZ','spotify:track:0IDwsKEghAlHaX6JUWzJr7','spotify:track:6YF8iK4PDoaRmRFYzWmo7Y',
-    #     'spotify:track:2vUrdHYVlmAKnMySapQ33a','spotify:track:25SQI7rcz4fcSJpQg5Ut8J']
-    # idlist = [x[14:] for x in GLOBAL['tracklist']]
-
-    # attributes= {
-    #     'uri':[],
-    #     'energy':[],
-    #     'liveness':[],
-    #     'tempo':[],
-    #     'key':[],
-    #     'valence':[]
-    # }
-
-
-    # features = requests.get("https://api.spotify.com/v1/audio-features/?ids="+ ",".join(idlist) ,headers = GLOBAL['authorization_header'])    
-    # featurelist = json.loads(features.text)['audio_features']
-    # for i in range(0,len(featurelist)):
-    #     attributes['uri'].append(str(featurelist[i]['uri']))
-    #     attributes['energy'].append(str(featurelist[i]['energy']))
-    #     attributes['liveness'].append(str(featurelist[i]['liveness']))
-    #     attributes['tempo'].append(str(featurelist[i]['tempo']))
-    #     attributes['key'].append(str(featurelist[i]['key']))
-    #     attributes['valence'].append(str(featurelist[i]['valence']))
-
-    # df_att = pd.DataFrame.from_dict(attributes)
-    # b = df_att.sort('valence')
-
-
-    # return render_template("sample.html", samplelist = list(b.uri))
 @app.route("/orpheus/energy")
 def energychoice():
     GLOBAL['choice'][0] = 'energy'
@@ -235,6 +202,22 @@ def downfeatplay():
     playlist_api_endpoint = "https://api.spotify.com/v1/users/1217498016/playlists/3Fafmpj0dxo6SIF3w8wVNR/tracks"
     playlists_songs = requests.put(playlist_api_endpoint, data, headers=GLOBAL['authorization_header'])   
     return render_template("player.html")
+"""
+@app.route('/orpheus/user1', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+        PLAYLIST['list1'] = []
+        username = request.form['Username']
+        playlists = requests.get("https://api.spotify.com/v1/users/{}/playlists".format(username),headers = GLOBAL['authorization_header'])
+        textplaylists = json.loads(playlists.text)['items']
+        for i in range(0,len(textplaylists)):
+            PLAYLIST['list1'].append(str(textplaylists[i]['id']))
+        return render_template("playlists.html", user1playlist = PLAYLIST['list1'])
+
+"""
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
