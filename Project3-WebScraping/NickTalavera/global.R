@@ -47,6 +47,7 @@ if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Co
 }
 markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
 xboxData = as.data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE, drop = c("V1")))
+print(xboxData)
 xboxData$gameName = as.character(xboxData$gameName)
 xboxData$releaseDate = as.numeric(xboxData$releaseDate)
 for (i in 1:length(names(xboxData))) {

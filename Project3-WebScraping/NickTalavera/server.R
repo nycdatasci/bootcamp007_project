@@ -11,31 +11,7 @@ shinyServer(function(input, output, session) {
   observe({
     # Re-execute this reactive expression after 1000 milliseconds
     invalidateLater(1000*60*30, session)
-    
-    if (dir.exists('/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/')) {
-      dataLocale = '/home/bc7_ntalavera/Dropbox/Data Science/Data Files/Xbox Back Compat Data/'
-    } else if (dir.exists('/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data/')) {
-      dataLocale = '/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data/'
-      # setwd('/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data')
-    }  else if (dir.exists('/home/bc7_ntalavera/Data/Xbox/')) {
-      dataLocale = '/home/bc7_ntalavera/Data/Xbox/'
-    }
-    markdownFolder = paste0(dataLocale,'MarkdownOutputs/')
-    xboxData = as.data.frame(fread(paste0(dataLocale,'dataWPrediction.csv'), stringsAsFactors = TRUE))
-    xboxData$gameName = as.character(xboxData$gameName)
-    xboxData$releaseDate = as.numeric(xboxData$releaseDate)
-    for (i in 1:length(names(xboxData))) {
-      if (sum(xboxData[,names(xboxData)[i]] == TRUE, na.rm = TRUE) + sum(xboxData[,names(xboxData)[i]] == FALSE, na.rm = TRUE) + sum(is.na(xboxData[,names(xboxData)[i]])) == nrow(xboxData)) {
-        xboxData[,names(xboxData)[i]] = as.logical(xboxData[,names(xboxData)[i]])
-      }
-    }
-    
-    # Do something each time this is invalidated.
-    # The isolate() makes this observer _not_ get invalidated and re-executed
-    # when input$n changes.
-    print(paste("The value of input$n is", isolate(input$n)))
   })
-  
   #=============================================================================
   #                              DATA PREPERATION                              #
   #=============================================================================
@@ -329,7 +305,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = dplyr::summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = dplyr::arrange(dataToPresent, Percent, desc(dataToPresent$"Games Published"))
       dataToPresent[dataToPresent == TRUE] = "Yes"
       dataToPresent[dataToPresent == FALSE] = "No"
@@ -343,7 +319,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = dplyr::summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent[dataToPresent == TRUE] = "Yes"
       dataToPresent[dataToPresent == FALSE] = "No"

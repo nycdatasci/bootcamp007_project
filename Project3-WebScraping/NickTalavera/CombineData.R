@@ -281,7 +281,7 @@ namePrettier = function(data) {
                    'Super Street Fighter II Turbo HD Remix','The Serious Sam Collection','SBK X: Superbike World Championship','SBK SuperBike World Championship','Kingdom Under Fire: Circle of Doom','Red Johnson\'s Chronicles - One Against All','Penny Arcade Adventures: Episode Two','Panzer General Allied Assault','Ninety-Nine Nights II',
                    'NCAA Basketball 09 March Madness Edition','MUD - FIM Motocross World Championship','MXGP - The Official Motocross Videogame','Mortal Kombat vs. DC Universe','Mortal Kombat Arcade Kollection','Lord of the Rings: Battle for Middle-Earth II','Fist of the North Star: Ken\'s Rage',
                    'Guncraft: Blocked and Loaded','Green Lantern: Rise of the Manhunters','Happy Tree Friends False Alarm','Tom Clancy\'s Ghost Recon: Future Soldier','Pinball Hall of Fame: The Williams Collection',
-                   'BCFxDoug Williams Edition','BanjoKazooie: Nuts & Bolts'
+                   'BCFxDoug Williams Edition','BanjoKazooie: Nuts & Bolts','BangaiO HD: Missile Fury','Bullet Soul Infinite Burst','CLANNAD','Disney\'s Epic Mickey 2: The Power of Two','Enemy Territory: Quake Wars','El Shaddai ASCENSION OF THE METATRON','Ace Combat: Assault Horizon','Defense Grid: The Awakening'
                    )
   names(gameNameDict) = tolower(c('Modern Warfare 2','Modern Warfare 3','Modern Warfare','Battlefield: Bad Co. 2','COD: Black Ops II','DEAD RISING',
                           'Halo 3: ODST Campaign Edition','Halo: Combat Evolved', 'LOST PLANET 2','NFS ProStreet','Plants vs Zombies Garden Warfare','RESIDENT EVIL 5',
@@ -323,7 +323,7 @@ namePrettier = function(data) {
                           'Super Street Fighter 2 Turbo HD','Serious Sam','SBK X','SBK','KUF: Circle of Doom','Red Johnson\'s Chronicles','Penny Arcade Episode 2','Panzer General','Ninety-Nine NightsⅡ/NA',
                           'NCAA Basketball March Madness Edition','MUD','MXGP','Mortal Kombat vs. DCU','Mortal Kombat Arcade','Lord of the Rings, BFME II','Fist of the North Star',
                           'Guncraft','Green Lantern','Happy Tree Friends','Ghost Recon: Future Soldier','Pinball Hall of Fame',
-                          'BCFxDoug Williams Ed.','Banjo Kazooie: Nuts n Bolts'
+                          'BCFxDoug Williams Ed.','Banjo Kazooie: Nuts n Bolts','BangaiO HD','Bullet Soul','CLANNAD (Only available in Japan)','Disney Epic Mickey 2: The Power of Two','ET: QUAKE Wars','El Shaddai','ASSAULT?HORIZON','Defense Grid'
                           ))
   data$gameName[tolower(data$gameName)%in%names(gameNameDict)] = gameNameDict[tolower(data$gameName[tolower(data$gameName)%in%names(gameNameDict)])]
   data$gameName = str_trim(data$gameName)
@@ -341,7 +341,7 @@ gameRemover = function(data) {
                     'BlowOut','Fuzion Frenzy','Sega Soccer Slam','Aliens vs Predator','HONOR THE CODE','EA SPORTS','Civil War','Prima Games Strategy Guides','Dead Rising 2: Case West','Dead Rising 2: Case Zero','Lost Planet Colonies','Rock Band Classic Rock',
                     'Halo: Combat Evolved Anniversary','Tom Clancy\'s Splinter Cell Chaos Theory'
                     )
-  keywordsToRemove <- tolower(sort(c("\\Sbundle","pack",'(PC)','Team DZN',"\\SDLC")))
+  keywordsToRemove <- tolower(sort(c("\\Sbundle",'(Only available in Japan)',"pack",'(PC)','Team DZN',"\\SDLC")))
   keywordsToRemoveRegex = paste(keywordsToRemove, collapse = "|")
   keywordsToRemoveRegex =  gsub(pattern = " ", replacement = "*", x = keywordsToRemoveRegex,ignore.case = TRUE)
   gameNameMissed = tolower(data$gameName)
