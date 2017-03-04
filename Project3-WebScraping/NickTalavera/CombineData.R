@@ -502,7 +502,7 @@ dataUltImputed$price = round(dataUltImputed$price,digits = 2)
 sapply(dataUltImputed, function(y) sum(length(which(is.na(y)))))
 sapply(dataUltImputed,class)
 
-setwd('/Users/nicktalavera/Coding/Data Science/Xbox-One-Backwards-Compatability-Predictions/Xbox Back Compat Data/')
+setwd('/Volumes/SDExpansion/Data Files/Xbox Back Compat Data')
 write.csv(dataUlt,'dataUlt.csv')
 write.csv(dataUltImputed,'dataUltImputed.csv')
 stopCluster(cl)

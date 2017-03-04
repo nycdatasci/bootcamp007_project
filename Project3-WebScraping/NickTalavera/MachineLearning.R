@@ -111,7 +111,7 @@ f <- as.formula(paste("isBCCompatible ~", paste(n[!n %in% "isBCCompatible"], col
 
 
 concrete_model = neuralnet(formula = f,
-                           hidden = 100, #Default number of hidden neurons.
+                           hidden = 1000, #Default number of hidden neurons.
                            data = xb_train)
 
 #Visualizing the network topology using the plot() function.
