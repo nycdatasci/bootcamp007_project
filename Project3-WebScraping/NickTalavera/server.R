@@ -305,7 +305,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = dplyr::summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = dplyr::summarise(dplyr::group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = dplyr::arrange(dataToPresent, Percent, desc(dataToPresent$"Games Published"))
       dataToPresent[dataToPresent == TRUE] = "Yes"
       dataToPresent[dataToPresent == FALSE] = "No"
@@ -319,7 +319,7 @@ shinyServer(function(input, output, session) {
     head({
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
-      dataToPresent = dplyr::summarise(group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
+      dataToPresent = dplyr::summarise(dplyr::group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
       dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent[dataToPresent == TRUE] = "Yes"
       dataToPresent[dataToPresent == FALSE] = "No"
