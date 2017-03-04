@@ -236,7 +236,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isKinectSupported == TRUE | dataToPresent$isKinectRequired == TRUE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Kinect Required" = isKinectRequired, "Uservoice Votes" = votes, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = predicted_isBCCompatible, "Kinect Required" = isKinectRequired, "Uservoice Votes" = votes, 
                                       "Available for Digital Download" = isAvailableToPurchaseDigitally, "On Microsoft's Site" = isListedOnMSSite, 
                                       "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -278,7 +278,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()        
         dataToPresent = dataToPresent[dataToPresent$isExclusive == TRUE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = predicted_isBCCompatible, "Is Console Exclusive" = isConsoleExclusive, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
@@ -320,7 +320,7 @@ shinyServer(function(input, output, session) {
       dataToPresent = getDataPresentable()
       dataToPresent = dataToPresent[dataToPresent$isKinectRequired == FALSE & dataToPresent$usesRequiredPeripheral == FALSE,]
       dataToPresent = dplyr::summarise(dplyr::group_by(dataToPresent, "Publisher" = publisher), "Games Made Backwards Compatible" = length(isBCCompatible[isBCCompatible==TRUE]), "Games Published" = length(gameName), "Percent" = as.integer(round(length(isBCCompatible[isBCCompatible==TRUE])/length(gameName)*100,0)))
-      dataToPresent = arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
+      dataToPresent = dplyr::arrange(dataToPresent, desc(Percent), desc(dataToPresent$"Games Published"))
       dataToPresent[dataToPresent == TRUE] = "Yes"
       dataToPresent[dataToPresent == FALSE] = "No"
       dataToPresent
