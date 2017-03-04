@@ -25,9 +25,9 @@ dashboardPage(
     width = sideBarWidth,
     sidebarMenu(id = "sideBarMenu",
                 menuItem("Lists", tabName = "Lists", icon = icon("gamepad")),
-                menuItem("Game Search", tabName = "Search", icon = icon("search")),
+                menuItem("Game Search", tabName = "Search", icon = icon("search"))
                 # menuItem("Processing", tabName = "Processing", icon = icon("list-ol")),
-                menuItem("About", tabName = "AboutMe", icon = icon("user"))
+                # menuItem("About", tabName = "AboutMe", icon = icon("user"))
     )# end of sidebarMenu
   ),#end of dashboardSidebar
   #=============================================================================
@@ -48,16 +48,17 @@ dashboardPage(
                     solidHeader = FALSE,
                     collapsible = TRUE,
                     helpText("Note: You may leave fields empty or unchecked to select all."),
+                    
                     checkboxGroupInput("SEARCH_Is_Backwards_Compatible", label = h3("Is backwards compatible:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
                                        selected = ""),
                     checkboxGroupInput("SEARCH_Predicted_to_become_Backwards_Compatible", label = h3("Predicted to become backwards compatible:"), 
                                        choices = list("Yes" = TRUE, "No" = FALSE),
                                        selected = ""),
-                    sliderInput("SEARCH_Backwards_Compatibility_Probability_Percent",
-                                label = h3("Backwards compatibility probability percent:"),
-                                min = 0, max = 100, value = c(0,100), step = 1,
-                                post = "%", sep = ",", animate=FALSE),
+                    # sliderInput("SEARCH_Backwards_Compatibility_Probability_Percent",
+                    #             label = h3("Backwards compatibility probability percent:"),
+                    #             min = 0, max = 100, value = c(0,100), step = 1,
+                    #             post = "%", sep = ",", animate=FALSE),
                     dateRangeInput('SEARCH_Release_date',
                                    label = h3("Release Date:"),
                                    start = range(xboxData$releaseDate)[1], end = range(xboxData$releaseDate)[2],
@@ -65,44 +66,44 @@ dashboardPage(
                                    separator = " - ", format = "mm/dd/yy",
                                    startview = 'month', weekstart = 1
                     ),
-                    checkboxGroupInput("SEARCH_Is_Listed_on_XboxCom", label = h3("Is listed on Xbox.com:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = 1),
-                    checkboxGroupInput("SEARCH_Is_Exclusive", label = h3("Is Exclusive:"), 
-                                       choices = list("Only on Xbox 360" = "Only on Xbox 360", "Also Available on PC" = "PC", "No" = "No"),
-                                       selected = 1),
-                    checkboxGroupInput("SEARCH_Xbox_One_Version_Available", label = h3("Xbox One version available:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = 1),
-                    checkboxGroupInput("SEARCH_Is_On_Uservoice", label = h3("Is on Uservoice"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = 1),
-                    sliderInput("SEARCH_Uservoice_Votes",
-                                label = h3("Uservoice votes:"),
-                                min = 0, max = roundUp(max(xboxData$votes, na.rm = TRUE)), value = c(0,roundUp(max(xboxData$votes, na.rm = TRUE))), step = 1,
-                                post = " votes", sep = ",", animate=FALSE),
-                    sliderInput("SEARCH_Uservoice_Comments",
-                                label = h3("Uservoice comments:"),
-                                min = 0, max = roundUp(max(xboxData$comments, na.rm = TRUE)), value = c(0,roundUp(max(xboxData$comments, na.rm = TRUE))), step = 1,
-                                post = " comments", sep = ",", animate=FALSE),
-                    checkboxGroupInput("SEARCH_Is_Kinect_Supported", label = h3("Is Kinect supported:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = ""),
-                    checkboxGroupInput("SEARCH_Is_Kinect_Required", label = h3("Is Kinect required:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = ""),  
-                    checkboxGroupInput("SEARCH_Does_The_Game_Need_Special_Peripherals", label = h3("Does the game need special peripherals:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = ""),
-                    checkboxGroupInput("SEARCH_Is_The_Game_Retail_Only", label = h3("Is the game retail only:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = ""),
-                    checkboxGroupInput("SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com", label = h3("Available to purchase a digital copy on Xbox.com:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = ""),
-                    checkboxGroupInput("SEARCH_Has_a_Demo_Available", label = h3("Has a demo available:"), 
-                                       choices = list("Yes" = TRUE, "No" = FALSE),
-                                       selected = ""),
+                    # checkboxGroupInput("SEARCH_Is_Listed_on_XboxCom", label = h3("Is listed on Xbox.com:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = 1),
+                    # checkboxGroupInput("SEARCH_Is_Exclusive", label = h3("Is Exclusive:"), 
+                    #                    choices = list("Only on Xbox 360" = "Only on Xbox 360", "Also Available on PC" = "PC", "No" = "No"),
+                    #                    selected = 1),
+                    # checkboxGroupInput("SEARCH_Xbox_One_Version_Available", label = h3("Xbox One version available:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = 1),
+                    # checkboxGroupInput("SEARCH_Is_On_Uservoice", label = h3("Is on Uservoice"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = 1),
+                    # sliderInput("SEARCH_Uservoice_Votes",
+                    #             label = h3("Uservoice votes:"),
+                    #             min = 0, max = roundUp(max(xboxData$votes, na.rm = TRUE)), value = c(0,roundUp(max(xboxData$votes, na.rm = TRUE))), step = 1,
+                    #             post = " votes", sep = ",", animate=FALSE),
+                    # sliderInput("SEARCH_Uservoice_Comments",
+                    #             label = h3("Uservoice comments:"),
+                    #             min = 0, max = roundUp(max(xboxData$comments, na.rm = TRUE)), value = c(0,roundUp(max(xboxData$comments, na.rm = TRUE))), step = 1,
+                    #             post = " comments", sep = ",", animate=FALSE),
+                    # checkboxGroupInput("SEARCH_Is_Kinect_Supported", label = h3("Is Kinect supported:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = ""),
+                    # checkboxGroupInput("SEARCH_Is_Kinect_Required", label = h3("Is Kinect required:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = ""),  
+                    # checkboxGroupInput("SEARCH_Does_The_Game_Need_Special_Peripherals", label = h3("Does the game need special peripherals:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = ""),
+                    # checkboxGroupInput("SEARCH_Is_The_Game_Retail_Only", label = h3("Is the game retail only:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = ""),
+                    # checkboxGroupInput("SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com", label = h3("Available to purchase a digital copy on Xbox.com:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = ""),
+                    # checkboxGroupInput("SEARCH_Has_a_Demo_Available", label = h3("Has a demo available:"), 
+                    #                    choices = list("Yes" = TRUE, "No" = FALSE),
+                    #                    selected = ""),
                     sliderInput("SEARCH_Xbox_User_Review_Score",
                                 label = h3("Xbox user review score:"),
                                 min = 0, max = 5, value = c(0,5), step = 0.5,
@@ -170,15 +171,15 @@ dashboardPage(
                     actionButton("query", label = "Search")
                   ),
                   # conditionalPanel(
-                  #   condition = "input.query",
-                  box(
-                    title = "Results",
-                    # status = "primary",
-                    width = 12,
-                    # solidHeader = TRUE,
-                    collapsible = FALSE,
-                    DT::dataTableOutput('List_SearchResults')
-                  )
+                    # condition = "input.query",
+                    box(
+                      title = "Results",
+                      # status = "primary",
+                      width = 12,
+                      # solidHeader = TRUE,
+                      collapsible = FALSE,
+                      DT::dataTableOutput('List_SearchResults')
+                    )
                   # )
                 )# end of fluidrow
               ) # End of fluidPage
@@ -232,14 +233,14 @@ dashboardPage(
                 shiny::htmlOutput("Explanation", inline = TRUE)
                 # uiOutput(knitr::render_html())
               ) # End of fluidPage
-      ), # End of tabItem
-      tabItem(tabName = "AboutMe",
-              fluidPage(
-                # titlePanel("About Me"),
-                mainPanel(
-                  shiny::htmlOutput("AboutMe", inline = TRUE)
-                )
-              )
+              # ), # End of tabItem
+              # tabItem(tabName = "AboutMe",
+              #         fluidPage(
+              #           # titlePanel("About Me"),
+              #           mainPanel(
+              #             shiny::htmlOutput("AboutMe", inline = TRUE)
+              #           )
+              #         )
       ) # End of tabItem
     ) # end of tabITems
   )# end of dashboard body

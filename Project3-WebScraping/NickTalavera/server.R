@@ -16,18 +16,13 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$SEARCH_Is_Backwards_Compatible)) {
       dataToDisplay = dataToDisplay[dataToDisplay$isBCCompatible == input$SEARCH_Is_Backwards_Compatible[1] | dataToDisplay$isBCCompatible == input$SEARCH_Is_Backwards_Compatible[2],]
     }
-    if (!is.null(input$SEARCH_Backwards_Compatibility_Probability_Percent)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$percentProb >= input$SEARCH_Backwards_Compatibility_Probability_Percent[1] & dataToDisplay$percentProb <= input$SEARCH_Backwards_Compatibility_Probability_Percent[2],]
-    }
 
-    if (!is.null(input$SEARCH_Uservoice_Votes)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$votes >= input$SEARCH_Uservoice_Votes[1] & dataToDisplay$votes <= input$SEARCH_Uservoice_Votes[2],]
-    }
-    if (!is.null(input$SEARCH_Uservoice_Comments)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$comments >= input$SEARCH_Uservoice_Comments[1] & dataToDisplay$comments <= input$SEARCH_Uservoice_Comments[2],]
-    }
-    # print(paste("SEARCH_Predicted_to_become_Backwards_Compatible", input$SEARCH_Predicted_to_become_Backwards_Compatible))
-    # print(paste("SEARCH_Is_Listed_on_XboxCom", input$SEARCH_Is_Listed_on_XboxCom))
+    # if (!is.null(input$SEARCH_Uservoice_Votes)) {
+    #   dataToDisplay = dataToDisplay[dataToDisplay$votes >= input$SEARCH_Uservoice_Votes[1] & dataToDisplay$votes <= input$SEARCH_Uservoice_Votes[2],]
+    # }
+    # if (!is.null(input$SEARCH_Uservoice_Comments)) {
+    #   dataToDisplay = dataToDisplay[(dataToDisplay$comments >= input$SEARCH_Uservoice_Comments[1] | is.na(dataToDisplay$comments)) & dataToDisplay$comments <= input$SEARCH_Uservoice_Comments[2],]
+    # }
     # print(paste("SEARCH_Is_Exclusive", input$SEARCH_Is_Exclusive))
     # print(paste("SEARCH_Xbox_One_Version_Available", input$SEARCH_Xbox_One_Version_Available))
     # print(paste("SEARCH_Is_On_Uservoice", input$SEARCH_Is_On_Uservoice))
@@ -38,20 +33,60 @@ shinyServer(function(input, output, session) {
     # print(paste("SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com", input$SEARCH_Available_to_Purchase_a_Digital_Copy_on_Xbox.com))
     # print(paste("SEARCH_Has_a_Demo_Available", input$SEARCH_Has_a_Demo_Available))
     # print(paste("SEARCH_Smartglass_Compatible", input$SEARCH_Smartglass_Compatible))
+    
+    if (!is.null(input$SEARCH_Predicted_to_become_Backwards_Compatible)) {
+      print(input$SEARCH_Predicted_to_become_Backwards_Compatible)
+      dataToDisplay = dataToDisplay[which((dataToDisplay$predicted_isBCCompatible%in%input$SEARCH_Predicted_to_become_Backwards_Compatible)),]
+    }
+    
+    print(colnames(dataToDisplay))
+    # if (!is.null(input$SEARCH_Is_Listed_on_XboxCom)) {
+    #   dataToDisplay = dataToDisplay[which(dataToDisplay$isListedOnMSSite$%in%input$SEARCH_Is_Listed_on_XboxCom),]
+    # }
+    # if (!is.null(input$SEARCH_Is_Exclusive)) {
+    #   dataToDisplay = dataToDisplay[which((dataToDisplay$isExclusive%in%input$SEARCH_Is_Exclusive)),]
+    # }
+    if (!is.null(input$SEARCH_Features)) {
+      dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
+    }
+    if (!is.null(input$SEARCH_Features)) {
+      dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
+    }
+    if (!is.null(input$SEARCH_Features)) {
+      dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
+    }
+    if (!is.null(input$SEARCH_Features)) {
+      dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
+    }
+    if (!is.null(input$SEARCH_Features)) {
+      dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
+    }
+    if (!is.null(input$SEARCH_Features)) {
+      dataToDisplay = dataToDisplay[which((dataToDisplay$features%in%input$SEARCH_Features)),]
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if (!is.null(input$SEARCH_Xbox_User_Review_Score)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$xbox360Rating >= input$SEARCH_Xbox_User_Review_Score[1] & dataToDisplay$xbox360Rating <= input$SEARCH_Xbox_User_Review_Score[2],]
+      dataToDisplay = dataToDisplay[(is.na(dataToDisplay$xbox360Rating) & input$SEARCH_Xbox_User_Review_Score[1] == 0) | (dataToDisplay$xbox360Rating >= input$SEARCH_Xbox_User_Review_Score[1] & dataToDisplay$xbox360Rating <= input$SEARCH_Xbox_User_Review_Score[2]),]
     }
     if (!is.null(input$SEARCH_Xbox_User_Review_Counts)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$numberOfReviews >= input$SEARCH_Xbox_User_Review_Counts[1] & dataToDisplay$numberOfReviews <= input$SEARCH_Xbox_User_Review_Counts[2],]
+      dataToDisplay = dataToDisplay[(is.na(dataToDisplay$numberOfReviews) & input$SEARCH_Xbox_User_Review_Counts[1] == 0) | (dataToDisplay$numberOfReviews >= input$SEARCH_Xbox_User_Review_Counts[1] & dataToDisplay$numberOfReviews <= input$SEARCH_Xbox_User_Review_Counts[2]),]
     }
     if (!is.null(input$SEARCH_Uservoice_Votes)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$reviewScorePro >= input$SEARCH_Metacritic_Review_Score[1] & dataToDisplay$reviewScorePro <= input$SEARCH_Metacritic_Review_Score[2],]
+      dataToDisplay = dataToDisplay[(is.na(dataToDisplay$reviewScorePro) & input$SEARCH_Uservoice_Votes[1] == 0) | (dataToDisplay$reviewScorePro >= input$SEARCH_Metacritic_Review_Score[1] & dataToDisplay$reviewScorePro <= input$SEARCH_Metacritic_Review_Score[2]),]
     }
     if (!is.null(input$SEARCH_Metacritic_User_Review_Score)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$reviewScoreUser >= input$SEARCH_Metacritic_User_Review_Score[1] & dataToDisplay$reviewScoreUser <= input$SEARCH_Metacritic_User_Review_Score[2],]
+      dataToDisplay = dataToDisplay[(is.na(dataToDisplay$reviewScoreUser) & input$SEARCH_Metacritic_User_Review_Score[1] == 0) | (dataToDisplay$reviewScoreUser >= input$SEARCH_Metacritic_User_Review_Score[1] & dataToDisplay$reviewScoreUser <= input$SEARCH_Metacritic_User_Review_Score[2]),]
     }
     if (!is.null(input$SEARCH_Price_on_Xbox.com)) {
-      dataToDisplay = dataToDisplay[dataToDisplay$price >= input$SEARCH_Price_on_Xbox.com[1] & dataToDisplay$price <= input$SEARCH_Price_on_Xbox.com[2],]
+      dataToDisplay = dataToDisplay[(is.na(dataToDisplay$price) & input$SEARCH_Price_on_Xbox.com[1] == 0) | (dataToDisplay$price >= input$SEARCH_Price_on_Xbox.com[1] & dataToDisplay$price <= input$SEARCH_Price_on_Xbox.com[2]),]
     }
     if (!is.null(input$SEARCH_Publisher)) {
       dataToDisplay = dataToDisplay[which((dataToDisplay$publisher%in%input$SEARCH_Publisher)),]
@@ -89,9 +124,9 @@ shinyServer(function(input, output, session) {
   
   getDataPresentable = function(){
     dataToPresent = xboxData
-    #  ADD BACK IF MY MODEL PRODUCES PERCENT PROBABILITIES
     dataToPresent = dataToPresent[dataToPresent$gameName != "TRUE",]
-    # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100
+    dataToPresent = dataToPresent[!is.na(dataToPresent$gameName),]
+    # dataToPresent$percentProb[dataToPresent$isBCCompatible == TRUE] = 100 #  ADD BACK IF MY MODEL PRODUCES PERCENT PROBABILITIES
     dataToPresent$predicted_isBCCompatible = as.logical(dataToPresent$predicted_isBCCompatible)
     return(dataToPresent)
   }
@@ -102,13 +137,13 @@ shinyServer(function(input, output, session) {
   output$List_SearchResults <- DT::renderDataTable(
     DT::datatable(
       {
-        dataToPresent = getDataPresentable()
+        dataToPresent = getDataSetToUse()
         dataToPresent = dplyr::select(dataToPresent, Name = gameName, 'Predicted Backwards Compatible' = predicted_isBCCompatible, "Uservoice Votes" = as.numeric(votes), "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
                                       'Publisher'= publisher, 'Developer' = developer, "Xbox One Version Available" = isOnXboxOne)
-        # dataToPresent = dataToPresent[!is.na(dataToPresent$Name),]
+        dataToPresent = dataToPresent[!is.na(dataToPresent$Name),]
         dataToPresent[dataToPresent == TRUE] = "Yes"
         dataToPresent[dataToPresent == FALSE] = "No"
         print(nrow(dataToPresent))
@@ -116,7 +151,7 @@ shinyServer(function(input, output, session) {
       }, 
       selection = "none",
       options = list(scrollX = TRUE,
-                     lengthMenu = list(c(15, 30, -1), c('15', '30', 'All')),
+                     lengthMenu = list(c(15, 30, 50, -1), c('15', '30', '50', 'All')),
                      pageLength = 15
       ),
       escape = FALSE
@@ -219,7 +254,7 @@ shinyServer(function(input, output, session) {
       {
         dataToPresent = getDataPresentable()
         dataToPresent = dataToPresent[dataToPresent$isOnXboxOne == TRUE | dataToPresent$isKinectRequired == TRUE,]
-        dataToPresent = dplyr::select(dataToPresent, Name = gameName, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
+        dataToPresent = dplyr::select(dataToPresent, Name = gameName,'Predicted Backwards Compatible' = predicted_isBCCompatible, "Uservoice Votes" = votes, "Available for Digital Download" = isAvailableToPurchaseDigitally, 
                                       "On Microsoft's Site" = isListedOnMSSite, "Kinect Supported" = isKinectSupported,
                                       "Kinect Required" = isKinectRequired, "Exclusive" = isExclusive, "Is Console Exclusive" = isConsoleExclusive, "Metacritic Rating" = reviewScorePro, 
                                       "Metacritic User Rating" = reviewScoreUser, "Xbox User Rating" = xbox360Rating, 'Price' = price, 'Game Addons' = DLgameAddons, "Genre" = genre,
