@@ -10,7 +10,7 @@
 shinyServer(function(input, output, session) {
   observe({
     # Re-execute this reactive expression after 1000 milliseconds
-    invalidateLater(1000*60*30, session)
+    invalidateLater(1000*60*5, session)
   })
   #=============================================================================
   #                              DATA PREPERATION                              #
